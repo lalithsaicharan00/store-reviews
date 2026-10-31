@@ -179,6 +179,27 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) as the app: full, and flat once the goal is met; (b) full, but still wavy at the goal.
 - **My recommendation:** (a): Material calms the wave as the line completes, so a met goal reads as finished.
 
+### D-50. A log's view: › on Date and Time?
+
+- **Where:** the Log view ([Figma 894:94422](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=894-94422)); the Log screen component (687:829); `ui/record/RecordParts.kt`.
+- **What Figma shows / what the app did:** the Log screen's Amount View draws › on Date and Time; its Duration View and
+  Slip View don't, and in the view nothing opens from them (changing them is Edit's job, U19).
+- **What I did for now:** no › in the view, as the Duration and Slip views.
+- **Question:** (a) no › in any view, and the Amount View in Figma loses its two; (b) › in every view, and tapping Date or
+  Time opens Edit with that picker.
+- **My recommendation:** (a): a › promises a page, and the view only reads.
+
+### D-51. A changed log says when: "Changed at 2:07 PM."
+
+- **Where:** the Log view after Edit ([Figma 896:106555](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=896-106555)); `Core` `EntryRecord`, `data/Model.kt`, `data/StoreWords.kt` (`originLine`).
+- **What Figma shows / what the app did:** "Added by hand at 1:10 PM. Changed at 2:07 PM." The app has nowhere to keep
+  when a log was changed: a record holds when it happened (`created_at`) and when it was deleted, nothing else.
+- **What I did for now:** "Added by hand at 1:10 PM." alone; Save says "Log changed" in a snackbar, as Figma.
+- **Question:** build it? It's a new saved field on every log (`changed_at`): a database upgrade tested from every past
+  version (D2), the backup file's `data.json` on both phones (D5), and the iPhone app the same.
+- **My recommendation:** yes, with the next database upgrade, so a changed log says so wherever it's read (it helps when
+  a number looks wrong). Until then the footer leaves it out.
+
 ### D-4. Dialogs and pickers: Surface container high or Surface bright?
 
 - **Where:** Dialog (5.3.4), Time picker (5.3.5), Date picker (5.3.6); `ui/components/Dialog.kt`, `TimePickerDialog.kt`,

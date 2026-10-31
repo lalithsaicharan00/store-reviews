@@ -210,7 +210,9 @@ private fun AppMain(
             AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store,
                 say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.popBackStack() }
         }
-        composable("log/{id}") { e -> LogScreen(e.arguments!!.getString("id")!!, store) { nav.popBackStack() } }
+        composable("log/{id}") { e ->
+            LogScreen(e.arguments!!.getString("id")!!, store, say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.popBackStack() }
+        }
         composable("alllogs/{habit}/{day}") { e ->
             AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.popBackStack() }
         }

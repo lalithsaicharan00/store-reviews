@@ -138,8 +138,8 @@ object DemoData {
         val clean = streaks["Deep clean"]?.let { h("Deep clean", "house.fill", HabitColor.RED, HabitKind.Check, frequency = Frequency.PerMonth(1)) }
         val habits = listOfNotNull(meds, stretch, skincare, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, clean, smoking, coffee, social, meditate)
         val entries = ArrayList<Entry>()
-        fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null) =
-            entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
+        fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null, source: EntrySource? = null) =
+            entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now), source = source))
         for ((habit, streak) in listOf(stretch to 4, meds to 57, read to 6, water to 22, bed to 30, night to 5, journal to 9, study to 2, refill to 3))
             for (d in 1..(streaks[habit.name] ?: streak)) log(habit, today - d, habit.goal)
         // A test launch's `earlier` ("Meds=7"): a run of that length before a one-day break (Figma 108:1308).
@@ -179,7 +179,7 @@ object DemoData {
             val pieces = (if (amount % 2 == 1) listOf(1) else emptyList()) + List(amount / 2) { 2 }
             pieces.forEachIndexed { i, n ->
                 val at = (store.rules.dayStart(today) + times[minOf(i, times.lastIndex)] * 60_000L).coerceAtMost(now - (pieces.size - i) * 60_000L)
-                log(habit, today, n.toDouble(), at = at)
+                log(habit, today, n.toDouble(), at = at, source = EntrySource.MANUAL) // Figma's Log: "Added by hand at 1:10 PM."
             }
         }
         val positioned = habits.mapIndexed { i, hb -> hb.record(i, now) }

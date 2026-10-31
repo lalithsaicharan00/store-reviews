@@ -319,7 +319,7 @@ private fun zoneName(zone: String): String? = runCatching {
  * always on. The day itself never changes; the time stays inside it.
  */
 @Composable
-fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
+fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, onBack: () -> Unit) {
     val c = appColors
     val rev = store.dataVersion
     val entry: Entry = remember(rev) { store.entry(entryId) } ?: run { LaunchedEffect(Unit) { onBack() }; return }
@@ -364,7 +364,9 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
                 else -> {}
             }
             val problem = draft.check().second
-            val footer = if (editing) (problem ?: if (slip) "Changing the time updates your quit run." else null) else entry.originLine(slip)
+            // Editing says what Save will do (Figma 896:96313): this record only.
+            val footer = if (editing) (problem ?: if (slip) "Changing the time updates your quit run." else "Changes this log only. Other logs stay as they are.")
+                else entry.originLine(slip)
             footer?.let { Footer(it, problem = editing && problem != null) }
         }
         if (editing) {
@@ -372,6 +374,7 @@ fun LogScreen(entryId: String, store: HabitStore, onBack: () -> Unit) {
                 val v = if (slip) 1.0 else draft.value ?: return@BottomAction
                 store.editEntry(entry.id, v, time)
                 editing = false
+                say(if (slip) "Slip changed" else "Log changed")
             }
         } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
