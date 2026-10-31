@@ -502,9 +502,12 @@ class HabitStore(
         }
     }
 
-    /** Brings an archived habit back if there's a free slot (or Plus). The archived stretch becomes a pause. */
-    fun restore(habit: Habit): Boolean {
-        if (habit.kind != HabitKind.Task && !canAddHabit) return false
+    /**
+     * Brings an archived habit back if there's a free slot (or Plus). The archived stretch becomes a pause. [undo]: the
+     * Undo of an archive or delete just made, which always puts it back (it held its slot a moment ago).
+     */
+    fun restore(habit: Habit, undo: Boolean = false): Boolean {
+        if (habit.kind != HabitKind.Task && !canAddHabit && !undo) return false
         perform {
             val i = habits.indexOfFirst { it.id == habit.id }
             if (i < 0) return@perform

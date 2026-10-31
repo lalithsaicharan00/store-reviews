@@ -175,7 +175,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     }
     fun archive(h: Habit) {
         store.archive(listOf(h))
-        say("${h.name} archived", "Undo") { store.restore(h) }
+        say("${h.name} archived", "Undo") { store.restore(h, undo = true) }
     }
     fun resume(h: Habit) {
         val before = store.pauses[h.id] ?: emptyList<HabitPause>()

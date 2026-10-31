@@ -215,7 +215,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
             if (snackbar.showSnackbar("${habit.name} archived", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) {
-                store.habit(habit.id)?.let { store.restore(it) }
+                store.habit(habit.id)?.let { store.restore(it, undo = true) }
             }
         }
     }

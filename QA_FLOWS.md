@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 28 |
+| day details | 169:1270 | 44 | 31 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **122** |
+| **All** | | **290** | **125** |
 
 ## Bug log
 
@@ -196,6 +196,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 158. Day details 30 · moving a task said "Pick up parcel moved to tomorrow" for 4 seconds, and Another day… opened a picker titled "Another day" with a day already picked and "Move"; Figma: "Moved to tomorrow" / "Moved to Sun, 25 Oct" with Undo (about 10 s), and Android's own picker, nothing picked ("Selected date") and OK. Figma's one "Select a day" there is now Material's "Selected date", as its Details pages say.
 159. Day details 31 · a paused habit's card said "Back on Sat, 7 Nov" where "This day" goes; Figma: This day, Paused, "Back on Wed, 28 Oct" beside it.
 160. Day details 32 · an earlier day's list was "Logs for Fri 30 Oct", and +1 there said "Added 1 glass to Fri 30 Oct"; Figma: "Yesterday’s logs" (an older day by its date) and no message ("Nothing celebrates history added later").
+161. Day details 34 · Archive from Day details closed the sheet and said nothing; Figma: "Water archived · Undo". And Undo (here, on the Habits page and on Habit details) failed silently on the free plan with more than five habits: restoring asked for a free slot, so the habit stayed archived. The Undo of an archive or delete just made always puts it back, in its place (`restore(undo = true)`).
+162. Day details 35 · the menu said "Delete habit…" and the question "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history." · Delete habit, then nothing; Figma: "Delete", "Delete Water?" · "Its logs, notes and streak go too. To keep them, choose Archive in the same menu instead." · Cancel | Delete, then "Water deleted · Undo" (off Today at once; deleted for good once Undo has gone).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -360,9 +362,9 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 31 | 205:2 | A paused habit: resume it from Day details | Paused card → Day details Paused → Resume habit | passed |
 | 32 | 206:2 | Day details for an earlier day | ‹ Yesterday → Water → Day details Yesterday → +1 twice → ✕ → Back to today | passed |
 | 33 | 207:1000 | Day details for a later day | › Tomorrow → Water → ✕ → Back to today | passed |
-| 34 | 210:2 | The ⋮ menu: archive a habit | Water → ⋮ → Archive; Undo → Undo | not started |
-| 35 | 210:1012 | The ⋮ menu: delete a habit | Water → ⋮ → Delete Water? → Delete; Undo | not started |
-| 36 | 210:2089 | The ⋮ menu: pause a habit | Water → ⋮ → Pause… → Pause Water sheet → Pause; Undo | not started |
+| 34 | 210:2 | The ⋮ menu: archive a habit | Water → ⋮ → Archive; Undo → Undo | passed |
+| 35 | 210:1012 | The ⋮ menu: delete a habit | Water → ⋮ → Delete Water? → Delete; Undo | passed |
+| 36 | 210:2089 | The ⋮ menu: pause a habit | Water → ⋮ → Pause… → Pause Water sheet → Pause; Undo | passed |
 | 37 | 211:2 | Notes: add a note from Day details | Water → Add a note… → Save | not started |
 | 38 | 211:750 | Notes: change a note | → Note → Edit note → Save | not started |
 | 39 | 211:1528 | Notes: delete a note | → Note → Delete this note? → Delete; Undo | not started |

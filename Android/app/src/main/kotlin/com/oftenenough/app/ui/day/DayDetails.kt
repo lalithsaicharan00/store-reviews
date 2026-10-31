@@ -112,6 +112,10 @@ interface DayNav {
     fun resumed(habit: Habit, undo: () -> Unit) {}
     /** The habit's page, open at All milestones (the landmark pop-up's button, Figma 14.1). */
     fun allMilestones(habit: Habit) = habitPage(habit)
+    /** Says something with Undo on the page under the sheet ("Water archived · Undo"). */
+    fun sayUndo(text: String, undo: () -> Unit) {}
+    /** Deletes [habit], with "Water deleted · Undo" on the page under the sheet. */
+    fun delete(habit: Habit) {}
     /** The full-screen timer, just started (Day details 13: the same timer as ▶ on Today); ⌄ comes back here. */
     fun timer(habit: Habit) {}
 }
@@ -231,8 +235,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
         }
         Spacer(Modifier.height(24.dp))
     }
-    if (confirmDelete) AppDialog("Delete ${habit.name}?", "Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.",
-        if (isTask) "Delete task" else "Delete habit", { confirmDelete = false; onDismiss(); store.delete(listOf(habit)) }, { confirmDelete = false },
+    // Figma 935:136058: "Delete Water?", what goes with it, and where to keep it instead; Cancel | Delete (D9).
+    if (confirmDelete) AppDialog("Delete ${habit.name}?", "Its logs, notes and streak go too. To keep them, choose Archive in the same menu instead.",
+        "Delete", { confirmDelete = false; onDismiss(); nav.delete(habit) }, { confirmDelete = false },
         destructive = true, confirmTag = "day-delete-confirm")
     if (reschedule) RescheduleDialog(habit, day, store, { reschedule = false }) { reschedule = false; onDismiss() }
 }
@@ -260,8 +265,11 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
         }
         MenuDivider()
         if (habit.archived) item("Restore", Symbols.Unarchive, tag = "day-menu-restore") { store.restore(habit) }
-        else item("Archive", Symbols.Archive, tag = "day-menu-archive") { store.archive(listOf(habit)); onClose() }
-        item(if (isTask) "Delete task…" else "Delete habit…", Symbols.Delete, red = true, tag = "day-menu-delete") { onDelete() }
+        else item("Archive", Symbols.Archive, tag = "day-menu-archive") {
+            store.archive(listOf(habit)); onClose()
+            nav.sayUndo("${habit.name} archived") { store.habit(habit.id)?.let { store.restore(it, undo = true) } }  // Figma 933:45568
+        }
+        item("Delete", Symbols.Delete, red = true, tag = "day-menu-delete") { onDelete() }  // Figma 935:135568
     }
 }
 

@@ -136,6 +136,22 @@ private fun AppMain(
                 androidx.compose.material3.SnackbarResult.ActionPerformed) undo()
         }
     }
+    // A habit deleted from Day details (Figma 935:136504: "Water deleted · Undo"): archived at once, so it leaves Today and
+    // every count; deleted for good once Undo has gone; Undo restores it to its place.
+    val deleteWithUndo: (Habit) -> Unit = { h ->
+        store.archive(listOf(h))
+        rootScope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            var undone = false
+            try {
+                undone = snackbar.showSnackbar("${h.name} deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Long) ==
+                    androidx.compose.material3.SnackbarResult.ActionPerformed
+            } finally {
+                val now = store.habit(h.id)
+                if (now != null) { if (undone) store.restore(now, undo = true) else store.delete(listOf(now)) }
+            }
+        }
+    }
     // Plus turned on from a Plus screen (Figma's flows: "the snackbar says Plus is on").
     val plusOn: () -> Unit = { rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Plus is on") } }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
@@ -171,7 +187,7 @@ private fun AppMain(
     LaunchedEffect(AppGraph.dayToOpen) {
         AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }
     }
-    val dayNav = dayNav(nav, askPause, sayUndo) { dayTarget = null }
+    val dayNav = dayNav(nav, askPause, sayUndo, deleteWithUndo) { dayTarget = null }
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
     val entry = nav.currentBackStackEntryAsState().value
     val route = entry?.destination?.route
@@ -182,7 +198,7 @@ private fun AppMain(
         "page/{title}" -> entry?.arguments?.getString("title")?.let { t -> MenuItem.entries.firstOrNull { it.title == t } }
         else -> null
     }
-    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo, com.oftenenough.app.ui.components.LocalAppSnackbar provides snackbar) {
+    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo, LocalDeleteWithUndo provides deleteWithUndo, com.oftenenough.app.ui.components.LocalAppSnackbar provides snackbar) {
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
@@ -437,6 +453,9 @@ private fun AppMain(
 /** Asks for Pause's sheet for a habit, from any page under [AppMain]. */
 private val LocalPause = androidx.compose.runtime.staticCompositionLocalOf<(Habit) -> Unit> { {} }
 
+/** Deletes a habit with "Water deleted · Undo", from any page under [AppMain]. */
+private val LocalDeleteWithUndo = androidx.compose.runtime.staticCompositionLocalOf<(Habit) -> Unit> { {} }
+
 /** Says something with Undo on the page showing, from any page under [AppMain]. */
 private val LocalSayUndo = androidx.compose.runtime.staticCompositionLocalOf<(String, () -> Unit) -> Unit> { { _, _ -> } }
 
@@ -557,7 +576,7 @@ private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostControlle
 }
 
 /** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
-private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String, () -> Unit) -> Unit, close: () -> Unit) = object : DayNav {
+private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String, () -> Unit) -> Unit, delete: (Habit) -> Unit, close: () -> Unit) = object : DayNav {
     override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
     override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
@@ -567,6 +586,8 @@ private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String,
     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
     override fun pause(habit: Habit) = pause(habit)
     override fun resumed(habit: Habit, undo: () -> Unit) = say("${habit.name} resumed", undo)
+    override fun sayUndo(text: String, undo: () -> Unit) = say(text, undo)
+    override fun delete(habit: Habit) = delete(habit)
     override fun timer(habit: Habit) { if (nav.currentDestination?.route?.startsWith("timer") != true) nav.navigate(Routes.timer(habit.id)) }
 }
 
@@ -579,7 +600,7 @@ private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composa
     var target by rememberSaveable { mutableStateOf<String?>(null) }
     content { h, d -> target = h.id + "|" + d }
     target?.split("|")?.let { (id, d) ->
-        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current) { target = null }) { target = null }
+        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current, LocalDeleteWithUndo.current) { target = null }) { target = null }
     }
 }
 
