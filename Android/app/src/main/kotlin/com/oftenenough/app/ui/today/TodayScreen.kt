@@ -299,7 +299,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                         bar?.let { shown ->
                             store.habit(shown.habitId)?.let { h ->
                                 val w = remember(shown) { center.words(shown, h) }
-                                // Each milestone its own bar (molecule 4.8): it rises over the day bar and fades in, and
+                                // Each milestone its own bar (molecule 4.8), 10 above the day bar: it rises over it and fades in, and
                                 // leaves fading up (Figma's Milestone · Motion: 24 dp in 250 ms, Material's fast springs).
                                 key("${shown.habitId}|${shown.value}") {
                                     val visible = remember { MutableTransitionState(false) }.apply { targetState = !barLeaving }
@@ -312,7 +312,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                                         exit = if (on) fadeOut(motion.fastEffectsSpec()) + slideOutVertically(motion.fastSpatialSpec()) { with(density) { -16.dp.roundToPx() } } else ExitTransition.None,
                                     ) {
                                         MilestoneBar(w.number, w.title, h.name, h.color, onSee = { popup = shown; barGone() }, onGone = { barGone() },
-                                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp).onGloballyPositioned { barBox = it.boundsInRoot() })
+                                            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 10.dp).onGloballyPositioned { barBox = it.boundsInRoot() })
                                     }
                                 }
                             }
@@ -364,10 +364,12 @@ private fun BottomFade(modifier: Modifier) {
 
 /**
  * Today's messages (Figma's Today: 12 in from the sides, 20 above the day bar): the Snackbar (2.6). Material's snackbar
- * keeps 12 around itself, so the host adds only the 8 more below it.
+ * keeps 12 around itself, so the host adds only the 8 more below it, and only while one shows: empty, it took 8 from
+ * the milestone bar's 10 above the day bar (Figma 868:49969).
  */
 @Composable
-private fun TodaySnackbars(snackbar: SnackbarHostState) = AppSnackbarHost(snackbar, Modifier.padding(bottom = 8.dp))
+private fun TodaySnackbars(snackbar: SnackbarHostState) =
+    AppSnackbarHost(snackbar, if (snackbar.currentSnackbarData != null) Modifier.padding(bottom = 8.dp) else Modifier)
 
 /**
  * "Back to today" (Figma's Back to today), and Habits & Tasks' "Back to this week" (5.5.1): Material's Small Tonal

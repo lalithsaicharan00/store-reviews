@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 61 |
+| today | 54:5580 | 84 | 62 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **71** |
+| **All** | | **290** | **72** |
 
 ## Bug log
 
@@ -141,6 +141,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 103. A running row's line · "9:24 of 10 min" had wide spaces: tabular figures on the whole line widen Google Sans Flex's spaces; Figma's line is plain Body Medium. Only the clock takes them now (`HabitRowLine`).
 104. A running timer crossing its goal · only the ⏸ filled: 🔥 stayed 29, no chime, no band until the timer stopped (nothing was saved while it ran). The user chose (A87, D-48): at the goal the time so far is saved as the session's log and the timer counts on; the stop makes it the whole session (one log). The store sleeps until each running timer's goal (no ticking) and works on Today, the timer screen and the player alike; a restart picks a reached session up where its log ends.
 105. Quit clock and every clock or count with a space ("30d 11:30:18", a log's "10:30 AM", the Habits page's period, the history card's detail, the running line) · tabular figures on the whole text widened its spaces beyond Figma's plain lines. One helper, `tabular()` beside the text styles, applies them to everything but the spaces; all five use it.
+106. Milestone bar · 16 dp above the day bar; Figma: 10 (614–686, day bar at 696). The empty snackbar host kept its 8 dp under the bar's own 8; it now takes its 8 only while a snackbar shows, and the bar has Figma's 10.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -234,7 +235,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | passed |
 | 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | passed |
 | 60 | 107:2429 | Milestone on the row: quit, no tap | Open the app: 30 days clean → Quitting on screen: band rises once | passed |
-| 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | not started |
+| 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | passed |
 | 62 | 108:561 | Milestone bar: the next one replaces it | Stretch past 10, Meds to do → ✓ Meds: bar → ⏸ Stretch: Stretch's bar → 5 s: band | not started |
 | 63 | 108:1308 | Milestone: a number reached again | Meds 6 (had 7) → ✓ 7: just the row → band stays | not started |
 | 64 | 110:2 | Pop-up: your first milestone | Meds 2 → ✓ pop-up once taps stop → Close: band | not started |
