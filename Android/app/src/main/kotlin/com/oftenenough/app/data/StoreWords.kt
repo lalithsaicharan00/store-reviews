@@ -42,10 +42,12 @@ private fun limitLine(habit: Habit, progress: Double, goal: Double, running: Boo
                 else "${Format.amount(done)} of ${Format.amount(goal)}${if (k.unit.isEmpty()) "" else " " + k.unit}$period"
             else -> "${Format.amount(done)} of ${Format.amount(goal)}${habit.checkUnit?.let { " $it" } ?: ""}$period"
         }
+    // Whole minutes for a timed limit, as its count says them: 30:00 to 30:59 is "Limit reached" (Figma's Today, flow 45),
+    // and while any time is left it's at least "1 min left".
     return when {
-        progress > goal -> "Over the limit · " + if (running) Format.clock(progress) else counted
-        progress >= goal -> "Limit reached · " + if (running) Format.clock(progress) else counted
-        running -> Format.clock(progress) + " · " + Format.minutes(floor(goal - progress)) + " left"
+        done > goal -> "Over the limit · " + if (running) Format.clock(progress) else counted
+        done >= goal -> "Limit reached · " + if (running) Format.clock(progress) else counted
+        running -> Format.clock(progress) + " · " + Format.minutes(maxOf(1.0, floor(goal - progress))) + " left"
         else -> "$counted · ${Format.amount(goal - done)} left"
     }
 }
@@ -290,9 +292,13 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         val title = "${short(total)} of ${short(goal)}" + (if (timed || money) "" else period)
                         return DayStatus(title, if (running != null) null else if (total >= goal) "Goal reached" else "${short(goal - total)} to go", running)
                     }
-                    // A limit says where it stands in words, never in red (Figma 10–11.3, U3).
+                    // A limit says where it stands in words, never in red (Figma 10–11.3, U3): "Limit 30 min · 30 min left",
+                    // "· Limit reached", "· Over the limit" (Figma's Day details).
                     if (r.atMost) return DayStatus("${today(saved)} $dayWord", "Limit ${text(goal)} · " + when {
-                        saved > goal -> "Over the limit"; saved >= goal -> "Limit reached"; else -> "within max"
+                        // Whole minutes for time, as the row counts them.
+                        (if (timed) floor(saved) else saved) > goal -> "Over the limit"
+                        (if (timed) floor(saved) else saved) >= goal -> "Limit reached"
+                        else -> "${text(goal - saved)} left"
                     }, running)
                     val title = if (timed) {
                         if (goal < 60 && saved < 60) "${kotlin.math.floor(saved).toInt()} of ${Format.minutes(goal)}" else "${text(saved)} of ${Format.minutes(goal)}"

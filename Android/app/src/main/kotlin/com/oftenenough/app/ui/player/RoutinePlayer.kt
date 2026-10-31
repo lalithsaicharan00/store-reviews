@@ -1023,6 +1023,10 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
         Box(bar, contentAlignment = Alignment.Center) {
             Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(c.secondary))
         }
+    } else if (ruled.atMost) {
+        // A limit isn't a goal: its wave stays neutral, Outline on Outline variant (Figma's Today, flow 45).
+        val s = MaterialTheme.colorScheme
+        WavyProgress(fraction, bar, s.outline, s.outlineVariant)
     } else {
         WavyProgress(fraction, bar, color, c.habitFill(habit.color))
     }
