@@ -167,7 +167,7 @@ class TasksPageTest {
         waitFor(hasText("Waiting since " + taskDay(today - 2), substring = true), "Water plants waiting")
         waitFor(hasTestTag("habits-section-Every few months or longer"), "the longest group")
         menuFor("Water plants", "skip")
-        waitFor(hasText("Water plants skipped this time"), "the snackbar")
+        waitFor(hasText("Skipped on " + taskDay(today - 2, today)), "the snackbar") // Figma 1132:225020's words
         assertTrue(store.isSkipped(task("Water plants"), today - 2))
         undo()
         waitUntil("the skip undone") { !store.isSkipped(task("Water plants"), today - 2) }

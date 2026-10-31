@@ -209,7 +209,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     fun skip(t: Habit) {
         val day = store.taskOpenDay(t, today) ?: return
         store.setSkipped(t, day, true)
-        say("${t.name} skipped this time") { store.setSkipped(t, day, false) }
+        say("Skipped on " + taskDay(day, today)) { store.setSkipped(t, day, false) } // Figma 1132:225020
     }
     fun notDone(t: Habit) {
         val e = store.doneEntry(t) ?: return

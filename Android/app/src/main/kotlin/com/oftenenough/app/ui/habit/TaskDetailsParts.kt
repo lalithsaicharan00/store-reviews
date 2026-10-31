@@ -166,7 +166,7 @@ internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetails
                                 onSkip = {
                                     store.taskOpenDay(task, today)?.let { day ->
                                         store.setSkipped(task, day, true)
-                                        say("${task.name} skipped this time") { store.setSkipped(task, day, false) }
+                                        say("Skipped on " + taskDay(day, today)) { store.setSkipped(task, day, false) }
                                     }
                                 },
                                 onNotDone = {
