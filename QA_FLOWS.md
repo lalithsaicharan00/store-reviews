@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 7 |
+| habits & tasks | 269:148 | 35 | 8 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **164** |
+| **All** | | **290** | **165** |
 
 ## Bug log
 
@@ -237,6 +237,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 199. Habits & tasks 7 (and 1–6: every card) · the card's ⋮ sat 12 dp in from Figma's: its 48 target ended at the card's 12 dp inset, where Figma puts the 24 glyph. `HistoryHabitHeader` now lays out a 24 slot there and lets the target spread 12 past each side. Its menu opened under the 48 target and hugged its words; Figma's hangs from the glyph (2 over its foot), 220 wide.
 200. Habits & tasks 7 · saving an edit said nothing anywhere; Figma: "Stretch saved · Undo" back on Habits & Tasks (and Tasks), "Changes saved" back on Habit details. Undo puts back exactly what was there (the record, its goal history, the description and milestone alerts: `HabitStore.undoEdit`). Today, where the row itself shows the change, stays silent as its flows draw it.
 201. Habits & tasks 7 (Habit details, Archived, Completed too) · messages sat 96 above the bottom, room kept for a pinned button these pages don't have; every Figma frame on them puts the snackbar at y 712, 12 from the sides and 16 above the gesture bar.
+202. Habits & tasks 8 (every Pause sheet) · its four choices were 76 tall, Figma's 72: Material's `ListItem` pads 10, not 8, so `RadioListItem`'s words had 16 round them where Figma has 14 (16 for one line).
+203. Habits & tasks 8 (every sheet with buttons) · everything above a sheet's buttons sat 8 higher than Figma: Figma's 16 above and 36 under are to the 40 dp buttons, and their 48 touch targets added 4 to each. `AppBottomSheet` now counts them.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -462,7 +464,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 5 | 284:2 | Tap a card: Habit details, and back | Stretch card → Habit details → ← | passed (←, Back and the edge swipe each land where the page was; Figma's "400 min stretched" is this frame's alone: every details page says "… recorded", as the app does) |
 | 6 | 285:2 | Tap a square: Day details for that day | Stretch Friday → Day details → Log time 6 min → Add: square fills; Undo | passed ²² (Add comes back to Day details, as every other flow through Add log; ✕: the square fills. Figma's frame goes straight to the page with an Undo: D-55) |
 | 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | passed ↻ (Undo puts back 10 min a day and its goal history; from Habit details, "Changes saved") |
-| 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | not started |
+| 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | passed ↻ (Paused keeps the person's order: Figma's "at the end" is the section's place; the snackbar's "Sat, 7 Nov": D-56) |
 | 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | not started |
 | 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | not started |
 | 11 | 292:2 | A card's ⋮: Delete | ⋮ Delete → Delete Stretch? → Delete; Undo → Cancel/Undo | not started |

@@ -294,6 +294,17 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** (a): Day details was opened to work on that day, and coming back to it shows the log that was
   added; a second rule for one page is harder to learn. Figma's frame 4 then shows the page after ✕.
 
+### D-56. "Fri, 30 Oct" or "Fri 30 Oct"?
+
+- **Where:** every date with its weekday; [Figma 1121:187655](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1121-187655); `data/Words.kt` (`DayWords.short`), `data/HabitPageWords.kt` (`pageDayDate`).
+- **What Figma shows:** both. Today and Day details: "Meds paused until Wed, 28 Oct", the Pause sheet's "Back on Fri,
+  30 Oct". Habits & Tasks and the details pages: "Stretch paused until Fri 30 Oct", "Paused until Fri 30 Oct" (52 times).
+- **What I did for now:** each screen as its page draws it, so the app has both: the paused card says "Paused until Sun
+  1 Nov" and the snackbar under it "Stretch paused until Sat, 7 Nov".
+- **Question:** which one, everywhere?
+- **My recommendation:** without the comma ("Fri 30 Oct"): it's the form the most frames use, it's shorter, and the
+  comma adds nothing between a weekday and a date.
+
 ## Details pages
 
 ### D-8. A quit habit's milestones: the page's numbers or the app's?

@@ -56,15 +56,18 @@ fun AppBottomSheet(
         Column(modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
             if (title != null) AppTopBar(title, containerColor = Color.Transparent, windowInsets = WindowInsets(0))
             content()
+            // Figma's 16 above and 36 under are to the 40 dp buttons; their 48 touch targets take 4 of each (QA, Habits &
+            // tasks 8: everything above sat 8 higher than Figma's sheet).
+            val target = if (actions != null) 4.dp else 0.dp
             if (actions != null) Row(
-                Modifier.fillMaxWidth().padding(top = 16.dp).padding(horizontal = 16.dp),
+                Modifier.fillMaxWidth().padding(top = 16.dp - target).padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp, Alignment.End),
                 verticalAlignment = Alignment.CenterVertically,
                 content = actions,
             )
             // The sheet already sits above the navigation bar (sheetInsets), so only what's left of the 36 is added.
             val nav = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-            Spacer(Modifier.height((36.dp - nav).coerceAtLeast(0.dp)))
+            Spacer(Modifier.height((36.dp - target - nav).coerceAtLeast(0.dp)))
         }
     }
 }

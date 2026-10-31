@@ -32,9 +32,10 @@ fun RadioListItem(
     supporting: String? = null,
     tag: String? = null,
 ) {
-    // The words keep the room they have on one line however long they get, as [AppListItem]'s do: Material's 8 is the
-    // radio's, the rest of its 56 (or 72 with a line under) is theirs.
-    val words = if (supporting != null) 6.dp else 8.dp
+    // The words keep the room they have on one line however long they get, as [AppListItem]'s do: Material's 10 is the
+    // row's, the rest of Figma's 56 (16 round one line) or 72 (14 round a headline and its line) is theirs. With 6 the
+    // Pause sheet's rows were 76 (QA, Habits & tasks 8).
+    val words = if (supporting != null) 4.dp else 6.dp
     ListItem(
         modifier = modifier.selectable(selected, onClick = onClick, role = Role.RadioButton).semantics { tag?.let { testTag = it } },
         supportingContent = supporting?.let { { Text(it, Modifier.padding(bottom = words)) } },
