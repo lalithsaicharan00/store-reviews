@@ -245,7 +245,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹⁴ Day details 44: the long name was given through Edit habit (the test launch's demo has none), with the phone's Font size at 200 % set first: changing it restarts a test launch, which starts its demo again.
 ¹⁵ Routine player 1–8: the card's progress line is on the habit's Fill (A90) where most of Figma's player frames draw it on grey; that's D-53, everything else matches.
 ¹⁶ Routine player 3: Figma's "Note saved" here has Undo; Day details' (flow 38) and Today's don't. The app keeps its one rule, "Note saved" without Undo.
-¹⁷ Routine player 21: Android 16 draws the app's own icon in the card's circle and the running clock in its header, not beside the name; a paused clock is still, so it goes in the line. Pause and Resume from the card work without opening the app. The lock-screen frame wasn't checked: the emulator has no screen lock, and setting one is a security setting left to you.
+¹⁷ Routine player 21: Android 16 draws the app's own icon in the card's circle and the running clock in its header, not beside the name, and writes it its own way ("09:06", Figma "6:50"; a notification's clock takes no format); a paused clock is still, so it goes in the line. Pause and Resume from the card work without opening the app. The lock-screen frame wasn't checked: the emulator has no screen lock, and setting one is a security setting left to you.
 ¹⁸ Routine player 13 (and every Display Large number): the number's line is 71 dp where Figma's is 64. Android never draws a line shorter than the font's own height (1.25× the size for Google Sans Flex), and Compose has no setting for it; the card's spacing takes up the difference.
 ¹⁹ Routine player 18 (and the timer frames): the timer's running wave in these frames is a drawn line 12 dp per wave and 2 dp high; the design system's Linear progress (902:14527, Style=Wavy) is 40 dp per wave and 3 dp high, as Material's. The app follows the component; the frames' drawings differ from it.
 ²⁰ Routine player 20: under the limit, the timer frames draw the track in the wave's own #777777; Today's limit rows (flow 45) draw it Outline variant, and the app keeps that, so the time left stays readable. The frames' waves are drawn lines with no colour variable.
@@ -435,7 +435,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | passed ↻ ¹⁹ |
 | 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | passed ↻ ¹⁹ |
 | 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | passed ↻ ²⁰ |
-| 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | passed ¹⁷ |
+| 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | passed ↻ ¹⁷ |
 | 22 | 266:2 | A milestone in the player: the ribbon | Meds 2 → Mark done: ribbon → Next → ‹ → end: Reached in this routine | passed |
 | 23 | 266:573 | A big milestone in the player: the pop-up waits | Meds 29 → Mark done: ribbon → Finish: pop-up over end page → Close | passed |
 | 24 | 267:2 | Long names, a description and large text | → long name → description → tap: sheet → 200 % | passed |
