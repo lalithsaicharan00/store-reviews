@@ -415,9 +415,9 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         }
     }
     Spacer(Modifier.height(SegmentedListGap))
-    // The day's note (Figma's Note: a List item, Last): Add a note…, or "Note" over the note's first line.
+    // The day's note (Figma's Note: a List item, Last): Add a note…, or "Note" over the note, two lines then … (Figma 952:51667).
     val note = store.note(habit, day)
-    AppListItem(if (note == null) "Add a note…" else "Note", 1, 2, supporting = note?.let { it.lineSequence().first() }, supportingLines = 1, headlineLines = 1,
+    AppListItem(if (note == null) "Add a note…" else "Note", 1, 2, supporting = note, supportingLines = 2, headlineLines = 1,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         leading = { ListAvatar(Symbols.StickyNote2) }, trailing = { ListChevron() },
         onClick = { nav.note(habit, day) }, enabled = editable || note != null || future, tag = if (note == null) "day-add-note" else "day-edit-note")

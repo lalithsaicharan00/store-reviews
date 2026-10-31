@@ -70,7 +70,11 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, say: (String, 
     val saved = store.note(habit, day)
     var editing by rememberSaveable { mutableStateOf(opened == null) }
     val adding = opened == null
-    var text by rememberSaveable(editing) { mutableStateOf(saved ?: "") }
+    // Editing starts with the cursor after the note, to add to it (Figma 958:137302).
+    var field by rememberSaveable(editing, stateSaver = androidx.compose.ui.text.input.TextFieldValue.Saver) {
+        mutableStateOf(androidx.compose.ui.text.input.TextFieldValue(saved ?: "", androidx.compose.ui.text.TextRange((saved ?: "").length)))
+    }
+    val text = field.text
     var discard by remember { mutableStateOf(false) }
     var confirmDelete by remember { mutableStateOf(false) }
     // Saved and leaving: the screen keeps what it showed while it slides away.
@@ -96,7 +100,7 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, say: (String, 
             }
             if (editing) {
                 Box(Modifier.weight(1f).fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).padding(16.dp)) {
-                    BasicTextField(text, { text = it.take(TextLimit.NOTE) },
+                    BasicTextField(field, { field = it.copy(text = it.text.take(TextLimit.NOTE)) },
                         textStyle = AppType.bodyLarge.copy(color = s.onSurface),
                         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences),
                         cursorBrush = SolidColor(s.onSurface),
@@ -119,7 +123,7 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, say: (String, 
             say("Note saved", null)
         } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }
-    if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes to this note?",
+    if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes?",
         if (adding) "What you typed won’t be saved." else "The note stays as it was.", { discard = false }, {
         discard = false
         if (adding) onDone() else editing = false
