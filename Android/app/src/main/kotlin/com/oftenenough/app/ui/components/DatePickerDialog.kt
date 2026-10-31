@@ -29,6 +29,9 @@ import androidx.compose.material3.SelectableDates
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -57,7 +60,8 @@ fun utcMsToDay(ms: Long): Int = Instant.ofEpochMilli(ms).atZone(ZoneOffset.UTC).
  * variant; the weekdays and days in Body Large On surface, each day a 40 dp circle, the chosen one Primary with an On
  * primary label; days [allowed] says no to (Figma's Limit: Any day · Today and earlier · Tomorrow and later · Today and
  * later) sit in Outline and can't be tapped; Cancel and [confirm] ("OK"), Small Text buttons On surface variant.
- * [onPick] gets the chosen day.
+ * [onPick] gets the chosen day. With [atOnce] there are no buttons: tapping a day goes there at once (nothing is saved,
+ * so there's nothing to confirm), and tapping outside or Back closes it; the calendar keeps 20 under its weeks.
  *
  * With no [day] (null), nothing is chosen when it opens (Material's own empty state: today only ringed, the headline
  * "Selected date" in On surface variant) and [confirm] stays off until a day is picked, so nothing lands on a day by
@@ -75,6 +79,8 @@ fun AppDatePicker(
     note: String? = null,
     confirmFor: ((Int?) -> String)? = null,
     dismissTag: String? = null,
+    /** Go to a day: one tap on a day picks it and closes, with no Cancel or [confirm] (Figma's Today, flow 32). */
+    atOnce: Boolean = false,
     onPick: (Int) -> Unit,
 ) {
     val s = MaterialTheme.colorScheme
@@ -104,7 +110,7 @@ fun AppDatePicker(
                 // Material's grid gives each day its 48 dp touch target and 12 at each side, which needs 360. Narrower
                 // (a 360 dp phone, 16 in from each side), each day takes a seventh of the room instead, so the week fits
                 // evenly as Figma draws it (40 dp days, 43 apart); from 360 up it's Material's own 48.
-                val day = ((room - 24.dp) / 7).coerceAtMost(48.dp)
+                val cell = ((room - 24.dp) / 7).coerceAtMost(48.dp)
                 // The header as Figma draws it (16 above, 16 between, 12 below: 112 to the divider); Material's own is a
                 // fixed 120. "Select date", the chosen day with ✏ to type one (📅 back to the calendar), then the divider.
                 Column(Modifier.padding(start = 24.dp, end = 12.dp, top = 16.dp, bottom = 12.dp)) {
@@ -125,10 +131,14 @@ fun AppDatePicker(
                     if (note != null) Text(note, Modifier.padding(top = 4.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
                 }
                 HorizontalDivider(color = s.outlineVariant)
-                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides day) {
+                CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides cell) {
                     DatePicker(state, colors = colors, title = null, headline = null, showModeToggle = false)
                 }
-                Row(Modifier.align(Alignment.End).padding(bottom = 8.dp, end = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                if (atOnce) {
+                    val picked = state.selectedDateMillis?.let(::utcMsToDay)
+                    LaunchedEffect(picked) { if (picked != null && picked != day) { onPick(picked); onDismiss() } }
+                    Spacer(Modifier.height(20.dp))
+                } else Row(Modifier.align(Alignment.End).padding(bottom = 8.dp, end = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     AppButton("Cancel", onDismiss, style = ButtonStyle.Text, tag = dismissTag)
                     val picked = state.selectedDateMillis?.let(::utcMsToDay)
                     AppButton(confirmFor?.invoke(picked) ?: confirm, { picked?.let(onPick); onDismiss() }, style = ButtonStyle.Text,

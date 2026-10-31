@@ -340,6 +340,7 @@ fun goalLine(habit: Habit, progress: Double, goal: Double, running: Boolean = fa
 object DayWords {
     private val shortDate = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
     private val dayMonth = DateTimeFormatter.ofPattern("d MMM", Locale.ENGLISH)
+    private val barDate = DateTimeFormatter.ofPattern("EEE d MMM", Locale.ENGLISH)
     private val longDate = DateTimeFormatter.ofPattern("d MMM yyyy", Locale.ENGLISH)
     private var clockFormat: DateTimeFormatter? = null
     var is24Hour: Boolean = false
@@ -354,6 +355,8 @@ object DayWords {
 
     fun short(day: Int): String = date(day).format(shortDate)
     fun dayMonth(day: Int): String = date(day).format(dayMonth)
+    /** The day bar's day, without the comma: "Tue 13 Oct" (Figma's Today, flow 32). */
+    fun bar(day: Int): String = date(day).format(barDate)
     fun long(day: Int): String = date(day).format(longDate)
 
     /** "Paused until 13 Oct" (the day it's back, as the snackbar says it), or "Paused" until resumed: short for a row (the user, 31 Oct 2026). */

@@ -345,7 +345,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     // Back on another day returns to today first (Figma 4.2).
     androidx.activity.compose.BackHandler(enabled = !isToday) { shownDay = null }
     if (calendar) {
-        AppDatePicker(day, { true }, { calendar = false }, title = "Go to a day", confirm = "Go", confirmTag = "calendar-go") { picked ->
+        AppDatePicker(day, { true }, { calendar = false }, title = "Go to a day", atOnce = true) { picked ->
             shownDay = if (picked == today) null else picked
         }
     }
@@ -542,7 +542,7 @@ private fun LazyListScope.quitting(habits: List<Habit>, store: HabitStore, layou
 @Composable
 fun DayBar(store: HabitStore, day: Int, today: Int, onPrevious: () -> Unit, onNext: () -> Unit, onPick: () -> Unit) {
     val score = remember(store.dataVersion, day, today) { store.daySummary(day) }
-    val label = when (day) { today -> "Today"; today - 1 -> "Yesterday"; today + 1 -> "Tomorrow"; else -> DayWords.short(day) }
+    val label = when (day) { today -> "Today"; today - 1 -> "Yesterday"; today + 1 -> "Tomorrow"; else -> DayWords.bar(day) }
     DayNavigation(label, if (score.planned > 0) "${score.done}/${score.planned}" else null, score.fraction.toFloat(),
         "$label, ${score.done} of ${score.planned} done. Go to a day", onPrevious, onNext, onPick)
 }

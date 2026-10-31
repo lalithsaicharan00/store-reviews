@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 32 |
+| today | 54:5580 | 84 | 33 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **42** |
+| **All** | | **290** | **43** |
 
 ## Bug log
 
@@ -100,6 +100,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 62. Today · a folded section's discs — on Tomorrow, "4 planned" left Afternoon's name as "After…" and "Starts 1…"; Figma shows one disc and +3. The discs now give way to the name and time: as many as fit beside them whole, down to one and +N (SectionHeader, measured, so it works at any width and font size).
 63. Today · a later day's rows — they said "8 glasses" with no 🔥 or button, and a task had a "Done today" button; Figma's Tomorrow draws "0/8 glasses", 🔥 23 and the round button. Rows now show the line and streak as on their own day, with the round button switched off (nothing is logged ahead) and a task's ✓ on, marking it done today (TodayRows; DoneTodayButton removed).
 64. Today · demo data — Water showed 🔥 24 on Today where Figma's Today draws 23: its run was 23 days before today plus today. Now 22 before (DemoData.design).
+65. Today · Go to a day — the calendar had Cancel and Go; Figma has neither: one tap on a date goes there (nothing is saved, so nothing to confirm), and tapping outside or Back closes it. AppDatePicker takes atOnce (no buttons, 20 under the weeks, as Figma); Go to a day uses it.
+66. Today · the day bar's date — "Tue, 13 Oct"; Figma's day bar writes "Tue 13 Oct". DayWords.bar.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -136,7 +138,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
   with 🔥 57 though its own rule (142:2) says a missed yesterday hides the 🔥, and every Today frame's day bar says
   “4/13” while its chips (3 + 3 + 2 + 2 left of 13) make 3/13. Pick up parcel is due today in flows 10–11 and
   tomorrow in flow 31. The app follows the rule (no 🔥 after a missed yesterday; 56 on yesterday, 57 once it's ticked)
-  and counts what its sections show (the demo's parcel is due today, so Today counts 14).
+  and counts what its sections show (the demo's parcel is due today, so Today counts 14). Past days in Figma (Tue 13
+  Oct, flow 32) reuse today's streaks (Meds 🔥 57 eighteen days ago); the app works them out from the history (40).
+- **Go to a day's height.** Material's own date picker (A76) puts its month row and weekdays a few dp taller than
+  Figma's drawing (705:1025), so the dialog is 525 dp tall against Figma's 516; everything else lines up.
 - **A later day's buttons (Today flow 31).** Figma drew Tomorrow's Water with a live + (State Neutral) while its own
   notes say "Nothing can be logged ahead" and "What's planned, with no logging buttons". The app keeps the button,
   switched off as on a skipped day (flow 13), and a task's ✓ stays on (done early, as the note says); Figma's three
@@ -199,7 +204,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 29 | 91:1143 | Leave a note unsaved | Water → Day details → note typed → ✕: Discard this note? → Discard | passed |
 | 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | passed |
 | 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | passed |
-| 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | not started |
+| 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | passed |
 | 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | not started |
 | 34 | 104:419 | Nothing planned today | Nothing planned today → › Tomorrow, Gym → Back to today | not started |
 | 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | not started |
