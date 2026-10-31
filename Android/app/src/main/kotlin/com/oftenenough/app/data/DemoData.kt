@@ -131,7 +131,7 @@ object DemoData {
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
         for ((habit, streak) in listOf(stretch to 4, meds to 57, read to 6, water to 22, bed to 30, night to 5, journal to 9, study to 2, refill to 3))
             for (d in 1..(streaks[habit.name] ?: streak)) log(habit, today - d, habit.goal)
-        for (d in 1..12) for (step in skincare.steps) log(skincare, today - d, 1.0, step.id)
+        for (d in 1..(streaks[skincare.name] ?: 12)) for (step in skincare.steps) log(skincare, today - d, 1.0, step.id)
         val week = store.rules.period(PeriodKind.WEEK, today).first
         for (w in 1..4) for (i in 0 until 3) log(call, week - 7 * w + i, 1.0)
         for (d in 1..7) log(social, today - d, 10.0)

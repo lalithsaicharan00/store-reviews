@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 59 |
+| today | 54:5580 | 84 | 60 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **69** |
+| **All** | | **290** | **70** |
 
 ## Bug log
 
@@ -231,7 +231,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 56 | 107:2 | Milestone on the row: a check | Meds 29 → ✓ 30; band rises under Undo · Note → after next log: band stays all day | passed |
 | 57 | 107:544 | Milestone on the row: an amount | Water 7 of 8, 29 days → + 8 of 8; band rises → + past goal: never plays again | passed (Water sits in Anytime in the demo, Morning in Figma's frames; also checked through Add log: the band rises once the sheet has closed) |
 | 58 | 107:1091 | Milestone on the row: a timer | Stretch 4 of 10 → ▶ → ⌄ → crosses 10:00: fills, chimes, band rises | passed |
-| 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | not started |
+| 59 | 107:1654 | Milestone on the row: a checklist | Skincare 1 of 4 → ⌄ → tick Serum → last step: band rises; steps stay open | passed |
 | 60 | 107:2429 | Milestone on the row: quit, no tap | Open the app: 30 days clean → Quitting on screen: band rises once | not started |
 | 61 | 108:2 | Milestone bar: one milestone | Meds 2 → ✓ 3: bar above the day bar → after 5 s/touch: bar goes, band | not started |
 | 62 | 108:561 | Milestone bar: the next one replaces it | Stretch past 10, Meds to do → ✓ Meds: bar → ⏸ Stretch: Stretch's bar → 5 s: band | not started |
