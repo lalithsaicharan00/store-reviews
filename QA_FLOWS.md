@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 51 |
+| today | 54:5580 | 84 | 52 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **61** |
+| **All** | | **290** | **62** |
 
 ## Bug log
 
@@ -179,6 +179,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
   to any app on the battery allowlist (Unrestricted) and greys out its Alarms & reminders switch, so Figma's Pixel frame
   (battery ✓, Alarms & reminders to do) never shows on Android 14 and later. The app handles both orders; on a Pixel
   the late notice comes with the battery step too.
+- **The time picker's labels (Today flows 51, 52).** Material's own time input (A76) puts "Hour" and "Minute" under its
+  fields; Figma's drawing of Android's time picker has none. The app keeps Material's.
 
 ---
 
@@ -253,7 +255,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 48 | 126:1437 | Long names and large text | Today → 24-letter name, one line … → 200 % font | passed |
 | 49 | 232:2 | What a row's second line says, with reminders | goal · reminder after a \| → ✓ Meds: reminder time goes | passed |
 | 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | passed |
-| 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | not started |
+| 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | passed |
 | 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | not started |
 | 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | not started |
 | 54 | 65:2 | Delete a time of day | Today → Edit Today → ✏ Morning → Delete Morning? → habits to end of Anytime | not started |
