@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 2 |
+| day details | 169:1270 | 44 | 3 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **96** |
+| **All** | | **290** | **97** |
 
 ## Bug log
 
@@ -171,6 +171,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁸ Today 79: Stretch was finished from Day details (Log time, 6 min), so its bar rose over the sheet; Figma's frame shows the same bar over Today. The day bar's 6/14 against Figma's 7/13 is D-40.
 ⁹ Today 82, 83: checked against Figma's frames as read before the Figma connection dropped (their captions and states). 82: Meds' 29 days ended the day before yesterday (`streak Meds=0`, `earlier Meds=29`); ✓ on Yesterday makes 🔥 30 and nothing plays, there or back on Today. 83: ✓ gives the bar; Undo takes the check, the 3 and the band; ✓ again shows 🔥 3 and the band at rest (it stands again), with no bar, burst or roll.
 ¹⁰ Day details 2: Figma's frames draw one 180 dp wave for every count; the app draws the true length (D-49, settled by A90: flat unless a timer runs). Test launches' `today` now logs an amount as Figma does (an odd one, then twos, at 7:30 AM, 11:05 AM, 1:10 PM …), so Day details' log lists match its frames.
+¹¹ Day details 3: Add log's date says "31 Oct 2026" (dates alone; Figma's "Today, 21 Oct 2026" is older). Gboard floated on 31 Oct afternoon again (it took the emulator's "AT Translated Set 2 keyboard" for a physical one after `adb input`), so the keyboard's place was taken from Today 4, the same Add log against the same frame, checked with the keyboard docked.
 
 ## Open questions for the user
 
@@ -290,7 +291,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 |---|---|---|---|---|
 | 1 | 173:2 | Open Day details and close it | Today → Day details → drag down/✕/Back → Today | passed |
 | 2 | 175:2 | +1 to the goal, and past it | Water 7 of 8 → 1 glass to go → +1: Goal reached → +1: 9 of 8 → ✕ | passed ¹⁰ |
-| 3 | 176:2 | Log from Day details | Water 5 of 8 → Day details → Log: Add log, 2 → Added: 7 of 8 → ✕ | not started |
+| 3 | 176:2 | Log from Day details | Water 5 of 8 → Day details → Log: Add log, 2 → Added: 7 of 8 → ✕ | passed ¹¹ |
 | 4 | 178:2 | Add log on another day and time | → Add log → Date: picker → 20 → OK → Time: picker → OK → Add: snackbar says where | not started |
 | 5 | 179:2 | Add log: nothing typed, or a time later than now | → Add log empty → Add: error line → type 2 → Time 6:00 PM → OK: stays 2:05 PM, says why → Add → ✕ | not started |
 | 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | not started |
