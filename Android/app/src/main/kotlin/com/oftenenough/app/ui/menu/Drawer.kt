@@ -56,7 +56,11 @@ enum class MenuItem(val title: String, val icon: ImageVector, val selectedIcon: 
  */
 @Composable
 fun MenuDrawer(store: HabitStore, current: MenuItem, onPick: (MenuItem) -> Unit) {
-    ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow, modifier = Modifier.semantics { testTag = "menu-drawer" }) {
+    // 56 short of the screen, never past Material's 360 (Figma 1116:75390: 304 wide on a 360 dp phone, Today showing
+    // under the scrim beside it); Material's own sheet filled a 360 dp phone edge to edge (QA Habits & tasks 1).
+    val screen = androidx.compose.ui.platform.LocalConfiguration.current.screenWidthDp.dp
+    ModalDrawerSheet(drawerContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+        modifier = Modifier.width(minOf(360.dp, screen - 56.dp)).semantics { testTag = "menu-drawer" }) {
         MenuItems(store, current, onPick)
     }
 }
