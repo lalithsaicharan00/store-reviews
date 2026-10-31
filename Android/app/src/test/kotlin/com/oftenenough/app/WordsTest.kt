@@ -70,9 +70,11 @@ class WordsTest {
         assertEquals("3/8 glasses", goalLine(habit(HabitKind.Amount("glasses", 1.0), 8.0), 3.0, 8.0))
         // Under an hour the minutes are a bare number before the goal (Figma 1350:2).
         assertEquals("12/20 min", goalLine(habit(HabitKind.Duration, 20.0), 12.4, 20.0))
-        assertEquals("1 h 30 min/3 h this week", goalLine(habit(HabitKind.Duration, 180.0, Frequency.PerWeek(1)), 90.0, 180.0))
-        // Money's sign before each number (U22).
-        assertEquals("\$250/\$500 this month", goalLine(habit(HabitKind.Amount("\$", 0.0), 500.0, Frequency.PerMonth(1)), 250.0, 500.0))
+        // Past an hour, "1 h 30" (Figma's Piano row).
+        assertEquals("1 h 30/3 h this week", goalLine(habit(HabitKind.Duration, 180.0, Frequency.PerWeek(1)), 90.0, 180.0))
+        // Money's sign before each number; a period's total is its numbers only (Figma's Savings and Push-ups rows, 31 Oct 2026).
+        assertEquals("\$250/\$500", goalLine(habit(HabitKind.Amount("\$", 0.0), 500.0, Frequency.PerMonth(1)), 250.0, 500.0))
+        assertEquals("160/300 this week", goalLine(habit(HabitKind.Amount("push-ups", 20.0), 300.0, Frequency.PerWeek(1)), 160.0, 300.0))
         assertEquals("7:42/20 min", goalLine(habit(HabitKind.Duration, 20.0), 7.7, 20.0, running = true))
         assertEquals("1/2 cups max", goalLine(habit(HabitKind.Amount("cups", 1.0), 2.0, atMost = true), 1.0, 2.0))
         assertEquals("2/3 this week", goalLine(habit(HabitKind.Check, 1.0, Frequency.PerWeek(3)), 2.0, 3.0))

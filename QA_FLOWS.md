@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 15 |
+| day details | 169:1270 | 44 | 18 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **109** |
+| **All** | | **290** | **112** |
 
 ## Bug log
 
@@ -182,6 +182,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 144. Day details 16–18 · coming back to Today after logging in Day details (Mark done, +1, Add a check) showed no Undo · Note; every such Figma frame has them ("✕: Today, Meds filled; Undo · Note"). A Day details log now offers them on Today's row (`offerUndo`: Day details joins Today, Add log and the timer; the routine player still doesn't, and a task put back offers none).
 145. Day details 17 · "Your streak stays safe" is "Your streak stays safe." in Figma. Figma's own skipped frames drew Mark done Enabled while their note says it "stays visible but switched off": the two Mark done buttons are now Disabled in Figma (907:30393, 907:31161), as the app has them.
 146. Day details 18 · several checks a day: the line said "One more reaches today's goal", the list "Checks today", and each check had its own Undo; Figma: "1 to go", "Today's logs", and a check opens its Log (the habit, date and time, no amount; "One check, added with Add a check."; Delete log | Edit), whose Delete asks "Delete this check?" · "The 11:30 AM check will be removed from today. Your other checks stay." and says "Check deleted · Undo". A quick add's Log says "Added with +1." as Figma's.
+147. Day details 19, 21 · a week's or month's goal listed nothing in Day details; Figma lists that period's logs with their days, newest first ("This week’s checks": "Today, 2:05 PM", "Tue, 6:40 PM"; the two newest then "All 5 logs this week"), and All logs shows the whole week (`logPeriod`, `HabitStore.periodLogs`). The design demo's two calls now sit on Mon 7:15 PM and Tue 6:40 PM, as Figma's.
+148. Day details 20 · a once-a-month habit had Add a check and a Today's logs list; Figma: Mark done, then "Done this month · Done today at 2:05 PM" with Undo done (which takes that month's check back on any of its days), and no list. Add a check stays for more than once a month.
+149. Day details 21 · Push-ups said "300 push-ups a week" and its Today row "180/300 push-ups this week"; Figma: "300 a week · Anytime" (a unit that only repeats the name is left out beside it) and "160/300 this week" (a period's total is its numbers only; money "$250/$500"; time past an hour "1 h 40/3 h this week"). `WordsTest.rowLines` follows the new words.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -330,9 +333,9 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 16 | 191:2 | A check habit: Mark done, and Undo done | → Not done → Mark done → ✕ → Day details Done → Undo done → ✕ | passed |
 | 17 | 192:2 | Skip a day from Day details, and undo it | → Skip today → ✕ → Day details Skipped → Undo skip → ✕ | passed |
 | 18 | 193:2 | Several checks a day | Stretch breaks 2 of 3 → Add a check → tap check: Log → Delete this check? → Delete; Undo → ✓ past goal | passed |
-| 19 | 194:638 | A week goal: checks count toward the week | Call family 2 of 3 → This week, no Skip → Add a check → ✕ → stays full → next Monday 0 of 3 | not started |
-| 20 | 195:2 | A month goal: done once this month | Deep clean → This month → Mark done → ✕ → stays full → done on Wed, 21 Oct | not started |
-| 21 | 196:178 | An amount week goal: Push-ups, 300 a week | 140 of 300 → +20 \| Log → +20 → ✕ → Saturday goal | not started |
+| 19 | 194:638 | A week goal: checks count toward the week | Call family 2 of 3 → This week, no Skip → Add a check → ✕ → stays full → next Monday 0 of 3 | passed |
+| 20 | 195:2 | A month goal: done once this month | Deep clean → This month → Mark done → ✕ → stays full → done on Wed, 21 Oct | passed |
+| 21 | 196:178 | An amount week goal: Push-ups, 300 a week | 140 of 300 → +20 \| Log → +20 → ✕ → Saturday goal | passed |
 | 22 | 197:2 | An amount typed each time: Savings | $250 of $500 → one Log → Add log $50 → Add → ✕ | not started |
 | 23 | 198:2 | A time week goal: Piano, 3 hours a week | 1 h 40 of 3 h → Start timer → ⌄ → Pause → ✕ | not started |
 | 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | not started |

@@ -81,6 +81,7 @@ import com.oftenenough.app.data.Entry
 import com.oftenenough.app.data.EntrySource
 import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.Frequency
+import com.oftenenough.app.data.GoalPeriod
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.data.HabitKind
@@ -123,7 +124,10 @@ fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
     HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
     else -> {
+        // A unit that only repeats the name is left out beside it: Push-ups, "300 a week" (Figma 915:106625).
+        val unit = (habit.kind as? HabitKind.Amount)?.unit?.trim().orEmpty()
         val plan = shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) }
+            .let { if (unit.isNotEmpty() && unit.equals(habit.name.trim(), ignoreCase = true)) it.replaceFirst(" $unit ", " ") else it }
         // A cut-down habit sits in Quitting, not in a time of day: its plan alone ("At most 2 cups a day", Figma's Today,
         // flow 44), or with its reminder times.
         val where = if (habit.remind && habit.reminders.isNotEmpty()) habit.reminders.sortedBy { it.minuteOfDay }.joinToString(", ") { DayWords.clockMinute(it.minuteOfDay) }
@@ -298,7 +302,9 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     val running = day == today && store.timers.containsKey(habit.id)
     val tick = rememberTicker(running, store.clock)
     val status = remember(rev, day, store.timers, store.skips, store.pauses) { DayStatus.make(habit, day, store) }
-    val logs = remember(rev, day) { if (showsLogs(ruled, habit, day, store)) store.dayLogs(habit, day) else emptyList() }
+    // A week's, month's or year's goal lists that period's logs, with their days (Figma 912:26587, 915:106625).
+    val period = remember(rev, day) { logPeriod(ruled, day, store) }
+    val logs = remember(rev, day) { if (period != null) store.periodLogs(habit, period) else if (showsLogs(ruled, habit, day, store)) store.dayLogs(habit, day) else emptyList() }
     val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav, onAdded, close)
     val skipped = store.isSkipped(habit, day)
     val paused = store.isPaused(habit, day)
@@ -381,9 +387,9 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     if (logs.isNotEmpty()) {
         val shown = if (logs.size <= 3) logs else logs.take(2)
         val rows = shown.size + if (logs.size > 3) 1 else 0
-        SectionList(logsTitle(ruled, day, today)) {
-            shown.forEachIndexed { i, e -> LogRow(e, ruled, i, rows, store, nav) }
-            if (logs.size > 3) AppListItem("All " + logCount(logs.size, ruled), rows - 1, rows, trailing = { ListChevron() },
+        SectionList(logsTitle(ruled, day, today, period)) {
+            shown.forEachIndexed { i, e -> LogRow(e, ruled, i, rows, store, nav, if (period != null) today else null) }
+            if (logs.size > 3) AppListItem("All " + logCount(logs.size, ruled) + periodWords(ruled, today, period), rows - 1, rows, trailing = { ListChevron() },
                 containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
                 onClick = { nav.allLogs(habit, day) }, tag = "day-all-logs")
         }
@@ -436,24 +442,36 @@ private fun StatusLine(title: String, detail: String?, words: Boolean = false) {
 
 /** One log (List item, 2.4): what it is, its time, ›; a check has its own Undo instead (U19: checks correct here). */
 @Composable
-private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: HabitStore, nav: DayNav) {
+private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: HabitStore, nav: DayNav, today: Int? = null) {
     val opens = entry.opensRecord(habit)
     AppListItem(entry.description(habit), index, count, headlineLines = 1, tag = "log-${entry.id}", containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         onClick = if (opens) ({ nav.log(habit, entry) }) else null,
-        trailing = { LogTrailing(entry, habit, opens) { store.undoEntry(entry.id) } })
+        trailing = { LogTrailing(entry, habit, opens, today) { store.undoEntry(entry.id) } })
 }
 
 /** A log row's end (Figma's List item: Trailing text, then its icon, 16 apart): its time (tabular figures), then › when it opens, or a check's named Undo. */
 @Composable
-internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, onUndo: () -> Unit) =
+internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, today: Int? = null, onUndo: () -> Unit) =
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        Text(tabular(clockText(entry)), style = AppType.bodyMedium)
+        // A period's list says the day too: "Today, 2:05 PM", "Tue, 6:40 PM" in a week, "21 Oct, 9:00 AM" in a month.
+        val dayText = today?.let { t -> when {
+            entry.day == t -> "Today, "
+            habit.frequency.periodNoun == "week" -> DayWords.short(entry.day).substringBefore(",") + ", "
+            else -> DayWords.dayMonth(entry.day) + ", "
+        } } ?: ""
+        Text(tabular(dayText + clockText(entry)), style = AppType.bodyMedium)
         if (opens) ListChevron()
         else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
     }
 
-fun logsTitle(habit: Habit, day: Int, today: Int): String {
+fun logsTitle(habit: Habit, day: Int, today: Int, period: IntRange? = null): String {
     val short = DayWords.short(day).replace(",", "")
+    // "This week’s checks", "This month’s logs" (Figma's week and month goals); an earlier one by when it began.
+    if (period != null) {
+        val what = when (habit.kind) { HabitKind.Check -> "checks"; HabitKind.Quit -> "slips"; else -> "logs" }
+        val noun = habit.frequency.periodNoun
+        return if (today in period) "This $noun’s $what" else "${what.replaceFirstChar { it.uppercase() }}, $noun of ${DayWords.short(period.first)}"
+    }
     return when (habit.kind) {
         HabitKind.Quit -> if (day == today) "Slips today" else "Slips on $short"
         else -> if (day == today) "Today’s logs" else "Logs for $short"
@@ -465,9 +483,24 @@ fun logCount(n: Int, habit: Habit): String = "$n " + when (habit.kind) {
     else -> if (n == 1) "log" else "logs"
 }
 
+/** The week, month or year a period goal's logs are listed for (a week's, month's or year's goal; "3 days a week"). */
+fun logPeriod(ruled: Habit, day: Int, store: HabitStore): IntRange? {
+    val f = ruled.frequency
+    val counted = f is Frequency.PerWeek || f is Frequency.PerMonth || f is Frequency.PerYear || (f is Frequency.Flexible && f.period != GoalPeriod.DAY)
+    if (!counted || ruled.kind is HabitKind.Quit || ruled.kind == HabitKind.Task || ruled.kind == HabitKind.Checklist) return null
+    // Done once a period, its one check is said in This month ("Done today at 2:05 PM"); no list (Figma 913:27794).
+    if (ruled.kind == HabitKind.Check && !f.isFlexible && store.rules.goal(ruled) <= 1) return null
+    return store.rules.periodRange(ruled, day)
+}
+
+/** " this week" after "All 5 logs" (Figma 915:106625); " that week" for an earlier one. */
+fun periodWords(habit: Habit, today: Int, period: IntRange?): String =
+    if (period == null) "" else (if (today in period) " this " else " that ") + habit.frequency.periodNoun
+
 private fun showsLogs(ruled: Habit, habit: Habit, day: Int, store: HabitStore): Boolean = when (ruled.kind) {
     is HabitKind.Amount, HabitKind.Duration, HabitKind.Quit -> true
-    HabitKind.Check -> store.rules.countsUp(habit, day)
+    // Once a week, month or year, its one check is said in the card, never listed (Figma 913:27794).
+    HabitKind.Check -> store.rules.countsUp(habit, day) && !(!ruled.frequency.isDayBased && !ruled.frequency.isFlexible && store.rules.goal(ruled) <= 1)
     else -> false
 }
 
@@ -493,7 +526,14 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             val done = store.rules.isDone(habit, day)
             listOf(DayAction(if (done) "Undo done" else "Mark done", !done, tag = "day-done") { store.toggleCheck(habit, day, src) })
         }
-        HabitKind.Check -> if (store.rules.countsUp(habit, day)) {
+        // Once a week, month or year (Deep clean): Mark done, and Undo done takes that period's check back on any of its
+        // days (Figma 913:27361, 913:28949); more than once, Add a check, as a week goal.
+        HabitKind.Check -> if (!ruled.frequency.isDayBased && !ruled.frequency.isFlexible && store.rules.goal(ruled) <= 1) {
+            val done = store.rules.isDone(habit, day)
+            listOf(DayAction(if (done) "Undo done" else "Mark done", !done && ask, !skipped, tag = "day-done") {
+                if (done) store.undoLast(habit, day) else store.addProgress(habit, 1.0, day, source = src)
+            })
+        } else if (store.rules.countsUp(habit, day)) {
             listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") { store.addProgress(habit, 1.0, day, source = src); said("a check") })
         } else {
             val done = store.rules.isDayMet(ruled, day)

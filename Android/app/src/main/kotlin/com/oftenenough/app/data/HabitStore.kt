@@ -779,6 +779,10 @@ class HabitStore(
         perform { repository.editEntry(updated.id, updated.value, updated.createdAt, moved) }
     }
 
+    /** A week's, month's or year's logs (no checklist steps), newest first: Day details for a period goal (Figma 912:26587). */
+    fun periodLogs(habit: Habit, days: IntRange): List<Entry> =
+        entries(habit.id).filter { it.stepId == null && it.day in days }.sortedByDescending { it.createdAt }
+
     /** A day's logs (no checklist steps), newest first by their time. */
     fun dayLogs(habit: Habit, day: Int): List<Entry> {
         val list = entries(habit.id, day)

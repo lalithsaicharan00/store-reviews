@@ -167,8 +167,11 @@ object DemoData {
         log(vitamins, today, 1.0, at = now)
         log(journal, today, 1.0, at = now)
         log(read, today, 12.0, at = now)
-        log(call, week, 1.0, at = now)
-        log(call, week, 1.0, at = now)
+        // This week's two calls on their own days and times, as Figma's Day details lists them (Mon 7:15 PM, Tue 6:40 PM).
+        for ((d, minute) in listOf(1 to 19 * 60 + 15, 2 to 18 * 60 + 40)) {
+            val day = minOf(week + d, today)
+            log(call, day, 1.0, at = (store.rules.dayStart(day) + minute * 60_000L).coerceAtMost(now))
+        }
         repeat(8) { log(water, today, 1.0, at = now) }
         // A test launch's `today` ("Water=5"): that much logged today instead, as Figma's Day details logs it: an odd one
         // first, then two at a time, at 7:30 AM, 11:05 AM, 1:10 PM, 3:40 PM … and never later than now (5: 1, 2, 2;

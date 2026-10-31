@@ -323,12 +323,15 @@ fun goalLine(habit: Habit, progress: Double, goal: Double, running: Boolean = fa
     return when (val k = habit.kind) {
         HabitKind.Duration -> {
             // Under an hour the minutes are a number before the goal: "4/10 min" (Figma 1350:2); "2:42/10 min" running.
-            val done = if (running) Format.clock(progress) else if (goal < 60 && progress < 60) Format.amount(floor(progress)) else Format.minutes(floor(progress))
+            // Past an hour, "1 h 40" (Figma's Piano row, "1 h 40/3 h this week").
+            val done = if (running) Format.clock(progress) else if (goal < 60 && progress < 60) Format.amount(floor(progress))
+                else Format.minutes(floor(progress)).let { if (it.contains(" h ")) it.removeSuffix(" min") else it }
             "$done/${Format.minutes(goal)}$max$period"
         }
-        // Money's sign goes before each number ("$250/$500 this month", U22).
-        is HabitKind.Amount -> if (k.unit in HabitCopy.currencies) "${k.unit}${Format.amount(progress)}/${k.unit}${Format.amount(goal)}$max$period"
-            else "${Format.amount(progress)}/${Format.amount(goal)}${if (k.unit.isEmpty()) "" else " " + k.unit}$max$period"
+        // Money's sign goes before each number; a week's or month's total is its numbers only, as Day details' card
+        // ("160/300 this week", "$250/$500": Figma's Push-ups and Savings rows, 915:107493).
+        is HabitKind.Amount -> if (k.unit in HabitCopy.currencies) "${k.unit}${Format.amount(progress)}/${k.unit}${Format.amount(goal)}$max" + (if (period.isEmpty() || habit.atMost) period else "")
+            else "${Format.amount(progress)}/${Format.amount(goal)}${if (k.unit.isEmpty() || (period.isNotEmpty() && !habit.atMost)) "" else " " + k.unit}$max$period"
         HabitKind.Checklist -> "${Format.amount(progress)}/${Format.amount(goal)} steps$period"
         HabitKind.Check -> if (habit.checkUnit != null) "${Format.amount(progress)}/${Format.amount(goal)} ${habit.checkUnit}$period"
             else "${Format.amount(progress)}/${Format.amount(goal)}${if (habit.frequency.isDayBased) " times" else ""}$max$period"

@@ -448,16 +448,17 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
     val c = appColors
     val rev = store.revision(habitId)
     val ruled = store.rule(habit, day)
-    val logs = remember(rev, day) { store.dayLogs(habit, day) }
+    val period = remember(rev, day) { com.oftenenough.app.ui.day.logPeriod(ruled, day, store) }
+    val logs = remember(rev, day) { if (period != null) store.periodLogs(habit, period) else store.dayLogs(habit, day) }
     Column(Modifier.fillMaxSize().background(c.screen).navigationBarsPadding()) {
-        RecordTopBar(logsTitle(ruled, day, store.today()), close = false, onClose = onBack)
+        RecordTopBar(logsTitle(ruled, day, store.today(), period), close = false, onClose = onBack)
         Column(Modifier.verticalScroll(rememberScrollState()).padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) {
                 logs.forEachIndexed { i, e ->
                     val opens = e.opensRecord(ruled)
                     AppListItem(e.description(ruled), i, logs.size, headlineLines = 1, tag = "all-log-$i", onClick = if (opens) ({ onLog(e) }) else null,
                         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                        trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens) { store.undoEntry(e.id) } })
+                        trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens, if (period != null) store.today() else null) { store.undoEntry(e.id) } })
                 }
             }
             if (logs.isNotEmpty()) Footer(allLogsFooter(ruled, logs))
