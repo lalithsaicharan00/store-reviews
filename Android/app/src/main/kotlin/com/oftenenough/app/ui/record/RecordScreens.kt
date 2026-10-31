@@ -474,9 +474,8 @@ fun AllLogsScreen(habitId: String, day: Int, store: HabitStore, onLog: (Entry) -
             Column(verticalArrangement = Arrangement.spacedBy(SegmentedListGap)) {
                 logs.forEachIndexed { i, e ->
                     val opens = e.opensRecord(ruled)
-                    AppListItem(e.description(ruled), i, logs.size, headlineLines = 1, tag = "all-log-$i", onClick = if (opens) ({ onLog(e) }) else null,
-                        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-                        trailing = { com.oftenenough.app.ui.day.LogTrailing(e, ruled, opens, if (period != null) store.today() else null) { store.undoEntry(e.id) } })
+                    com.oftenenough.app.ui.day.LogListItem(e, ruled, i, logs.size, opens, if (period != null) store.today() else null,
+                        if (opens) ({ onLog(e) }) else null) { store.undoEntry(e.id) }
                 }
             }
             if (logs.isNotEmpty()) Footer(allLogsFooter(ruled, logs))

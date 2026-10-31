@@ -202,8 +202,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     val isTask = habit.kind == HabitKind.Task
     val started = day >= store.rules.startDay(habit)
     val editable = day <= today && started
-    Column(Modifier.verticalScroll(rememberScrollState()).navigationBarsPadding().semantics { testTag = "day-details" }) {
-        // The top bar (Figma: the Top app bar, 64, on the sheet's colour): ✕, the day, ⋮.
+    Column(Modifier.navigationBarsPadding().semantics { testTag = "day-details" }) {
+        // The top bar (Figma: the Top app bar, 64, on the sheet's colour): ✕, the day, ⋮. It stays while the rest scrolls
+        // (Figma 956:55459: "Day details scrolls as one page; the title bar stays").
         AppTopBar(if (day == today + 1) "Tomorrow" else DayWords.day(day, today), containerColor = Color.Transparent, windowInsets = WindowInsets(0),
             navigationIcon = { IconButton(onDismiss, Modifier.semantics { testTag = "day-close" }) { Icon(Symbols.Close, "Close") } },
             actions = {
@@ -212,6 +213,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
                     DayMenu(menu, { menu = false }, habit, store, today, nav, onDismiss) { confirmDelete = true }
                 }
             })
+        Column(Modifier.verticalScroll(rememberScrollState())) {
         Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             IdentityCard(habit, store, nav)
             DayActivity(habit, day, editable, started, rev, store, nav, onAdded, onDismiss)
@@ -234,6 +236,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             }
         }
         Spacer(Modifier.height(24.dp))
+        }
     }
     // Figma 935:136058: "Delete Water?", what goes with it, and where to keep it instead; Cancel | Delete (D9).
     if (confirmDelete) AppDialog("Delete ${habit.name}?", "Its logs, notes and streak go too. To keep them, choose Archive in the same menu instead.",
@@ -280,7 +283,8 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
 @Composable
 private fun IdentityCard(habit: Habit, store: HabitStore, nav: DayNav) {
     val isTask = habit.kind == HabitKind.Task
-    AppListItem(habit.name, 0, 1, supporting = planLine(habit, store), headlineLines = 2, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+    // A name is one line here too, and the plan under it, each ending in … (Figma 956:54551, A49).
+    AppListItem(habit.name, 0, 1, supporting = planLine(habit, store), headlineLines = 1, supportingLines = 1, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         // The card opens the habit's page, a task's Task details (Figma 926:110121's note).
         leading = { HabitIcon(habit.symbol, habit.color, size = 40.dp) }, trailing = { ListChevron() },
         onClick = { nav.habitPage(habit) }, tag = "day-identity")
@@ -482,24 +486,44 @@ private fun StatusLine(title: String, detail: String?, words: Boolean = false) {
 @Composable
 private fun LogRow(entry: Entry, habit: Habit, index: Int, count: Int, store: HabitStore, nav: DayNav, today: Int? = null) {
     val opens = entry.opensRecord(habit)
-    AppListItem(entry.description(habit), index, count, headlineLines = 1, tag = "log-${entry.id}", containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
-        onClick = if (opens) ({ nav.log(habit, entry) }) else null,
-        trailing = { LogTrailing(entry, habit, opens, today) { store.undoEntry(entry.id) } })
+    LogListItem(entry, habit, index, count, opens, today, if (opens) ({ nav.log(habit, entry) }) else null) { store.undoEntry(entry.id) }
+}
+
+/** When a log happened, as a list says it: its clock; a period's list adds the day ("Today, 2:05 PM", "Tue, 6:40 PM"),
+ *  a month's or year's earlier day by its date alone ("Mon, 12 Oct", Figma 917:30014). */
+fun logTimeText(entry: Entry, habit: Habit, today: Int?): String = when {
+    today == null -> clockText(entry)
+    entry.day == today -> "Today, " + clockText(entry)
+    habit.frequency.periodNoun == "week" -> DayWords.short(entry.day).substringBefore(",") + ", " + clockText(entry)
+    else -> DayWords.short(entry.day)
+}
+
+/**
+ * A log in a list (Day details, All logs): what it is, its time at the end, then › (or a check's named Undo). When the
+ * words and the time don't fit side by side (large text), the time gives way and goes under the words (the Rulebook:
+ * text that wraps grows its row; what sits beside it gives way first), so "2 glasses" never breaks in two.
+ */
+@Composable
+internal fun LogListItem(entry: Entry, habit: Habit, index: Int, count: Int, opens: Boolean, today: Int?, onClick: (() -> Unit)?, onUndo: () -> Unit) {
+    val words = entry.description(habit)
+    val time = tabular(logTimeText(entry, habit, today))
+    val measurer = rememberTextMeasurer()
+    val density = LocalDensity.current
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        // The row's 16 at each side, 16 between the words and the time, 16 to the 24 dp ›.
+        val room = with(density) { (maxWidth - 16.dp * 4 - 24.dp).toPx() }
+        val side = measurer.measure(words, AppType.titleMedium).size.width + measurer.measure(time, AppType.bodyMedium).size.width <= room
+        AppListItem(words, index, count, tag = "log-${entry.id}", containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            supporting = if (side) null else time.text, onClick = onClick,
+            trailing = { LogTrailing(entry, habit, opens, if (side) time else null, onUndo) })
+    }
 }
 
 /** A log row's end (Figma's List item: Trailing text, then its icon, 16 apart): its time (tabular figures), then › when it opens, or a check's named Undo. */
 @Composable
-internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, today: Int? = null, onUndo: () -> Unit) =
+internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, time: androidx.compose.ui.text.AnnotatedString?, onUndo: () -> Unit) =
     Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-        // A period's list says the day too: "Today, 2:05 PM", "Tue, 6:40 PM" in a week; in a month or year an earlier
-        // day by its date alone, "Mon, 12 Oct" (Figma 917:30014).
-        val text = when {
-            today == null -> clockText(entry)
-            entry.day == today -> "Today, " + clockText(entry)
-            habit.frequency.periodNoun == "week" -> DayWords.short(entry.day).substringBefore(",") + ", " + clockText(entry)
-            else -> DayWords.short(entry.day)
-        }
-        Text(tabular(text), style = AppType.bodyMedium)
+        time?.let { Text(it, style = AppType.bodyMedium) }
         if (opens) ListChevron()
         else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
     }
