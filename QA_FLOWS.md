@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 28 |
+| habits & tasks | 269:148 | 35 | 29 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **185** |
+| **All** | | **290** | **186** |
 
 ## Bug log
 
@@ -520,7 +520,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 26 | 311:2 | A task with No date: Do today, or Pick a day | No date ⋮ → Do today · Show → Show → Pick a day… | passed ↻ |
 | 27 | 312:2 | A task done on Today, and when the day ends | ✓ on Today → struck through on Tasks → next day: Completed → 14 | passed ²⁵ |
 | 28 | 313:2 | Completed tasks: Mark as not done | Completed → list → ⋮ → Mark as not done; Undo | passed |
-| 29 | 313:426 | Completed tasks: Delete all completed | ⋮ Delete all completed → dialog → Deleted; Undo | not started |
+| 29 | 313:426 | Completed tasks: Delete all completed | ⋮ Delete all completed → dialog → Deleted; Undo | passed, with D-58 (Figma empties the page; the app keeps repeating tasks' done days, so 28 rows stay) |
 | 30 | 313:645 | Archived tasks: Restore, Delete | Archived (3) → list → ⋮ → Restore; Undo | not started |
 | 31 | 314:2 | Search habits and tasks (from Tasks) | search → “den” → Call the dentist → ← | not started |
 | 32 | 314:466 | Search: no match (from Tasks) | “plumber” → Add → Add a task → New task → Add · Show | not started |

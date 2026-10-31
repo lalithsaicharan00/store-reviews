@@ -315,6 +315,20 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) keep the 24 and shorten as now; (b) let a copy's name go past 24 (its own limit, say 31).
 - **My recommendation:** (a): every name, a copy's too, fits one line on a card and on Today's row (A49).
 
+### D-58. Delete all completed: what about a repeating task's done days?
+
+- **Where:** Completed tasks, [Figma 1133:245270](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1133-245270), [1133:245394](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1133-245394); `ui/habit/CompletedTasks.kt`.
+- **What Figma shows:** the list holds one-time tasks and a repeating task's done days ("Feed the fish · Done 8:05 AM ·
+  every day"); "Delete 14 completed tasks?" says "Tasks still to do and repeating tasks stay"; after Delete the page is
+  empty, "Nothing completed yet".
+- **What the app does:** deletes the one-time tasks only ("Delete 4 completed tasks?" while the Tasks page's row says
+  "32 tasks done") and keeps every repeating done day, so after Delete the page still lists 28 rows. Nothing is lost.
+- **Question:** (a) as now, with the question naming only what goes and the page keeping repeating days; (b) also
+  clear the repeating tasks' done days from this list (their tasks stay; their days stay in Task details); (c) show
+  only one-time tasks on Completed.
+- **My recommendation:** (c): Completed is where finished one-time tasks go (U38); a repeating task is never finished,
+  and its days already live in its Task details. Then the count, the question and the empty page all agree.
+
 ## Details pages
 
 ### D-8. A quit habit's milestones: the page's numbers or the app's?
