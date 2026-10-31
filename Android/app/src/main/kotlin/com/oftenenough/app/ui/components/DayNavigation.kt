@@ -29,7 +29,10 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.foundation.shape.CircleShape
 import com.oftenenough.app.ui.theme.Symbols
 
 /**
@@ -37,7 +40,7 @@ import com.oftenenough.app.ui.theme.Symbols
  * day bar that floats over Today.
  *
  * The Floating toolbar atom (1.5): Material 1.5's `HorizontalFloatingToolbar` as it is (64 tall, corners full, 8 at its
- * ends and 4 between, 16 from each screen edge, its elevation and no outline, A76), on Surface bright rather than
+ * ends and 4 between, 16 from each screen edge, Figma's own shadow and no outline, A76), on Surface bright rather than
  * Material's Surface container, which is our page colour. It never changes width as the day changes (the user, 12 Oct
  * 2026). In it: ‹ (an Icon button, 48, "Previous day"); the day, a button that opens Go to a day, centred,
  * 4 in at its sides, 8 apart: the [DayRing] ([fraction] of the day's habits done), the [label] ("Today", "Yesterday",
@@ -53,9 +56,12 @@ fun DayNavigation(
     val s = MaterialTheme.colorScheme
     HorizontalFloatingToolbar(
         expanded = true,
-        modifier = modifier.padding(horizontal = 16.dp).fillMaxWidth().semantics { testTag = "day-bar" },
+        modifier = modifier.padding(horizontal = 16.dp).fillMaxWidth()
+            .dropShadow(CircleShape, DayBarShadow).dropShadow(CircleShape, DayBarShadowNear).semantics { testTag = "day-bar" },
         colors = FloatingToolbarDefaults.standardFloatingToolbarColors(toolbarContainerColor = s.surfaceBright),
-        expandedShadowElevation = ElevationLevel4,
+        // Figma's own shadow, drawn below: none of Material's elevation levels comes close enough (Level 4 was darker
+        // and longer, Level 3 barely showed; the user, 31 Oct 2026: then use exactly what the design has).
+        expandedShadowElevation = 0.dp,
     ) {
         IconButton(onPrevious, Modifier.semantics { testTag = "day-previous" }) { Icon(Symbols.KeyboardArrowLeft, "Previous day") }
         Row(Modifier.weight(1f).clip(RoundedCornerShape(24.dp)).clickable(onClick = onPick).padding(horizontal = 4.dp, vertical = 12.dp)
@@ -88,5 +94,6 @@ fun DayRing(progress: Float, color: Color, track: Color, modifier: Modifier = Mo
     }
 }
 
-/** Material's Elevation Level 4 (ElevationTokens.Level4), the day bar's shadow. */
-private val ElevationLevel4: Dp = 8.dp
+/** The day bar's shadow, exactly Figma's Floating toolbar: 0 6 18 black at 18 %, then 0 1 4 black at 12 %. */
+private val DayBarShadow = Shadow(radius = 18.dp, color = Color.Black.copy(alpha = 0.18f), offset = DpOffset(0.dp, 6.dp))
+private val DayBarShadowNear = Shadow(radius = 4.dp, color = Color.Black.copy(alpha = 0.12f), offset = DpOffset(0.dp, 1.dp))

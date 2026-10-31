@@ -73,6 +73,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 35. Today · Pause a habit — a bottom sheet added 24 under its buttons on top of the gesture bar (48 in all); Figma's 24 include the gesture bar. Fixed in AppBottomSheet.
 36. Today · Pause a habit — Today's snackbar was 16 in and 12 above the day bar; Figma's is 12 in and 20 above. Fixed in TodaySnackbars.
 37. Today · the day bar (the user, 31 Oct: its shadow should stand out as in Figma, with Material's own shadows) — the floating toolbar used Material's default elevation and barely showed (232 against the page's 238 under it); Figma's is 0/6/18 at 18 % + 0/1/4 at 12 %. Fixed with Material's Elevation Level 4 (8 dp, expandedShadowElevation): measured under the bar 184→229 against Figma's 190→238, the sides the same. Level 5 (12 dp) was darker and longer than Figma.
+38. Today · the day bar's shadow (the user, 31 Oct: if Material's own shadow can't match exactly, use exactly the design's) — Material's levels were too weak (Level 3) or too dark and long (Level 4, 5). Now Figma's two shadows exactly with Compose's dropShadow: 0 6 18 black 18 % and 0 1 4 black 12 %, the toolbar's elevation 0; measured under the bar 188→231 against Figma's 190→238, the sides within 3.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
