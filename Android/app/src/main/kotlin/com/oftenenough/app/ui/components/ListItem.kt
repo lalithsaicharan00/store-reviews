@@ -64,6 +64,8 @@ fun AppListItem(
     count: Int,
     modifier: Modifier = Modifier,
     supporting: String? = null,
+    /** How many lines the supporting text may take (a note shown in one line ends with …). */
+    supportingLines: Int = Int.MAX_VALUE,
     leading: (@Composable () -> Unit)? = null,
     trailing: (@Composable () -> Unit)? = null,
     onClick: (() -> Unit)? = null,
@@ -88,7 +90,7 @@ fun AppListItem(
     val support: (@Composable () -> Unit)? = if (supporting == null && below == null) null else {
         {
             Column(verticalArrangement = Arrangement.Top) {
-                if (supporting != null) Text(supporting, style = AppType.bodyMedium)
+                if (supporting != null) Text(supporting, style = AppType.bodyMedium, maxLines = supportingLines, overflow = TextOverflow.Ellipsis)
                 below?.invoke(this)
             }
         }

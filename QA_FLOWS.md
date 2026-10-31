@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 25 |
+| today | 54:5580 | 84 | 30 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **35** |
+| **All** | | **290** | **40** |
 
 ## Bug log
 
@@ -90,6 +90,12 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 52. Today · Add a note by swiping right — the Note swipe showed note_add (edit_note with a note); Figma's is sticky_note_2. Fixed in noteAction.
 53. Today · Undo a skip by swiping — before halfway the action said "Undo"; Figma says "Undo skip" all the way. Fixed in skipAction.
 54. Today · Log a slip by swiping — before halfway the action said "Slip"; Figma says "Log a slip". Fixed in QuitRow.
+55. Today · Add a note after a log — Save went back without a word; Figma says "Note saved". Fixed in NoteScreen (say).
+56. Today · Add a note after a log — Day details' note row showed the note's text alone; Figma's is "Note" over the text (one line). Fixed in DayActivity (AppListItem supportingLines added, default unchanged).
+57. Today · Add a note from Day details — the app also says "Note saved" here (one rule for every save; flow 27's frame has it, this flow's doesn't). Messages said under Day details now show on the sheet: it shows the app's one snackbar (LocalAppSnackbar).
+58. Today · Change a note — Save stayed on the note's view; Figma goes back to Day details with "Note saved". Fixed in NoteScreen.
+59. Today · Delete a note — the dialog said "Only the note for … is removed. That day's progress stays." · Delete note, and no Undo after; Figma: "Your logs for this day stay as they are." · Cancel | Delete, then "Note deleted" · Undo. Fixed in NoteScreen.
+60. Today · Leave a note unsaved — the dialog said "What you wrote won’t be saved." · Keep writing; Figma: "What you typed won’t be saved." · Keep editing. Fixed in NoteScreen.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -170,11 +176,11 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 22 | 124:647 | Undo a skip by swiping | Meds skipped → swipe left: Undo skip → dark → let go: not done | passed |
 | 23 | 124:1376 | Log a slip by swiping | Smoking → swipe left: Log a slip → dark → let go: Add slip | passed |
 | 24 | 124:2081 | Swiping where there's nothing to do | Today → week goal springs back → cut-down springs back → task springs back | passed |
-| 25 | 90:2 | Add a note after a log | Water 5 of 8 → + 6 of 8 → Note: Add note → type: Save on → Save: Note saved → Day details shows it | not started |
-| 26 | 90:828 | Add a note from Day details | Water → Day details → Add a note… → Save: shows here | not started |
-| 27 | 91:2 | Change a note | Water → Day details with note → Note → Edit note → Save | not started |
-| 28 | 91:607 | Delete a note | Water → Day details → Note → Delete this note? → Delete; Undo | not started |
-| 29 | 91:1143 | Leave a note unsaved | Water → Day details → note typed → ✕: Discard this note? → Discard | not started |
+| 25 | 90:2 | Add a note after a log | Water 5 of 8 → + 6 of 8 → Note: Add note → type: Save on → Save: Note saved → Day details shows it | passed |
+| 26 | 90:828 | Add a note from Day details | Water → Day details → Add a note… → Save: shows here | passed |
+| 27 | 91:2 | Change a note | Water → Day details with note → Note → Edit note → Save | passed |
+| 28 | 91:607 | Delete a note | Water → Day details → Note → Delete this note? → Delete; Undo | passed |
+| 29 | 91:1143 | Leave a note unsaved | Water → Day details → note typed → ✕: Discard this note? → Discard | passed |
 | 30 | 99:2 | Log yesterday | Today → ‹ Yesterday; Back to today → ✓ Meds for yesterday → Back to today: streak 58 | not started |
 | 31 | 100:2 | Look at tomorrow | Today → › Tomorrow → Water: Day details for tomorrow → ✕ → Back to today | not started |
 | 32 | 101:2 | Pick a day | Today → Today ▾: Go to a day → 13: Tue 13 Oct → Back to today | not started |

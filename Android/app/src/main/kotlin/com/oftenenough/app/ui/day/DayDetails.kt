@@ -151,7 +151,7 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
     val state = rememberWholeSheetState()
     ModalBottomSheet(onDismiss, Modifier.belowStatusBar(), sheetState = state, contentWindowInsets = { sheetInsets() }) {
         // A sheet is its own window: its tags reach UI Automator only if it says so too.
-        val snackbar = remember { SnackbarHostState() }
+        val snackbar = com.oftenenough.app.ui.components.LocalAppSnackbar.current ?: remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         Box(Modifier.fillMaxHeight().semantics { testTagsAsResourceId = true }) {
             DayDetailsContent(habit, day, store, nav, onDismiss) { words ->
@@ -358,9 +358,10 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         }
     }
     Spacer(Modifier.height(SegmentedListGap))
-    // The day's note (Figma's Note: a List item, Last, one line): Add a note…, or the note itself.
+    // The day's note (Figma's Note: a List item, Last): Add a note…, or "Note" over the note's first line.
     val note = store.note(habit, day)
-    AppListItem(note ?: "Add a note…", 1, 2, headlineLines = 2, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+    AppListItem(if (note == null) "Add a note…" else "Note", 1, 2, supporting = note?.let { it.lineSequence().first() }, supportingLines = 1, headlineLines = 1,
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         leading = { ListAvatar(Symbols.StickyNote2) }, trailing = { ListChevron() },
         onClick = { nav.note(habit, day) }, enabled = editable || note != null || future, tag = if (note == null) "day-add-note" else "day-edit-note")
     }

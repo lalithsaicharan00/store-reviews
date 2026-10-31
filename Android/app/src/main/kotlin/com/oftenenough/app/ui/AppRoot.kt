@@ -170,7 +170,7 @@ private fun AppMain(
         "page/{title}" -> entry?.arguments?.getString("title")?.let { t -> MenuItem.entries.firstOrNull { it.title == t } }
         else -> null
     }
-    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo) {
+    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo, com.oftenenough.app.ui.components.LocalAppSnackbar provides snackbar) {
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
@@ -203,7 +203,9 @@ private fun AppMain(
             AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.popBackStack() }
         }
         composable("note/{habit}/{day}") { e ->
-            NoteScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store) { nav.popBackStack() }
+            NoteScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, say = { text, undo ->
+                if (undo != null) sayUndo(text, undo) else rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) }
+            }) { nav.popBackStack() }
         }
         composable(Routes.NEW + "?name={name}&copy={copy}&from={from}") { entry ->
             val a = entry.arguments

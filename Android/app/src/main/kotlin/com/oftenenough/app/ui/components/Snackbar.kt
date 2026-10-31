@@ -16,6 +16,12 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
 
 /**
+ * The app's one message line (AppMain's), for a sheet to show it over itself: a message said on the page under Day
+ * details ("Note saved", "Note deleted · Undo") shows on the sheet, where the person is looking.
+ */
+val LocalAppSnackbar = androidx.compose.runtime.staticCompositionLocalOf<SnackbarHostState?> { null }
+
+/**
  * Atom 2.6, **Snackbar** (Figma 778:444; Components — Atoms Build Plan): Material's own `Snackbar` as it is: Inverse
  * surface, 4 dp corners, Elevation Level 3, 48 dp for one line and 68 for two, the text Body Medium in Inverse on
  * surface, the action a text button in Label Large, the close Material's own, 12 dp from the edges of where it sits.

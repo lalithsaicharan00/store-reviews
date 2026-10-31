@@ -59,7 +59,7 @@ import com.oftenenough.app.ui.theme.appColors
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> Unit) {
+fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, say: (String, (() -> Unit)?) -> Unit = { _, _ -> }, onDone: () -> Unit) {
     val c = appColors
     val s = MaterialTheme.colorScheme
     // A habit deleted while this was open: nothing to write on.
@@ -83,7 +83,6 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> 
     LaunchedEffect(editing) { if (editing) runCatching { focus.requestFocus() } }
 
     val title = when { !editing -> "Note"; adding -> "Add note"; else -> "Edit note" }
-    val shortDay = DayWords.short(day).replace(",", "")
     val date = DayWords.date(day).format(noteDate)
     Column(Modifier.fillMaxSize().background(c.screen).imePadding().navigationBarsPadding()) {
         RecordTopBar(title, close = editing, onClose = ::close)
@@ -106,25 +105,35 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, onDone: () -> 
                 }
             } else {
                 Box(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest).padding(16.dp)) {
-                    Text(saved ?: "", Modifier.verticalScroll(rememberScrollState()).semantics { testTag = "note-text" }, style = AppType.bodyLarge, color = s.onSurface)
+                    Text((if (leaving) opened else saved) ?: "", Modifier.verticalScroll(rememberScrollState()).semantics { testTag = "note-text" }, style = AppType.bodyLarge, color = s.onSurface)
                 }
             }
             TextLimit.note(text, TextLimit.NOTE)?.takeIf { editing }?.let { Footer(it) }
         }
         if (editing) BottomAction("Save", leaving || (text.isNotBlank() && changed), tag = "note-save") {
             if (leaving) return@BottomAction
-            if (adding) leaving = true
+            // Saved, it goes back where it came from and says so (Figma's Today, flows 25 and 27).
+            leaving = true
             save(text)
-            if (adding) onDone() else editing = false
+            onDone()
+            say("Note saved", null)
         } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }
     if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes to this note?",
-        if (adding) "What you wrote won’t be saved." else "The note stays as it was.", { discard = false }, {
+        if (adding) "What you typed won’t be saved." else "The note stays as it was.", { discard = false }, {
         discard = false
         if (adding) onDone() else editing = false
-    }, keepLabel = if (adding) "Keep writing" else "Keep editing")
-    if (confirmDelete) AppDialog("Delete this note?", "Only the note for $shortDay is removed. That day's progress stays.",
-        "Delete note", { confirmDelete = false; save(""); onDone() }, { confirmDelete = false }, destructive = true, confirmTag = "note-delete-confirm")
+    })
+    // Figma's Today, flow 28: Delete this note? · Cancel | Delete, then "Note deleted" with Undo.
+    if (confirmDelete) AppDialog("Delete this note?", "Your logs for this day stay as they are.",
+        "Delete", {
+            confirmDelete = false
+            val was = saved ?: ""
+            leaving = true
+            save("")
+            onDone()
+            say("Note deleted") { save(was) }
+        }, { confirmDelete = false }, destructive = true, confirmTag = "note-delete-confirm")
 }
 
 /** A note's date, as Figma writes it: "21 Oct 2026". */
