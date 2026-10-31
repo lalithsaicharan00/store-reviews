@@ -31,8 +31,10 @@ import kotlinx.coroutines.withContext
 
 /** Where Google Drive is reached: the real one through the person's Google sign-in, or the stand-in on this phone. */
 interface DriveLink {
+    /** The connected Google account's address ("sam@gmail.com"), for the words only, or null. */
+    val email: String?
     /** "Google Drive (sam@gmail.com)": who is connected, or null. */
-    val accountName: String?
+    val accountName: String? get() = email?.let { "Google Drive ($it)" }
     /** "gdrive:<a hash of the account's ID>": the account sync binds to (DriveSync.ACCOUNT_PREFIX). */
     val accountKey: String?
     /** The Drive calls, while connected. */

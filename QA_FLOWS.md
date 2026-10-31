@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 36 |
+| today | 54:5580 | 84 | 37 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **46** |
+| **All** | | **290** | **47** |
 
 ## Bug log
 
@@ -106,6 +106,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 68. Today · the day ring — it counted a part-done habit's share (1 of 8 glasses drew a sliver at 0/1); Figma's Floating toolbar: "Set the arc to match Count" (Today's 4/13 arc is exactly 4/13). DayScore.fraction is now done of planned.
 69. Today · Nothing planned — its words ran the screen's width (one long line and a short one); Figma's Nothing planned narrows them to 280 dp. EmptyState takes bodyWidth, a cap, so it still fits any phone and font size.
 70. Today · notice card (Card notice 795:466) — 168 dp tall with its buttons 5 lower than Figma's 160: the Text buttons' 48 dp touch target added 4 above and below their 40 on top of Figma's 4 and 8. CardNotice now takes that 4 back from the padding on each side (the touch target stays 48); measured 160, buttons at 112, as Figma. (Its body breaks a word earlier in Figma: same style and width, font rendering.)
+71. Today · Backup is off → Reconnect — it reconnected in silence (Play Services handed back the account it knew, no chooser) and said nothing; Figma: Google's account chooser rises over Today, then (only if access was removed) Google's permission page, and back on Today the notice goes with "Google Drive connected · sam@gmail.com". Reconnect now asks with the chooser (connectDrive(pick = true)) and says the account; DriveLink gives its email (BackupScreens' driveEmail no longer parses it out of the name). Checked with the real Drive and the emulator's test account.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -212,7 +213,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 33 | 104:2 | No habits yet | Splash → No habits yet → Added: first habit → + 1 of 8 | passed |
 | 34 | 104:419 | Nothing planned today | Nothing planned today → › Tomorrow, Gym → Back to today | passed |
 | 35 | 125:2 | Notice: backup is paused | Backup is paused → backed up: notice gone | passed |
-| 36 | 125:371 | Notice: backup is off | Backup is off → Reconnect: account chooser → pick account → Continue: notice gone; snackbar | not started |
+| 36 | 125:371 | Notice: backup is off | Backup is off → Reconnect: account chooser → pick account → Continue: notice gone; snackbar | passed |
 | 37 | 125:807 | Notice: your backup was removed | Backup deleted → Back up again: backing up → Backed up → card gone | not started |
 | 38 | 125:1173 | Notice: a reminder didn't arrive | Reminder didn't arrive → Show me how: Keep reminders coming → Open → Back → Open → Back: all set | not started |
 | 39 | 151:2 | Notice: a reminder came late | Came late → Show me how: Alarms & reminders off → Open settings → Back: all set → ← Today | not started |

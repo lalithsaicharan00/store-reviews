@@ -93,8 +93,8 @@ fun backupSummary(center: BackupCenter, store: HabitStore): Pair<ImageVector, St
 /** "12 habits, 840 logs". */
 fun countText(habits: Int, logs: Int) = "$habits ${if (habits == 1) "habit" else "habits"}, $logs ${if (logs == 1) "log" else "logs"}"
 
-/** "sam@gmail.com" from the link's "Google Drive (sam@gmail.com)"; null for the stand-in. */
-fun driveEmail(center: BackupCenter): String? = center.link.accountName?.let { Regex("\\(([^)]+@[^)]+)\\)").find(it)?.groupValues?.get(1) }
+/** The connected Google account's address ("sam@gmail.com"), or null. */
+fun driveEmail(center: BackupCenter): String? = center.link.email
 
 /** A page with ← and its title in the top bar (Backup & Sync's own pages). */
 @Composable

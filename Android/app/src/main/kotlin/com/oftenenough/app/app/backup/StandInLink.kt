@@ -23,7 +23,7 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
     private var account by mutableStateOf(if (prefs.getBoolean(KEY, false)) prefs.getString(ACCOUNT, null) ?: nextAccount else null)
     private val drive by lazy { LocalDrive(folder) }
 
-    override val accountName: String? get() = account?.let { "Google Drive ($it)" }
+    override val email: String? get() = account
     override val accountKey: String? get() = account?.let(::driveKey)
     override fun api(): DriveApi? = if (account != null) drive else null
 
@@ -54,7 +54,7 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
 /** A phone with no Google Play services: Google Drive can't be reached at all. Backup files still work. */
 object NoDriveLink : DriveLink {
     override val available: Boolean get() = false
-    override val accountName: String? get() = null
+    override val email: String? get() = null
     override val accountKey: String? get() = null
     override fun api(): DriveApi? = null
     override suspend fun connect(context: Context, account: String?, pick: Boolean): Boolean = false

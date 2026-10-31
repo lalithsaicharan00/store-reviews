@@ -44,12 +44,10 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
     private val client = Identity.getAuthorizationClient(appContext)
 
     /** The Google account's own address, for the words only ("Google Drive (sam@gmail.com)"). Never sent anywhere. */
-    private var email by mutableStateOf(prefs.getString(EMAIL, null))
+    override var email by mutableStateOf(prefs.getString(EMAIL, null)); private set
 
     /** The last token Play Services gave, kept only in memory. */
     @Volatile private var token: String? = null
-
-    override val accountName: String? get() = email?.let { "Google Drive ($it)" }
 
     /**
      * What sync binds to: `gdrive:` and a SHA-256 of the account's address. It never leaves the phone; it is here so

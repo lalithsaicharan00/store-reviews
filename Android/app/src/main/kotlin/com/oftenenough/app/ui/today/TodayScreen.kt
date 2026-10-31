@@ -223,7 +223,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     }
 
     val hasHabits = store.habits.isNotEmpty()
-    val (notice, dismissNotice) = rememberTodayNotice(store, nav)
+    val (notice, dismissNotice) = rememberTodayNotice(store, nav) { text -> scope.launch { snackbar.showSnackbar(text) } }
     Scaffold(
         containerColor = c.screen,
         topBar = {

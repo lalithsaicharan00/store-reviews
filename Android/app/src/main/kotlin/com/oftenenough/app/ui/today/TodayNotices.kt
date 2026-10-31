@@ -79,14 +79,15 @@ object TodayNotices {
      * The notice to show now, the most important first: anything that could cost data (deletes held from another device,
      * backup off, backup paused), then reminders that can't come or didn't, then a payment Google Play hasn't finished.
      */
-    fun current(context: Context, store: HabitStore, nav: NoticeNav, now: Long): TodayNotice? {
+    fun current(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit = {}): TodayNotice? {
         if (!AppGraph.isOpen) return null
-        val all = candidates(context, store, nav, now)
+        val all = candidates(context, store, nav, now, say)
         forced?.let { f -> return all.firstOrNull { it.key == f } }
         return all.firstOrNull { !hidden(context, it.key, now) }
     }
 
-    private fun candidates(context: Context, store: HabitStore, nav: NoticeNav, now: Long): List<TodayNotice> {
+    /** [say] shows a snackbar on Today (a notice fixed from its own button says so). */
+    private fun candidates(context: Context, store: HabitStore, nav: NoticeNav, now: Long, say: (String) -> Unit): List<TodayNotice> {
         val list = ArrayList<TodayNotice>()
         val forced = forced
         val status = AppGraph.backup.status
@@ -108,7 +109,15 @@ object TodayNotices {
         )
         if (state == DriveState.NOT_CONNECTED || forced == "off") list += TodayNotice("off", Symbols.LinkOff, "Backup is off",
             "Often Enough can no longer reach your Google Drive. Your habits are safe on this phone.", "Not now", "Reconnect") {
-            AppGraph.scope.launch { runCatching { AppGraph.backup.connectDrive() } }
+            // Google's account chooser rises over Today (Figma's Today, flow 36: the person may pick another account),
+            // then Google's Drive permission only if it was removed. Reconnected: the notice goes, and the snackbar
+            // names the account the habits now back up to.
+            AppGraph.scope.launch {
+                if (runCatching { AppGraph.backup.connectDrive(pick = true) }.getOrDefault(false)) {
+                    if (forced == "off") TodayNotices.forced = null
+                    AppGraph.backup.link.email?.let { say("Google Drive connected · $it") }
+                }
+            }
         }
         if (state == DriveState.FULL || forced == "full") list += TodayNotice("full", Symbols.CloudOff, "Backup is paused",
             "Your Google Drive is full. Your habits are safe on this phone, but new changes aren’t backed up.", "Not now", "Manage storage") {
@@ -152,14 +161,14 @@ object TodayNotices {
 
 /** Today's notice, worked out again whenever the app comes back (a setting may have changed) and when backup's state does. */
 @Composable
-fun rememberTodayNotice(store: HabitStore, nav: NoticeNav): Pair<TodayNotice?, () -> Unit> {
+fun rememberTodayNotice(store: HabitStore, nav: NoticeNav, say: (String) -> Unit): Pair<TodayNotice?, () -> Unit> {
     val context = LocalContext.current
     var refresh by remember { mutableIntStateOf(0) }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { refresh++ }
     val status = if (AppGraph.isOpen) AppGraph.backup.status else null
     val pending = if (AppGraph.isOpen) AppGraph.plus.pending else null
     val notice = remember(refresh, status, pending, store.dataVersion / 50, TodayNotices.forced, TodayNotices.holding) {
-        TodayNotices.current(context, store, nav, store.clock())
+        TodayNotices.current(context, store, nav, store.clock(), say)
     }
     return notice to { notice?.let { TodayNotices.dismiss(context, it, store.clock()) }; refresh++ }
 }
