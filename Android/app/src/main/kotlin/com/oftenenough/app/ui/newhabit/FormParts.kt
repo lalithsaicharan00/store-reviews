@@ -204,8 +204,9 @@ fun WeekdayCircles(selected: Set<Int>, weekStart: Int, tag: String, onChange: (S
  * being chosen ("Starts", "Started", "Select date"), and a [note] under the day says what it does.
  */
 @Composable
-fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date", note: String? = null, onPick: (Int) -> Unit) =
-    AppDatePicker(day, allowed, onDismiss, title, confirmTag = "date-ok", note = note, onPick = onPick)
+fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date", note: String? = null,
+              noDate: (() -> Unit)? = null, onPick: (Int) -> Unit) =
+    AppDatePicker(day, allowed, onDismiss, title, confirmTag = "date-ok", note = note, left = noDate?.let { "No date" to it }, onPick = onPick)
 
 /** The Time picker (5.3.5, [AppTimePicker]) with minutes of the day in and out. */
 @Composable

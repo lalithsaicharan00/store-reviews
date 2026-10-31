@@ -81,6 +81,8 @@ fun AppDatePicker(
     dismissTag: String? = null,
     /** Go to a day: one tap on a day picks it and closes, with no Cancel or [confirm] (Figma's Today, flow 32). */
     atOnce: Boolean = false,
+    /** A Text button at the left of Cancel and OK (the task form's "No date", Figma 1169:32560). */
+    left: Pair<String, () -> Unit>? = null,
     onPick: (Int) -> Unit,
 ) {
     val s = MaterialTheme.colorScheme
@@ -102,7 +104,8 @@ fun AppDatePicker(
     )
     // Material's DatePickerDialog, put together from its own parts so it keeps 16 from each side of the screen, up to
     // Material's 360 (Figma 705:1025: 328 on a 360 dp phone). Material's own dialog always takes 360, which touches both
-    // edges of such a phone. Its buttons as Material places them: 6 from the end, 8 from the bottom, 8 apart.
+    // edges of such a phone. Its buttons as Figma's dialog places them (Actions, 1169:32560): 12 from each side, 12 under
+    // their 40 (8 under the 48 targets), 8 apart.
     BasicAlertDialog(onDismiss, Modifier.semantics { testTag = "date-picker"; testTagsAsResourceId = true },
         properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Surface(Modifier.padding(horizontal = 16.dp).widthIn(max = 360.dp).fillMaxWidth().wrapContentHeight(), shape = RoundedCornerShape(28.dp), color = s.surfaceBright) {
@@ -138,7 +141,9 @@ fun AppDatePicker(
                     val picked = state.selectedDateMillis?.let(::utcMsToDay)
                     LaunchedEffect(picked) { if (picked != null && picked != day) { onPick(picked); onDismiss() } }
                     Spacer(Modifier.height(20.dp))
-                } else Row(Modifier.align(Alignment.End).padding(bottom = 8.dp, end = 6.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                } else Row(Modifier.fillMaxWidth().padding(bottom = 8.dp, start = 12.dp, end = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    left?.let { (label, act) -> AppButton(label, { act(); onDismiss() }, style = ButtonStyle.Text, tag = "picker-left") }
+                    Spacer(Modifier.weight(1f))
                     AppButton("Cancel", onDismiss, style = ButtonStyle.Text, tag = dismissTag)
                     val picked = state.selectedDateMillis?.let(::utcMsToDay)
                     AppButton(confirmFor?.invoke(picked) ?: confirm, { picked?.let(onPick); onDismiss() }, style = ButtonStyle.Text,

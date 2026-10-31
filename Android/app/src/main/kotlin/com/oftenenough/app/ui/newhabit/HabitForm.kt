@@ -624,31 +624,22 @@ private fun HalfValue(title: String, value: String, tag: String, shape: RoundedC
 @Composable
 private fun TaskRows(form: FormState, store: HabitStore, open: (Page) -> Unit) {
     var picking by remember { mutableStateOf<String?>(null) }
-    var dateMenu by remember { mutableStateOf(false) }
     val today = store.today()
     val earliest = form.original?.dueDay?.takeIf { it != com.oftenenough.app.data.NO_DATE_DAY }?.let { minOf(today, it) } ?: today
     SegmentedList {
         val count = 1 + (if (form.taskHasNoDate) 0 else 1)
         var i = 0
         if (form.taskRepeats) OpenRow("How often", form.often.often(false).label(false, weekStart = form.weekStart), null, i++, count, "how-often-row", rowColor) { open(Page.OFTEN) }
-        else Box {
-            OpenRow("Date", taskDateWords(form.taskDate, today), null, i++, count, "task-date", rowColor) { dateMenu = true }
-            AppMenu(dateMenu, { dateMenu = false }, Modifier.width(240.dp).semantics { testTagsAsResourceId = true }, offset = DpOffset(88.dp, 0.dp)) {
-                val item = @Composable { text: String, icon: ImageVector, tag: String, pick: () -> Unit ->
-                    AppMenuItem(text, { dateMenu = false; pick() }, icon = icon, tag = tag)
-                }
-                item("Today", Symbols.Today, "task-date-today") { form.taskDate = today }
-                item("Tomorrow · " + formDay(today + 1, today), Symbols.CalendarMonth, "task-date-tomorrow") { form.taskDate = today + 1 }
-                item("Pick a date…", Symbols.EditCalendar, "task-date-pick") { picking = "date" }
-                item("No date", Symbols.EventBusy, "task-date-none") { form.taskDate = com.oftenenough.app.data.NO_DATE_DAY }
-            }
-        }
+        // Date opens Android's date picker at once, no menu; days before today can't be picked; No date sits on the
+        // picker's left (Figma 1169:32560, Create new's notes).
+        else OpenRow("Date", taskDateWords(form.taskDate, today), null, i++, count, "task-date", rowColor) { picking = "date" }
         if (!form.taskHasNoDate) AppListItem("Time", i, count, onClick = { picking = "time" }, tag = "task-time", containerColor = rowColor,
             below = if (form.taskHasTime) ({ Text(DayWords.clockMinute(form.taskMinute), Modifier.semantics { testTag = "task-time-pill" }) }) else null,
             trailing = { AppSwitch(form.taskHasTime, onCheckedChange = { on -> if (on) picking = "time" else { form.taskHasTime = false; form.syncReminders() } }) })
     }
     when (picking) {
-        "date" -> DayDialog(if (form.taskHasNoDate) today else form.taskDate, { it >= earliest }, { picking = null }) { form.taskDate = it }
+        "date" -> DayDialog(if (form.taskHasNoDate) today else form.taskDate, { it >= earliest }, { picking = null },
+            noDate = { form.taskDate = com.oftenenough.app.data.NO_DATE_DAY }) { form.taskDate = it }
         // Turning Time on waits for OK: Cancel leaves it off.
         "time" -> MinuteDialog(form.taskMinute, { picking = null }) { form.taskMinute = it; form.taskHasTime = true; form.syncReminders() }
     }

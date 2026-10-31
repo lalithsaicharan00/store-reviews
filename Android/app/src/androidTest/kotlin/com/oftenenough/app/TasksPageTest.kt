@@ -293,7 +293,7 @@ class TasksPageTest {
         assertFalse("no Repeat row", has(hasTestTag("repeat-row")))
         compose.onNodeWithTag("name-field").performTextInput("Mend the fence")
         tapTag("task-date")
-        here("task-date-none")
+        here("picker-left") // No date, on the date picker's left (Figma 1169:32560)
         waitGone(hasTestTag("task-time"), "the Time row")
         waitFor(hasText("Saved without a date, it stays on the Tasks page, under No date. It won’t show on Today until you give it a day."), "the form's footer")
         tapTag("form-add")
