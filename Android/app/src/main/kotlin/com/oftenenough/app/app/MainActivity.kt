@@ -157,7 +157,7 @@ class MainActivity : ComponentActivity() {
                     pair.split("=").takeIf { it.size == 2 }?.let { (name, n) -> n.trim().toIntOrNull()?.let { name.trim() to it } }
                 }.toMap()
                 DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits",
-                    tasks = demo == "tasks", streaks = named(TestLaunch.STREAK), todays = named(TestLaunch.TODAY))
+                    tasks = demo == "tasks", streaks = named(TestLaunch.STREAK), todays = named(TestLaunch.TODAY), runsBefore = named(TestLaunch.EARLIER))
                 if (intent.getStringExtra(TestLaunch.MOMENTS) == "used") store.milestones.useUpToday()
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
@@ -187,6 +187,8 @@ object TestLaunch {
     const val STREAK = "streak"
     /** The design demo's amount logged today, by habit name: "Water=7". */
     const val TODAY = "today"
+    /** The design demo's earlier run before a one-day break, by habit name: "Meds=7" (a number reached again). */
+    const val EARLIER = "earlier"
     /** "used": today's milestone pop-up and bars are used up, so a milestone gets just the row (Figma 107:2). */
     const val MOMENTS = "moments"
 }

@@ -431,7 +431,7 @@ class MilestoneCenter(private val store: HabitStore) {
         when (s.track) {
             MilestoneTrack.IN_A_ROW -> {
                 number = Format.amount(n)
-                title = rowTitle(n.toInt()) + if (s.again) " again" else ""
+                title = rowTitle(n.toInt()) + if (s.again || reachedBefore(s, habit, quit)) " again" else ""
                 bucket.nextRow(n.toInt())?.let { k ->
                     next = MilestoneAhead("$k", rowTitle(k), "Next · ${k - n.toInt()} to go · now ${n.toInt()}", (n / k).toFloat())
                 }
@@ -458,7 +458,7 @@ class MilestoneCenter(private val store: HabitStore) {
         val band = title
         val popupTitle = when {
             s.first -> "Your first milestone"
-            s.again -> rowTitle(n.toInt()) + ", again"
+            s.again || reachedBefore(s, habit, quit) -> rowTitle(n.toInt()) + ", again"
             else -> title
         }
         val subtitle = when {
@@ -473,6 +473,20 @@ class MilestoneCenter(private val store: HabitStore) {
         }
         val second = if (s.track == MilestoneTrack.ANNIVERSARY) "See the year" else "All milestones"
         return MilestoneWords(number, title, band, popupTitle, subtitle, next, "${habit.name}: $title, $whenWords", second)
+    }
+
+    /**
+     * A length in a row reached before a break, shown as just the row: "7 days in a row again", "30 days clean again"
+     * (Figma 108:1308). A first-time milestone that only got the row because the day's bars were used up stays plain.
+     */
+    private fun reachedBefore(s: MilestoneShown, habit: Habit, quit: Boolean): Boolean {
+        if (s.track != MilestoneTrack.IN_A_ROW || s.again || s.tier != MilestoneTier.ROW) return false
+        val n = s.value.toInt()
+        if (quit) {
+            val runs = store.rules.quitHistory(habit, store.clock()).filter { it.ending != QuitRun.Ending.ONGOING }
+            return runs.any { quitDays(it.start, it.end ?: it.start) >= n }
+        }
+        return store.rules.runs(habit, s.day).any { !it.isCurrent && it.length >= n }
     }
 
     companion object {

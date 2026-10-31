@@ -93,7 +93,8 @@ object DemoData {
      * Today exactly as Figma draws it (`700:3219`, the Android file's Today): the same habits, logs, streaks and pause, so
      * the phone can be put beside the design (test launches and Debug builds only, D8). Launch with clockHour 9.
      */
-    fun design(store: HabitStore, now: Long, streaks: Map<String, Int> = emptyMap(), todays: Map<String, Int> = emptyMap()): Snapshot {
+    fun design(store: HabitStore, now: Long, streaks: Map<String, Int> = emptyMap(), todays: Map<String, Int> = emptyMap(),
+               runsBefore: Map<String, Int> = emptyMap()): Snapshot {
         val today = store.today(now)
         val dayMs = 86_400_000L
         fun ago(days: Int) = now - days * dayMs
@@ -122,7 +123,9 @@ object DemoData {
         val lastSlip = streaks["Smoking"]?.let { store.rules.dayStart(today) - (it * 86_400L + 3600) * 1000 }
             ?: (now - (19 * 86400 + 12 * 3600 + 32 * 60 + 45) * 1000L)
         val earlier = lastSlip - 45 * dayMs
-        val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = earlier - 30 * dayMs).copy(createdAt = earlier - 30 * dayMs)
+        // With a set run (`streak`, Figma 107:2429) it's Smoking's first: quitting began then, with no slips before.
+        val quitFrom = if ("Smoking" in streaks) lastSlip else earlier - 30 * dayMs
+        val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = quitFrom).copy(createdAt = quitFrom)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
         val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(7))
         val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.MORNING, 10.0)
@@ -133,12 +136,20 @@ object DemoData {
             entries.add(Entry(habitId = habit.id, stepId = stepId, day = day, value = value, createdAt = at ?: (store.rules.dayStart(day) + 12 * 3_600_000L).coerceAtMost(now)))
         for ((habit, streak) in listOf(stretch to 4, meds to 57, read to 6, water to 22, bed to 30, night to 5, journal to 9, study to 2, refill to 3))
             for (d in 1..(streaks[habit.name] ?: streak)) log(habit, today - d, habit.goal)
+        // A test launch's `earlier` ("Meds=7"): a run of that length before a one-day break (Figma 108:1308).
+        for ((name, length) in runsBefore) {
+            val habit = habits.firstOrNull { it.name == name } ?: continue
+            val from = 1 + (streaks[name] ?: 0) + 1
+            for (d in from until from + length) log(habit, today - d, habit.goal)
+        }
         for (d in 1..(streaks[skincare.name] ?: 12)) for (step in skincare.steps) log(skincare, today - d, 1.0, step.id)
         val week = store.rules.period(PeriodKind.WEEK, today).first
         for (w in 1..4) for (i in 0 until 3) log(call, week - 7 * w + i, 1.0)
         for (d in 1..7) log(social, today - d, 10.0)
-        log(smoking, store.today(lastSlip), 1.0, at = lastSlip)
-        log(smoking, store.today(earlier), 1.0, at = earlier)
+        if ("Smoking" !in streaks) {
+            log(smoking, store.today(lastSlip), 1.0, at = lastSlip)
+            log(smoking, store.today(earlier), 1.0, at = earlier)
+        }
         log(stretch, today, 4.0, at = now)
         log(skincare, today, 1.0, skincare.steps[0].id, at = now)
         // Afternoon and Evening each have one done already: 3 left and 2 left, as Figma's Today.
@@ -341,13 +352,13 @@ object DemoData {
     /** Saves the demo habits into an empty test database, then reads them back. */
     /** [streaks], [todays]: the design demo's days in a row before today, and today's amount, by name (`streak`, `today`). */
     suspend fun seed(store: HabitStore, year: Boolean = false, many: Boolean = false, design: Boolean = false, days: Boolean = false, habitsPage: Boolean = false, tasks: Boolean = false,
-                     streaks: Map<String, Int> = emptyMap(), todays: Map<String, Int> = emptyMap()) {
+                     streaks: Map<String, Int> = emptyMap(), todays: Map<String, Int> = emptyMap(), runsBefore: Map<String, Int> = emptyMap()) {
         if (store.habits.isNotEmpty()) return
         store.repo.importAll(when {
             tasks -> tasksPage(store, store.clock())
             habitsPage -> habitsPage(store, store.clock())
             days -> days(store, store.clock())
-            design -> design(store, store.clock(), streaks, todays)
+            design -> design(store, store.clock(), streaks, todays, runsBefore)
             else -> snapshot(store, store.clock(), year, many)
         })
         store.load()
