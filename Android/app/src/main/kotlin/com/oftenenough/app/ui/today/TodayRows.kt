@@ -377,7 +377,7 @@ fun QuitRow(habit: Habit, shape: Shape, store: HabitStore, layout: TodayLayout, 
     }
 }
 
-/** A paused habit, in the Paused card at the bottom (opened): its icon, "Paused · back 20 Oct", and Resume. */
+/** A paused habit, in the Paused card at the bottom (opened): its icon, "Paused until 20 Oct", and Resume. */
 @Composable
 fun PausedRow(habit: Habit, shape: Shape, store: HabitStore, actions: TodayActions) {
     val c = appColors

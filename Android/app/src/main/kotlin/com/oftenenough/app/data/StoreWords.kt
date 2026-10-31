@@ -151,8 +151,11 @@ fun clockText(entry: Entry): String {
 }
 
 /** The day's status in Day details: its title ("4 of 8 glasses"), the line under it, and a running timer's start. */
-/** [words]: the title is one headline, its number never set apart ("1 slip recorded", Figma's Day details). */
-data class DayStatus(val title: String, val detail: String? = null, val running: Long? = null, val words: Boolean = false) {
+/**
+ * [words]: the title is one headline, its number never set apart ("1 slip recorded", Figma's Day details). [label]: what
+ * the card says above it instead of "This day" ("Back on Wed, 28 Oct" for a paused day).
+ */
+data class DayStatus(val title: String, val detail: String? = null, val running: Long? = null, val words: Boolean = false, val label: String? = null) {
     companion object {
         fun periodWord(f: Frequency): String = when (f) {
             is Frequency.PerWeek -> " this week"
@@ -170,7 +173,9 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
             val rules = store.rules
             val entries = store.entries(habit.id, day).filter { it.stepId == null }
             if (store.isPaused(habit, day)) {
-                return DayStatus("Paused", if (entries.isEmpty()) "Paused days don't count toward your streak" else "Progress already recorded stays in your history")
+                // When it's back, in the card's label (Figma's Day details, Paused): "Back on Wed, 28 Oct", or "Until you resume it".
+                val back = store.pause(habit, day)?.through?.let { "Back on " + DayWords.short(it + 1) } ?: "Until you resume it"
+                return DayStatus("Paused", label = back)
             }
             if (store.isSkipped(habit, day)) {
                 val total = entries.sumOf { it.value }

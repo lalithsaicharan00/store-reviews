@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 83 | 15 |
+| today | 54:5580 | 83 | 16 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **289** | **25** |
+| **All** | | **289** | **26** |
 
 ## Bug log
 
@@ -77,6 +77,11 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 39. Today · Pause until a date — Until a date… opened the picker a week ahead; Figma opens it on tomorrow. Fixed in PauseSheet.
 40. Today · Pause until a date — dialogs dimmed what's behind them by Android's default 60 %; Figma's is Material's 32 % scrim. Fixed in the app theme (android:backgroundDimAmount 0.32, light and dark): an opacity, the same on every device.
 41. Today · Pause until a date — the date picker ran edge to edge on a 360 dp phone (Material's dialog is a fixed 360) and, once narrowed, its week overflowed: Material's grid gives each day a 48 dp target plus 12 at the sides, which needs 360. Now built from Material's parts: 16 in from the screen's sides up to Material's 360, each day's target a seventh of the room up to Material's 48 (LocalMinimumInteractiveComponentSize; 43 on a 360 dp phone, as Figma's 43-wide days), Figma's 112 header (Material's is a fixed 120) with ✏ / 📅 to type, and Material's own button placement. Applies to every date picker (AppDatePicker).
+42. Today · Resume a habit (the user, 31 Oct: keep the app's Paused row with its Resume button; Figma to follow) — the row said "Paused · back Sat, 7", cut off; now "Paused until 7 Nov" (the day it's back, as the snackbar says it), or "Paused" until resumed. Fixed in DayWords.paused (also the habit page).
+43. Today · Resume a habit — Resume in Day details kept the sheet open with no message; Figma closes it and Today says "Meds resumed" · Undo. Fixed with DayNav.resumed and AppRoot's shared sayUndo (the Pause snackbar uses it too); the ⋮'s Resume habit the same.
+44. Today · Resume a habit — a paused day said "Paused days don't count toward your streak" beside Paused; Figma puts "Back on Wed, 28 Oct" in the card's label instead of This day. Fixed with DayStatus.label ("Until you resume it" with no end).
+45. Today · Resume a habit — Day details' plan line said "Every day · Morning" for Meds; Figma says "Every day · 8:00 AM": a habit with reminders shows their times. Fixed in planLine.
+46. OPEN · Day details — the This day card's label and headline render 18 and 41 dp tall against their 16/36 line heights (Today's rows render exactly), so the card is ~8 dp taller than Figma; not font padding (tried) nor the font's metrics (hhea fits). To find on the Day details page.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 
@@ -148,7 +153,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 13 | 122:2 | Touch and hold a habit | Today → hold Meds: menu → Skip today: skipped; Undo · Note | passed |
 | 14 | 122:550 | Pause a habit | Today → hold Meds → Pause Meds sheet → Pause: leaves Morning; snackbar Undo | passed |
 | 15 | 137:2 | Pause a habit until a date | Today → menu → Pause sheet (1 week) → Until a date…: date picker → 30 → OK: Back on Fri, 30 Oct → Pause | passed |
-| 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | not started |
+| 16 | 122:1300 | Resume a habit | Paused card → Day details, Paused → Resume habit; snackbar Undo | passed |
 | 17 | 84:2 | Undo and Note follow the latest log | Water 6 of 8 → + on Water: buttons on Water → ✓ Call family: buttons move → Start a routine: buttons go | not started |
 | 18 | 139:5 | Undo clears the buttons | Water 6 of 8 → + → ✓ Call family → Undo: check taken back, buttons gone | not started |
 | 19 | 85:2 | Skip a day | Meds not done → Day details → Skip today → Swipe down: Meds skipped | not started |

@@ -116,6 +116,14 @@ private fun AppMain(
     // Pause's one sheet, over whichever page asked (Today's menu, Day details, a habit's page): Figma's Pause sheet.
     var pausing by rememberSaveable { mutableStateOf<List<String>>(emptyList()) }
     val askPause: (Habit) -> Unit = { pausing = listOf(it.id) }
+    // A message with Undo on whichever page is showing (Today places its own above the day bar).
+    val sayUndo: (String, () -> Unit) -> Unit = { text, undo ->
+        rootScope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            if (snackbar.showSnackbar(text, "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+                androidx.compose.material3.SnackbarResult.ActionPerformed) undo()
+        }
+    }
     // Plus turned on from a Plus screen (Figma's flows: "the snackbar says Plus is on").
     val plusOn: () -> Unit = { rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Plus is on") } }
     // A widget's link opens its screen directly, replacing whatever was open (W8, W9).
@@ -151,7 +159,7 @@ private fun AppMain(
     LaunchedEffect(AppGraph.dayToOpen) {
         AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }
     }
-    val dayNav = dayNav(nav, askPause) { dayTarget = null }
+    val dayNav = dayNav(nav, askPause, sayUndo) { dayTarget = null }
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
     val entry = nav.currentBackStackEntryAsState().value
     val route = entry?.destination?.route
@@ -162,7 +170,7 @@ private fun AppMain(
         "page/{title}" -> entry?.arguments?.getString("title")?.let { t -> MenuItem.entries.firstOrNull { it.title == t } }
         else -> null
     }
-    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause) {
+    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo) {
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
@@ -399,11 +407,7 @@ private fun AppMain(
         val before = toPause.associate { it.id to (store.pauses[it.id] ?: emptyList()) }
         PauseSheet(toPause, store, { pausing = emptyList() }) { back ->
             pausing = emptyList()
-            rootScope.launch {
-                snackbar.currentSnackbarData?.dismiss()
-                if (snackbar.showSnackbar(pausedWords(toPause, back), "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
-                    androidx.compose.material3.SnackbarResult.ActionPerformed) toPause.forEach { store.setPauses(it, before[it.id] ?: emptyList()) }
-            }
+            sayUndo(pausedWords(toPause, back)) { toPause.forEach { store.setPauses(it, before[it.id] ?: emptyList()) } }
         }
     } else if (pausing.isNotEmpty()) pausing = emptyList()
     LaunchedEffect(handOver) { handOver?.let { target -> handOver = null; nav.navigate(target) } }
@@ -411,6 +415,9 @@ private fun AppMain(
 
 /** Asks for Pause's sheet for a habit, from any page under [AppMain]. */
 private val LocalPause = androidx.compose.runtime.staticCompositionLocalOf<(Habit) -> Unit> { {} }
+
+/** Says something with Undo on the page showing, from any page under [AppMain]. */
+private val LocalSayUndo = androidx.compose.runtime.staticCompositionLocalOf<(String, () -> Unit) -> Unit> { { _, _ -> } }
 
 /**
  * What a menu row does (Figma `12:5259`). Four open a page; **Contact us** and **Send feedback** open the person's own
@@ -529,7 +536,7 @@ private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostControlle
 }
 
 /** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
-private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, close: () -> Unit) = object : DayNav {
+private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String, () -> Unit) -> Unit, close: () -> Unit) = object : DayNav {
     override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
     override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
@@ -538,6 +545,7 @@ private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, close: () -> 
     override fun allLogs(habit: Habit, day: Int) = nav.navigate(Routes.allLogs(habit.id, day))
     override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
     override fun pause(habit: Habit) = pause(habit)
+    override fun resumed(habit: Habit, undo: () -> Unit) = say("${habit.name} resumed", undo)
 }
 
 /**
@@ -549,7 +557,7 @@ private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composa
     var target by rememberSaveable { mutableStateOf<String?>(null) }
     content { h, d -> target = h.id + "|" + d }
     target?.split("|")?.let { (id, d) ->
-        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current) { target = null }) { target = null }
+        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current) { target = null }) { target = null }
     }
 }
 

@@ -105,16 +105,22 @@ interface DayNav {
     fun allLogs(habit: Habit, day: Int)
     fun edit(habit: Habit)
     fun pause(habit: Habit)
+    /** Resumed from here (Figma's Today, flow 16): the sheet closes and the page under it says so, with [undo]. */
+    fun resumed(habit: Habit, undo: () -> Unit) {}
     /** The habit's page, open at All milestones (the landmark pop-up's button, Figma 14.1). */
     fun allMilestones(habit: Habit) = habitPage(habit)
 }
 
-/** "8 glasses a day · Anytime", "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct" (the iPhone's DayIdentityRow). */
+/**
+ * "8 glasses a day · Anytime", "Every day · 8:00 AM" (a habit with reminders says when they are, Figma's Day details),
+ * "Quitting since 19 Sep 2026", "Task · Planned for Sat, 4 Oct" (the iPhone's DayIdentityRow).
+ */
 fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
     HabitKind.Quit -> "Quitting since " + DayWords.long(store.rules.calendarDayOf(habit.quitSince ?: habit.createdAt))
     HabitKind.Task -> habit.dueDay?.let { if (it == com.oftenenough.app.data.NO_DATE_DAY) "Task · No date" else "Task · Planned for " + DayWords.short(it) } ?: ("Task · " + HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)))
     else -> shortDays(habit, store.weekStart).ifEmpty { HabitCopy.capitalized(HabitCopy.plan(habit, store.weekStart)) } + " · " +
-        (if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name })))
+        (if (habit.remind && habit.reminders.isNotEmpty()) habit.reminders.sortedBy { it.minuteOfDay }.joinToString(", ") { DayWords.clockMinute(it.minuteOfDay) }
+        else if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name })))
 }
 
 /** A check on set days names them short, in week order (Figma 3.3: "Mon, Wed, Fri · Morning"); otherwise empty. */
@@ -185,7 +191,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
             })
         Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             IdentityCard(habit, store, nav)
-            DayActivity(habit, day, editable, started, rev, store, nav, onAdded)
+            DayActivity(habit, day, editable, started, rev, store, nav, onAdded, onDismiss)
             if (isTask && store.canReschedule(habit, day)) {
                 SectionList("Reschedule") {
                     RowAction("Do tomorrow", Symbols.Redo, 0, 2, "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
@@ -207,6 +213,14 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     if (reschedule) RescheduleDialog(habit, day, store, { reschedule = false }) { reschedule = false; onDismiss() }
 }
 
+/** Resume: the habit is back in its place, the sheet closes, and the page under it says "Meds resumed" with Undo. */
+private fun resume(habit: Habit, store: HabitStore, nav: DayNav, close: () -> Unit) {
+    val before = store.pauses[habit.id] ?: emptyList()
+    store.resume(habit)
+    close()
+    nav.resumed(habit) { store.setPauses(habit, before) }
+}
+
 /** ⋮ (Figma 1.5): View habit, Edit habit, Pause…, then Archive and Delete habit…, each with its icon; only Delete red. */
 @Composable
 private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: HabitStore, today: Int, nav: DayNav, onClose: () -> Unit, onDelete: () -> Unit) {
@@ -217,7 +231,7 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
         if (!isTask) item("View habit", Symbols.Visibility, tag = "day-menu-view") { nav.habitPage(habit) }
         item(if (isTask) "Edit task" else "Edit habit", Symbols.Edit, tag = "day-menu-edit") { nav.edit(habit) }
         if (!isTask && store.rules.canPause(habit)) {
-            if (store.isPaused(habit, today)) item("Resume habit", Symbols.PlayCircle, tag = "day-menu-resume") { store.resume(habit) }
+            if (store.isPaused(habit, today)) item("Resume habit", Symbols.PlayCircle, tag = "day-menu-resume") { resume(habit, store, nav, onClose) }
             else item("Pause…", Symbols.PauseCircle, tag = "day-menu-pause") { nav.pause(habit) }
         }
         MenuDivider()
@@ -265,7 +279,7 @@ private class DayAction(val title: String, val prominent: Boolean = false, val e
  * the note behind a divider. The day's logs follow below the card.
  */
 @Composable
-private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav, onAdded: ((String) -> Unit)? = null) {
+private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Boolean, rev: Int, store: HabitStore, nav: DayNav, onAdded: ((String) -> Unit)? = null, close: () -> Unit = {}) {
     val c = appColors
     val today = store.today()
     val ruled = store.rule(habit, day)
@@ -273,7 +287,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     val tick = rememberTicker(running, store.clock)
     val status = remember(rev, day, store.timers, store.skips, store.pauses) { DayStatus.make(habit, day, store) }
     val logs = remember(rev, day) { if (showsLogs(ruled, habit, day, store)) store.dayLogs(habit, day) else emptyList() }
-    val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav, onAdded)
+    val actions = dayActions(habit, ruled, day, editable, logs.isNotEmpty(), store, nav, onAdded, close)
     val skipped = store.isSkipped(habit, day)
     val paused = store.isPaused(habit, day)
     val future = day > today
@@ -308,7 +322,8 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     Column(Modifier.fillMaxWidth().clip(segmentShape(0, 2)).background(MaterialTheme.colorScheme.surfaceContainerLowest)
         .padding(horizontal = 16.dp, vertical = 20.dp)) {
         // A week's or month's goal counts the period, so its card says so (Figma's Day details: This week, This month).
-        val cardName = when (ruled.frequency) { is Frequency.PerWeek -> "This week"; is Frequency.PerMonth -> "This month"; is Frequency.PerYear -> "This year"; else -> "This day" }
+        // A paused day names when it's back instead ("Back on Wed, 28 Oct", Figma's Day details, Paused).
+        val cardName = status.label ?: when (ruled.frequency) { is Frequency.PerWeek -> "This week"; is Frequency.PerMonth -> "This month"; is Frequency.PerYear -> "This year"; else -> "This day" }
         Text(cardName, style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(4.dp))
         val detail = if (running && status.running != null) {
@@ -446,7 +461,7 @@ private fun showsLogs(ruled: Habit, habit: Habit, day: Int, store: HabitStore): 
 
 /** The habit's own buttons for this day, one rule per kind (U16: prominent only for what a positive goal asks). */
 private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, hasLogs: Boolean, store: HabitStore, nav: DayNav,
-                       onAdded: ((String) -> Unit)? = null): List<DayAction> {
+                       onAdded: ((String) -> Unit)? = null, close: () -> Unit = {}): List<DayAction> {
     if (!editable) return emptyList()
     val today = store.today()
     // On a past day, a quick add says so: "Added 1 glass to Sat 19 Sep" (Figma 4.3); today's shows on the screen itself.
@@ -456,7 +471,7 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
     val manual = { nav.addLog(habit, day) }
     // Paused: only Resume (Figma 13).
     if (store.isPaused(habit, day)) {
-        return if (store.pause(habit, today)?.contains(today) == true) listOf(DayAction("Resume habit", true, tag = "day-resume") { store.resume(habit) }) else emptyList()
+        return if (store.pause(habit, today)?.contains(today) == true) listOf(DayAction("Resume habit", true, tag = "day-resume") { resume(habit, store, nav, close) }) else emptyList()
     }
     // A day it isn't planned: the same buttons, none of them asking (Figma 3.3).
     val planned = store.rules.isDue(habit, day, countingSkips = false) || !ruled.frequency.isDayBased || ruled.frequency.isFlexible

@@ -356,8 +356,8 @@ object DayWords {
     fun dayMonth(day: Int): String = date(day).format(dayMonth)
     fun long(day: Int): String = date(day).format(longDate)
 
-    /** "Paused · back Mon, 13 Oct", or "Paused until you turn it back on". */
-    fun paused(p: HabitPause): String = p.through?.let { "Paused · back " + short(it + 1) } ?: "Paused until you turn it back on"
+    /** "Paused until 13 Oct" (the day it's back, as the snackbar says it), or "Paused" until resumed: short for a row (the user, 31 Oct 2026). */
+    fun paused(p: HabitPause): String = p.through?.let { "Paused until " + dayMonth(it + 1) } ?: "Paused"
 
     private fun clockFormatter(): DateTimeFormatter = clockFormat ?: (if (is24Hour) DateTimeFormatter.ofPattern("HH:mm")
         else DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH)).also { clockFormat = it }
