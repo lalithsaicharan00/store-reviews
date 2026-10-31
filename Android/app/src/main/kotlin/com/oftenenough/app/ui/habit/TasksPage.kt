@@ -47,6 +47,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.oftenenough.app.ui.components.ListAvatar
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
@@ -224,7 +226,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
                     if (completed > 0) item(key = "completed") {
                         AppListItem("Completed", 0, 1, Modifier.padding(top = 18.dp),
                             if (completed == 1) "1 task done" else "$completed tasks done",
-                            leading = { Icon(Symbols.TaskAlt, null) }, trailing = { ListChevron() },
+                            leading = { ListAvatar(Symbols.TaskAlt) }, trailing = { ListChevron() },
                             onClick = { nav.completed() }, containerColor = s.surfaceContainerLowest, tag = "tasks-completed")
                     }
                     if (archived.isNotEmpty()) item(key = "archived") {
@@ -306,7 +308,8 @@ internal fun TaskRow(
                 .heightIn(min = 72.dp).padding(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            HabitIcon(task.symbol, task.color)
+            // Done: the icon at 38 % and the name in On surface variant (Figma 1129:66684), never struck through.
+            HabitIcon(task.symbol, task.color, modifier = if (done) Modifier.alpha(0.38f) else Modifier)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp).padding(vertical = 6.dp)) {
                 Text(task.name, style = AppType.titleMedium, color = if (done) c.secondary else c.ink)

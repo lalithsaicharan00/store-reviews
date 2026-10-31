@@ -300,10 +300,11 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **What Figma shows:** both. Today and Day details: "Meds paused until Wed, 28 Oct", the Pause sheet's "Back on Fri,
   30 Oct". Habits & Tasks and the details pages: "Stretch paused until Fri 30 Oct", "Paused until Fri 30 Oct" (52 times).
 - **What I did for now:** each screen as its page draws it, so the app has both: the paused card says "Paused until Sun
-  1 Nov" and the snackbar under it "Stretch paused until Sat, 7 Nov".
+  1 Nov" and the snackbar under it "Stretch paused until Sat, 7 Nov". The Tasks tab's frames all have the comma
+  ("Mon, 26 Oct", "Tue, 4 Nov · Morning", "Completed Wed, 21 Oct"), so its words do too (QA Habits & tasks 20).
 - **Question:** which one, everywhere?
-- **My recommendation:** without the comma ("Fri 30 Oct"): it's the form the most frames use, it's shorter, and the
-  comma adds nothing between a weekday and a date.
+- **My recommendation:** one form everywhere. With the comma ("Fri, 30 Oct") is what Today, Day details, the Pause
+  sheet and the whole Tasks tab use; the habit cards' "Paused until Fri 30 Oct" would follow.
 
 ## Details pages
 

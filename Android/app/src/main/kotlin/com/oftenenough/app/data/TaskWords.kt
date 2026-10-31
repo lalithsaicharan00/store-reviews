@@ -17,12 +17,12 @@ val Habit.isTask: Boolean get() = kind == HabitKind.Task
 val Habit.isOneTimeTask: Boolean get() = kind == HabitKind.Task && dueDay != null
 val Habit.isRepeatingTask: Boolean get() = kind == HabitKind.Task && dueDay == null
 
-private val dayName = DateTimeFormatter.ofPattern("EEEE, d MMM", Locale.ENGLISH)
+private val dayName = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
 private val monthName = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH)
 private val monthYear = DateTimeFormatter.ofPattern("MMMM yyyy", Locale.ENGLISH)
-private val shortDay = DateTimeFormatter.ofPattern("EEE d MMM", Locale.ENGLISH)
+private val shortDay = DateTimeFormatter.ofPattern("EEE, d MMM", Locale.ENGLISH)
 
-/** "Thu 16 Oct": the Tasks page's short day, without a comma (Figma 1); with its year when that isn't [today]'s ("Fri 28 Nov 2025"). */
+/** "Thu, 16 Oct": the Tasks page's short day, as Figma's Tasks frames write it (1129:66684); with its year when that isn't [today]'s ("Fri, 28 Nov 2025"). */
 fun taskDay(day: Int, today: Int? = null): String {
     val d = LocalDate.ofEpochDay(day.toLong())
     val sameYear = today == null || LocalDate.ofEpochDay(today.toLong()).year == d.year
@@ -30,7 +30,7 @@ fun taskDay(day: Int, today: Int? = null): String {
 }
 
 /**
- * The One-time tab's heading for a day (Figma 1): Today, Tomorrow, the next days by name ("Monday, 20 Oct"), then by
+ * The One-time tab's heading for a day (Figma 1): Today, Tomorrow, the next days by name ("Mon, 20 Oct"), then by
  * month ("November"; with its year when it isn't this year). [byDay] is false for the month headings.
  */
 fun taskHeading(day: Int, today: Int): Pair<String, Boolean> {
