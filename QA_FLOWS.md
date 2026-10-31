@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 82 |
+| today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **92** |
+| **All** | | **290** | **94** |
 
 ## Bug log
 
@@ -168,6 +168,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁶ Today 77: posted through its own `post` by a test launch's `alert` extra (the emulator has no lock-screen lock, so it was checked in the shade). Its 30th day ended at 11 PM yesterday, so the pop-up truly says "reached yesterday" where Figma's, reached that morning, says "reached today". Social media's "7 days within the limit" band is D-40.
 ⁷ Today 78: posted with Today in front (a test launch posts once Today is drawn). Android draws a heads-up collapsed, so its body ends "Tap to see…" where Figma draws both lines; pulled down in the shade it shows both (flow 77).
 ⁸ Today 79: Stretch was finished from Day details (Log time, 6 min), so its bar rose over the sheet; Figma's frame shows the same bar over Today. The day bar's 6/14 against Figma's 7/13 is D-40.
+⁹ Today 82, 83: checked against Figma's frames as read before the Figma connection dropped (their captions and states). 82: Meds' 29 days ended the day before yesterday (`streak Meds=0`, `earlier Meds=29`); ✓ on Yesterday makes 🔥 30 and nothing plays, there or back on Today. 83: ✓ gives the bar; Undo takes the check, the 3 and the band; ✓ again shows 🔥 3 and the band at rest (it stands again), with no bar, burst or roll.
 
 ## Open questions for the user
 
@@ -277,8 +278,8 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 79 | 114:2 | Rule: a pop-up, a bar, then just the row | Meds 29, Stretch 2, Skincare 6 → pop-up → bar → just the row | passed ⁸ |
 | 80 | 114:793 | Rule: two bars, then just the row | Meds 2, Stretch 6, Skincare 13 → bar → bar → row | passed |
 | 81 | 114:1551 | Rule: no more than 2 pop-ups in 7 days | Wed, 2 pop-ups → ✓ 30 days: a bar → 5 s band; See opens pop-up | passed |
-| 82 | 114:2107 | Rule: history added later is never celebrated | missed yesterday → ‹ Yesterday → ✓: nothing plays | not started |
-| 83 | 114:2646 | Rule: undone and done again | Meds 2 → ✓ bar → Undo → ✓ again: nothing plays twice | not started |
+| 82 | 114:2107 | Rule: history added later is never celebrated | missed yesterday → ‹ Yesterday → ✓: nothing plays | passed ⁹ |
+| 83 | 114:2646 | Rule: undone and done again | Meds 2 → ✓ bar → Undo → ✓ again: nothing plays twice | passed ⁹ |
 | 84 | 1714:66792 | Several reminders in one time of day (added 31 Oct, the user) | Meds 8:00 + 11:00 AM in Morning → 7:30: shows 8:00 AM → 8:00 goes by: 11:00 AM → after 11:00: stays 11:00 AM | passed |
 
 ## Day details (169:1270)
