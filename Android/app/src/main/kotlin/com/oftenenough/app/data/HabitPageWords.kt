@@ -403,6 +403,16 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
             if (extraDays == 0 && total == 0.0) detail = if (running) nextDueText(habit, span.last) else null
         }
     }
+    // A period paused through every day it had (Figma 1128:217099): "Paused all of July", nothing counted against anyone.
+    val lived = strip.filter { it.day >= start && it.day <= today }
+    if (lived.isNotEmpty() && lived.all { it.mark == DayMark.PAUSED } && !(running && pause(habit, today)?.let { today in it } == true)) {
+        headline = when (range) {
+            ProgressRange.WEEK -> "Paused all week"
+            ProgressRange.MONTH -> "Paused all of " + HabitCopy.monthNames[pageMonth(span.first) - 1]
+            ProgressRange.YEAR -> "Paused all of " + pageYear(span.first)
+        }
+        detail = "Paused days don’t count"
+    }
     if (running && !habit.archived) {
         val p = pause(habit, today)
         // Figma's paused card (Habits & Tasks 5.5.1): "Paused until Fri 30 Oct" (the day it's back), "Paused days don't count".

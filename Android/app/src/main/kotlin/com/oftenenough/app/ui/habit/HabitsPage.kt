@@ -547,7 +547,7 @@ private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
                 AppButton("New habit", { nav.newHabit() }, Modifier.semantics { testTag = "habits-empty-new" }, icon = Symbols.Add)
             }
         }
-        if (archivedCount > 0) Box(Modifier.padding(start = 16.dp, end = 16.dp, bottom = 24.dp)) {
+        if (archivedCount > 0) Box(Modifier.navigationBarsPadding().padding(start = 16.dp, end = 16.dp, bottom = 24.dp)) {
             ArchivedRow(archivedCount, enabled = true) { nav.archived() }
         }
     }
