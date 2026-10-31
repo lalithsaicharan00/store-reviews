@@ -1,10 +1,8 @@
 package com.oftenenough.app.ui.habit
 
-import androidx.compose.ui.semantics.testTagsAsResourceId
+import com.oftenenough.app.ui.components.MoreMenuButton
 import androidx.compose.material3.MaterialTheme
 import com.oftenenough.app.ui.components.HabitIcon
-import com.oftenenough.app.ui.components.AppMenu
-import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.components.SegmentedListGap
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.components.EmptyState
@@ -85,13 +83,15 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
     fun say(text: String, onUndo: () -> Unit) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) onUndo()
+            if (snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) onUndo()
         }
     }
     fun restore(h: Habit) {
+        val day = store.archivedOn[h.id]
+        val pausesBefore = store.pauses[h.id] ?: emptyList()
         if (!store.restore(h)) { nav.restoreNoRoom(h); return }
-        // Undo archives it again.
-        say("${h.name} restored") { store.archive(listOf(h)) }
+        // Undo puts it back exactly: archived from its own day (its place in this list), without the restore's pause.
+        say("${h.name} restored") { if (day != null) store.undoRestore(h, day, pausesBefore) else store.archive(listOf(h)) }
     }
     fun delete(h: Habit) {
         hidden = hidden + h.id
@@ -99,7 +99,7 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
             snackbar.currentSnackbarData?.dismiss()
             var undone = false
             try {
-                undone = snackbar.showSnackbar("${h.name} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
+                undone = snackbar.showSnackbar("${h.name} deleted", "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed
             } finally {
                 if (!undone) store.habit(h.id)?.let { store.delete(listOf(it)) }
                 hidden = hidden - h.id
@@ -130,12 +130,10 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
                         AppListItem(h.name, i, archived.size, Modifier.padding(bottom = SegmentedListGap), store.archivedLine(h),
                             leading = { HabitIcon(h.symbol, h.color) },
                             trailing = {
-                                Box {
-                                    StandardIconButton(Symbols.MoreVert, "More for ${h.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + h.name })
-                                    AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                                        AppMenuItem("Restore", { open = false; restore(h) }, icon = Symbols.Unarchive, tag = "archived-menu-restore")
-                                        AppMenuItem("Delete", { open = false; deleting = h }, icon = Symbols.Delete, destructive = true, tag = "archived-menu-delete")
-                                    }
+                                MoreMenuButton("More for ${h.name}", open, { open = true }, { open = false },
+                                    Modifier.semantics { testTag = "habits-row-more-" + h.name }, width = 200.dp) {
+                                    AppMenuItem("Restore", { open = false; restore(h) }, icon = Symbols.Unarchive, tag = "archived-menu-restore")
+                                    AppMenuItem("Delete", { open = false; deleting = h }, icon = Symbols.Delete, destructive = true, tag = "archived-menu-delete")
                                 }
                             },
                             onClick = { nav.open(h) }, containerColor = s.surfaceBright, headlineLines = 1, tag = "habits-row-" + h.name)

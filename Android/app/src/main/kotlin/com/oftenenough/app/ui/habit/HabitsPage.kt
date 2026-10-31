@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.MoreMenuButton
 import com.oftenenough.app.data.isRepeatingTask
 import com.oftenenough.app.data.isOneTimeTask
 import com.oftenenough.app.data.isTask
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppSnackbarHost
-import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.components.AppMenuItem
 import androidx.compose.ui.graphics.Color
 import com.oftenenough.app.ui.components.SegmentedListGap
@@ -70,9 +70,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.customActions
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
-import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.DpOffset
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
@@ -178,7 +176,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     fun say(text: String, action: String, onAction: () -> Unit) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) onAction()
+            if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) onAction()
         }
     }
     fun archive(h: Habit) {
@@ -197,7 +195,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
             snackbar.currentSnackbarData?.dismiss()
             var undone = false
             try {
-                undone = snackbar.showSnackbar("${h.name} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
+                undone = snackbar.showSnackbar("${h.name} deleted", "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed
             } finally {
                 if (!undone) store.habit(h.id)?.let { store.delete(listOf(it)) }
                 hidden = hidden - h.id
@@ -396,11 +394,8 @@ private fun HabitCard(card: ProgressWeekCard, snap: ProgressSnapshot, store: Hab
         customActions = dayActions
     }, onClick = { nav.open(habit) }, onClickLabel = "Opens the habit") {
         HistoryHabitHeader(habit.symbol, habit.color, habit.name, card.goal) {
-            Box {
-                StandardIconButton(Symbols.MoreVert, "More for ${habit.name}", { open = true }, Modifier.semantics { testTag = "habits-row-more-" + habit.name })
-                // Figma hangs the menu, 220 wide, from the ⋮ glyph (2 over its foot, its right edge on the glyph's), not the 48 target.
-                AppMenu(open, { open = false }, modifier = Modifier.width(220.dp).semantics { testTagsAsResourceId = true }, offset = DpOffset((-12).dp, (-14).dp)) { menu(habit) { open = false } }
-            }
+            MoreMenuButton("More for ${habit.name}", open, { open = true }, { open = false },
+                Modifier.semantics { testTag = "habits-row-more-" + habit.name }, width = 220.dp) { menu(habit) { open = false } }
         }
         val start = card.runStart
         if (start != null) HistorySummary(card.detail) { QuitRunClock(start, store.clock) } else HistorySummary(card.headline, card.detail)

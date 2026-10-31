@@ -544,6 +544,20 @@ class HabitStore(
         return true
     }
 
+    /** A restore's Undo: archived again from its own [day], its pauses as they were before the restore paused the archived days. */
+    fun undoRestore(habit: Habit, day: Int, pausesBefore: List<HabitPause>) = perform {
+        val i = habits.indexOfFirst { it.id == habit.id }
+        if (i < 0) return@perform
+        val archived = habits[i].copy(archived = true)
+        saveSetting(Keys.ARCHIVED + archived.id, dayKey(day))
+        saveHabitRecord(archived, i)
+        archivedOn = archivedOn + (archived.id to day)
+        if (pausesBefore.isEmpty()) removeSetting(Keys.PAUSE + archived.id) else saveSetting(Keys.PAUSE + archived.id, SwiftJson.pauses(pausesBefore))
+        pauses = if (pausesBefore.isEmpty()) pauses - archived.id else pauses + (archived.id to pausesBefore)
+        habits = habits.map { if (it.id == archived.id) archived else it }
+        rulesChanged()
+    }
+
     /** Deletes habits and their history; the row is kept as a tombstone so a sync can't bring it back. */
     fun delete(list: List<Habit>) {
         for (h in list) if (timers.containsKey(h.id)) stopTimer(h, today())

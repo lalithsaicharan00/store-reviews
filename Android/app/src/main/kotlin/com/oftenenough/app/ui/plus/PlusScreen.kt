@@ -270,7 +270,9 @@ private fun Modifier.example(description: String) = this
 private fun SixthPicture(store: HabitStore) {
     val s = MaterialTheme.colorScheme
     val habits = store.habits.filter { !it.archived && it.kind != HabitKind.Task }
-    val used = "${habits.size} of ${HabitStore.FREE_HABIT_LIMIT} free habits"
+    // More than five once Plus has ended (a refund): never "16 of 5", which can't be; the words of "Unlimited habits" below.
+    val used = if (habits.size > HabitStore.FREE_HABIT_LIMIT) "${habits.size} habits · Free has ${HabitStore.FREE_HABIT_LIMIT}"
+        else "${habits.size} of ${HabitStore.FREE_HABIT_LIMIT} free habits"
     Column(
         Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 20.dp)
             .semantics(mergeDescendants = true) { contentDescription = used; testTag = "plus-sixth" },

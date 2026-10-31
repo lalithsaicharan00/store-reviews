@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 11 |
+| habits & tasks | 269:148 | 35 | 12 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **168** |
+| **All** | | **290** | **169** |
 
 ## Bug log
 
@@ -241,6 +241,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 203. Habits & tasks 8 (every sheet with buttons) · everything above a sheet's buttons sat 8 higher than Figma: Figma's 16 above and 36 under are to the 40 dp buttons, and their 48 touch targets added 4 to each. `AppBottomSheet` now counts them.
 204. Habits & tasks 10 · Undo on "Stretch archived" scrolled the page: the card came back half under the pinned week row and Week · Month · Year went off the top. The page scrolls to a habit it hasn't seen (one just added), and an Undo looked new; it now scrolls only when the card isn't already wholly in view (read a frame later, by its key). Figma: "Stretch is back where it was".
 205. Habits & tasks 11 · Delete Stretch? said "Its history and notes are deleted too. To keep them, archive it instead."; Figma (and Habit details' own dialog): "Its logs, notes, streaks and milestones go too. To keep them, archive it instead: Archive is in the same menu." One string now (`DeleteHabitWords`). Archived habits' and tasks' dialogs have their own Figma words (flows 13, 24).
+206. Habits & tasks 12 (every row ⋮: Archived habits and tasks, Completed tasks, Make room, and the habit cards of 7) · a list row's ⋮ sat 8 in from Figma's (its 48 target ended at the row's 16 inset, where Figma puts the 24 glyph), and its menu hugged its words under the target, 4 off in a list row. One `MoreMenuButton` now: the glyph in its 24 slot, the target spreading past it, and the menu anchored to the glyph itself, hanging from its foot with its right edge on the glyph's (Archived: 200 wide, 128–328; the card: 220, 112–332, as Figma).
+207. Habits & tasks 12 · Undo on "Water plants restored" archived it again as of today: it jumped to the top of the list as "Archived 31 Oct", and kept the pause the restore had put over its archived days. `HabitStore.undoRestore` puts it back exactly: archived 15 Sep, in its place, its pauses as they were.
+208. Habits & tasks 12 (every page) · most Undo snackbars were Material's Short, about 4 s (Archived, Completed, Habits & Tasks, Tasks, Arrange, Day details, Habit details, Make room); Figma: Undo "stays until it's tapped, another action is taken, or about 10 seconds", Long, as Today's already were. All are Long now.
+209. Habits & tasks 12 · Restore a 6th habit on the free plan with 16 habits said "16 of 5 free habits" (Plus ended with more than five: a refund); it now says "16 habits · Free has 5", the words of Unlimited habits under it.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -470,7 +474,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | passed (Stretch first in Morning again; Undo puts the pause back as it was, to its day) |
 | 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | passed ↻ |
 | 11 | 292:2 | A card's ⋮: Delete | ⋮ Delete → Delete Stretch? → Delete; Undo → Cancel/Undo | passed ↻ (without Undo it's gone for good: not in Archived, which stays 3) |
-| 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | not started |
+| 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | passed ↻ (on Plus, as Figma's frames; on the free plan with more than five, Restore opens Restore a 6th habit) |
 | 13 | 293:849 | Archived habits: Delete, open one, the last one restored | ⋮ Delete → dialog → tap Push-ups: read-only details → empty | not started |
 | 14 | 296:2 | Search habits and tasks (from Habits) | search → search view → “wa” → Water → ← keeps search | not started |
 | 15 | 296:602 | Search: no match (from Habits) | “yoga” → Add “yoga” → What do you want to do? → How track? → New habit “yoga” → Add · Show | not started |

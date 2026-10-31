@@ -140,7 +140,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
     fun say(text: String, action: String = "Undo", onAction: () -> Unit) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) onAction()
+            if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) onAction()
         }
     }
     /** Moves a one-time task to [day] (null: No date) and a repeating task's open day to [day]; says where. */
@@ -168,7 +168,7 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
             snackbar.currentSnackbarData?.dismiss()
             var undone = false
             try {
-                undone = snackbar.showSnackbar("${t.name} deleted", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
+                undone = snackbar.showSnackbar("${t.name} deleted", "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed
             } finally {
                 if (!undone) store.habit(t.id)?.let { store.delete(listOf(it)) }
                 hidden = hidden - t.id

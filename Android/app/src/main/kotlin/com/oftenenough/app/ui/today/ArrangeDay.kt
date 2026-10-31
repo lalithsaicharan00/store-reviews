@@ -248,7 +248,7 @@ fun ArrangeDayScreen(
         fun name(id: String) = if (id == DaySection.QUITTING) "Quitting" else store.section(id).name
         val where = when (at) { 0 -> "to the top"; order.size - 1 -> "to the bottom"; else -> "after ${name(order[at - 1])}" }
         scope.launch {
-            val r = snackbar.showSnackbar("${name(card)} moved $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+            val r = snackbar.showSnackbar("${name(card)} moved $where", actionLabel = "Undo", duration = SnackbarDuration.Long)
             if (r == SnackbarResult.ActionPerformed) store.placeCard(card, was)
         }
     }
@@ -266,7 +266,7 @@ fun ArrangeDayScreen(
         if (fromCard != toCard) {
             val where = if (toCard == DaySection.QUITTING) "Quitting" else store.section(toCard).name
             scope.launch {
-                val r = snackbar.showSnackbar("${old.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+                val r = snackbar.showSnackbar("${old.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Long)
                 if (r == SnackbarResult.ActionPerformed) { store.update(old); store.reorder(before) }
             }
         }
@@ -403,7 +403,7 @@ fun ArrangeDayScreen(
         store.reorder((members[to] ?: emptyList()).map { it.id } + h.id)
         val where = store.section(to).name
         scope.launch {
-            val r = snackbar.showSnackbar("${h.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Short)
+            val r = snackbar.showSnackbar("${h.name} moved to $where", actionLabel = "Undo", duration = SnackbarDuration.Long)
             if (r == SnackbarResult.ActionPerformed) { store.update(h); store.reorder(before) }
         }
     } }

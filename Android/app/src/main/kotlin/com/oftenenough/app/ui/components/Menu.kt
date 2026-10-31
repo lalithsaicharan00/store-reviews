@@ -1,5 +1,11 @@
 package com.oftenenough.app.ui.components
 
+import androidx.compose.ui.Alignment
+import com.oftenenough.app.ui.theme.Symbols
+import androidx.compose.ui.semantics.testTagsAsResourceId
+import androidx.compose.ui.layout.layout
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -123,3 +129,27 @@ fun AppMenuItem(
         colors = MenuDefaults.selectableItemColors(textColor = red, leadingIconColor = red), contentPadding = padding)
 }
 
+/**
+ * A row's or card's ⋮ as Figma's List item and Habit history card draw it: the 24 glyph in the trailing slot at the
+ * row's inset, its 48 touch target spreading 12 past each side of that slot, and its menu ([width] wide) hanging from
+ * the glyph's foot with its right edge on the glyph's (QA, 31 Oct 2026: the glyph sat 8 to 12 in from Figma's, the menu
+ * under the 48 target).
+ */
+@Composable
+fun MoreMenuButton(
+    label: String, open: Boolean, onOpen: () -> Unit, onDismiss: () -> Unit, modifier: Modifier = Modifier,
+    width: Dp = Dp.Unspecified, content: @Composable ColumnScope.() -> Unit,
+) {
+    Box(Modifier.layout { m, c ->
+        val p = m.measure(c.copy(minWidth = 0))
+        val spill = ((p.width - 24.dp.roundToPx()) / 2).coerceAtLeast(0)
+        layout(p.width - 2 * spill, p.height) { p.place(-spill, 0) }
+    }) {
+        StandardIconButton(Symbols.MoreVert, label, onOpen, modifier)
+        // The menu's anchor is the glyph itself, not the 48 target (offsets from the target came out 4 off in a list row).
+        Box(Modifier.align(Alignment.Center).size(24.dp)) {
+            AppMenu(open, onDismiss, (if (width != Dp.Unspecified) Modifier.width(width) else Modifier).semantics { testTagsAsResourceId = true },
+                content = content)
+        }
+    }
+}

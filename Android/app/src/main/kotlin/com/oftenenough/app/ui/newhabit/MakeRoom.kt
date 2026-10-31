@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.MoreMenuButton
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -31,12 +32,10 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.AppListItem
-import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.components.AppMenuItem
 import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ListAvatar
-import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.HabitIcons
 import com.oftenenough.app.ui.theme.Symbols
@@ -66,7 +65,7 @@ fun MakeRoomPage(store: HabitStore, onBack: () -> Unit, onRoom: () -> Unit) {
         store.archive(listOf(h))
         scope.launch {
             snack.currentSnackbarData?.dismiss()
-            if (snack.showSnackbar("${h.name} archived", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed)
+            if (snack.showSnackbar("${h.name} archived", "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed)
                 store.habit(h.id)?.let { store.restore(it) }
         }
     }
@@ -107,12 +106,9 @@ private fun RoomRow(h: Habit, store: HabitStore, index: Int, count: Int, onArchi
         headlineLines = 1,
         leading = { ListAvatar(HabitIcons.icon(h.symbol), tint = appColors.habit(h.color)) },
         trailing = {
-            Box {
-                StandardIconButton(Symbols.MoreVert, "More for ${h.name}", { menu = true }, Modifier.semantics { testTag = "room-more-${h.name}" })
-                AppMenu(menu, { menu = false }) {
-                    AppMenuItem("Archive", { menu = false; onArchive() }, icon = Symbols.Archive, tag = "room-archive-${h.name}")
-                    AppMenuItem("Delete", { menu = false; onDelete() }, icon = Symbols.Delete, destructive = true, tag = "room-delete-${h.name}")
-                }
+            MoreMenuButton("More for ${h.name}", menu, { menu = true }, { menu = false }, Modifier.semantics { testTag = "room-more-${h.name}" }) {
+                AppMenuItem("Archive", { menu = false; onArchive() }, icon = Symbols.Archive, tag = "room-archive-${h.name}")
+                AppMenuItem("Delete", { menu = false; onDelete() }, icon = Symbols.Delete, destructive = true, tag = "room-delete-${h.name}")
             }
         },
         containerColor = MaterialTheme.colorScheme.surfaceBright, tag = "room-${h.name}",

@@ -368,7 +368,7 @@ private fun AppMain(
                             snackbar.currentSnackbarData?.dismiss()
                             var undone = false
                             try {
-                                undone = snackbar.showSnackbar("${habit.name} deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+                                undone = snackbar.showSnackbar("${habit.name} deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Long) ==
                                     androidx.compose.material3.SnackbarResult.ActionPerformed
                             } finally {
                                 if (!undone) store.habit(habit.id)?.let { store.delete(listOf(it)) }
@@ -428,7 +428,7 @@ private fun AppMain(
                 nav.popBackStack()
                 rootScope.launch {
                     snackbar.currentSnackbarData?.dismiss()
-                    if (snackbar.showSnackbar("$name deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Short) ==
+                    if (snackbar.showSnackbar("$name deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Long) ==
                         androidx.compose.material3.SnackbarResult.ActionPerformed) store.undoSectionDelete(undo)
                 }
             }) { saved ->

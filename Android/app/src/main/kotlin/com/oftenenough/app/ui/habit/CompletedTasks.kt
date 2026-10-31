@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.habit
 
+import com.oftenenough.app.ui.components.MoreMenuButton
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -124,7 +125,7 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
         store.undoEntry(d.entry.id)
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showSnackbar("${d.task.name} is open again", "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) store.putBack(d.entry)
+            if (snackbar.showSnackbar("${d.task.name} is open again", "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) store.putBack(d.entry)
         }
     }
     // Hidden at once; deleted only once Undo has gone (D6).
@@ -136,7 +137,7 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
             var undone = false
             try {
                 val text = if (list.size == 1) "${list[0].name} deleted" else "${list.size} completed tasks deleted"
-                undone = snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed
+                undone = snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed
             } finally {
                 if (!undone) store.delete(ids.mapNotNull { store.habit(it) })
                 hidden = hidden - ids
@@ -178,13 +179,11 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
                             AppListItem(d.task.name, i, list.size, Modifier.padding(bottom = SegmentedListGap), line(d),
                                 leading = { HabitIcon(d.task.symbol, d.task.color) },
                                 trailing = {
-                                    Box {
-                                        StandardIconButton(Symbols.MoreVert, "More for ${d.task.name}", { open = true }, Modifier.semantics { testTag = "tasks-row-more-" + d.task.name })
-                                        AppMenu(open, { open = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
-                                            AppMenuItem("Mark as not done", { open = false; notDone(d) }, icon = Symbols.Undo, tag = "completed-menu-not-done")
-                                            // A repeating task can be deleted here too, the whole task (the user, 29 Oct 2026, A80).
-                                            AppMenuItem("Delete", { open = false; deleting = listOf(d.task); deletingAll = false }, icon = Symbols.Delete, destructive = true, tag = "completed-menu-delete")
-                                        }
+                                    MoreMenuButton("More for ${d.task.name}", open, { open = true }, { open = false },
+                                        Modifier.semantics { testTag = "tasks-row-more-" + d.task.name }) {
+                                        AppMenuItem("Mark as not done", { open = false; notDone(d) }, icon = Symbols.Undo, tag = "completed-menu-not-done")
+                                        // A repeating task can be deleted here too, the whole task (the user, 29 Oct 2026, A80).
+                                        AppMenuItem("Delete", { open = false; deleting = listOf(d.task); deletingAll = false }, icon = Symbols.Delete, destructive = true, tag = "completed-menu-delete")
                                     }
                                 },
                                 onClick = { nav.open(d.task) }, containerColor = s.surfaceBright, headlineLines = 1, tag = "tasks-row-" + d.task.name)

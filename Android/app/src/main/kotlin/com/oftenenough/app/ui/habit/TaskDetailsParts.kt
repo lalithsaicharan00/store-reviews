@@ -120,7 +120,7 @@ internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetails
     fun say(text: String, undo: () -> Unit) {
         scope.launch {
             snackbar.currentSnackbarData?.dismiss()
-            if (snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) undo()
+            if (snackbar.showSnackbar(text, "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) undo()
         }
     }
     // The same actions, words and Undo as the task's ⋮ on Tasks (Figma: "⋮ holds the same five actions").

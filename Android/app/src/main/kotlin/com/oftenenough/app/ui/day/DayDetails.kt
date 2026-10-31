@@ -181,7 +181,7 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
                 // A log added to a past day says what it added and where, with Undo (Habit details, Figma 1373:2, 4.3).
                 scope.launch {
                     snackbar.currentSnackbarData?.dismiss()
-                    if (snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Short) == SnackbarResult.ActionPerformed) {
+                    if (snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) {
                         store.entries(habit.id, day).filter { it.stepId == null }.maxByOrNull { it.createdAt }?.let { store.undoEntry(it.id) }
                     }
                 }
