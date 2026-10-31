@@ -55,10 +55,12 @@ fun AppTimePicker(hour: Int, minute: Int, onDismiss: () -> Unit, okTag: String =
         periodSelectorSelectedContentColor = s.onPrimary,
         periodSelectorContentColor = s.onSurfaceVariant,
     )
-    // The typed fields are Material's text fields (1.5): Surface container highest whether focused or not, On surface.
+    // The typed fields are Material's text fields (1.5): Surface container highest whether focused or not, On surface;
+    // the focused one's 2 dp outline Primary (Figma's Box · Minutes; Material's default here drew Outline grey).
     val fields = TimeInputDefaults.colors().timeTextFieldColors.copy(
         focusedContainerColor = s.surfaceContainerHighest, unfocusedContainerColor = s.surfaceContainerHighest,
         focusedTextColor = s.onSurface, unfocusedTextColor = s.onSurface,
+        focusedIndicatorColor = s.primary,
     )
     val inputColors = TimeInputDefaults.colors(
         containerColor = s.surfaceBright,

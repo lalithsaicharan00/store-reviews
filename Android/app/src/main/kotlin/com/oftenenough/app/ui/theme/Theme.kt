@@ -195,7 +195,10 @@ private val lightScheme = lightColorScheme(
     inverseSurface = Color(0xFF303030), inverseOnSurface = Color(0xFFF1F1F1),
     outline = Color(0xFF777777), outlineVariant = Color(0xFFC6C6C6), scrim = Color.Black,
     background = Color(0xFFEEEEEE), onBackground = Color(0xFF1B1B1B), surfaceVariant = Color(0xFFE2E2E2),
-    surfaceTint = Color.Transparent,
+    // No tint on raised surfaces: Material lays Surface tint over Surface at its elevation's alpha, and Transparent at
+    // that alpha is black (the time picker's Surface bright dialog drew #DFDFDF, not Figma's #F9F9F9). Surface's own
+    // colour makes the layer change nothing.
+    surfaceTint = Color(0xFFF9F9F9),
 ).copy(
     primaryFixed = Color(0xFFE2E2E2), primaryFixedDim = Color(0xFFC6C6C6),
     onPrimaryFixed = Color(0xFF1B1B1B), onPrimaryFixedVariant = Color(0xFF474747),
@@ -226,7 +229,7 @@ private val darkScheme = darkColorScheme(
     inverseSurface = Color(0xFFE6E1E5), inverseOnSurface = Color(0xFF313033),
     outline = Color(0xFF938F99), outlineVariant = Color(0xFF4A484E), scrim = Color.Black,
     background = Color(0xFF0F0F10), onBackground = Color(0xFFF2F2F5), surfaceVariant = Color(0xFF303033),
-    surfaceTint = Color.Transparent,
+    surfaceTint = Color(0xFF1E1E20), // Surface's own colour: no tint (see the light scheme)
 ).copy(
     primaryFixed = Color(0xFF303033), primaryFixedDim = Color(0xFF474747),
     onPrimaryFixed = Color(0xFFF2F2F5), onPrimaryFixedVariant = Color(0xFFA3A3A8),
