@@ -83,23 +83,29 @@ object PlayerWords {
 
     /**
      * Beside the number: "of 8 glasses", "of 20 min", "of 2 cups max", "of 15 kilometres this week", "of £200 this month",
-     * "of 3 steps", "of 1" (the iPhone's `progressTarget`, with its period).
+     * "of 3 steps", "of 1" (the iPhone's `progressTarget`, with its period; an amount's period is [periodLine]).
      */
     fun target(habit: Habit, goal: Double): String {
         val text = when (val k = habit.kind) {
             HabitKind.Duration -> Format.minutes(goal)
             is HabitKind.Amount -> HabitCopy.amount(goal, k.unit)
-            HabitKind.Check -> habit.checkUnit?.takeIf { it.isNotBlank() }?.let { HabitCopy.amount(goal, it) } ?: HabitCopy.number(goal)
+            // A day's checks say "times" ("of 3 times", Figma 253:2); a week's or month's are counted by the period ("of 3 this week").
+            HabitKind.Check -> habit.checkUnit?.takeIf { it.isNotBlank() }?.let { HabitCopy.amount(goal, it) }
+                ?: (HabitCopy.number(goal) + if (habit.frequency.isDayBased && goal > 1) " times" else "")
             HabitKind.Checklist -> HabitCopy.number(goal) + if (habit.frequency.isDayBased) " steps" else " days"
             HabitKind.Quit, HabitKind.Task -> HabitCopy.number(goal)
         }
-        return "of " + text + (if (habit.atMost) " max" else "") + period(habit.frequency)
+        // An amount's period goes on the line under it ("$250 of $500", then "This month": Figma 252:2), where it has room.
+        return "of " + text + (if (habit.atMost) " max" else "") + if (habit.kind is HabitKind.Amount) "" else period(habit.frequency)
     }
+
+    /** The line under an amount kept by the period: "This week", "This month" (Figma 252:2); nothing for a day's goal. */
+    fun periodLine(f: Frequency): String? = period(f).trim().takeIf { it.isNotEmpty() }?.replaceFirstChar { it.uppercase() }
 
     /**
      * The one main action (the iPhone's `primary`): skipped or done moves on ("Next", or "Finish routine" on the last
      * habit); a limit logs what happened and is never "done"; otherwise ✓, one, a step, an amount or the timer.
-     * [goal] is the habit's goal as judged ("Log one" for more than one).
+     * [goal] is the habit's goal as judged ("Add a check" for more than one).
      */
     fun mainAction(habit: Habit, goal: Double, done: Boolean, skipped: Boolean, isLast: Boolean, running: Boolean, started: Boolean,
                    today: Boolean = true): MainAction {
@@ -122,7 +128,7 @@ object PlayerWords {
             return when (habit.kind) {
                 HabitKind.Duration -> timer()
                 is HabitKind.Amount -> amount()
-                HabitKind.Check, HabitKind.Task -> MainAction(PlayerAction.LOG_ONE, "Log one", "Add 1 to ${habit.name}")
+                HabitKind.Check, HabitKind.Task -> MainAction(PlayerAction.LOG_ONE, "Add a check", "Add a check to ${habit.name}")
                 HabitKind.Checklist, HabitKind.Quit -> MainAction(PlayerAction.NONE, "", "")
             }
         }
@@ -131,7 +137,8 @@ object PlayerWords {
         if (done) return onward
         return when (habit.kind) {
             HabitKind.Check, HabitKind.Task ->
-                if (habit.kind == HabitKind.Check && goal > 1) MainAction(PlayerAction.LOG_ONE, "Log one", "Mark ${habit.name} done")
+                // Several a day or a week: "Add a check", as Day details (Figma 253:2, 253:397).
+                if (habit.kind == HabitKind.Check && goal > 1) MainAction(PlayerAction.LOG_ONE, "Add a check", "Add a check to ${habit.name}")
                 else MainAction(PlayerAction.MARK_DONE, "Mark done", "Mark ${habit.name} done")
             is HabitKind.Amount -> amount()
             HabitKind.Duration -> timer()

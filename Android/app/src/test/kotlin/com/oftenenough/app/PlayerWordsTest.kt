@@ -31,15 +31,18 @@ class PlayerWordsTest {
     @Test fun targets() {
         assertEquals("of 8 glasses", PlayerWords.target(habit(HabitKind.Amount("glasses", 1.0), 8.0), 8.0))
         assertEquals("of 1 glass", PlayerWords.target(habit(HabitKind.Amount("glasses", 1.0), 1.0), 1.0))
-        assertEquals("of 15 kilometres this week", PlayerWords.target(habit(HabitKind.Amount("kilometres", 2.5), 15.0, Frequency.PerWeek(1)), 15.0))
-        assertEquals("of £200 this month", PlayerWords.target(habit(HabitKind.Amount("£", 0.0), 200.0, Frequency.PerMonth(1)), 200.0))
+        assertEquals("of 15 kilometres",  // the period is the line under it (Figma 252:2, 31 Oct 2026)
+             PlayerWords.target(habit(HabitKind.Amount("kilometres", 2.5), 15.0, Frequency.PerWeek(1)), 15.0))
+        assertEquals("of £200", PlayerWords.target(habit(HabitKind.Amount("£", 0.0), 200.0, Frequency.PerMonth(1)), 200.0))
+        assertEquals("This month", PlayerWords.periodLine(Frequency.PerMonth(1)))
+        assertEquals(null, PlayerWords.periodLine(Frequency.Daily))
         assertEquals("of 2 cups max", PlayerWords.target(habit(HabitKind.Amount("cups", 1.0), 2.0, atMost = true), 2.0))
         assertEquals("of 20 min", PlayerWords.target(habit(HabitKind.Duration, 20.0), 20.0))
         assertEquals("of 30 min max", PlayerWords.target(habit(HabitKind.Duration, 30.0, atMost = true), 30.0))
         assertEquals("of 1 h 30 min", PlayerWords.target(habit(HabitKind.Duration, 90.0), 90.0))
         assertEquals("of 3 steps", PlayerWords.target(habit(HabitKind.Checklist, 3.0), 3.0))
         assertEquals("of 1", PlayerWords.target(habit(HabitKind.Check), 1.0))
-        assertEquals("of 3", PlayerWords.target(habit(HabitKind.Check, 3.0), 3.0))
+        assertEquals("of 3 times", PlayerWords.target(habit(HabitKind.Check, 3.0), 3.0))  // Figma 253:2
         assertEquals("of 3 this week", PlayerWords.target(habit(HabitKind.Check, 3.0, Frequency.PerWeek(3)), 3.0))
         assertEquals("of 8 glasses", PlayerWords.target(habit(HabitKind.Check, 8.0, checkUnit = "glasses"), 8.0))
         assertEquals("of 1", PlayerWords.target(habit(HabitKind.Task), 1.0))
@@ -68,7 +71,8 @@ class PlayerWordsTest {
 
         val several = habit(HabitKind.Check, 3.0, name = "Stretch breaks")
         assertEquals(PlayerAction.LOG_ONE, action(several).action)
-        assertEquals("Log one", action(several).label)
+        assertEquals("Add a check", action(several).label)  // Figma 253:2 (31 Oct 2026)
+        assertEquals("of 3 times", PlayerWords.target(several, 3.0))
 
         val water = habit(HabitKind.Amount("glasses", 1.0), 8.0)
         assertEquals("+1", action(water).label)

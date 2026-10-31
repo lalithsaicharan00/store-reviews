@@ -17,7 +17,7 @@ no screen with a keyboard could be compared with Figma.
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
-| routine player | 234:2 | 24 | 8 |
+| routine player | 234:2 | 24 | 14 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **141** |
+| **All** | | **290** | **147** |
 
 ## Bug log
 
@@ -205,6 +205,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 167. Routine player 4–6 · the main button's ▶ and ⏸ were filled and Finish had ✓; Figma's player main button uses outlined glyphs (FILL 0) and Finish → (the round row buttons stay filled).
 168. Routine player 5, 7 · the last habit's button said "Finish routine" and the end page with some left said "End of the routine" · "2 left for later. Your progress is saved." with a clock icon, Done listed before Left for later; Figma: "Finish", ⋯ (pending), "1 of 3 done", "Stretch and Skincare wait on Today. Pick them up any time.", and Left for later first. `PlayerWordsTest` follows the new words.
 169. Routine player 8 · skipping in Day details from the player left the card saying "Not done" with a "Skipped for today" line and a message with Undo; Figma: "Skipped" and "Your streak stays safe.", no message (Undo skip stays in Day details).
+170. Routine player 11 · Water at 8 of 8 glasses had no status line; Figma: "Goal met" under the count, as a timer at its goal.
+171. Routine player 13 · a check several times a day showed "✓ Log one" and "2 of 3"; Figma: "+ Add a check" (as Day details) and "of 3 times". `PlayerWordsTest` follows.
+172. Routine player 14 · "3 times a week" counted as done once checked today ("Done for today", Next) after one check; Figma: Add a check until 3 of 3, then "Goal met this week" and Next. "Done for today" stays for "3 days a week" (Figma's note on 253:397).
+173. Routine player 12 · an amount kept by the month read "of $500 this month" beside the number; Figma: "$250 of $500" with "This month" on the line under it (and "Goal met this month" once met).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -396,12 +400,12 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 6 | 245:2 | The end of the routine: everything done | → Skincare all ticked → Finish: end page → Done | passed |
 | 7 | 246:2 | The end of the routine, with some left | → Meds done → Next → › → › last: end page, 2 left → Return to unfinished → Done | passed |
 | 8 | 247:2 | Day details from the player, and skipping | → Today chip: Day details over player → Skip today → ✕ → Next | passed |
-| 9 | 248:300 | Your routine: jump to a habit, change the order | → Morning ▾: Your routine → Skincare → Edit drag → Done | not started |
-| 10 | 249:2 | The ⋮ menu in the player | → ⋮ → Go to first unfinished / Change order / End routine | not started |
-| 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | not started |
-| 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | not started |
-| 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | not started |
-| 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | not started |
+| 9 | 248:300 | Your routine: jump to a habit, change the order | → Morning ▾: Your routine → Skincare → Edit drag → Done | passed |
+| 10 | 249:2 | The ⋮ menu in the player | → ⋮ → Go to first unfinished / Change order / End routine | passed |
+| 11 | 251:2 | An amount in the player | Water → +1 → +1 twice: Goal met → Today chip → Log manually → Add, ✕ | passed |
+| 12 | 252:2 | An amount typed each time: Log | Read → › Savings → Log → Add → › Water | passed |
+| 13 | 253:2 | Several checks a day in the player | → Stretch breaks → Add a check ×2: Goal met → Next | passed |
+| 14 | 253:397 | A week goal in the player | → › Call family → Add a check → Next | passed |
 | 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | not started |
 | 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | not started |
 | 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | not started |

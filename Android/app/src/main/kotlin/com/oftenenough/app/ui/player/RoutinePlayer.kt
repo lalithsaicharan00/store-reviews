@@ -437,7 +437,10 @@ private class PlayerSession(
         if (habit.atMost) return false
         slotOf(habit)?.let { return store.isSlotDone(habit, it, day) }
         val ruled = store.rule(habit, day)
-        return if (ruled.kind == HabitKind.Check && !ruled.frequency.isDayBased) store.rules.isSatisfied(habit, day)
+        // "3 days a week" is done for today once today is checked; "3 times a week" only once the week's goal is met
+        // (Figma 253:397's note, 31 Oct 2026).
+        return if (ruled.kind == HabitKind.Check && ruled.frequency is Frequency.Flexible) store.rules.isSatisfied(habit, day)
+        else if (ruled.kind == HabitKind.Check && !ruled.frequency.isDayBased) store.rules.isPeriodMet(habit, day)
         else store.rules.isComplete(habit, day)
     }
 
@@ -883,12 +886,27 @@ private fun playerStatus(habit: Habit, ruled: Habit, day: Int, store: HabitStore
         if (!ruled.atMost && dayGoal > 0 && now >= dayGoal) return PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET, tag = "player-status")
         if (today && !running && now > 0) return PlayerStatus(Symbols.Filled.Pause, PlayerWords.PAUSED, tag = "player-status")
     }
+    // An amount at its day's goal says so too, as a time does (Figma 251:2: "8 of 8 glasses · Goal met").
+    if ((ruled.kind is HabitKind.Amount || (ruled.kind == HabitKind.Check && store.rules.countsUp(habit, day))) && !ruled.atMost && f.isDayBased && !f.isFlexible) {
+        val met = remember(habit, rev) { store.rules.dayGoal(ruled).let { g -> g > 0 && store.rules.dayProgress(habit, day) >= g } }
+        if (met) return PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET, tag = "player-status")
+    }
+    // An amount by the week or month: "Goal met this month" once met, otherwise the period on its own line (Figma 252:2).
+    if (ruled.kind is HabitKind.Amount && !f.isDayBased && f !is Frequency.Flexible) {
+        val line = PlayerWords.periodLine(f) ?: return null
+        val met = remember(habit, rev) { !ruled.atMost && store.rules.isPeriodMet(habit, day) }
+        return if (met) PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET + PlayerWords.period(f), tag = "player-status")
+            else PlayerStatus(null, line, tag = "player-status")
+    }
     if (f is Frequency.Flexible && ruled.kind != HabitKind.Check && ruled.kind != HabitKind.Task) {
         val days = remember(habit, rev) { store.rules.flexibleProgress(habit, day) } ?: 0
         return PlayerStatus(Symbols.EventAvailable, "$days of ${f.n} days " + (if (f.period == GoalPeriod.MONTH) "this month" else "this week"), tag = "player-status")
     }
     if (ruled.kind == HabitKind.Check && !f.isDayBased) {
-        val doneToday = remember(habit, rev) { store.rules.isSatisfied(habit, day) && !store.rules.isPeriodMet(habit, day) }
+        // A count by the period: "Goal met this week" once it's met; N days a week: "Done for today" (Figma 253:397).
+        val met = remember(habit, rev) { store.rules.isPeriodMet(habit, day) }
+        if (met) return PlayerStatus(Symbols.Check, PlayerWords.GOAL_MET + PlayerWords.period(f), tag = "player-status")
+        val doneToday = remember(habit, rev) { f is Frequency.Flexible && store.rules.isSatisfied(habit, day) }
         if (doneToday) return PlayerStatus(Symbols.Check, PlayerWords.DONE_FOR_TODAY, tag = "player-status")
     }
     return null
@@ -1113,7 +1131,8 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
 // The main button's glyphs are outlined (Figma's player, Main button: FILL 0), as a Button's icon; Finish goes on →.
 private fun actionIcon(a: PlayerAction): ImageVector? = when (a) {
     PlayerAction.NEXT, PlayerAction.FINISH -> Symbols.ArrowForward
-    PlayerAction.MARK_DONE, PlayerAction.LOG_ONE, PlayerAction.NONE -> Symbols.Check
+    PlayerAction.MARK_DONE, PlayerAction.NONE -> Symbols.Check
+    PlayerAction.LOG_ONE -> Symbols.Add
     PlayerAction.LOG_STEP, PlayerAction.LOG_AMOUNT -> null
     PlayerAction.START, PlayerAction.RESUME -> Symbols.PlayArrow
     PlayerAction.PAUSE -> Symbols.Pause
