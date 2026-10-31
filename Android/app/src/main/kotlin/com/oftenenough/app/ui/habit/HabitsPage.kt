@@ -58,6 +58,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -231,7 +232,8 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     val raised = tab == 0 && !searching && active.isNotEmpty() && scrolled
     val bar by animateColorAsState(if (raised) s.surfaceContainerHigh else s.surfaceContainer, MaterialTheme.motionScheme.defaultEffectsSpec(), label = "bar")
 
-    // A habit that wasn't here before (just added or duplicated): its card scrolls into view once it's drawn.
+    // A habit that wasn't here before (just added or duplicated): its card scrolls into view once it's drawn, unless it's
+    // already wholly in view (an archive's Undo puts it back where it was; scrolling to it moved the page, QA flow 10).
     var known by rememberSaveable { mutableStateOf<List<String>?>(null) }
     val activeIds = active.map { it.id }
     var pending by remember { mutableStateOf<String?>(null) }
@@ -243,7 +245,12 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     LaunchedEffect(pending, keys) {
         val id = pending ?: return@LaunchedEffect
         val at = keys.indexOf("card-$id")
-        if (at >= 0) { pending = null; list.animateScrollToItem(at) }
+        if (at < 0) return@LaunchedEffect
+        pending = null
+        withFrameNanos { } // the frame that draws it, so the layout read below has it
+        val info = list.layoutInfo
+        val seen = info.visibleItemsInfo.firstOrNull { it.key == "card-$id" }
+        if (seen == null || seen.offset < 0 || seen.offset + seen.size > info.viewportEndOffset) list.animateScrollToItem(at)
     }
 
     Box(Modifier.fillMaxSize().background(s.surfaceContainer)) {

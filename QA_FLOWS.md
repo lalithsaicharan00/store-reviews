@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 9 |
+| habits & tasks | 269:148 | 35 | 10 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **166** |
+| **All** | | **290** | **167** |
 
 ## Bug log
 
@@ -239,6 +239,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 201. Habits & tasks 7 (Habit details, Archived, Completed too) · messages sat 96 above the bottom, room kept for a pinned button these pages don't have; every Figma frame on them puts the snackbar at y 712, 12 from the sides and 16 above the gesture bar.
 202. Habits & tasks 8 (every Pause sheet) · its four choices were 76 tall, Figma's 72: Material's `ListItem` pads 10, not 8, so `RadioListItem`'s words had 16 round them where Figma has 14 (16 for one line).
 203. Habits & tasks 8 (every sheet with buttons) · everything above a sheet's buttons sat 8 higher than Figma: Figma's 16 above and 36 under are to the 40 dp buttons, and their 48 touch targets added 4 to each. `AppBottomSheet` now counts them.
+204. Habits & tasks 10 · Undo on "Stretch archived" scrolled the page: the card came back half under the pinned week row and Week · Month · Year went off the top. The page scrolls to a habit it hasn't seen (one just added), and an Undo looked new; it now scrolls only when the card isn't already wholly in view (read a frame later, by its key). Figma: "Stretch is back where it was".
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -466,7 +467,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 7 | 286:2 | A card's ⋮: Edit habit | ⋮ → menu → Edit habit → Save: 15 min a day | passed ↻ (Undo puts back 10 min a day and its goal history; from Habit details, "Changes saved") |
 | 8 | 289:2 | A card's ⋮: Pause… | ⋮ Pause… → sheet → Pause; Undo → in Paused | passed ↻ (Paused keeps the person's order: Figma's "at the end" is the section's place; the snackbar's "Sat, 7 Nov": D-56) |
 | 9 | 290:2 | A paused card's ⋮: Resume | Paused ⋮ → Resume → Undo snackbar → back in Morning | passed (Stretch first in Morning again; Undo puts the pause back as it was, to its day) |
-| 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | not started |
+| 10 | 291:2 | A card's ⋮: Archive | ⋮ Archive; Undo → Undo → Archived counts 4 | passed ↻ |
 | 11 | 292:2 | A card's ⋮: Delete | ⋮ Delete → Delete Stretch? → Delete; Undo → Cancel/Undo | not started |
 | 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | not started |
 | 13 | 293:849 | Archived habits: Delete, open one, the last one restored | ⋮ Delete → dialog → tap Push-ups: read-only details → empty | not started |
