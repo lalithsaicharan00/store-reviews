@@ -223,9 +223,12 @@ private fun AppMain(
                 DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
             }
         }
-        composable("add/{habit}/{day}") { e ->
+        composable("add/{habit}/{day}?from={from}",
+            arguments = listOf(androidx.navigation.navArgument("from") { type = androidx.navigation.NavType.StringType; nullable = true; defaultValue = null })) { e ->
             AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store,
-                say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } }) { nav.back(e) }
+                say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } },
+                // Back on the timer, the time added says so, with Undo (Figma 956:75584: "8 min added to Social media").
+                sayAdded = if (e.arguments?.getString("from") == "timer") ({ text, undo -> sayUndo(text, undo) }) else null) { nav.back(e) }
         }
         composable("log/{id}") { e ->
             LogScreen(e.arguments!!.getString("id")!!, store, say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } },
@@ -403,7 +406,7 @@ private fun AppMain(
             val id = e.arguments!!.getString("id")!!
             WithDay(store, nav) { openDay ->
                 TimerScreen(store, id, { nav.popBackStack() },
-                    onLogManually = { nav.navigate(Routes.add(id, store.today())) },
+                    onLogManually = { nav.navigate(Routes.add(id, store.today()) + "?from=timer") },
                     onOpenDay = { store.habit(id)?.let { openDay(it, store.today()) } })
             }
         }
@@ -435,8 +438,10 @@ private fun AppMain(
     // A page with no pinned button (Plus, All logs) has its messages 16 from the sides and the bottom (Figma 7.2.2,
     // 905:16391: with the snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
     val nothingPinned = menuItem == MenuItem.PLUS || route?.startsWith("alllogs/") == true
+    // The timer's 96 dp buttons: its messages sit over the card's foot, 18 above them (Figma 956:75584: 602 to 650).
+    val overTimer = route?.startsWith("timer/") == true
     if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
-        .let { if (nothingPinned) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = 96.dp) })
+        .let { if (nothingPinned) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = if (overTimer) 114.dp else 96.dp) })
     }
     }
     val toPause = pausing.mapNotNull { store.habit(it) }.filter { store.rules.canPause(it) }
@@ -630,7 +635,7 @@ private fun todayActions(nav: NavHostController, view: android.view.View, pause:
  * Today's pages: Undo · Note under the last log stay while one of these is open over Today (the note, Add log, the
  * timer, a log, Day details' pages) and go when the person leaves Today for anything else (Figma 1.2).
  */
-private val pagesOverToday = setOf("note/{habit}/{day}", "add/{habit}/{day}", "timer/{id}", "log/{id}", "alllogs/{habit}/{day}")
+private val pagesOverToday = setOf("note/{habit}/{day}", "add/{habit}/{day}?from={from}", "timer/{id}", "log/{id}", "alllogs/{habit}/{day}")
 
 /**
  * Back from [e] only while it's the screen in front. A record's page goes back, then its record goes (U27); seeing it

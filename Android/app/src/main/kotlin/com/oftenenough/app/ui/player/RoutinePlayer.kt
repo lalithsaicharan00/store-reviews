@@ -1077,9 +1077,9 @@ private fun ProgressLine(habit: Habit, ruled: Habit, day: Int, store: HabitStore
     val bar = modifier.fillMaxWidth().padding(horizontal = inset).height(10.dp)
         .semantics { progressBarRangeInfo = ProgressBarRangeInfo(fraction, 0f..1f); testTag = "player-bar" }
     if (neutral) {
-        Box(bar, contentAlignment = Alignment.Center) {
-            Box(Modifier.fillMaxWidth().height(4.dp).clip(CircleShape).background(c.secondary))
-        }
+        // Over the limit: the line turns Outline grey, wave and track alike, and still waves while the clock runs (Figma
+        // 956:75417: #777777; the design system's Linear progress: wavy while a timer counts, a limit's too).
+        HabitProgress(fraction, running, bar, MaterialTheme.colorScheme.outline, MaterialTheme.colorScheme.outline)
     } else if (ruled.atMost) {
         // A limit isn't a goal: its wave stays neutral, Outline on Outline variant (Figma's Today, flow 45).
         val s = MaterialTheme.colorScheme

@@ -211,7 +211,9 @@ fun DurationCard(draft: ValueDraft, focus: FocusRequester?, withSeconds: Boolean
  * (Figma 1.6.4); a time later than now stays at now, and says so (1.6.5).
  */
 @Composable
-fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: EntrySource = EntrySource.MANUAL, say: (String) -> Unit = {}, onDone: () -> Unit) {
+fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: EntrySource = EntrySource.MANUAL, say: (String) -> Unit = {},
+                 /** From the timer: what was added, said with Undo once back there ("8 min added to Social media"). */
+                 sayAdded: ((String, () -> Unit) -> Unit)? = null, onDone: () -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onDone() }; return }
     val c = appColors
     val today = store.today()
@@ -253,6 +255,10 @@ fun AddLogScreen(habitId: String, startDay: Int, store: HabitStore, source: Entr
             val what = if (kind == RecordKind.TIME) Format.minutes(value!!) else HabitCopy.amount(value!!, ruled.unit)
             val where = when (day) { today -> "today"; today - 1 -> "yesterday"; else -> recordDate(day) }
             say("$what added to $where")
+        } else if (sayAdded != null && kind != RecordKind.SLIP) {
+            val what = if (kind == RecordKind.TIME) Format.minutes(value!!) else HabitCopy.amount(value!!, ruled.unit)
+            val offer = store.afterLog
+            sayAdded("$what added to ${habit.name}") { offer?.let { store.undo(it) } }
         }
         onDone()
     }
