@@ -42,6 +42,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -144,6 +145,34 @@ fun TasksPage(store: HabitStore, nav: TasksNav) {
             snackbar.currentSnackbarData?.dismiss()
             if (snackbar.showSnackbar(text, action, duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) onAction()
         }
+    }
+    // A task made from this page (+, search's Add, Duplicate): its kind's tab, and where it went, with Show (Figma 309:2,
+    // 314:466, 315:2: "Buy groceries added to Tomorrow · Show"; a copy, beside its original: "… (copy) added · Show").
+    var showing by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(Unit) {
+        val id = JustAdded.id ?: return@LaunchedEffect
+        val t = store.habit(id)?.takeIf { it.isTask } ?: return@LaunchedEffect
+        JustAdded.id = null
+        tab = if (t.isRepeatingTask) 1 else 0
+        val where = when {
+            JustAdded.copy -> null
+            t.isRepeatingTask -> "Repeating"
+            t.dueDay == NO_DATE_DAY -> "No date"
+            else -> taskHeading(t.dueDay ?: today, today).first
+        }
+        JustAdded.copy = false
+        say("${t.name} added" + (where?.let { " to $it" } ?: ""), "Show") { showing = id }
+    }
+    LaunchedEffect(showing, tab) {
+        val id = showing ?: return@LaunchedEffect
+        var at = 1 // One-time · Repeating
+        for (sec in sections) {
+            at++ // its title
+            val i = sec.tasks.indexOfFirst { it.id == id }
+            if (i >= 0) { (if (tab == 0) oneTimeList else repeatingList).animateScrollToItem(at + i); break }
+            at += sec.tasks.size
+        }
+        showing = null // last: it's this effect's own key
     }
     /** Moves a one-time task to [day] (null: No date) and a repeating task's open day to [day]; says where. */
     fun move(t: Habit, day: Int?) {

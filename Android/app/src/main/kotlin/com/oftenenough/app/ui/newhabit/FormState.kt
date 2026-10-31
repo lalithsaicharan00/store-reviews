@@ -32,7 +32,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     /** The kind of habit, chosen before the form opens; it never changes, in Edit too (A68). */
     val type: ItemType = initialType
     /** The name as the previews show it: it catches up when typing pauses (S11); saving reads the live field. */
-    var name by mutableStateOf(original?.name ?: template?.let { TextLimit.clean("${it.name} (copy)", TextLimit.NAME) } ?: "")
+    var name by mutableStateOf(original?.name ?: template?.let { copyName(it.name) } ?: "")
     /** Whether the live field has a name: changes only when it becomes empty or not, so Add follows at once. */
     var nameFilled by mutableStateOf(name.isNotBlank())
     var description by mutableStateOf(from?.let { store.descriptions[it.id] } ?: "")
@@ -224,4 +224,17 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     }
 
     fun suggestIcon() { if (!pickedSymbol) HabitIcons.suggest(name)?.let { symbol = it } }
+}
+
+/**
+ * A Duplicate's name: "Read (copy)". Within the 24 characters (A65), the name gives way word by word so "(copy)" stays
+ * whole: "Pay electricity (copy)", never "Pay electricity bill (co" (QA, Habits & tasks 23; Figma's 27-letter copy: D-57).
+ */
+fun copyName(name: String): String {
+    val full = "$name (copy)"
+    if (full.length <= TextLimit.NAME) return full
+    var base = name.trim()
+    while (base.contains(' ') && base.length + 7 > TextLimit.NAME) base = base.substringBeforeLast(' ').trimEnd()
+    if (base.length + 7 > TextLimit.NAME) base = base.take(TextLimit.NAME - 7).trimEnd()
+    return "$base (copy)"
 }

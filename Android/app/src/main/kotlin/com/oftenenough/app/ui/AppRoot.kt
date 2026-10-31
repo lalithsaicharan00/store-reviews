@@ -253,7 +253,11 @@ private fun AppMain(
             val fromSearch = a?.getString("from") == "search"
             NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { habit ->
                 copyOf?.let { store.placeAfter(habit.id, it.id) }
-                if (fromHabits || fromTasks || fromSearch) { com.oftenenough.app.ui.habit.JustAdded.id = habit.id; nav.popBackStack() }
+                if (fromHabits || fromTasks || fromSearch) {
+                    com.oftenenough.app.ui.habit.JustAdded.id = habit.id
+                    com.oftenenough.app.ui.habit.JustAdded.copy = copyOf != null
+                    nav.popBackStack()
+                }
                 else nav.popBackStack(Routes.TODAY, inclusive = false)
             }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits,
                 task = fromTasks && copyOf == null, onPlusOn = plusOn)

@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 22 |
+| habits & tasks | 269:148 | 35 | 23 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **179** |
+| **All** | | **290** | **180** |
 
 ## Bug log
 
@@ -266,6 +266,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 228. Habits & tasks 20 · the Tasks tab's days read "Tuesday, 3 Nov" and its lines "Tue 1 Dec · 10:30 AM"; Figma's Tasks frames: "Mon, 26 Oct", "Tue, 17 Nov · 10:30 AM" (D-56 asks which form for the whole app).
 229. Habits & tasks 20 · a task done today looked like one still to do; Figma: its icon at 38 % and its name in On surface variant. And the Completed row's ✓ had no circle (Figma: the 40 dp Leading avatar, as Archived).
 230. Habits & tasks 21 (Task details too) · a repeating task's rhythm read "Every Monday", "Every year on December 11", "On the 1st", and most lines wrapped; Figma: "Mondays", "Every year", "The 1st", one line each.
+231. Habits & tasks 23 · a copy of "Pay electricity bill" was named "Pay electricity bill (co", cut at the 24-character limit, with "That's the most" under it; the name now gives way a word at a time so "(copy)" stays whole, "Pay electricity (copy)" (Figma's 27-character name: D-57).
+232. Habits & tasks 23 (and 32, 33) · adding a task from this page said nothing; Figma: "Pay electricity bill (copy) added · Show" (a copy, beside its original), "Buy groceries added to Tomorrow · Show". Show scrolls to it.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -508,7 +510,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 20 | 305:2 | The Tasks tab: One-time | Tasks → One-time → end: No date, Completed, Archived | passed ↻ |
 | 21 | 306:2 | The Tasks tab: Repeating | Repeating → by how often → end | passed ↻ ("Next Mon, 2 Nov" keeps the comma of the Tasks tab's other dates: Figma's Repeating rows go without, D-56) |
 | 22 | 308:2 | A task's ⋮: Move to another day | ⋮ Move… → picker → OK; Undo → under Fri 30 Oct | passed (30 Nov, a month on: under November; the menu hugs its words, 232 to Figma's 244, with the same right edge) |
-| 23 | 309:2 | A task's ⋮: Edit task and Duplicate | Edit task → Save → Duplicate → New task copy → Add · Show | not started |
+| 23 | 309:2 | A task's ⋮: Edit task and Duplicate | Edit task → Save → Duplicate → New task copy → Add · Show | passed ↻ (the copy's name: D-57) |
 | 24 | 309:761 | A task's ⋮: Archive and Delete | Archive; Undo → Delete dialog → Delete; Undo | not started |
 | 25 | 310:2 | A repeating task's ⋮: Skip this time | ⋮ Skip this time → next Wed 28 Oct; Undo → Today unchanged | not started |
 | 26 | 311:2 | A task with No date: Do today, or Pick a day | No date ⋮ → Do today · Show → Show → Pick a day… | not started |

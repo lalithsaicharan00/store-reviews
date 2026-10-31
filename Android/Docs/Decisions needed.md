@@ -306,6 +306,15 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **My recommendation:** one form everywhere. With the comma ("Fri, 30 Oct") is what Today, Day details, the Pause
   sheet and the whole Tasks tab use; the habit cards' "Paused until Fri 30 Oct" would follow.
 
+### D-57. A copy's name past 24 characters
+
+- **Where:** Duplicate, [Figma 1132:223086](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1132-223086); `ui/newhabit/FormState.kt` (`copyName`).
+- **What Figma shows:** "Pay electricity bill (copy)", 27 characters; a name holds 24 (A65).
+- **What I did for now:** the name gives way word by word so "(copy)" stays whole: "Pay electricity (copy)". It
+  used to be cut mid-word, "Pay electricity bill (co", with "That's the most: 24 characters." under it.
+- **Question:** (a) keep the 24 and shorten as now; (b) let a copy's name go past 24 (its own limit, say 31).
+- **My recommendation:** (a): every name, a copy's too, fits one line on a card and on Today's row (A49).
+
 ## Details pages
 
 ### D-8. A quit habit's milestones: the page's numbers or the app's?

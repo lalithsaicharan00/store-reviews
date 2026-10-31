@@ -239,10 +239,10 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     var periodPx by remember { mutableIntStateOf(0) }
     LaunchedEffect(Unit) {
         val id = JustAdded.id ?: return@LaunchedEffect
-        JustAdded.id = null
         val h = store.habit(id) ?: return@LaunchedEffect
         searching = false; query = ""
-        if (h.isTask) { tab = 1; return@LaunchedEffect }
+        if (h.isTask) { tab = 1; return@LaunchedEffect } // the Tasks tab says it (TasksPage)
+        JustAdded.id = null
         tab = 0
         val where = sections.firstOrNull { sec -> sec.habits.any { it.id == id } }?.title
         say("${h.name} added" + (where?.let { " to $it" } ?: ""), "Show") { pending = id }
@@ -555,4 +555,8 @@ private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
 }
 
 /** The habit or task just made from Habits & Tasks (its +, search's Add, a task's Duplicate), for the page to say so. */
-object JustAdded { var id: String? = null }
+object JustAdded {
+    var id: String? = null
+    /** A Duplicate: it sits beside its original, so the message names no place ("… (copy) added"). */
+    var copy = false
+}
