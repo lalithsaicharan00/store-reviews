@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 14 |
+| habits & tasks | 269:148 | 35 | 15 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **171** |
+| **All** | | **290** | **172** |
 
 ## Bug log
 
@@ -250,6 +250,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 212. Habits & tasks 13 (every empty state) · the body ran the width of its title; every Figma empty state's body is 24 further in (280 on a 360 phone), so "When you archive a habit, it waits / here with its history." `EmptyState` does it for all (Today's Nothing planned had its own 280).
 213. Habits & tasks 14 · a habit's line in search was its Today line ("Afternoon · 30 min · Every day"); Figma: its time of day and its card's goal, "Afternoon · 30 min a day".
 214. Habits & tasks 14 · tapping a habit in search closed the search and scrolled Habits to its card; Figma: it opens Habit details, and ← comes back to the search as it was ("wa", its results, the keyboard down).
+215. Habits & tasks 15 · "Nothing matches “yoga”" and Add “yoga” sat at the left; Figma centres both, the button's 40 16 under the line.
+216. Habits & tasks 15 (and 16, 32, 33) · after Add the app came back to the search, now matching "yoga", and said nothing; Figma: back on Habits & Tasks, the search closed, "yoga added to Anytime · Show". The page is told which habit was made (`JustAdded`, set by the form's return) instead of guessing from a habit it hadn't seen, which also fired on every Undo.
+217. Habits & tasks 15 · Show did nothing: the scroll's effect cleared its own key before scrolling and so cancelled itself (since the frame wait of 204). Cleared last now, and the card stops just under the pinned week row, not behind it.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -482,7 +485,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 12 | 293:2 | Archived habits: open, Restore | Archived (3) → list → ⋮ Restore, Delete → Restore; Undo | passed ↻ (on Plus, as Figma's frames; on the free plan with more than five, Restore opens Restore a 6th habit) |
 | 13 | 293:849 | Archived habits: Delete, open one, the last one restored | ⋮ Delete → dialog → tap Push-ups: read-only details → empty | passed ↻ (Figma's frame adds "· Archived" to the goal line and ends the record at the archive day; the details pages' own component, 1020:4052, has neither, and the app follows it) |
 | 14 | 296:2 | Search habits and tasks (from Habits) | search → search view → “wa” → Water → ← keeps search | passed ↻ |
-| 15 | 296:602 | Search: no match (from Habits) | “yoga” → Add “yoga” → What do you want to do? → How track? → New habit “yoga” → Add · Show | not started |
+| 15 | 296:602 | Search: no match (from Habits) | “yoga” → Add “yoga” → What do you want to do? → How track? → New habit “yoga” → Add · Show | passed ↻ (the "added" message is this page's, as its frames draw it; Today keeps A47's none) |
 | 16 | 297:2 | +: a new habit | + → What do you want to do? → How track? → New habit Floss → Add · Show → Show scrolls | not started |
 | 17 | 299:2 | Every kind of card (Week) | Checks → Amounts and goals → Skipped, paused, quit → time limit, every few days | not started |
 | 18 | 301:2 | Empty and first states | No habits → all archived → first week → July all paused | not started |

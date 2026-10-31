@@ -64,6 +64,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.contentDescription
@@ -145,7 +147,7 @@ private class HabitSection(val key: String, val title: String, val habits: List<
  * floats 16 above the gesture bar, as Today's Back to today. No habits: the empty page (New habit), with the Archived
  * row under it when every habit is archived. No selecting several, and a long press does nothing (A55).
  *
- * A habit just added (or duplicated) scrolls into view, where it goes plain at the end of its time of day (A47).
+ * A habit just added goes plain at the end of its time of day; the page says where, with Show (Figma 297:2).
  * Speed: one snapshot, kept for the app's life, worked out a few cards a frame (S5, S16); cards are a lazy list with
  * stable keys, each card's squares one drawing (S12, S13).
  */
@@ -231,25 +233,31 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
     val raised = tab == 0 && !searching && active.isNotEmpty() && scrolled
     val bar by animateColorAsState(if (raised) s.surfaceContainerHigh else s.surfaceContainer, MaterialTheme.motionScheme.defaultEffectsSpec(), label = "bar")
 
-    // A habit that wasn't here before (just added or duplicated): its card scrolls into view once it's drawn, unless it's
-    // already wholly in view (an archive's Undo puts it back where it was; scrolling to it moved the page, QA flow 10).
-    var known by rememberSaveable { mutableStateOf<List<String>?>(null) }
-    val activeIds = active.map { it.id }
+    // A habit made from this page (its +, search's Add): back here the search closes and the page says where it went,
+    // with Show, which scrolls to its card (Figma 296:602, 297:2: "yoga added to Anytime · Show"). Today has no such
+    // message (A47); this page's flows draw one. A task goes to the Tasks tab, which says its own.
     var pending by remember { mutableStateOf<String?>(null) }
-    LaunchedEffect(activeIds) {
-        val before = known
-        known = activeIds
-        if (before != null) activeIds.firstOrNull { it !in before }?.let { pending = it }
+    var periodPx by remember { mutableIntStateOf(0) }
+    LaunchedEffect(Unit) {
+        val id = JustAdded.id ?: return@LaunchedEffect
+        JustAdded.id = null
+        val h = store.habit(id) ?: return@LaunchedEffect
+        searching = false; query = ""
+        if (h.isTask) { tab = 1; return@LaunchedEffect }
+        tab = 0
+        val where = sections.firstOrNull { sec -> sec.habits.any { it.id == id } }?.title
+        say("${h.name} added" + (where?.let { " to $it" } ?: ""), "Show") { pending = id }
     }
     LaunchedEffect(pending, keys) {
         val id = pending ?: return@LaunchedEffect
         val at = keys.indexOf("card-$id")
         if (at < 0) return@LaunchedEffect
-        pending = null
         withFrameNanos { } // the frame that draws it, so the layout read below has it
         val info = list.layoutInfo
         val seen = info.visibleItemsInfo.firstOrNull { it.key == "card-$id" }
-        if (seen == null || seen.offset < 0 || seen.offset + seen.size > info.viewportEndOffset) list.animateScrollToItem(at)
+        // Clear of the week row, which stays pinned over the list's top once scrolled.
+        if (seen == null || seen.offset < periodPx || seen.offset + seen.size > info.viewportEndOffset) list.animateScrollToItem(at, -periodPx)
+        pending = null // last: it's this effect's own key, so clearing it first cancelled the scroll
     }
 
     Box(Modifier.fillMaxSize().background(s.surfaceContainer)) {
@@ -295,7 +303,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                                         Modifier.padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 8.dp), tag = "habits-range") {
                                         ProgressRangeMemory.range = it
                                     }
-                                    key == "period" -> PeriodRow(snap, Color.Transparent, move)
+                                    key == "period" -> Box(Modifier.onSizeChanged { periodPx = it.height }) { PeriodRow(snap, Color.Transparent, move) }
                                     key.startsWith("title-") -> CardSectionTitle(sections.first { "title-" + it.key == key }.title, first = keys.getOrNull(2) == key)
                                     key.startsWith("card-") -> cards[key.removePrefix("card-")]?.let { card ->
                                         HabitCard(card, snap, store, nav, menu, Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
@@ -482,10 +490,11 @@ private fun PageSearch(
         .sortedBy { if (it.isOneTimeTask && store.doneEntry(it) != null) 1 else 0 } +
         store.habits.filter { it.isTask && it.archived && hit(it) }
     if (habits.isEmpty() && tasks.isEmpty()) {
+        // Figma 1125:206081: centred, 40 under the divider; the button's 40 sits 16 under the line (its 48 target takes 4).
         Column(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 40.dp).semantics { testTag = "habits-search-none" },
-            verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            Text("Nothing matches “${query.trim()}”", Modifier.padding(horizontal = 16.dp), style = AppType.titleMedium, color = s.onSurface)
-            AppButton("Add “${query.trim()}”", onAdd, Modifier.padding(horizontal = 16.dp), style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "habits-search-add")
+            horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Text("Nothing matches “${query.trim()}”", style = AppType.titleMedium, color = s.onSurface, textAlign = TextAlign.Center)
+            AppButton("Add “${query.trim()}”", onAdd, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "habits-search-add")
         }
         return
     }
@@ -545,3 +554,6 @@ private fun EmptyHabits(archivedCount: Int, nav: HabitsNav) {
         }
     }
 }
+
+/** The habit or task just made from Habits & Tasks (its +, search's Add, a task's Duplicate), for the page to say so. */
+object JustAdded { var id: String? = null }
