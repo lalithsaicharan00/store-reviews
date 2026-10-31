@@ -123,7 +123,7 @@ object DemoData {
         val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = earlier - 30 * dayMs).copy(createdAt = earlier - 30 * dayMs)
         val coffee = h("Coffee", "cup.and.saucer.fill", HabitColor.BROWN, HabitKind.Amount("cups", 1.0), goal = 2.0, atMost = true).copy(createdAt = now)
         val social = h("Social media", "iphone.slash", HabitColor.PINK, HabitKind.Duration, goal = 30.0, atMost = true).copy(createdAt = ago(7))
-        val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.EVENING, 10.0)
+        val meditate = h("Meditate", "figure.mind.and.body", HabitColor.GREEN, HabitKind.Duration, DaySection.MORNING, 10.0)
         // Figma's Today (700:3219, 31 Oct 2026): Morning is Meds, Stretch, Skincare, with Meds still to do (57 days).
         val habits = listOf(meds, stretch, skincare, walk, study, refill, vitamins, bed, night, journal, read, call, water, parcel, smoking, coffee, social, meditate)
         val entries = ArrayList<Entry>()

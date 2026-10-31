@@ -1,5 +1,8 @@
 package com.oftenenough.app.ui.today
 
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.translate
 import com.oftenenough.app.ui.components.StandardIconButton
 import com.oftenenough.app.ui.components.ListAvatar
 import androidx.compose.material3.MaterialTheme
@@ -106,14 +109,13 @@ fun <T> List<T>.moved(from: Int, to: Int): List<T> {
 @Composable
 fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack: () -> Unit) {
     val c = appColors
+    val outline = MaterialTheme.colorScheme.outline
     val today = store.today()
     val cards = store.todayCards()
+    // A paused habit is a row like any other, "Paused" under its name, and moves like the rest (Figma's Edit Today:
+    // Meditate in Morning, with its handle).
     val members = remember(store.dataVersion, store.habits, store.sections, store.cardOrder) {
-        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) }.filter { !store.isPaused(it, today) } }
-    }
-    // Paused habits sit last in their own time of day, said so, and don't move (Figma's Edit Today: "Paused").
-    val paused = remember(store.dataVersion, store.habits, store.sections, store.cardOrder) {
-        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) }.filter { store.isPaused(it, today) } }
+        store.rules.cardMembers().mapValues { (_, ids) -> ids.mapNotNull { store.habit(it) } }
     }
     val lastTimed = cards.lastOrNull { it != DaySection.QUITTING && !store.section(it).isAnytime }
     val snackbar = remember { SnackbarHostState() }
@@ -252,11 +254,14 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
                         val dragged = drag?.key == e.key
                         val h = store.habit(e.habitId) ?: return@forEachIndexed
                         if (at > 0) Spacer(Modifier.height(2.dp))
-                        val all = cardRows.size + (paused[cardAt(i)] ?: emptyList()).size
+                        val all = cardRows.size
                         ArrangeRow(
-                            habit = h, shape = segmentShape(at, all), subtitle = arrangeSubtitle(h, store),
+                            habit = h, shape = segmentShape(at, all), subtitle = if (store.isPaused(h, today)) "Paused" else arrangeSubtitle(h, store),
                             lifted = dragged,
                             modifier = Modifier.measured(e.key, tops, heights).zIndex(if (dragged) 1f else 0f)
+                                // Where it will land while it's carried: a dashed outline in the row's place (Figma's Edit
+                                // Today, "Drop here": Outline, 1 dp, 6 on 4 off), drawn before the layer that moves the row.
+                                .then(if (dragged) Modifier.dropSlot(segmentShape(at, all), outline) else Modifier)
                                 .graphicsLayer { if (dragged) translationY = dragTop - (tops[e.key] ?: dragTop) },
                             onDragStart = { drag = e; dragFrom = cardAt(entries.indexOf(e)); dragTop = tops[e.key] ?: 0f; menuFor = null },
                             onDrag = { dy -> dragTop += dy; follow() },
@@ -270,17 +275,9 @@ fun ArrangeDayScreen(store: HabitStore, onEditSection: (String?) -> Unit, onBack
                         )
                     }
                 } }
-                // The end of a time of day: its paused habits, last; after the last timed one, Add time of day.
+                // After the last timed time of day, Add time of day.
                 if (entries.getOrNull(i + 1) !is ArrangeEntry.Row) {
                     val card = cardAt(i)
-                    val held = paused[card] ?: emptyList()
-                    val moving = rowsOf(card ?: "").size
-                    held.forEachIndexed { j, h ->
-                        Spacer(Modifier.height(2.dp))
-                        ArrangeRow(h, segmentShape(moving + j, moving + held.size), "Paused", lifted = false, modifier = Modifier,
-                            onDragStart = null, onDrag = {}, onDragEnd = {}, onTap = null, menuOpen = false, onMenuDismiss = {},
-                            canUp = false, canDown = false, onUp = {}, onDown = {}, onMoveTo = null)
-                    }
                     if (card == lastTimed) {
                         Spacer(Modifier.height(16.dp))
                         AppButton("Add time of day", { onEditSection(null) }, style = ButtonStyle.Tonal, icon = Symbols.Add, tag = "arrange-add-time")
@@ -318,9 +315,23 @@ private fun Modifier.measured(key: String, tops: MutableMap<String, Float>, heig
     onGloballyPositioned { tops[key] = it.positionInParent().y; heights[key] = it.size.height.toFloat() }
 
 /** "Mon, Wed, Fri": how often, under the name, only when it isn't every day (Figma 2). */
-private fun arrangeSubtitle(h: Habit, store: HabitStore): String? =
-    if (h.kind == com.oftenenough.app.data.HabitKind.Task || h.frequency == com.oftenenough.app.data.Frequency.Daily) null
-    else com.oftenenough.app.data.HabitCopy.capitalized(com.oftenenough.app.data.HabitCopy.rhythm(h.frequency, store.weekStart, short = true))
+/** A dashed outline of [shape] where a carried row will land. */
+private fun Modifier.dropSlot(shape: androidx.compose.ui.graphics.Shape, color: androidx.compose.ui.graphics.Color) = drawBehind {
+    val w = 1.dp.toPx()
+    val outline = shape.createOutline(size.copy(width = size.width - w, height = size.height - w), layoutDirection, this)
+    translate(w / 2, w / 2) {
+        drawOutline(outline, color, style = androidx.compose.ui.graphics.drawscope.Stroke(w,
+            pathEffect = androidx.compose.ui.graphics.PathEffect.dashPathEffect(floatArrayOf(6.dp.toPx(), 4.dp.toPx()))))
+    }
+}
+
+private fun arrangeSubtitle(h: Habit, store: HabitStore): String? {
+    if (h.kind == com.oftenenough.app.data.HabitKind.Task || h.frequency == com.oftenenough.app.data.Frequency.Daily) return null
+    // "Mon, Wed, Fri"; a count for its period by its plan, "3 times a week" (Figma's Edit Today).
+    val words = com.oftenenough.app.data.HabitCopy.rhythm(h.frequency, store.weekStart, short = true)
+        .ifEmpty { com.oftenenough.app.data.HabitCopy.plan(h, store.weekStart) }
+    return words.takeIf { it.isNotEmpty() }?.let(com.oftenenough.app.data.HabitCopy::capitalized)
+}
 
 /**
  * A time of day's heading (Figma's Edit Today: 48 tall, 16 in): "Morning · 6 AM – 12 PM" in Label Large, Primary, a
@@ -399,7 +410,10 @@ private fun ArrangeRow(
             Modifier.fillMaxWidth().let { if (lifted) it.shadow(8.dp, RoundedCornerShape(24.dp)) else it }
                 .clip(if (lifted) RoundedCornerShape(24.dp) else shape).background(if (menuOpen) c.behind else MaterialTheme.colorScheme.surfaceBright)
                 .then(hold).let { if (onTap != null) it.clickable(onClick = onTap) else it }
-                .heightIn(min = 56.dp).padding(start = 16.dp, end = if (onDragStart != null) 4.dp else 16.dp, top = 8.dp, bottom = 8.dp)
+                // Figma's List item: 56 for one line, 72 for two. The handle keeps its 48 dp touch target, 4 past the
+                // 40 avatar above and below, so the row's padding is 4 less there and its height lands where Figma's does.
+                .heightIn(min = if (subtitle != null) 72.dp else 56.dp)
+                .padding(start = 16.dp, end = if (onDragStart != null) 4.dp else 16.dp, top = if (onDragStart != null) 4.dp else 8.dp, bottom = if (onDragStart != null) 4.dp else 8.dp)
                 .semantics(mergeDescendants = true) {
                     testTag = "arrange-row-${habit.name}"
                     customActions = listOfNotNull(
@@ -410,7 +424,8 @@ private fun ArrangeRow(
                 },
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            ListAvatar(HabitIcons.icon(habit.symbol))
+            // The list's avatar: the habit's icon outlined (Figma's List item, Material Symbols fill 0), as the icon picker draws it.
+            ListAvatar(HabitIcons.outlined(habit.symbol))
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f)) {
                 Text(habit.name, style = AppType.titleMedium, color = MaterialTheme.colorScheme.onSurface, maxLines = 2, overflow = TextOverflow.Ellipsis)

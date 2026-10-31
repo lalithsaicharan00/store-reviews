@@ -15,7 +15,7 @@ no screen with a keyboard could be compared with Figma.
 | Page | Node | Flows | Passed |
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
-| today | 54:5580 | 84 | 50 |
+| today | 54:5580 | 84 | 51 |
 | day details | 169:1270 | 44 | 0 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **60** |
+| **All** | | **290** | **61** |
 
 ## Bug log
 
@@ -119,6 +119,12 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 81. Today · a timed limit's running line said "29:07 · 0 min left" in its last minute, and called 30:20 over the limit while its count said 30 of 30: it now says at least "1 min left" and counts whole minutes, so 30:00–30:59 reads "Limit reached · 30:xx" (Figma's frame 4), on the row and in Day details alike.
 82. Today · a tap that couldn't be saved said "Couldn’t save that tap. It’s undone." with nothing to do; Figma: "Couldn't save Meds. Nothing changed." with Try again. A failed tap now carries the habit's name and a retry (HabitStore.failedTap); the snackbar is cleared only once shown (clearing it first restarted the effect and took the snackbar away). Test launches can fail the first tap's save (failTap) to see it.
 83. Today · a long name took two lines ("Take vitamins / with water"); Figma and A49: a name is always one line on Today, ending in …, with the full name in Day details. HabitRowLayout's name is one line. (At 200 % the rules hold: one-line names, two-line headers, taller rows; the sizes are Android's own large-text scaling, so a header's Start can wrap where Figma's drawing fits it.)
+84. Edit Today · rows were 64 dp: the 48 dp handle sat inside Figma's List item padding (56 for one line, 72 for two). The padding is 4 less beside the handle; rows measure 56 and 72.
+85. Edit Today · the avatars drew the habits' filled icons; Figma's List item draws them outlined (Material Symbols fill 0), as the icon picker does (HabitIcons.outlined).
+86. Edit Today · a paused habit sat apart at the end, with no handle; Figma lists it in its time of day like any row, "Paused" under the name, with its handle. Paused habits are now ordinary rows (the separate paused block is gone).
+87. Edit Today · a times-a-week habit had an empty second line; Figma: "3 times a week" (arrangeSubtitle falls back to the plan).
+88. Edit Today · while carrying a row, the gap it left was empty; Figma draws "Drop here": a dashed outline, Outline, 1 dp, 6 on 4 off, in the row's shape. Drawn in the row's place, under the carried row.
+89. Today · demo data — paused Meditate was in Evening; Figma's Edit Today has it in Morning (DemoData.design).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -246,7 +252,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 | 47 | 126:900 | Couldn't save a tap | Meds → ✓ shows at once → save failed: goes back; snackbar | passed |
 | 48 | 126:1437 | Long names and large text | Today → 24-letter name, one line … → 200 % font | passed |
 | 49 | 232:2 | What a row's second line says, with reminders | goal · reminder after a \| → ✓ Meds: reminder time goes | passed |
-| 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | not started |
+| 50 | 57:2 | Arrange Today | Today → ✏ Edit Today → drag Read into Evening → dropped; Undo → ← Today | passed |
 | 51 | 59:4 | Change a time of day | Today → Edit Today → ✏ Morning: Edit time of day → Starts: time picker → 7:00 AM → Save | not started |
 | 52 | 59:712 | Add a time of day | Today → Edit Today → Add time of day → Starts: picker → 10:00 PM → Add: Night | not started |
 | 53 | 62:2 | Move Anytime or Quitting | Today → Edit Today ⠿ → drag Anytime to top → dropped; Undo → ← Today | not started |
