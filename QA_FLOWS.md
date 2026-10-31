@@ -244,6 +244,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ¹⁶ Routine player 3: Figma's "Note saved" here has Undo; Day details' (flow 38) and Today's don't. The app keeps its one rule, "Note saved" without Undo.
 ¹⁷ Routine player 21: Android 16 draws the app's own icon in the card's circle and the running clock in its header, not beside the name; a paused clock is still, so it goes in the line. Pause and Resume from the card work without opening the app. The lock-screen frame wasn't checked: the emulator has no screen lock, and setting one is a security setting left to you.
 ¹⁸ Routine player 13 (and every Display Large number): the number's line is 71 dp where Figma's is 64. Android never draws a line shorter than the font's own height (1.25× the size for Google Sans Flex), and Compose has no setting for it; the card's spacing takes up the difference.
+¹⁹ Routine player 18 (and the timer frames): the timer's running wave in these frames is a drawn line 12 dp per wave and 2 dp high; the design system's Linear progress (902:14527, Style=Wavy) is 40 dp per wave and 3 dp high, as Material's. The app follows the component; the frames' drawings differ from it.
 
 ## Open questions for the user
 
@@ -427,7 +428,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 15 | 253:721 | A task in the player | → Pick up parcel → Mark done → Finish | passed |
 | 16 | 254:2 | Start on a routine that's partly done | Meds done earlier → Start: opens on Stretch, says why → ‹ Meds done | passed |
 | 17 | 254:741 | A routine on another day (yesterday) | Yesterday → Start: chip says Yesterday → Mark done → Next: Log → ✕ | passed ↻ |
-| 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | passed |
+| 18 | 255:2 | ✕ with a timer running | → Stretch running → ✕: row ticks → tap row: timer → ⏸ on row | passed ↻ ¹⁹ |
 | 19 | 258:630 | The timer on its own: Pause, Resume, the goal | Stretch → ▶ → Pause → Resume → 10:00 → ⌄ → ⏸ on row | passed |
 | 20 | 258:1282 | The timer against a limit; Log time from the timer | Social media → ▶ → past 30:00 → Log manually → Add → ⌄ → ⏸ | passed |
 | 21 | 260:2 | The timer outside the app: the Live Update | player running → Home: status chip → shade: Live Update → Pause → lock screen → 10:00 → tap card | passed ¹⁷ |
