@@ -33,7 +33,9 @@ import java.time.ZoneId
  * with that milestone's pop-up, which counts as the day's pop-up.
  */
 object MilestoneAlerts {
-    const val CHANNEL = "milestones"
+    const val CHANNEL = "milestone-alerts"
+    /** The first channel, at default importance: Android never raises a channel's importance, so it's replaced. */
+    private const val OLD_CHANNEL = "milestones"
     private const val ACTION = "com.oftenenough.app.MILESTONE_ALERT"
     private const val PREFS = "milestone-alerts"
     private const val SENT = "sent"
@@ -44,11 +46,13 @@ object MilestoneAlerts {
     fun key(habitId: String) = "milestones.notify.$habitId"
     fun wanted(store: HabitStore, habit: Habit) = store.setting(key(habit.id)) == "true"
 
+    /** High importance, as reminders: with the phone in use it drops in at the top (Figma 166:2), then waits in the shade. */
     fun channel(context: Context) {
-        context.getSystemService(NotificationManager::class.java)?.createNotificationChannel(
-            NotificationChannel(CHANNEL, "Milestones", NotificationManager.IMPORTANCE_DEFAULT).apply {
-                description = "When a quit or cut-down habit reaches a milestone, if you turned it on for that habit."
-            })
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        manager.deleteNotificationChannel(OLD_CHANNEL)
+        manager.createNotificationChannel(NotificationChannel(CHANNEL, "Milestones", NotificationManager.IMPORTANCE_HIGH).apply {
+            description = "When a quit or cut-down habit reaches a milestone, if you turned it on for that habit."
+        })
     }
 
     /** A notification to come: the habit, the length, and when. */
