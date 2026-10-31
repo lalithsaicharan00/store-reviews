@@ -351,14 +351,24 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
         Text(cardName, style = AppType.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.height(4.dp))
         // While it runs, the day's whole time ticks in the count (6:42 of 10 min), and the line says Running (Figma 906:86998).
+        // A limit keeps saying where it stands, live: "42:10 today · Limit 30 min · Over the limit" (Figma 924:38295).
         val detail = if (running && status.running != null) {
-            "Running" + (if (ruled.atMost) " · Limit " + Format.minutes(store.rules.dayGoal(ruled)) else "")
+            if (ruled.atMost) {
+                val p = kotlin.math.floor(store.rules.progress(habit, day, tick.value))
+                val limit = store.rules.dayGoal(ruled)
+                "Limit " + Format.minutes(limit) + " · " + when {
+                    p > limit -> "Over the limit"
+                    p >= limit -> "Limit reached"
+                    else -> Format.minutes(maxOf(1.0, limit - p)) + " left"
+                }
+            } else "Running"
         } else status.detail
         // Under an hour it ticks by the second ("6:42 of 10 min"); past an hour by the minute ("1 h 52 of 3 h", Figma 919:31554).
         val title = if (running && status.running != null) {
             val p = store.rules.progress(habit, day, tick.value)
             val goal = Format.minutes(store.rules.goal(ruled))
-            if (p < 60) Format.clock(p) + " of " + goal
+            if (ruled.atMost) Format.clock(p) + " today"
+            else if (p < 60) Format.clock(p) + " of " + goal
             else Format.minutes(kotlin.math.floor(p)).removeSuffix(" min") + " of " + goal.removeSuffix(" min").let { if (it.contains(" h")) it else "$it min" }
         } else status.title
         StatusLine(title, detail, status.words)

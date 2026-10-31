@@ -310,7 +310,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         // Whole minutes for time, as the row counts them.
                         (if (timed) floor(saved) else saved) > goal -> "Over the limit"
                         (if (timed) floor(saved) else saved) >= goal -> "Limit reached"
-                        else -> "${text(goal - saved)} left"
+                        else -> "${text(goal - (if (timed) floor(saved) else saved))} left"
                     }, running)
                     // A time with seconds (a timer's) keeps them: "6:42 of 10 min" (Figma 906:87291).
                     val seconds = kotlin.math.floor(saved * 60 + 1e-6).toLong() % 60 != 0L

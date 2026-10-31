@@ -306,6 +306,15 @@ private fun allLogsFooter(ruled: com.oftenenough.app.data.Habit, logs: List<Entr
     }
 }
 
+/** What deleting a slip does to the run, in plain numbers (Figma 921:117121): " Your run goes back to 19 days." */
+private fun slipRunAfterDelete(store: HabitStore, habit: com.oftenenough.app.data.Habit, slip: Entry): String {
+    val slips = store.entries(habit.id).filter { it.stepId == null }
+    if (slips.any { it.id != slip.id && it.createdAt > slip.createdAt }) return " Your run now stays as it is."
+    val from = slips.filter { it.id != slip.id }.maxOfOrNull { it.createdAt } ?: (habit.quitSince ?: habit.createdAt)
+    val days = ((store.clock() - from) / 86_400_000L).toInt()
+    return " Your run goes back to $days ${if (days == 1) "day" else "days"}."
+}
+
 /** A day as the footers and messages name it: today, yesterday, or its date alone ("28 Oct 2026"). */
 private fun dayName(day: Int, today: Int) = when (day) { today -> "today"; today - 1 -> "yesterday"; else -> recordDate(day) }
 
@@ -332,11 +341,16 @@ private fun footerText(kind: RecordKind, ruled: com.oftenenough.app.data.Habit, 
     return text
 }
 
-/** "India Standard Time": a zone's own name, for a record made somewhere else (Figma 9.3.4). */
-private fun zoneName(zone: String): String? = runCatching {
-    val z = ZoneId.of(zone)
-    if (z.normalized() == ZoneId.systemDefault().normalized()) null
-    else java.util.TimeZone.getTimeZone(z).getDisplayName(false, java.util.TimeZone.LONG, java.util.Locale.ENGLISH)
+/**
+ * A record made somewhere else says so in its footer (Figma 921:118020): "Logged at 2:40 PM London time (9:40 AM here).
+ * It counts on the day it was logged." The zone by its city ("Europe/London": London), else its own name. Null here.
+ */
+private fun awayLine(entry: Entry): String? = runCatching {
+    val z = ZoneId.of(entry.timeZone)
+    if (z.normalized() == ZoneId.systemDefault().normalized()) return@runCatching null
+    val city = z.id.substringAfterLast('/', "").replace('_', ' ').takeIf { z.id.contains('/') && it.isNotBlank() }
+    val place = city ?: java.util.TimeZone.getTimeZone(z).getDisplayName(false, java.util.TimeZone.LONG, java.util.Locale.ENGLISH)
+    "Logged at ${DayWords.clock(entry.createdAt, z)} $place time (${DayWords.clock(entry.createdAt)} here). It counts on the day it was logged."
 }.getOrNull()
 
 /**
@@ -367,7 +381,7 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
     val today = store.today()
     // A timer's log keeps its seconds (Figma 2.5); one typed by hand has whole minutes.
     val withSeconds = ruled.kind == HabitKind.Duration && kotlin.math.floor(entry.value * 60 + 1e-6).toLong() % 60 != 0L
-    val zone = zoneName(entry.timeZone)
+    val away = awayLine(entry)
     val first = if (slip) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
     val range = minOf(first, entry.day, today)..today
     // Moved, it takes the chosen day's clock and zone; kept, its own (a log made on a trip stays in that zone's day).
@@ -388,11 +402,8 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
                 DateTimeRows(if (editing) day else entry.day, today, range, time, if (ruled.kind == HabitKind.Duration) "Finished at" else "Time",
                     onDay = { d -> time = store.logTime(store.sameClockTime(time, d), d, zoneOf(d)); day = d },
                     onTime = { t -> time = store.logTime(t, day, zoneOf(day)) },
-                    editableDay = editing, editableTime = editing, last = zone == null,
-                    timeText = if (editing) DayWords.clock(time) else clockText(entry).removeSuffix(" " + entry.timeZone))
-                if (zone != null) Row(Modifier.fillMaxWidth().clip(segmentShape(1, 2)).background(c.surface).padding(horizontal = 16.dp, vertical = 12.dp)) {
-                    Text("Recorded in $zone", style = AppType.bodyMedium, color = c.secondary)
-                }
+                    editableDay = editing, editableTime = editing, last = true,
+                    timeText = DayWords.clock(if (editing) time else entry.createdAt))  // the time here; another zone's in the footer
             }
             when (ruled.kind) {
                 // A single check has no amount to show: the habit, its date and its time (Figma 910:25226).
@@ -407,10 +418,10 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
             // Today goes down by 2 glasses.").
             val footer = if (editing) (problem ?: when {
                 day != entry.day -> moveText(slip, entry, ruled, day, today)
-                slip -> "Changing the time updates your quit run."
+                slip -> "Changes this slip only. Your run counts from the new time."
                 else -> "Changes this log only. Other logs stay as they are."
             })
-                else entry.originLine(ruled)
+                else away ?: entry.originLine(ruled)
             footer?.let { Footer(it, problem = editing && problem != null) }
         }
         if (editing) {
@@ -419,12 +430,14 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
                 val moved = day != entry.day
                 store.editEntry(entry.id, v, time, day)
                 editing = false
-                say(if (moved) "Moved to ${dayName(day, today)}" else if (slip) "Slip changed" else "Log changed")
+                // A slip's new time moves the run, so it can be taken back (Figma 921:116994: "Slip changed · Undo").
+                if (slip && !moved) sayUndo("Slip changed") { store.editEntry(entry.id, entry.value, entry.createdAt) }
+                else say(if (moved) "Moved to ${dayName(day, today)}" else if (slip) "Slip changed" else "Log changed")
             }
         } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
     if (confirmDelete) AppDialog(if (oneCheck) "Delete this check?" else "Delete this $noun?",
-        if (slip) "The slip at ${clockText(entry)} is removed, and your quit run is worked out again."
+        if (slip) "The ${clockText(entry)} slip will be removed." + slipRunAfterDelete(store, habit, entry)
             else if (oneCheck) "The ${clockText(entry)} check will be removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other checks stay."
             else "${entry.description(ruled)} at ${clockText(entry)} will be removed from ${if (entry.day == today) "today" else DayWords.short(entry.day)}. Your other logs stay.",
         "Delete", {

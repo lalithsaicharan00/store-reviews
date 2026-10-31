@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 20 |
+| day details | 169:1270 | 44 | 23 |
 | routine player | 234:2 | 24 | 0 |
 | habits & tasks | 269:148 | 35 | 0 |
 | details pages | 298:2 | 24 | 0 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **114** |
+| **All** | | **290** | **117** |
 
 ## Bug log
 
@@ -189,6 +189,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 151. Day details 22 · Savings' Add log showed a grey "$" with a gap before the number and nothing under it; Figma: "$50" in one colour, tight, with "dollars" under it (euros, pounds, rupees the same).
 152. Day details 23 · Piano said "3 h a week", split its count as "1" over "h 30 of 3 h", and while running ticked "1:52:10"; Figma: "3 hours a week", "1 h 40" big with "of 3 h", and "1 h 52 of 3 h · Running" past an hour (by the second under an hour, as Stretch's "6:42"). What's left rounds to the nearest minute ("1 h 8 to go" for 1 h 52 m 10 s; "3 min to go" for 6:42). The design demo's Piano has Figma's piano icon and brown.
 153. Day details 24 · a checklist said "Every day · Morning" and "One step left", kept Skip today with every step done, and lost Undo · Note on Today after one step was unticked; Figma: "4 steps, every day · Morning", "1 step left", Skip goes when all steps are done, and Today keeps "Undo Last Step" for the steps still ticked.
+154. Day details 26 · Edit slip said "Changing the time updates your quit run.", Save said "Slip changed" with nothing to take it back, and Delete asked "The slip at 8:15 AM is removed, and your quit run is worked out again."; Figma: "Changes this slip only. Your run counts from the new time.", "Slip changed · Undo" (Undo puts its time back), and "The 8:15 AM slip will be removed. Your run goes back to 19 days." (or that the run stays as it is when a later slip holds it).
+155. Day details 26 · a slip logged in another time zone had a "Recorded in Greenwich Mean Time" row and showed that zone's clock; Figma: the time here in the Time row and the footer "Logged at 2:40 PM London time (9:40 AM here). It counts on the day it was logged." (any record: a log the same).
+156. Day details 28 · a running time limit said "0:02 of 30 min · Running · Limit 30 min"; Figma: "42:10 today" and where it stands, live: "Limit 30 min · Over the limit" ("· 30 min left", "· Limit reached"). What's left of a time limit counts whole minutes, as Today's row does (13 s used: "30 min left", it said 29).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -201,6 +204,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁹ Today 82, 83: checked against Figma's frames as read before the Figma connection dropped (their captions and states). 82: Meds' 29 days ended the day before yesterday (`streak Meds=0`, `earlier Meds=29`); ✓ on Yesterday makes 🔥 30 and nothing plays, there or back on Today. 83: ✓ gives the bar; Undo takes the check, the 3 and the band; ✓ again shows 🔥 3 and the band at rest (it stands again), with no bar, burst or roll.
 ¹⁰ Day details 2: Figma's frames draw one 180 dp wave for every count; the app draws the true length (D-49, settled by A90: flat unless a timer runs). Test launches' `today` now logs an amount as Figma does (an odd one, then twos, at 7:30 AM, 11:05 AM, 1:10 PM …), so Day details' log lists match its frames.
 ¹¹ Day details 3: Add log's date says "31 Oct 2026" (dates alone; Figma's "Today, 21 Oct 2026" is older). Gboard floated on 31 Oct afternoon again (it took the emulator's "AT Translated Set 2 keyboard" for a physical one after `adb input`), so the keyboard's place was taken from Today 4, the same Add log against the same frame, checked with the keyboard docked.
+¹³ Day details 26: the travel footer (step 10) was checked from the code and Figma's words, not on the emulator: setting its time zone is a device setting this pass doesn't change.
 ¹² Day details 7: Figma's Amount View draws › on Date and Time where its Duration and Slip views don't, and nothing opens from a view; the app has none (D-50).
 
 ## Open questions for the user
@@ -343,10 +347,10 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 22 | 197:2 | An amount typed each time: Savings | $250 of $500 → one Log → Add log $50 → Add → ✕ | passed |
 | 23 | 198:2 | A time week goal: Piano, 3 hours a week | 1 h 40 of 3 h → Start timer → ⌄ → Pause → ✕ | passed |
 | 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | blocked: all but Figma's filled "Tick steps" button under the steps, which nothing in the file defines (D-52) |
-| 25 | 200:2 | Log a slip from Day details | Smoking → Day details → Add slip → 1 slip recorded → ✕ | not started |
-| 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | not started |
-| 27 | 202:2 | Cut down: an amount, from Day details | Coffee 1 of 2 → +1 Limit reached → +1 Over the limit → ✕ | not started |
-| 28 | 203:2 | Cut down: a time limit, from Day details | Social media → Start timer → ⌄ at 42 min → Pause → ✕ | not started |
+| 25 | 200:2 | Log a slip from Day details | Smoking → Day details → Add slip → 1 slip recorded → ✕ | passed |
+| 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | blocked: all but "Changed at 2:10 PM." under the slip, which needs a saved field (D-51) ¹³ |
+| 27 | 202:2 | Cut down: an amount, from Day details | Coffee 1 of 2 → +1 Limit reached → +1 Over the limit → ✕ | passed |
+| 28 | 203:2 | Cut down: a time limit, from Day details | Social media → Start timer → ⌄ at 42 min → Pause → ✕ | passed |
 | 29 | 204:2 | A task in Day details: mark it done | Pick up parcel → Mark done; Reschedule → Done → ✕ | not started |
 | 30 | 204:820 | A task in Day details: reschedule it | → Reschedule → Do tomorrow; Undo → Another day… picker → 25 → OK → Undo | not started |
 | 31 | 205:2 | A paused habit: resume it from Day details | Paused card → Day details Paused → Resume habit | not started |
