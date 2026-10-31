@@ -29,6 +29,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
+import androidx.compose.ui.unit.Dp
 import com.oftenenough.app.ui.theme.Symbols
 
 /**
@@ -54,6 +55,7 @@ fun DayNavigation(
         expanded = true,
         modifier = modifier.padding(horizontal = 16.dp).fillMaxWidth().semantics { testTag = "day-bar" },
         colors = FloatingToolbarDefaults.standardFloatingToolbarColors(toolbarContainerColor = s.surfaceBright),
+        expandedShadowElevation = ElevationLevel4,
     ) {
         IconButton(onPrevious, Modifier.semantics { testTag = "day-previous" }) { Icon(Symbols.KeyboardArrowLeft, "Previous day") }
         Row(Modifier.weight(1f).clip(RoundedCornerShape(24.dp)).clickable(onClick = onPick).padding(horizontal = 4.dp, vertical = 12.dp)
@@ -85,3 +87,6 @@ fun DayRing(progress: Float, color: Color, track: Color, modifier: Modifier = Mo
         if (p > 0f) drawArc(color, -90f, 360f * p, false, Offset(inset, inset), arcSize, style = Stroke(w))
     }
 }
+
+/** Material's Elevation Level 4 (ElevationTokens.Level4), the day bar's shadow. */
+private val ElevationLevel4: Dp = 8.dp
