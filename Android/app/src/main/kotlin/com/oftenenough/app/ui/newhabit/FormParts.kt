@@ -95,13 +95,16 @@ fun Note(text: String) =
 /**
  * One choice of several: a radio button, its words, and a line under them (List item, 2.4). [option]: Figma's Option
  * (the create new pages' choices), its words in Body Large on Surface bright, the chosen one's in Title Medium.
+ * [choice]: Figma's Choice (a List item whose radio sits in its 40 dp lead, Settings' pages): the words 8 further on.
  */
 @Composable
 fun RadioRow(
     title: String, selected: Boolean, index: Int, count: Int, tag: String, detail: String? = null, option: Boolean = false,
     containerColor: androidx.compose.ui.graphics.Color = if (option) androidx.compose.material3.MaterialTheme.colorScheme.surfaceBright else androidx.compose.ui.graphics.Color.Unspecified,
+    choice: Boolean = false,
     onClick: () -> Unit,
-) = AppListItem(title, index, count, supporting = detail, leading = { RadioButton(selected, onClick = null) }, onClick = onClick,
+) = AppListItem(title, index, count, supporting = detail,
+        leading = { RadioButton(selected, onClick = null, modifier = if (choice) Modifier.padding(end = 8.dp) else Modifier) }, onClick = onClick,
         containerColor = containerColor, headlineStyle = if (option && !selected) AppType.bodyLarge else AppType.titleMedium, tag = tag)
 
 /**

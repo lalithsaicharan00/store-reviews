@@ -75,7 +75,7 @@ fun ChoicePage(title: String, intro: String, options: List<String>, selected: In
             Text(intro, Modifier.padding(horizontal = 16.dp), style = AppType.bodyLarge, color = s.onSurfaceVariant)
             SegmentedList {
                 options.forEachIndexed { i, option ->
-                    RadioRow(option, i == selected, i, options.size, "$tag-$i", containerColor = s.surfaceBright) { onPick(i) }
+                    RadioRow(option, i == selected, i, options.size, "$tag-$i", containerColor = s.surfaceBright, choice = true) { onPick(i) }
                 }
             }
         }
