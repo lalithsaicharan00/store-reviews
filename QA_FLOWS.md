@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 16 |
+| settings | 781:34017 | 23 | 17 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **260** |
+| **All** | | **290** | **261** |
 
 ## Bug log
 
@@ -760,7 +760,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 14 | 1183:368079 | Delete a time of day | Morning → Delete time of day → Delete Morning? → Undo | passed ↻ (phone: Morning → Delete time of day → “Delete Morning?” “Its 4 habits move to Anytime. Their logs, notes and streaks stay.” → Delete → Times of day without Morning, “Morning deleted · Undo” 8 above Add time of day → Undo: Morning back in its place) |
 | 15 | 1183:368648 | Leaving Edit time of day with changes | Morning → renamed → ✕ → Discard your changes? → unchanged | passed (phone, no changes: Morning → “Early morning” (Your day follows) → ✕ → “Discard your changes?” “Morning stays as it was.” → Keep editing keeps it; Back asks again → Discard → Times of day, Morning 6:00 AM – 12:00 PM) |
 | 16 | 1186:373799 | New day starts at | Settings → page → 3:00 AM → ← | passed ↻ (phone: New day starts at → its line, the hours from 12:00 AM (to 12:00 PM: D-24) → 3:00 AM chosen → ← Settings “New day starts at · 3:00 AM”) |
-| 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | not started |
+| 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | passed (phone, after flow 16’s fix: Week starts on → its line, Sunday to Saturday at Figma’s places (words at 80) → Monday → ← Settings “Week starts on · Monday”) |
 | 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | not started |
 | 19 | 1199:16989 | Reminders, before anything is set up | No reminders yet → nothing allowed → 3 things to fix | not started |
 | 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | not started |
