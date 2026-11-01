@@ -219,5 +219,5 @@ fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title:
 
 /** The Time picker (5.3.5, [AppTimePicker]) with minutes of the day in and out. */
 @Composable
-fun MinuteDialog(minute: Int, onDismiss: () -> Unit, onPick: (Int) -> Unit) =
-    AppTimePicker(minute / 60 % 24, minute % 60, onDismiss, okTag = "time-ok") { h, m -> onPick(h * 60 + m) }
+fun MinuteDialog(minute: Int, onDismiss: () -> Unit, title: String? = null, onPick: (Int) -> Unit) =
+    AppTimePicker(minute / 60 % 24, minute % 60, onDismiss, okTag = "time-ok", title = title) { h, m -> onPick(h * 60 + m) }

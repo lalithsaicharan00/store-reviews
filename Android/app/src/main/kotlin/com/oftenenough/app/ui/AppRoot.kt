@@ -462,10 +462,12 @@ private fun AppMain(
         (route == "page/{title}" && entry?.arguments?.getString("title") == SettingsPage.BACKUP)
     // The timer's 96 dp buttons: its messages sit over the card's foot, 18 above them (Figma 956:75584: 602 to 650).
     val overTimer = route?.startsWith("timer/") == true
+    // Times of day's Add time of day floats 16 above the bottom: its messages sit 8 above it (Figma 1183:11794).
+    val overFab = route == "page/{title}" && entry?.arguments?.getString("title") == SettingsPage.TIMES_OF_DAY
     // Under Android's three buttons, the page's colour at 90 % over what scrolls behind (NavBarScrim).
     com.oftenenough.app.ui.components.NavBarScrim(Modifier.align(Alignment.BottomCenter))
     if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().imePadding()
-        .let { if (nothingPinned) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = if (overTimer) 114.dp else 96.dp) })
+        .let { if (nothingPinned) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = if (overTimer) 114.dp else if (overFab) 68.dp else 96.dp) })
     }
     }
     val toPause = pausing.mapNotNull { store.habit(it) }.filter { store.rules.canPause(it) }

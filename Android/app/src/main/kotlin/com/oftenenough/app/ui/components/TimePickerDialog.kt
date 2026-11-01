@@ -41,7 +41,7 @@ import com.oftenenough.app.ui.theme.AppType
  */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun AppTimePicker(hour: Int, minute: Int, onDismiss: () -> Unit, okTag: String = "picker-ok", onPick: (hour: Int, minute: Int) -> Unit) {
+fun AppTimePicker(hour: Int, minute: Int, onDismiss: () -> Unit, okTag: String = "picker-ok", title: String? = null, onPick: (hour: Int, minute: Int) -> Unit) {
     val s = MaterialTheme.colorScheme
     val state = rememberTimePickerState(hour, minute, DayWords.is24Hour)
     var typed by rememberSaveable { mutableStateOf(true) }
@@ -75,7 +75,8 @@ fun AppTimePicker(hour: Int, minute: Int, onDismiss: () -> Unit, okTag: String =
         onDismissRequest = onDismiss,
         confirmButton = { AppButton("OK", { onPick(state.hour, state.minute); onDismiss() }, style = ButtonStyle.Text, tag = okTag) },
         title = {
-            Text(if (typed) "Enter time" else "Select time", style = AppType.labelMedium, color = s.onSurfaceVariant)
+            // What the time is for, where Figma names it (Edit time of day's "Starts"); Material's words otherwise.
+            Text(title ?: if (typed) "Enter time" else "Select time", style = AppType.labelMedium, color = s.onSurfaceVariant)
         },
         modifier = Modifier.semantics { testTag = "time-picker"; testTagsAsResourceId = true },
         modeToggleButton = {

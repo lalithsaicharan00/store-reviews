@@ -191,7 +191,7 @@ fun SectionEditorScreen(
     val changed = name != (existing?.name ?: "") || start != initialStart
     FormPage(if (existing == null) "New time of day" else "Edit time of day", onBack = { if (changed) discard = true else onClose(null) }, close = true, actions = {
         AppButton(if (existing == null) "Add" else "Save", { save() },
-            Modifier.padding(end = 8.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
+            Modifier.padding(end = 12.dp), enabled = trimmed.isNotEmpty() && plan != null && plan.problem == null, tag = "section-save")
     }) {
         val s = MaterialTheme.colorScheme
         val focus = remember { FocusRequester() }
@@ -241,7 +241,7 @@ fun SectionEditorScreen(
                 size = ButtonSize.Medium, destructive = true, tag = "section-delete")
         }
     }
-    if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }) { start = it; startPicked = true }
+    if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }, title = "Starts") { start = it; startPicked = true }
     if (confirmDelete && existing != null) {
         // Figma's "Delete Morning?" (842:65872): Cancel and Delete only (D9), saying where its habits go.
         val habits = store.habits.count { existing.id in it.parts && !it.archived && it.kind != HabitKind.Task }

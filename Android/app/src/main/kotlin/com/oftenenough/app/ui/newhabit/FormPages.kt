@@ -1021,7 +1021,7 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
     var chosen by remember { mutableStateOf(form.symbol) }
     var query by remember { mutableStateOf("") }
     FormPage("Icon", onBack = onBack, close = true, scrolls = false, actions = {
-        AppButton("Done", { form.symbol = chosen; form.pickedSymbol = true; onBack() }, Modifier.padding(end = 8.dp), tag = "icon-done")
+        AppButton("Done", { form.symbol = chosen; form.pickedSymbol = true; onBack() }, Modifier.padding(end = 12.dp), tag = "icon-done")
     }) {
         SearchBarField(query, { query = it.take(30) }, "Search icons", Modifier.padding(top = 16.dp, bottom = 16.dp), fieldTag = "icon-search")
         val q = query.trim().lowercase()
