@@ -73,7 +73,11 @@ fun AppCircularProgress(progress: Float, habit: HabitColor, modifier: Modifier =
     }
 }
 
-/** The number in a [AppCircularProgress]: Title Medium On surface; three digits or more, Label Large (Figma 1007:5). */
+/**
+ * The number in a [AppCircularProgress]: Title Medium On surface; three digits or more, Label Large (Figma 1007:5), or
+ * Label Medium in the [small] 40 dp ring (All milestones: "400"; QA, 1 Nov 2026, "200" filled the ring to its band).
+ */
 @Composable
-fun CircularProgressLabel(text: String) =
-    Text(text, style = if (text.length >= 3) AppType.labelLarge else AppType.titleMedium, color = appColors.ink, maxLines = 1)
+fun CircularProgressLabel(text: String, small: Boolean = false) =
+    Text(text, style = if (text.length < 3) AppType.titleMedium else if (small) AppType.labelMedium else AppType.labelLarge,
+        color = appColors.ink, maxLines = 1)

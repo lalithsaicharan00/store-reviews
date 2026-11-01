@@ -271,7 +271,7 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
                         next.detail?.let { if (next.target != null) "Next · $it" else it },
                         leading = {
                             AppCircularProgress(next.fraction.toFloat(), color, Modifier.size(40.dp)) {
-                                if (next.target == null) Icon(Symbols.Check, null, tint = s.onSurface) else CircularProgressLabel(next.number)
+                                if (next.target == null) Icon(Symbols.Check, null, tint = s.onSurface) else CircularProgressLabel(next.number, small = true)
                             }
                         },
                         containerColor = s.surfaceContainerLowest)
