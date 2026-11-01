@@ -25,6 +25,8 @@ object AppGraph {
     private var storeInstance: HabitStore? = null
     private var prefsInstance: Prefs? = null
     var isTest = false; private set
+    /** A test launch on the test phone's real Google Drive (TestLaunch.REAL_DRIVE): it backs up on screen as the app does. */
+    var realDriveTest = false; private set
 
     fun init(context: Context) {
         AndroidCore.context = context.applicationContext
@@ -161,7 +163,8 @@ object AppGraph {
         // permission screen), connected afresh each launch through its own settings.
         val driveFolder = java.io.File(context.noBackupFilesDir, "uitest-standin-drive").also { it.deleteRecursively() }
         val drivePrefs = context.getSharedPreferences("uitest-drive", Context.MODE_PRIVATE).also { it.edit().clear().commit() }
-        val link = if (realDrive && BuildConfig.DEBUG && playServices(context))
+        realDriveTest = realDrive && BuildConfig.DEBUG && playServices(context)
+        val link = if (realDriveTest)
             com.oftenenough.app.app.backup.GoogleDriveLink(context, context.getSharedPreferences("uitest-drive-real", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
             else com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs)
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, link, test = true)

@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 4 |
+| settings | 781:34017 | 23 | 5 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **248** |
+| **All** | | **290** | **249** |
 
 ## Bug log
 
@@ -391,6 +391,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 349. Settings 4 · Change account asked "Back up to another Drive?" before Google's chooser, so it couldn't name the account ("the Google Drive you choose", Choose account); Figma asks after the chooser, naming it, with Cancel | Back up here, and nothing switches until then (D-22, decided by the user: Figma's order).
 350. Settings 4 · Change account opened Android's plain account list (a radio list with OK); the user: Google's own chooser. It opens Google's now, on the first connect too, which also used to skip the chooser for the account Google remembered (A97).
 351. Settings 2–4 · Change account's line named the account ("Backing up to sam@gmail.com"); the user: always the same words, "Use a different Google account", with the account said in the card ("Just now, to sam@gmail.com.", "To sam@gmail.com. You can leave this page…"). Figma changed with it (A97).
+352. Settings 5 (every message on Backup & Sync) · each snackbar showed twice, stacked: the page drew its own host over the app's, and the app's sat 96 above the bottom for a pinned button the page doesn't have. The page now uses the app's host alone, 16 from the bottom (Figma 712 of 800), as pages with nothing pinned.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -735,7 +736,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 2 | 1181:2810 | Back up now | Settings → Backup & Sync → Back up now → Backing up… → Backed up | passed ↻ ⁴² (phone, the test account’s real Google Drive: Back up now → Backing up… with its wave filling (seen in a screen recording; it takes about a second) → Backed up; Settings says “Backed up · Today, 7:54 PM”. Every row 20 above Figma’s: “… It backs up by itself as you go.” is one line at 432 dp, two at 360) |
 | 3 | 1181:4132 | Backing up for the first time | Not backed up yet → Back up to Google Drive → chooser → Allow → Backing up… → Backed up | passed ↻ ⁴² (phone: Settings “Not backed up yet” → Not backed up and its words at Figma’s places (347) → Back up to Google Drive → Google’s own chooser → lalithsaicharan9@gmail.com → Google’s permission screen (the first time for the account) → Continue → Backing up…, Change account “Backing up to lalithsaicharan9@gmail.com” → Backed up · Just now. Once allowed, Google skips its chooser and permission on the next connect, as its own API does) |
 | 4 | 1182:4382 | Change account | Change account → chooser → Back up to another Drive? → Backing up… → Backed up | passed ↻ ⁴² (phone: connected to lalithsaicharan9@gmail.com; Change account “Use a different Google account” → Google’s chooser → losalobi@gmail.com → Google’s permission screen (its first time) → Back up to another Drive? naming both accounts → Back up here → Backing up… “To losalobi@gmail.com.” → Backed up “Just now, to losalobi@gmail.com.”; again with Cancel: Google asks the old account once more, and it carries on with it (A97)) |
-| 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | not started |
+| 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | passed ↻ ⁴² (phone: the app alone cut off with Android’s test firewall, `cmd connectivity set-package-networking-enabled` and `set-chain3-enabled`, both put back after; Wi-Fi stays on for adb. Back up now → Backing up… until the connection gives up (about 13 s) → Waiting for the internet “Last backed up today at 8:31 PM. Nothing is lost: …” and one snackbar “No internet. It backs up once you’re online.”, 16 above the bar as Figma; online again, it carries on by itself within the minute → Backed up “Just now, to …”) |
 | 6 | 1183:5575 | Restore from Google Drive | Restore from a backup → Google Drive → chooser → Allow → Restore this backup? → Restoring → Today + Undo | not started |
 | 7 | 1183:6412 | Restore from a backup file | Restore → A backup file → file picker → Restore this backup? → Restoring → Today + Undo | not started |
 | 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | not started |

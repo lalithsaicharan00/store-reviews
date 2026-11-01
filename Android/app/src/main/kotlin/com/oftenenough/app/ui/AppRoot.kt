@@ -456,7 +456,8 @@ private fun AppMain(
     // with the snackbar's own 12 inside the host, 4 more); other pages keep room for their buttons.
     val nothingPinned = menuItem == MenuItem.PLUS || menuItem == MenuItem.HABITS || route == "habit/{id}" ||
         route == Routes.ARCHIVED || route == Routes.ARCHIVED_TASKS || route == Routes.COMPLETED_TASKS || route?.startsWith("alllogs/") == true ||
-        route?.startsWith(Routes.NEW) == true || route == "edit/{id}"
+        route?.startsWith(Routes.NEW) == true || route == "edit/{id}" ||
+        (route == "page/{title}" && entry?.arguments?.getString("title") == SettingsPage.BACKUP)
     // The timer's 96 dp buttons: its messages sit over the card's foot, 18 above them (Figma 956:75584: 602 to 650).
     val overTimer = route?.startsWith("timer/") == true
     // Under Android's three buttons, the page's colour at 90 % over what scrolls behind (NavBarScrim).

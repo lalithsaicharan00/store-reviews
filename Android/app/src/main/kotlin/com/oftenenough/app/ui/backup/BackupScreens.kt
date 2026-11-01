@@ -250,7 +250,9 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                 PageRow(Symbols.DeleteForever, "Erase all my data…", "From this phone", count - 1, count, "erase-all", danger = true) { confirm = "erase" }
             }
         }
-        AppSnackbarHost(snack, Modifier.align(Alignment.BottomCenter).navigationBarsPadding())
+        // Opened from Settings, the app's own host shows its messages (16 from the bottom, Figma); a host here too
+        // showed each one twice. Only standing alone (no [snackbar] given) does the page show its own.
+        if (snackbar == null) AppSnackbarHost(snack, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
     }
     val who = email?.let { "$it’s" } ?: "your"
     when (confirm) {

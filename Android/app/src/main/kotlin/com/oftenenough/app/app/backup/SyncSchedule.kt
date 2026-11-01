@@ -60,7 +60,7 @@ object SyncSchedule {
      * It has nothing to send in any case, and restoring reads with `allowUpload = false`, so the Drive copy is never
      * at risk from an install that has not been used yet.
      */
-    fun mayRun(): Boolean = AppGraph.isOpen && !AppGraph.isTest && AppGraph.store.habits.isNotEmpty() &&
+    fun mayRun(): Boolean = AppGraph.isOpen && (!AppGraph.isTest || AppGraph.realDriveTest) && AppGraph.store.habits.isNotEmpty() &&
         runCatching { AppGraph.backup.link.api() != null }.getOrDefault(false)
 }
 
