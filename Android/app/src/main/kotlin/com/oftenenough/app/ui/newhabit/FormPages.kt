@@ -784,9 +784,10 @@ private fun SettingsSheet(icon: ImageVector, title: String, why: String, what: S
                 Text(why, style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
                 Text(what, style = AppType.bodyMedium, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
+            // Both at their drawn 40, 8 apart, their touch spreading past (Figma's Actions: 8 above, 40 + 8 + 40).
             Column(Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                AppButton("Open settings", onAllow, Modifier.fillMaxWidth(), tag = "$tag-allow")
-                AppButton("Not now", onDismiss, Modifier.fillMaxWidth(), style = ButtonStyle.Text, tag = "$tag-not-now")
+                AppButton("Open settings", onAllow, Modifier.fillMaxWidth().drawnHeight(), tag = "$tag-allow")
+                AppButton("Not now", onDismiss, Modifier.fillMaxWidth().drawnHeight(), style = ButtonStyle.Text, tag = "$tag-not-now")
             }
         }
     }
