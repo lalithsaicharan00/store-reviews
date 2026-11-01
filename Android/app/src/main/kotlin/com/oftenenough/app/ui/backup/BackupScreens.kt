@@ -264,7 +264,8 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
         // Erase all your data? Cancel and Erase only (D9); then the app starts again on Today, as a fresh install.
         "erase" -> AppDialog("Erase all your data?",
             "Your habits, logs and notes are removed from this phone. " +
-                if (connected) "Your Google Drive backup stays, so you can bring them back." else "They aren’t backed up anywhere, so they can’t be brought back.",
+                // Connected but its Drive copy deleted (A39), there's nothing there to bring them back from (D4).
+                if (connected && status?.state != DriveState.REMOVED) "Your Google Drive backup stays, so you can bring them back." else "They aren’t backed up anywhere, so they can’t be brought back.",
             "Erase", { confirm = null; scope.launch { center.eraseThisPhone(); onErased() } },
             { confirm = null }, Modifier.semantics { testTag = "erase-dialog" }, destructive = true, confirmTag = "erase-confirm")
         // Back up to another Drive? Asked after Google's chooser, naming the account picked (Figma, D-22): nothing

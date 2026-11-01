@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 10 |
+| settings | 781:34017 | 23 | 11 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **254** |
+| **All** | | **290** | **255** |
 
 ## Bug log
 
@@ -396,6 +396,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 354. Settings 6 and 7 · a restore from Settings ended "Your habits are back: N habits, M logs" with no Undo; Figma: "12 habits restored" · Undo, which puts the phone back.
 355. Settings 6 · after Cancel on a Drive restore, the minute's Drive round merged that Drive into the phone anyway, and the phone stayed connected to a Drive it had never backed up to. No round runs while the question is open, and Cancel lets go of a Drive this restore connected (`BackupCenter.holding`).
 356. Settings 7 · a backup file chosen in Settings replaced the phone's habits at once; Figma asks first, "Restore this backup?" (… in this file, saved 12 Oct …), and Restoring says "From your backup file, saved 12 Oct" (the welcome back's Restoring keeps "From your backup file", as onboarding draws it).
+357. Settings 11 · with Drive connected but its copy deleted (Your Google Drive backup was deleted, A39), Erase all your data? still said "Your Google Drive backup stays, so you can bring them back."; it now says "They aren't backed up anywhere, so they can't be brought back." (D4).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -746,7 +747,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | passed (phone, no changes: Save a backup file → Android’s save picker in Downloads, “Often Enough backup 2026-11-01 2106.zip” → Save → “Backup file saved to Downloads”, 16 above the bar) |
 | 9 | 1183:8483 | Export a spreadsheet | Export CSV → save picker → saved | passed (phone, no changes: Export a spreadsheet (CSV) → Android’s save picker, “Often Enough Export 2026-11-01.csv” → Save → “Spreadsheet saved to Downloads”) |
 | 10 | 1183:9112 | Delete the Google Drive backup | Delete Google Drive backup… → dialog → Not backed up + snackbar | passed ⁴² (phone, no changes: Backed up → Delete Google Drive backup… → “Delete your Google Drive backup?” with Figma’s words naming lalithsaicharan9@gmail.com, Cancel and Delete (red) at Figma’s places → Delete → Not backed up and “Google Drive backup deleted”) |
-| 11 | 1183:9556 | Erase all my data | Erase all my data… → dialog → Today, no habits yet | not started |
+| 11 | 1183:9556 | Erase all my data | Erase all my data… → dialog → Today, no habits yet | passed ↻ ⁴² (phone: Backed up → Erase all my data… → “Erase all your data?” “… Your Google Drive backup stays, so you can bring them back.” → Erase → the empty Today, “No habits yet”, New habit, Restore from a backup) |
 | 12 | 1183:11921 | Edit a time of day | Times of day → Morning → Starts → 07:00 → Save → list | not started |
 | 13 | 1183:367054 | A new time of day | Add time of day → name, starts → “Before work” → Add | not started |
 | 14 | 1183:368079 | Delete a time of day | Morning → Delete time of day → Delete Morning? → Undo | not started |
