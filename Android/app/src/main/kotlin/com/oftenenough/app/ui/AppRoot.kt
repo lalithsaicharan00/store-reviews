@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.widthIn
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.ui.backup.BackupScreen
 import com.oftenenough.app.ui.settings.ThemePage
-import com.oftenenough.app.ui.settings.LicencesPage
 import com.oftenenough.app.ui.settings.SectionEditorScreen
 import com.oftenenough.app.ui.plus.PlusReason
 import com.oftenenough.app.ui.plus.PlusScreen
@@ -342,7 +341,6 @@ private fun AppMain(
                     ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, reveal = reveal,
                         onRevealed = { entry.savedStateHandle["reveal"] = null }) { nav.popBackStack() }
                 }
-                SettingsPage.LICENCES -> LicencesPage { nav.popBackStack() }
                 SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.popBackStack() }
                 SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.popBackStack() }
                 SettingsPage.THEME -> ThemePage(prefs) { nav.popBackStack() }

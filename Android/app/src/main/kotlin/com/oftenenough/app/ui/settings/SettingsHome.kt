@@ -59,7 +59,6 @@ object SettingsPage {
     const val REMINDERS = "Reminders"
     const val THEME = "Theme"
     const val BACKUP = "Backup & Sync"
-    const val LICENCES = "Open source licences"
 }
 
 /** The privacy policy on the website, always the current one (Figma's flow "Privacy policy"). */
@@ -143,7 +142,10 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
                         androidx.browser.customtabs.CustomTabsIntent.Builder().setShowTitle(true).build().launchUrl(context, Uri.parse(PRIVACY_POLICY))
                     }.onFailure { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY))) } }
                 }
-                Row("Open-source licences", "The libraries we use", Symbols.Code, 1, 3, "settings-licences") { onOpen(SettingsPage.LICENCES) }
+                // Google's own Open source licenses screen: every library the app is built with, each with its licence.
+                Row("Open-source licences", "The libraries we use", Symbols.Code, 1, 3, "settings-licences") {
+                    runCatching { context.startActivity(Intent(context, com.google.android.gms.oss.licenses.OssLicensesMenuActivity::class.java)) }
+                }
                 Row("Version", Support.appVersion, Symbols.Info, 2, 3, "settings-version", trailing = null, onClick = null)
             }
         }

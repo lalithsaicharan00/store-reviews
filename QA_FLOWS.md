@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 22 |
+| settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **266** |
+| **All** | | **290** | **267** |
 
 ## Bug log
 
@@ -408,6 +408,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 366. Settings 18 (every list row that loses what's under it) · a step that turned done while the page was open kept Material's three-line 88 dp; it's 72 now, as when the page opens (`AppListItem` keyed on whether something sits under its words).
 367. Settings 18 and 19 · "These change only Often Enough. Other apps keep saving battery." sat 8 under the list; Figma's is its own group, 24 under it.
 368. Settings 22 · Privacy policy opened a full Chrome tab (address bar, tabs), leaving the app; Figma's is a browser tab over the app (✕, the page's title, the site, share, ⋮). It's a Custom Tab now (`androidx.browser` 1.8.0), with the plain browser as the fallback.
+369. Settings 23 · Open-source licences opened the app's own page of 6 libraries (no Play Billing, Play services, Glance, WorkManager or Browser among others); Figma's is Google's own licences screen. It's Google's OSS Licenses now (plugin 0.13.0, `play-services-oss-licenses` 17.5.3), its list made from the app's dependencies at build time, on an AppCompat DayNight theme (it needs one); the app's page and its route are deleted (A77).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -771,7 +772,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | passed (phone, after flow 16’s fix: Theme → its line, System default · Light · Dark at Figma’s places (words at 80) → Light → ← Settings “Theme · Light”; Dark turns the whole app dark at once, the tint under the buttons too; back to System default) |
 | 21 | 1183:374861 | Vibration and sound | Sound when done → on | passed (phone, no changes: Vibration on and Sound when done off, as Figma; Sound when done → on, its switch with the ✓) |
 | 22 | 1183:375417 | Privacy policy | Privacy policy → browser tab → back | passed ↻ (phone: Privacy policy → a Chrome Custom Tab over the app: ✕, “Privacy policy · Often Enough”, oftenenough.com, share, ⋮ (Chrome adds its own minimise) → ✕ → back in Settings where it was. The page is the live site’s: Figma’s text is a sketch of it) |
-| 23 | 1183:375992 | Open-source licences | licences → Google's licences screen → back | not started |
+| 23 | 1183:375992 | Open-source licences | licences → Google's licences screen → back | passed ↻ (phone: Open-source licences → Google’s own “Open source licenses” screen (a debug build shows the plugin’s “Debug License Info”; the release build’s list has 227 entries, every library the app is built with) → Back → Settings where it was) |
 
 ## Widgets (1232:173760)
 

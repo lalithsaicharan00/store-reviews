@@ -32,23 +32,5 @@ object Support {
     }
 }
 
-/** The libraries inside the app, with their licences (the iPhone's AboutView, plus Android's own). */
-private val libraries = listOf(
-    "Kotlin standard library" to "Apache License 2.0 · JetBrains",
-    "kotlinx.coroutines" to "Apache License 2.0 · JetBrains",
-    "AndroidX Room" to "Apache License 2.0 · Google",
-    "AndroidX SQLite" to "Apache License 2.0 · Google",
-    "Jetpack Compose" to "Apache License 2.0 · Google",
-    "SQLite" to "Public domain",
-)
-
-/** Open source licences: each library's licence, in full words a person can read (Android's standard page). */
-@Composable
-fun LicencesPage(onBack: () -> Unit) {
-    FormPage("Open source licences", onBack = onBack) {
-        Spacer(Modifier.height(8.dp))
-        SegmentedList { libraries.forEachIndexed { i, (name, licence) -> ListRow(name, i, libraries.size, licence) } }
-        Note("The Apache License 2.0 lets anyone use, change and share the software, keeping its copyright and licence notices. Its full text: apache.org/licenses/LICENSE-2.0. SQLite is in the public domain: anyone may use it for any purpose.")
-        Spacer(Modifier.height(24.dp))
-    }
-}
+// Open source licences are Google's own screen (OssLicensesMenuActivity, Settings › Open-source licences): its list is
+// made from the app's dependencies at build time, so no library is ever left out.

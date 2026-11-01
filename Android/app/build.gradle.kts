@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 android {
@@ -108,6 +109,8 @@ dependencies {
     implementation("androidx.graphics:graphics-shapes:1.1.0")
     // The privacy policy opens in a browser tab over the app (Custom Tabs, Figma 1183:375133).
     implementation("androidx.browser:browser:1.8.0")
+    // Google's Open source licenses screen (Figma 1183:375694), its list made from the app's own dependencies.
+    implementation("com.google.android.gms:play-services-oss-licenses:17.5.3")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     debugImplementation("androidx.compose.ui:ui-tooling")

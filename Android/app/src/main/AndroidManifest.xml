@@ -94,5 +94,13 @@
         </activity>
         <!-- The day's start moves every widget on, without the app. -->
         <receiver android:name=".app.widgets.WidgetDayReceiver" android:exported="false" />
+        <!-- Google's Open source licenses screen (Settings › Open-source licences) needs an AppCompat theme; DayNight
+             follows the app's own Light or Dark. -->
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
+            android:theme="@style/Theme.AppCompat.DayNight" />
+        <activity
+            android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
+            android:theme="@style/Theme.AppCompat.DayNight" />
     </application>
 </manifest>
