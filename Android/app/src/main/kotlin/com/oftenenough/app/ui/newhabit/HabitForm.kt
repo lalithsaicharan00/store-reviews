@@ -1,5 +1,6 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.drawnHeight
 import com.oftenenough.app.ui.components.AppDialog
 import com.oftenenough.app.ui.components.FormField
 import com.oftenenough.app.ui.components.AppMenuItem
@@ -409,7 +410,8 @@ fun OpenSettingsButton(context: android.content.Context) {
             context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
         }
-    }, Modifier.padding(start = 16.dp, top = 4.dp), style = ButtonStyle.Tonal, icon = Symbols.Settings, tag = "open-settings")
+        // At its drawn 40, its touch spreading past, 8 under the line above it (Figma's Open settings, Create new 9).
+    }, Modifier.padding(start = 16.dp).drawnHeight(), style = ButtonStyle.Tonal, icon = Symbols.Settings, tag = "open-settings")
 }
 
 /** A one-time task's day on the form (Figma): "Today · Fri, 23 Oct", "Tomorrow · Sat, 24 Oct", "Thu, 29 Oct", "No date". */
