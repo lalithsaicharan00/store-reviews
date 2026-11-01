@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawWithCache
@@ -150,19 +151,31 @@ fun HistorySummary(detail: String?, summary: @Composable () -> Unit) {
 }
 
 /**
+ * The side of a Week or Month square for the [width] the grid has, on any phone or tablet: seven square cells with the
+ * same 6 between them, growing until the row fills the width (36 on Figma's 360 dp phone, about 46 on a 432 dp one),
+ * as Year in pixels fills its card (the user, 1 Nov 2026: "instead of fixed size, it should adapt to the available
+ * width … the gap between those cells should be same … on any device").
+ */
+private fun gridSquare(width: Dp): Dp = ((width - CellGap * 6) / 7).coerceAtLeast(1.dp)
+
+/**
  * Week: the weekday [names] ("Sun" … "Sat", in the person's order) in Body Small On surface variant, today's in Label
- * Medium On surface; 8; the week's seven squares, 36 and 6 apart.
+ * Medium On surface; 8; the week's seven squares, 6 apart, filling the width ([gridSquare]).
  */
 @Composable
 fun HistoryWeek(names: List<String>, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, modifier: Modifier = Modifier, onTap: ((Int?) -> Unit)? = null) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        DayNames(names, todayIndex)
-        Squares(0, cells, todayIndex, color, modifier, onTap)
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        val square = gridSquare(maxWidth)
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            DayNames(names, todayIndex, square)
+            Squares(0, cells, todayIndex, color, modifier, onTap, square)
+        }
     }
 }
 
 /**
- * Month: the weekday letters ("S M T W T F S"), today's as Week's; 6; the month in rows of seven, 36 and 6 apart, its
+ * Month: the weekday letters ("S M T W T F S"), today's as Week's; 6; the month in rows of seven filling the width
+ * ([gridSquare]), 6 apart, its
  * first row starting after [lead] empty places (Figma's Empty), five rows or six. A week goal has no column of its own
  * (QA, 1 Nov 2026: the "Met" / "1 of 3" column narrowed the squares; Figma's Gym has none).
  */
@@ -171,9 +184,12 @@ fun HistoryMonth(
     letters: List<String>, lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, modifier: Modifier = Modifier,
     onTap: ((Int?) -> Unit)? = null,
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        DayNames(letters, todayIndex?.let { (lead + it) % 7 })
-        Squares(lead, cells, todayIndex, color, modifier, onTap)
+    BoxWithConstraints(Modifier.fillMaxWidth()) {
+        val square = gridSquare(maxWidth)
+        Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            DayNames(letters, todayIndex?.let { (lead + it) % 7 }, square)
+            Squares(lead, cells, todayIndex, color, modifier, onTap, square)
+        }
     }
 }
 
@@ -260,7 +276,7 @@ fun HistorySection(heading: String, modifier: Modifier = Modifier, content: @Com
     }
 }
 
-/** The weekday names, each centred over its 36 dp column, 6 apart; today's in Label Medium On surface. */
+/** The weekday names, each centred over its square's column, 6 apart; today's in Label Medium On surface. */
 @Composable
 private fun DayNames(namesIn: List<String>, todayColumn: Int?, column: Dp = DayCellSize.week) {
     val s = MaterialTheme.colorScheme
@@ -272,7 +288,7 @@ private fun DayNames(namesIn: List<String>, todayColumn: Int?, column: Dp = DayC
         if (namesIn.take(7).any { it.length > 1 && measurer.measure(it, AppType.labelMedium).size.width > room })
             namesIn.mapIndexed { i, n -> if (i < 7) n.take(1) else n } else namesIn
     }
-    Row(Modifier.padding(horizontal = DayCellSize.ring).clearAndSetSemantics { }, horizontalArrangement = Arrangement.spacedBy(CellGap)) {
+    Row(Modifier.clearAndSetSemantics { }, horizontalArrangement = Arrangement.spacedBy(CellGap)) {
         names.forEachIndexed { i, name ->
             val isToday = i == todayColumn
             Box(Modifier.width(if (i < 7) column else 40.dp), contentAlignment = Alignment.Center) {
@@ -283,7 +299,10 @@ private fun DayNames(namesIn: List<String>, todayColumn: Int?, column: Dp = DayC
     }
 }
 
-/** Rows of seven squares ([size], 6 apart both ways) after [lead] empty places; one Canvas. */
+/**
+ * Rows of seven squares ([size], 6 apart both ways) after [lead] empty places; one Canvas. The squares fill it edge to
+ * edge, as Figma's sit at the card's inset; today's ring draws into the room around it.
+ */
 @Composable
 private fun Squares(
     lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, modifier: Modifier,
@@ -292,10 +311,9 @@ private fun Squares(
     val s = MaterialTheme.colorScheme
     val colors = dayCellColors(color)
     val rows = (lead + cells.size + 6) / 7
-    val ring = DayCellSize.ring
     val pitch = size + CellGap
-    val width = ring * 2 + pitch * 7 - CellGap
-    val height = ring * 2 + pitch * rows - CellGap
+    val width = pitch * 7 - CellGap
+    val height = pitch * rows - CellGap
     val tap by rememberUpdatedState(onTap)
     Canvas(
         modifier.size(width, height)
@@ -303,21 +321,20 @@ private fun Squares(
                 if (onTap == null) m else m.pointerInput(lead, cells.size, size) {
                     detectTapGestures { at ->
                         val step = pitch.toPx()
-                        val column = floor((at.x - ring.toPx()) / step).toInt()
-                        val row = floor((at.y - ring.toPx()) / step).toInt()
+                        val column = floor(at.x / step).toInt()
+                        val row = floor(at.y / step).toInt()
                         val i = row * 7 + column - lead
                         tap?.invoke(if (column in 0..6 && row >= 0 && i in cells.indices) i else null)
                     }
                 }
             },
     ) {
-        val pad = ring.toPx()
         val sq = size.toPx()
         val step = pitch.toPx()
         val draw = DayCellDraw(sq, 1.dp.toPx())
         cells.forEachIndexed { i, cell ->
             val place = lead + i
-            draw.add(cell, pad + (place % 7) * step, pad + (place / 7) * step, i == todayIndex)
+            draw.add(cell, (place % 7) * step, (place / 7) * step, i == todayIndex)
         }
         draw.draw(this, colors)
     }
