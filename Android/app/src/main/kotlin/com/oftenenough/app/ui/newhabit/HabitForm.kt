@@ -60,6 +60,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
@@ -565,8 +566,11 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
         Box {
             val ends = if (form.hasEnd) dayWords(form.endDate, today) else "Never"
             AppListItem("Ends", 1, 2, Modifier.semantics(mergeDescendants = true) { contentDescription = "Ends, $ends" }, ends,
-                trailing = { Icon(Symbols.ArrowDropDown, null) }, onClick = { endsMenu = true }, containerColor = rowColor, tag = "ends-row")
-            AppMenu(endsMenu, { endsMenu = false }, Modifier.width(200.dp).semantics { testTag = "ends-menu" }, offset = DpOffset(130.dp, 0.dp)) {
+                // ▲ while its menu is open, as Material's own dropdown fields (Figma's Ends, frame 5).
+                trailing = { Icon(Symbols.ArrowDropDown, null, Modifier.rotate(if (endsMenu) 180f else 0f)) }, onClick = { endsMenu = true }, containerColor = rowColor, tag = "ends-row")
+            // The menu hangs from the row's right edge, 4 under it (Figma: 200 wide, its right on the card's), on any width.
+            Box(Modifier.align(Alignment.BottomEnd).size(200.dp, 0.dp)) {
+            AppMenu(endsMenu, { endsMenu = false }, Modifier.width(200.dp).semantics { testTag = "ends-menu" }, offset = DpOffset(0.dp, 4.dp)) {
                 AppMenuItem("Never", { form.hasEnd = false; endsMenu = false }, selected = !form.hasEnd)
                 AppMenuItem("On a date…", {
                     endsMenu = false
@@ -574,13 +578,14 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
                     picking = "end"
                 }, selected = form.hasEnd)
             }
+            }
         }
     }
     when (picking) {
-        "start" -> DayDialog(form.startDate, { firstLog == null || it <= firstLog }, { picking = null }, title = "Starts",
-            note = firstLog?.let { "Up to ${DayWords.dayMonth(it)}, the first log, so no log is hidden." } ?: "A start date in the past lets you tick the days since then.") { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
-        "end" -> DayDialog(maxOf(form.endDate, form.startDate), { it >= form.startDate }, { picking = null }, title = "Ends",
-            note = "After it, the habit leaves Today. Its history stays.") { form.endDate = it; form.hasEnd = true }
+        // Figma's Starts and Ends pickers are Android's own, with no line of ours (Create new 11). A new habit starts today or
+        // later (its days before today greyed, frame 2); an existing one can't start after its first log, so no log is hidden.
+        "start" -> DayDialog(form.startDate, { (form.original != null || it >= today) && (firstLog == null || it <= firstLog) }, { picking = null }, title = "Starts") { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
+        "end" -> DayDialog(maxOf(form.endDate, form.startDate), { it >= form.startDate }, { picking = null }, title = "Ends") { form.endDate = it; form.hasEnd = true }
     }
 }
 

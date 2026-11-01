@@ -7,6 +7,7 @@ import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.SemanticsMatcher
 import androidx.compose.ui.test.click
 import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.isEnabled
@@ -284,14 +285,16 @@ class HabitDetailsTest {
 
     // ------------------------------------------------------------------ 5 · The start date
 
-    @Test fun startedSaysWhatItMeansAndStopsAtTheFirstLog() {
+    // Figma's pickers carry no line of ours (QA, Create new 11): the stop at the first log shows as greyed days. Water has
+    // logs before today, so today can't be its start.
+    @Test fun startsStopsAtTheFirstLog() {
         launch()
         openPage("Water")
         tapTag("habit-menu")
         tapTag("habit-menu-edit")
-        waitFor(hasText("the first log", substring = true), "the line under Started")
         tapTag("starts-row")
-        waitFor(hasText("Up to", substring = true), "the picker saying why it stops")
+        waitFor(hasContentDescription("Today", substring = true), "the picker on today")
+        compose.onNode(hasContentDescription("Today", substring = true)).assertIsNotEnabled()
     }
 
     // ------------------------------------------------------------------ 6 · Other states
