@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 23 |
+| details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **215** |
+| **All** | | **290** | **216** |
 
 ## Bug log
 
@@ -632,7 +632,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 21 | 355:2234 | Larger text, and loading | Progress 200 % → History 200 % → Loading | passed ↻ ³⁵ |
 | 22 | 380:3192 | Task details: a one-time task | Car service → Task details → ⋮ → done today | passed ↻ ³⁶ |
 | 23 | 358:679 | Task details: a repeating task | Replace the water filter → Task details → ← | passed ↻ ³⁷ |
-| 24 | 367:2718 | History: a skipped day | Tue 8 → Day details → Skip this day → Add a note… → Save → ✕ | not started |
+| 24 | 367:2718 | History: a skipped day | Tue 8 → Day details → Skip this day → Add a note… → Save → ✕ | passed (phone, no changes; on Thu 8 Oct, the demo's Water has nothing in September: "0 of 8 glasses · 8 glasses to go", Skipped with the buttons switched off and Undo skip in Skip's place, the note, then History's "Skipped" row with the skip square and note and October "22 of 30 days". The sheet's line is the Day details page's "Your streak stays safe." where these copies say "Left out of every count." ²⁷) |
 
 ## Create new (381:2)
 
