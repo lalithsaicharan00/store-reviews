@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 13 |
+| settings | 781:34017 | 23 | 14 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **257** |
+| **All** | | **290** | **258** |
 
 ## Bug log
 
@@ -402,6 +402,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 360. Settings 12 · the Starts picker was titled "Enter time"; Figma's says what it's for, "Starts" (the other time pickers keep "Enter time", as Figma draws them).
 361. Settings 12 · "Changes saved" on Times of day sat 28 above Figma's: the app's host lifts messages 96 for a pinned button, and Figma's sits 8 above Add time of day (16 + 56 + 8).
 362. Settings 13 · from Times of day, Your day left the new time of day out until its start was picked; Figma lists it at once (4:00 AM – 6:00 AM, New), as the habit form's does. From Today it still joins once a start is picked, as Today's Figma draws it (D-61).
+363. Settings 14 · Delete Morning? said "Its 4 habits will move to Anytime."; Settings' Figma: "Its 4 habits move to Anytime. Their logs, notes and streaks stay." Today's frame keeps the shorter line, so each page follows its own (Decisions needed D-64).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -755,7 +756,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 11 | 1183:9556 | Erase all my data | Erase all my data… → dialog → Today, no habits yet | passed ↻ ⁴² (phone: Backed up → Erase all my data… → “Erase all your data?” “… Your Google Drive backup stays, so you can bring them back.” → Erase → the empty Today, “No habits yet”, New habit, Restore from a backup) |
 | 12 | 1183:11921 | Edit a time of day | Times of day → Morning → Starts → 07:00 → Save → list | passed ↻ (phone: Times of day’s rows at Figma’s places; Morning → Edit time of day (✕, Save, Starts 6:00 AM, Ends “12:00 PM, when Afternoon starts”, Your day with Editing) → Starts → the time picker titled “Starts” → 07:00 → OK: Starts 7:00 AM, Morning 7:00 AM – 12:00 PM → Save → the list says 7:00 AM – 12:00 PM, “Changes saved” 8 above Add time of day. The picker’s a.m./p.m. are the phone’s own words) |
 | 13 | 1183:367054 | A new time of day | Add time of day → name, starts → “Before work” → Add | passed ↻ ³⁹ (phone: Add time of day → New time of day with the keyboard up, “e.g. Before work”, Starts 4:00 AM, Ends “6:00 AM, when Morning starts”, and Your day listing “New time of day · 4:00 AM – 6:00 AM · New” at once → “Before work” → Add → Times of day: Before work 4:00 AM – 6:00 AM first, in time order) |
-| 14 | 1183:368079 | Delete a time of day | Morning → Delete time of day → Delete Morning? → Undo | not started |
+| 14 | 1183:368079 | Delete a time of day | Morning → Delete time of day → Delete Morning? → Undo | passed ↻ (phone: Morning → Delete time of day → “Delete Morning?” “Its 4 habits move to Anytime. Their logs, notes and streaks stay.” → Delete → Times of day without Morning, “Morning deleted · Undo” 8 above Add time of day → Undo: Morning back in its place) |
 | 15 | 1183:368648 | Leaving Edit time of day with changes | Morning → renamed → ✕ → Discard your changes? → unchanged | not started |
 | 16 | 1186:373799 | New day starts at | Settings → page → 3:00 AM → ← | not started |
 | 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | not started |

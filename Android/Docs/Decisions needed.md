@@ -729,3 +729,11 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) keep Figma's one example; (b) an example per kind (Figma's frames would change to match).
 - **My recommendation:** (b) reads better (a cut-down habit called "Make bed" is odd), but it's your call; (a) is
   what Figma shows today.
+
+### D-64. Delete a time of day: what the question says
+
+- **Where:** "Delete Morning?", [Figma Settings 1183:367938](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1183-367938) (Settings flow 14) and [Figma Today 842:65872](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=842-65872) (Today flow 54); `ui/settings/SettingsPages.kt` (`SectionEditorScreen`).
+- **What Figma shows:** Settings: "Its 4 habits move to Anytime. Their logs, notes and streaks stay." Today: "Its 4 habits will move to Anytime."
+- **What I did for now:** each page follows its own Figma (`fromSettings`).
+- **Question:** (a) Settings' words everywhere: they also say nothing is lost; (b) Today's shorter line everywhere.
+- **My recommendation:** (a): saying the history stays answers the worry a delete raises.

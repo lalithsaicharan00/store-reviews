@@ -165,6 +165,8 @@ fun SectionEditorScreen(
     onDeleted: ((name: String, undo: HabitStore.SectionUndo) -> Unit)? = null,
     /** The new one is in Your day from the start, at its first free start (Figma's Create new, flow 7, frame 3). */
     listedAtOnce: Boolean = false,
+    /** Opened from Settings › Times of day, whose Delete question says what stays (Figma 1183:367938; D-64). */
+    fromSettings: Boolean = false,
     onClose: (String?) -> Unit,
 ) {
     val existing = existingId?.let { id -> store.sections.firstOrNull { it.id == id } }
@@ -245,9 +247,12 @@ fun SectionEditorScreen(
     if (confirmDelete && existing != null) {
         // Figma's "Delete Morning?" (842:65872): Cancel and Delete only (D9), saying where its habits go.
         val habits = store.habits.count { existing.id in it.parts && !it.archived && it.kind != HabitKind.Task }
-        AppDialog("Delete ${existing.name}?", when (habits) {
-            0 -> "No habits are in it."
-            1 -> "Its 1 habit will move to Anytime."
+        // Settings' words say what stays; Today's frame (842:65872) has the shorter line (D-64).
+        AppDialog("Delete ${existing.name}?", when {
+            habits == 0 -> "No habits are in it."
+            fromSettings && habits == 1 -> "Its 1 habit moves to Anytime. Its logs, notes and streaks stay."
+            fromSettings -> "Its $habits habits move to Anytime. Their logs, notes and streaks stay."
+            habits == 1 -> "Its 1 habit will move to Anytime."
             else -> "Its $habits habits will move to Anytime."
         }, "Delete", {
             confirmDelete = false
