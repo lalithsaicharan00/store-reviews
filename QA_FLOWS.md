@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 12 |
+| details pages | 298:2 | 24 | 13 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **204** |
+| **All** | | **290** | **205** |
 
 ## Bug log
 
@@ -578,7 +578,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | passed ↻ (on October's Fri 9: the demo's Water starts logging on 10 Oct) |
 | 11 | 337:1861 | History: With notes, and searching notes | With notes → Search notes → “run” → “swim” none → ← | passed ↻ (on the physical phone, moto g54, from here on; the two October notes typed in first: the demo has none) |
 | 12 | 339:3638 | History: Go to date | Go to date → picker → September → 14 → OK → lit row → fades | passed ↻ ²⁹ |
-| 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | not started |
+| 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | passed (phone; on Fri 9 Oct. Figma's frame 3 reads "Open today" before a day is picked, against frame 2's caption "Open stays off until one is picked"; the app keeps Open off) |
 | 14 | 342:3249 | History: Add a note to any day | Add → ‹ → 20 → Open → Add a note… → Save → ✕ → scroll | not started |
 | 15 | 347:2396 | Edit habit: Started moved earlier | ⋮ Edit habit → Started 25 Aug → Save: History runs to 25 Aug | not started |
 | 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | not started |
