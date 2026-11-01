@@ -132,6 +132,9 @@ internal fun FoldHeader(title: String, summary: String, open: Boolean, count: In
         summary.ifEmpty { null },
         trailing = { Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, if (open) "Fold the month" else "Show the month", tint = MaterialTheme.colorScheme.onSurfaceVariant) },
         onClick = onToggle, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = tag,
+        // The arrow stays on the header's middle when its words take three lines (Figma's History at 200 %; QA, 1 Nov
+        // 2026: Material's list item moved it to the top).
+        centred = true,
     )
 
 /** A plain card with a line of text. */

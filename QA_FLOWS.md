@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 20 |
+| details pages | 298:2 | 24 | 21 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **212** |
+| **All** | | **290** | **213** |
 
 ## Bug log
 
@@ -328,6 +328,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 286. Details pages 19 · the Month card drew "Recorded each day" for a limit; Figma's cut-down Month goes from its squares to the comparison.
 287. Details pages 19 (and 18) · Week compared a limit's cups ("8 cups" against "0 cups", as if more were better) and a quit habit's slips; Figma's Coffee and Smoking Week cards have no comparison. Their Month compares days.
 288. Details pages 20 · with no day over the limit, the Over the limit tile said "0 days" over "100% of days" (a percentage took the place of its last day); a limit's tiles never carry one now.
+289. Details pages 21 · at 200 % text Year in pixels' month letters ran into its first row of squares, and its day numbers ("26") into the first column: the grid kept Figma's 16 dp letter row and 18 dp number column whatever the text size. Both are their text's size now, never less than Figma's (`YearInPixelsCard`).
+290. Details pages 21 · at 200 % a History month's ⌃ went to the top of its header (Material's list item tops its trailing content at three lines); Figma keeps it on the header's middle, as the day rows (`FoldHeader`, `centred`).
+291. Details pages 21 · loading's Week skeletons were 36 dp tall where the squares that replace them fill the width (A92), so the card jumped; and the medal skeletons were spread edge to edge, not centred in the shelf's three columns as Figma draws them.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -363,6 +366,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³² Details pages 18 (phone): the demo's Smoking quit on 29 Jul and slipped twice (its longest run 45 days, now 19), where Figma's quit on 27 Sep with one slip. Figma's "smoke-free" is "clean" (A23: one word for every quit habit). Figma's Year card omits "so far" where its Week and Month have it, and Water's Year (flow 17) has it: the app keeps "so far" on every running period. Next in a row adds ", best 45" when the best run is longer than the one going on (Figma's are the same run).
 ³³ Details pages 19 (phone): the days demo's Coffee (at most 2 cups, from 2 Oct) given 3 cups on 16 and 25 Oct and 2, 1, 2 on 28, 30, 31 Oct; Figma's is at most 3 cups from 14 Sep on a Friday, so Week and Month were compared on last week and October. The word is Figma's "within the limit", against A23's "within max": D-60. Figma's Coffee and Smoking anniversary rows have no "Next ·" where Water's has it; the app keeps it on every Next row. Logcat's only lines from the app's process are the phone maker's own libraries loading (QT, FBI libmagtsync).
 ³⁴ Details pages 20 (phone): the design demo's Social media (at most 30 min, from 25 Oct) with 45 min logged on Wed 28 Oct through Day details' Log time; Figma's is at most 1 h from 28 Sep. Its milestones and How milestones work are flow 19's code, rechecked here for time ("7 days within the limit", "10 days in total").
+³⁵ Details pages 21 (phone): Android's largest Font size, 200 % (`font_scale 2.0`, put back to 1.0 after). Figma's 200 % Week squeezes "Sun Mon …" until they overlap; the app gives way to letters (Rulebook: what sits beside a word gives way first). The Next ring stays Figma's 52 with its label growing inside, as Figma's does. Loading was caught from a screen recording, 20 frames a second: it shows only through the page's fade-in.
 
 ## Open questions for the user
 
@@ -618,7 +622,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 18 | 354:1822 | A quit habit’s Progress | Smoking → whole page → See all 5 → How milestones work | passed ↻ ³² |
 | 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | passed ↻ ³³ |
 | 20 | 1158:112719 | A cut-down habit’s Progress: time | Social media → whole page → See all 3 → How milestones work | passed ↻ ³⁴ |
-| 21 | 355:2234 | Larger text, and loading | Progress 200 % → History 200 % → Loading | not started |
+| 21 | 355:2234 | Larger text, and loading | Progress 200 % → History 200 % → Loading | passed ↻ ³⁵ |
 | 22 | 380:3192 | Task details: a one-time task | Car service → Task details → ⋮ → done today | not started |
 | 23 | 358:679 | Task details: a repeating task | Replace the water filter → Task details → ← | not started |
 | 24 | 367:2718 | History: a skipped day | Tue 8 → Day details → Skip this day → Add a note… → Save → ✕ | not started |

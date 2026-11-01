@@ -102,13 +102,17 @@ private fun YearGrid(cells: List<HeatCell>, monthStarts: List<Int>, monthLengths
     val strong = AppType.labelMedium
     val months = remember(measurer, style, strong, thisMonth) { "JFMAMJJASOND".mapIndexed { i, c -> measurer.measure(c.toString(), if (i == thisMonth) strong else style) } }
     val days = remember(measurer, style) { (1..31 step 5).map { it to measurer.measure("$it", style) } }
+    // The letters' row and the day numbers' column are as big as their text: at 200 % the letters ran into the first
+    // row of squares (QA, 1 Nov 2026).
+    val letters = months.maxOf { it.size.height }.toFloat()
+    val numbers = days.maxOf { it.second.size.width }.toFloat()
     val label = s.onSurfaceVariant
     val tap by rememberUpdatedState(onTap)
     Canvas(
         // Its height follows its width: the letters' row, then 31 rows of squares 3 apart, and room for today's ring.
         Modifier.fillMaxWidth().layout { measurable, constraints ->
             val w = constraints.maxWidth
-            val g = YearGeometry(w.toFloat(), density)
+            val g = YearGeometry(w.toFloat(), density, letters, numbers)
             val h = (g.top + 31 * g.pitch - g.gap + DayCellSize.ring.toPx()).roundToInt()
             val placeable = measurable.measure(Constraints.fixed(w, h))
             layout(w, h) { placeable.place(0, 0) }
@@ -116,7 +120,7 @@ private fun YearGrid(cells: List<HeatCell>, monthStarts: List<Int>, monthLengths
             .let { m ->
                 if (onTap == null) m else m.pointerInput(monthStarts, monthLengths, cells.size) {
                     detectTapGestures { at ->
-                        val g = YearGeometry(size.width.toFloat(), density)
+                        val g = YearGeometry(size.width.toFloat(), density, letters, numbers)
                         val column = floor((at.x - g.left + g.gap / 2) / g.pitch).toInt()
                         val row = floor((at.y - g.top + g.gap / 2) / g.pitch).toInt()
                         if (column !in 0 until minOf(12, monthStarts.size) || row < 0 || row >= monthLengths[column]) return@detectTapGestures
@@ -127,7 +131,7 @@ private fun YearGrid(cells: List<HeatCell>, monthStarts: List<Int>, monthLengths
             }
             .clearAndSetSemantics { testTag = "year-pixels" },
     ) {
-        val g = YearGeometry(size.width, density)
+        val g = YearGeometry(size.width, density, letters, numbers)
         for (m in 0 until 12) {
             val t = months[m]
             drawText(t, color = if (m == thisMonth) s.onSurface else label, topLeft = Offset(g.left + m * g.pitch + g.square / 2 - t.size.width / 2f, 0f))
@@ -144,12 +148,15 @@ private fun YearGrid(cells: List<HeatCell>, monthStarts: List<Int>, monthLengths
     }
 }
 
-/** Where the grid's squares go for a [width] (px): Figma's square = (width − 8 − 18 − 12 × 3) ÷ 12. */
-private class YearGeometry(width: Float, density: Float) {
+/**
+ * Where the grid's squares go for a [width] (px): Figma's square = (width − 8 − 18 − 12 × 3) ÷ 12, the 18 being the day
+ * numbers' column and 16 the letters' row, each growing to its text ([letters] high, [numbers] wide, px).
+ */
+private class YearGeometry(width: Float, density: Float, letters: Float, numbers: Float) {
     val gap = Gap.value * density
-    val left = (DayColumn.value + Gap.value) * density
-    val square = (width - (EndRoom.value + DayColumn.value + 12 * Gap.value) * density) / 12f
+    val left = maxOf(DayColumn.value * density, numbers) + gap
+    val square = (width - EndRoom.value * density - left - 11 * gap) / 12f
     val pitch = square + gap
-    /** The month letters' 16 dp row and a gap. */
-    val top = (16 + Gap.value) * density
+    /** The month letters' row (16 dp, or the letters' height) and a gap. */
+    val top = maxOf(16 * density, letters) + gap
 }

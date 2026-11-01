@@ -27,6 +27,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -484,8 +485,9 @@ private fun LazyListScope.loadingItems(color: HabitColor, keyOpen: Boolean, onTo
             LoadingCard {
                 Skeleton(Modifier.size(110.dp, 20.dp))
                 Skeleton(Modifier.fillMaxWidth().height(104.dp), RoundedCornerShape(20.dp))
-                Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    repeat(3) { Skeleton(Modifier.size(52.dp), CircleShape) }
+                // The shelf's three columns, a medal centred in each (Figma: 56, 154, 252).
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    repeat(3) { Box(Modifier.weight(1f), contentAlignment = Alignment.Center) { Skeleton(Modifier.size(52.dp), CircleShape) } }
                 }
             }
             HabitKeyCard(keyOpen, onToggleKey, color, Modifier.pageItem())
@@ -493,7 +495,8 @@ private fun LazyListScope.loadingItems(color: HabitColor, keyOpen: Boolean, onTo
                 LoadingCard {
                     Skeleton(Modifier.size(100.dp, 20.dp))
                     Skeleton(Modifier.size(200.dp, 28.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) { repeat(7) { Skeleton(Modifier.weight(1f).height(36.dp)) } }
+                    // Square, as the Week card's squares that fill the width (A92), 6 apart, so nothing jumps when they come.
+                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) { repeat(7) { Skeleton(Modifier.weight(1f).aspectRatio(1f)) } }
                 }
             }
         }
