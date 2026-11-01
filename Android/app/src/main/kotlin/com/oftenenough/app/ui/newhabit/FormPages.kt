@@ -576,13 +576,14 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
                 val open = d.choice == Choice.TIMES
                 Options(Option(if (open) words(countChoice) else "Times a week, month or year", open, "often-times", settings = { countControls(false) }) { set(d.copy(choice = Choice.TIMES)) })
             }
-            // On certain days of the week: Weekdays · Weekends (4 above, 16 under), then the seven days, 24 under.
+            // On certain days of the week: Weekdays · Weekends (4 above, 16 under), then the seven days, 24 under. The chips
+            // are laid out at their drawn 32, their touch spreading past, as Figma places them.
             val weekdays = d.choice == Choice.WEEKDAYS
             Options(Option(if (weekdays) HabitCopy.capitalized(words(HowOften.Weekdays(d.weekdays))) else "On certain days of the week", weekdays, "often-weekdays", bottom = 24.dp,
                 settings = {
-                    Row(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        AppFilterChip("Weekdays", false, { set(d.copy(weekdays = setOf(2, 3, 4, 5, 6))) }, tag = "often-weekdays-quick")
-                        AppFilterChip("Weekends", false, { set(d.copy(weekdays = setOf(1, 7))) }, tag = "often-weekends-quick")
+                    Row(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        AppFilterChip("Weekdays", false, { set(d.copy(weekdays = setOf(2, 3, 4, 5, 6))) }, Modifier.drawnHeight(32.dp), tag = "often-weekdays-quick")
+                        AppFilterChip("Weekends", false, { set(d.copy(weekdays = setOf(1, 7))) }, Modifier.drawnHeight(32.dp), tag = "often-weekends-quick")
                     }
                     Box(Modifier.padding(horizontal = 16.dp)) {
                         WeekdayCircles(d.weekdays, ws, "often-weekday-picker") { days -> set(if (days.size == 7) d.copy(choice = Choice.EVERY_DAY) else d.copy(weekdays = days)) }

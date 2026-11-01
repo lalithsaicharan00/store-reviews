@@ -94,7 +94,7 @@ fun Note(text: String) =
 
 /**
  * One choice of several: a radio button, its words, and a line under them (List item, 2.4). [option]: Figma's Option
- * (the create new pages' choices), its words in Body Large on Surface bright.
+ * (the create new pages' choices), its words in Body Large on Surface bright, the chosen one's in Title Medium.
  */
 @Composable
 fun RadioRow(
@@ -102,7 +102,7 @@ fun RadioRow(
     containerColor: androidx.compose.ui.graphics.Color = if (option) androidx.compose.material3.MaterialTheme.colorScheme.surfaceBright else androidx.compose.ui.graphics.Color.Unspecified,
     onClick: () -> Unit,
 ) = AppListItem(title, index, count, supporting = detail, leading = { RadioButton(selected, onClick = null) }, onClick = onClick,
-        containerColor = containerColor, headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, tag = tag)
+        containerColor = containerColor, headlineStyle = if (option && !selected) AppType.bodyLarge else AppType.titleMedium, tag = tag)
 
 /**
  * The chosen option with its own settings under it, in one piece of its group (Figma's "Option · … (chosen)"): its row,
@@ -141,7 +141,8 @@ fun Stepper(label: String, value: Int, range: IntRange, tag: String, unit: (Int)
         )
         StepButton(Symbols.Add, "More", value < range.last) { onChange(minOf(range.last, value + 1)) }
         val words = unit(value)
-        if (words.isNotEmpty()) Text(words, style = AppType.bodyLarge, color = s.onSurface)
+        // The unit has a column of its own, at least Figma's 52, so − n + keep their place from "day" to "months".
+        if (words.isNotEmpty()) Text(words, Modifier.widthIn(min = 52.dp), style = AppType.bodyLarge, color = s.onSurface)
     }
 }
 

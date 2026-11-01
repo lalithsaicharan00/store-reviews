@@ -146,7 +146,7 @@ data class OftenDraft(
     val daysInterval: Int = 2,
     val weeksInterval: Int = 2,
     val weeksDays: Set<Int> = emptySet(),
-    val monthsInterval: Int = 3,
+    val monthsInterval: Int = 1,
     val afterCount: Int = 1,
     val afterUnit: GoalPeriod = GoalPeriod.WEEK,
     val startDate: Int = 1,
