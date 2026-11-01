@@ -58,6 +58,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.semantics.heading
@@ -477,7 +478,9 @@ private fun HabitMenu(
     @Composable
     fun item(text: String, icon: ImageVector, tag: String, danger: Boolean = false, act: () -> Unit) =
         AppMenuItem(text, { onDismiss(); act() }, icon = icon, destructive = danger, tag = tag)
-    AppMenu(expanded, onDismiss) {
+    // Figma's menu is 220 wide, its top 4 over the ⋮ button's foot, its right 8 from the screen's (QA, 1 Nov 2026: it took
+    // its words' width, 138, and hung from the button's foot).
+    AppMenu(expanded, onDismiss, Modifier.width(220.dp), offset = DpOffset(0.dp, (-4).dp)) {
         // An archived habit's ⋮ holds Restore and Delete habit… only (Habits, Figma 6.6).
         if (!habit.archived) item("Edit habit", Symbols.Edit, "habit-menu-edit") { nav.edit(habit) }
         if (!habit.archived && (store.rules.canPause(habit) || pause != null)) {

@@ -117,7 +117,8 @@ fun AppMenuItem(
             Text(supporting, style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
-    val leading: (@Composable () -> Unit)? = icon?.let { { Icon(it, null, Modifier.size(MenuDefaults.LeadingIconSize)) } }
+    // Figma's item has 12 between the icon and the label, Material's 8: the 4 more sit after the icon (QA, 1 Nov 2026).
+    val leading: (@Composable () -> Unit)? = icon?.let { { Icon(it, null, Modifier.padding(end = 4.dp).size(MenuDefaults.LeadingIconSize)) } }
     val m = modifier.semantics { tag?.let { testTag = it } }
     val red = if (destructive) MaterialTheme.colorScheme.error else Color.Unspecified
     // Figma's Menu item: 16 at the sides, 8 above and below. Its 44 high stays Material's 48 (Compose 1.5's

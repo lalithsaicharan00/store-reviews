@@ -919,6 +919,10 @@ fun HabitStore.goalTally(habit: Habit, kind: GoalPeriod, today: Int, best: Boole
                     tally.eligible++
                     if (isMet) { tally.met++; tally.dates.add(day) }
                 }
+            } else if (day == today && pagePeriodKind(r) == GoalPeriod.DAY && (isPaused(habit, day) || isSkipped(habit, day)) && rules.isDayMet(habit, day)) {
+                // Today met, then paused or skipped, still counts, as its streak does (`runs`): pausing from today
+                // took one off Goal met while the streak kept it (QA, 1 Nov 2026).
+                tally.eligible++; tally.met++; tally.dates.add(day)
             }
             day++
         }
