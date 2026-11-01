@@ -183,7 +183,7 @@ class HabitDetailsTest {
         tapTag("habit-tab-history")
         waitFor(hasText("Felt thirsty after the run", substring = true), "yesterday's note under its day")
         tapTag("history-with-notes")
-        waitFor(hasText("2 notes", substring = true), "the month counting its notes")
+        waitFor(hasText("2 days with a note", substring = true), "the month counting its days with a note (Figma)")
         waitGone(hasTestTag("habit-day-" + dayKey(today - 2)), "a day without a note")
         tapTag("history-all")
         waitFor(hasTestTag("habit-day-" + dayKey(today - 2)), "every day again")

@@ -85,7 +85,7 @@ fun historyShown(months: List<HistoryMonth>, filter: HistoryFilter): List<Histor
     if (filter == HistoryFilter.ALL) months
     else months.mapNotNull { m ->
         val days = m.days.filter { it.hasNote }
-        if (days.isEmpty()) null else m.copy(summary = if (days.size == 1) "1 note" else "${days.size} notes", days = days)
+        if (days.isEmpty()) null else m.copy(summary = if (days.size == 1) "1 day with a note" else "${days.size} days with a note", days = days)
     }
 
 /** Whether month [index] of the list is open: the newest two start open; a tap on the header turns that around. */
@@ -168,10 +168,6 @@ internal fun LazyListScope.historyItems(
             }
         }
     }
-    if (filter == HistoryFilter.NOTES && shown.isNotEmpty()) item(key = "history-notes-only") {
-        Text("Days without a note are hidden while With notes is on.", Modifier.pageItem().padding(horizontal = 16.dp),
-            style = AppType.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
 }
 
 /** All · With notes · Go to date (Figma 2.1, 2.4): the first two choose what's listed, the last scrolls to a day. */
@@ -211,7 +207,7 @@ private fun HistoryDayRow(day: HistoryDay, color: HabitColor, index: Int, count:
         listOfNotNull(day.relative, day.detail.ifEmpty { null }).joinToString(" · "),
         leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { DayCell(day.heat, color, size = DayCellSize.small, isToday = day.relative == "Today") } },
         below = day.note?.let { { ListNote(if (query != null) highlighted(it, query) else AnnotatedString(it)) } },
-        trailing = { ListChevron() }, onClick = onOpen, containerColor = fill, tag = "habit-day-" + dayKey(day.day),
+        trailing = { ListChevron() }, onClick = onOpen, containerColor = fill, centred = true, tag = "habit-day-" + dayKey(day.day),
     )
 }
 

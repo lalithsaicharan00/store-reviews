@@ -78,6 +78,11 @@ fun AppListItem(
     headlineStyle: androidx.compose.ui.text.TextStyle = AppType.titleMedium,
     beside: (@Composable () -> Unit)? = null,
     below: (@Composable ColumnScope.() -> Unit)? = null,
+    /**
+     * Figma's Day row (History): the leading square and the › centred on the row, and 8 above and below even with a
+     * note under the words; Material's tall row pins them to the top and keeps its 10 (QA, 1 Nov 2026).
+     */
+    centred: Boolean = false,
     tag: String? = null,
 ) {
     val shapes = listItemShapes(index, count)
@@ -107,10 +112,12 @@ fun AppListItem(
     val trail = trailing?.let { t -> @Composable { Box(Modifier.padding(start = 4.dp)) { t() } } }
     val colors = ListItemDefaults.segmentedColors(containerColor = containerColor)
     // Figma's List item is 8 above and below (56 for one line with its 40 avatar); Material's 10 made it 60.
-    val padding = if (below == null) PaddingValues(horizontal = 16.dp, vertical = 8.dp) else ListItemDefaults.ContentPadding
-    if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, lead, trail, supportingContent = support, onLongClick = onLongClick,
-        colors = colors, contentPadding = padding, content = headlineText)
-    else SegmentedListItem(shapes, m, enabled, lead, trail, supportingContent = support, colors = colors, contentPadding = padding, content = headlineText)
+    val padding = if (below == null || centred) PaddingValues(horizontal = 16.dp, vertical = 8.dp) else ListItemDefaults.ContentPadding
+    val align = if (centred) Alignment.CenterVertically else ListItemDefaults.verticalAlignment()
+    if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align,
+        onLongClick = onLongClick, colors = colors, contentPadding = padding, content = headlineText)
+    else SegmentedListItem(shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align, colors = colors,
+        contentPadding = padding, content = headlineText)
 }
 
 /** Between the rows of one group (Material's `SegmentedGap`, 2 dp). */

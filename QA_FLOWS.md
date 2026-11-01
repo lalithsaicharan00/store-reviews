@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 10 |
+| details pages | 298:2 | 24 | 11 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **202** |
+| **All** | | **290** | **203** |
 
 ## Bug log
 
@@ -298,6 +298,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 256. Details pages 10 · History's month lines said "Reached on 22 of 31 days" (the Month card's words); Figma's History says "Goal met on 22 of 29 days" for day goals (quit, limit and week goals keep their card's words).
 257. Details pages 10 · History's chips were laid out at their 48 touch height: the chips sat 8 dp low and every month 16; laid out at their drawn 32 now.
 258. Details pages 10 · an empty past day in History said "Not done"; Figma's History: "Nothing logged".
+259. Details pages 11 · With notes counted "2 notes" and added a line Figma doesn't have ("Days without a note are hidden while With notes is on."); Figma: "2 days with a note", and no line (gone). HabitDetailsTest asks for Figma's words.
+260. Details pages 11 · a History day with a note was 108 dp, its square and › pinned to the top (Material's tall row); Figma's Day row is 104, 8 above and below, both centred on the row (`AppListItem(centred)`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -572,7 +574,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 8 | 329:2 | Month for other kinds of goal | Gym 3×/week → Read 20 min | passed ↻ ²⁸ |
 | 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | passed (on 14 Oct: the demo's Water has nothing in September and no note; ✕ returns to the same place; a square to come opens nothing, as Week's and Month's) |
 | 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | passed ↻ (on October's Fri 9: the demo's Water starts logging on 10 Oct) |
-| 11 | 337:1861 | History: With notes, and searching notes | With notes → Search notes → “run” → “swim” none → ← | not started |
+| 11 | 337:1861 | History: With notes, and searching notes | With notes → Search notes → “run” → “swim” none → ← | passed ↻ (on the physical phone, moto g54, from here on; the two October notes typed in first: the demo has none) |
 | 12 | 339:3638 | History: Go to date | Go to date → picker → September → 14 → OK → lit row → fades | not started |
 | 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | not started |
 | 14 | 342:3249 | History: Add a note to any day | Add → ‹ → 20 → Open → Add a note… → Save → ✕ → scroll | not started |
