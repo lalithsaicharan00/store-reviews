@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 18 |
+| create new | 381:2 | 28 | 19 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **234** |
+| **All** | | **290** | **235** |
 
 ## Bug log
 
@@ -413,6 +413,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁸ Create new 2 (phone): ← on an empty form, and Discard, go back one screen, to How do you want to track it?, as Android's back does; Figma's captions say "back on Today", with frame 2 itself skipping the two choice screens (Today → New habit), read as the same shortcut. Another ← there and ✕ reach Today, nothing asked.
 ³⁹ Create new 7 (phone): Figma's two New time of day flows disagree on Your day before a start is picked (Today 52's frame 3 leaves the new one out, Create new 7's frame 3 lists it); each page follows its own frames until the user decides (Decisions needed D-61).
 ⁴⁰ Create new 15-17 (phone): the quit and cut-down forms had Tell me at milestones and its line under them, which Create new's frames don't draw (A21's milestone notification). Asked, the user removed it (1 Nov 2026, Android A93; D-62): no switch, no notification; milestones show in the app as for every habit. How milestones work lost its line; Today's "Reached away: the milestone notification" flows (passed on the emulator) describe something no longer in the app.
+⁴¹ Create new 19 (phone): frame 4's form, opened after paying, shows the name field as "Name" with no keyboard and Add filled; every other empty form on the page (New habit and New task, nothing typed, and a name cleared) says "Name, e.g. …" with the keyboard up and Add waiting for a name, which the app does here too. Paying was the test launch's stand-in; an ordinary launch buys through Google Play's own sheet.
 
 ## Open questions for the user
 
@@ -695,7 +696,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 16 | 406:870 | A new habit: cut down | Cut down → form → Limit Amount → ← → How often for a limit → ← | passed ↻ ⁴⁰ (phone: “At most 2 cups”, then “At most 2 cups a week”) |
 | 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | passed ↻ ⁴⁰ (phone: “At most 1 h”, then “At most 1 h a day”) |
 | 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus (frames 1–2; Make room, frames 3–4, removed by the user: Android A94) | passed ↻ (phone, five habits on the free plan seeded with `keep 5`: Build or maintain and Quit or cut down open Add a 6th habit, ← is back on What do you want to do?, Add a task goes on. The price there is the test launch’s stand-in; an ordinary launch shows Play’s, ₹2,400.00 on this phone) |
-| 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | not started |
+| 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | passed ⁴¹ (phone, free plan with four habits: Checklist’s Plus tag, the page and its end, Get Plus → the checklist form, “Plus is on”) |
 | 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | not started |
 | 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | not started |
 | 22 | 469:2 | A new task: for today | + → Add a task → Once → New task → “Pick up parcel” → form → Add | not started |
