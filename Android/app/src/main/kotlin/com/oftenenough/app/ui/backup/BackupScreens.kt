@@ -228,9 +228,10 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                     scope.launch { if (center.undoRestore()) snack.showSnackbar("This phone is back to how it was before the restore.") }
                 }
             }
+            // Both open Android's own save picker, not a page of ours: no › (Figma).
             Section("Export") {
-                PageRow(Symbols.Save, "Save a backup file", "To restore later, on any phone", 0, 2, "save-file") { save.launch(center.fileName()) }
-                PageRow(Symbols.Table, "Export a spreadsheet (CSV)", "To open in Google Sheets or Excel", 1, 2, "export-csv") { csv.launch(center.csvName()) }
+                PageRow(Symbols.Save, "Save a backup file", "To restore later, on any phone", 0, 2, "save-file", chevron = false) { save.launch(center.fileName()) }
+                PageRow(Symbols.Table, "Export a spreadsheet (CSV)", "To open in Google Sheets or Excel", 1, 2, "export-csv", chevron = false) { csv.launch(center.csvName()) }
             }
             Section(null) {
                 val count = if (connected) 2 else 1

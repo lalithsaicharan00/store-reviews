@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 1 |
+| settings | 781:34017 | 23 | 2 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **245** |
+| **All** | | **290** | **246** |
 
 ## Bug log
 
@@ -386,6 +386,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 344. Create new 27 · the app's snackbar sat behind the keyboard on pages with it up, and 96 above the bottom on the habit and task forms, which pin nothing there; it now rides above the keyboard, and on the forms sits 4 above the bottom, as on pages with nothing pinned.
 345. Create new 28 (every list row) · at 200 % text a row's › and leading icon went to the top once its words took three lines' height (How often, Time of day, Reminders…); Figma's List item keeps them on the row's middle at any height (CENTER). `AppListItem` now centres them always, except rows whose buttons sit under the words, which Figma draws at the top (Keep reminders coming's Open settings, `topWithBelow`).
 346. Create new 22 and 25 (every choice card) · What do you want to do? and What kind of task? pinned each card's icon and › to the top (about 18 above Figma's); Figma centres them on the card (Once: 96 tall, the icon on its middle). Fixed by 345.
+347. Settings 2 and 3 (every Card notice with its button under the words) · the Tonal button (Back up to Google Drive, Back up now, Back up again) laid out at its 48 dp touch height, so its words sat 4 low and everything under the card 8 low; it's laid out at Figma's drawn 40 now, its touch spilling past (`CardNotice`).
+348. Settings 2 · Save a backup file and Export a spreadsheet (CSV) had a ›; Figma has none: they open Android's own save picker, not a page.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -425,6 +427,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁶ Details pages 22 (phone): the tasks demo's Car service (Wed 18 Nov, Morning) and Book flights, done today at 9:12 AM; that demo's Book flights has no note, so the note under its day (frame 4's "Window seats, both ways.") was not seen on this page. Logcat's lines are the phone maker's libraries and Android's feature flags, not the app.
 ³⁷ Details pages 23 (phone): the tasks demo's Change water filter (2 months after it's done, done Mon 12 Oct) stands for Figma's Replace the water filter; a note was added to its day to see the note row. Figma's note row is 104 with a one-line note, its History twin's height for two lines; the app's grows with its text (88 with one line), as the Rulebook says.
 ³⁸ Create new 2 (phone): ← on an empty form, and Discard, go back one screen, to How do you want to track it?, as Android's back does; Figma's captions say "back on Today", with frame 2 itself skipping the two choice screens (Today → New habit), read as the same shortcut. Another ← there and ✕ reach Today, nothing asked.
+⁴² Settings 2–10 (phone): a test launch with `--ez realDrive true` (debug builds only) uses Google Drive itself, through Google’s own account chooser and permission screen, with the test account lalithsaicharan9@gmail.com (the user’s permission, 1 Nov 2026); every other test launch keeps its stand-in Drive (D8).
 ³⁹ Create new 7 (phone): Figma's two New time of day flows disagree on Your day before a start is picked (Today 52's frame 3 leaves the new one out, Create new 7's frame 3 lists it); each page follows its own frames until the user decides (Decisions needed D-61).
 ⁴⁰ Create new 15-17 (phone): the quit and cut-down forms had Tell me at milestones and its line under them, which Create new's frames don't draw (A21's milestone notification). Asked, the user removed it (1 Nov 2026, Android A93; D-62): no switch, no notification; milestones show in the app as for every habit. How milestones work lost its line; Today's "Reached away: the milestone notification" flows (passed on the emulator) describe something no longer in the app.
 ⁴¹ Create new 19 (phone): frame 4's form, opened after paying, shows the name field as "Name" with no keyboard and Add filled; every other empty form on the page (New habit and New task, nothing typed, and a name cleared) says "Name, e.g. …" with the keyboard up and Add waiting for a name, which the app does here too. Paying was the test launch's stand-in; an ordinary launch buys through Google Play's own sheet.
@@ -726,7 +729,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 1179:357753 | Opening Settings | Today → ≡ → Settings | passed (phone: ≡ → Settings; the five sections and every row at Figma’s places; a test launch has no Drive and nothing allowed, so “Not backed up yet” (flow 3) and “3 things to fix” (flow 19) where Figma shows Backed up and All set; Version is the build’s own, 1.0 (4)) |
-| 2 | 1181:2810 | Back up now | Settings → Backup & Sync → Back up now → Backing up… → Backed up | not started |
+| 2 | 1181:2810 | Back up now | Settings → Backup & Sync → Back up now → Backing up… → Backed up | passed ↻ ⁴² (phone, the test account’s real Google Drive: Back up now → Backing up… with its wave filling (seen in a screen recording; it takes about a second) → Backed up; Settings says “Backed up · Today, 7:54 PM”. Every row 20 above Figma’s: “… It backs up by itself as you go.” is one line at 432 dp, two at 360) |
 | 3 | 1181:4132 | Backing up for the first time | Not backed up yet → Back up to Google Drive → chooser → Allow → Backing up… → Backed up | not started |
 | 4 | 1182:4382 | Change account | Change account → chooser → Back up to another Drive? → Backing up… → Backed up | not started |
 | 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | not started |

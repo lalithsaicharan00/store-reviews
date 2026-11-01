@@ -139,7 +139,8 @@ object AppGraph {
             .isGooglePlayServicesAvailable(context) == com.google.android.gms.common.ConnectionResult.SUCCESS
 
     /** A test launch: an in-memory database, its own preferences, and (optionally) a clock that starts at [clockHour]:30. */
-    fun openForTest(context: Context, clockHour: Int?, plus: Boolean = false, playBilling: Boolean = false, forgetPlus: Boolean = false) {
+    fun openForTest(context: Context, clockHour: Int?, plus: Boolean = false, playBilling: Boolean = false, forgetPlus: Boolean = false,
+                    realDrive: Boolean = false) {
         init(context)
         isTest = true
         val offset = clockHour?.let {
@@ -155,11 +156,15 @@ object AppGraph {
             s.milestones.memory = milestoneMemory()
             scope.launchLoad(s)
         }
-        // Its own stand-in Drive, emptied each test launch (D8: never the person's).
+        // Its own stand-in Drive, emptied each test launch (D8: never the person's). A debug build's launch can ask for
+        // Google Drive itself instead (QA on the test phone, with its test account: Google's account chooser and
+        // permission screen), connected afresh each launch through its own settings.
         val driveFolder = java.io.File(context.noBackupFilesDir, "uitest-standin-drive").also { it.deleteRecursively() }
         val drivePrefs = context.getSharedPreferences("uitest-drive", Context.MODE_PRIVATE).also { it.edit().clear().commit() }
-        backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store,
-            com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs), test = true)
+        val link = if (realDrive && BuildConfig.DEBUG && playServices(context))
+            com.oftenenough.app.app.backup.GoogleDriveLink(context, context.getSharedPreferences("uitest-drive-real", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
+            else com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs)
+        backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store, link, test = true)
         // Google Play itself when the launch asks and the build has it (QA on the phone: Play's price and its purchase
         // sheet, the license tester's account); otherwise its own stand-in purchases, none each launch unless the launch
         // asks for Plus (TestLaunch.PLUS), as the automated tests need.

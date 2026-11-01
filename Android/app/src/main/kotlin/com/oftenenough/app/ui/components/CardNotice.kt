@@ -45,7 +45,8 @@ import com.oftenenough.app.ui.theme.AppType
  * - **Notice** ([action] given): 16 at the start and top, 8 at the end and bottom (the words end 16 in); 4 under the
  *   words, the buttons at the end, Material's Text buttons ([dismiss] first, if there is one, then the [action]), 8
  *   apart, wrapping to a second line when long. With [actionUnder] (Backup & Sync), 16 all round and the one action a
- *   Tonal button under the words instead, lined up with them (56 in), 12 below them.
+ *   Tonal button under the words instead, lined up with them (56 in), 12 below them, laid out at its drawn 40 (its
+ *   48 dp touch spills past, as Figma's card ends 16 under the 40).
  * - **Progress** ([working]): the work happening here (A39). No buttons; 12 under the words, Material's wavy bar in
  *   Primary on Secondary container, filled to [progress] (0 to 1), or Material's moving wave while there's no count.
  *   16 all round.
@@ -108,7 +109,7 @@ fun CardNotice(
                     AppButton(action, onAction, style = ButtonStyle.Text, enabled = actionEnabled, tag = actionTag)
                 }
             } else if (buttons) {
-                AppButton(action, onAction, Modifier.padding(start = 56.dp, top = 8.dp), style = ButtonStyle.Tonal, enabled = actionEnabled, tag = actionTag)
+                AppButton(action, onAction, Modifier.padding(start = 56.dp, top = 8.dp).drawnHeight(40.dp), style = ButtonStyle.Tonal, enabled = actionEnabled, tag = actionTag)
             }
         }
     }

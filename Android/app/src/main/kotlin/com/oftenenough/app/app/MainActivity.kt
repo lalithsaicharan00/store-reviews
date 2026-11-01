@@ -141,7 +141,7 @@ class MainActivity : ComponentActivity() {
         if (test) {
             AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 },
                 plus = intent.getBooleanExtra(TestLaunch.PLUS, false), playBilling = intent.getBooleanExtra(TestLaunch.PLAY_BILLING, false),
-                forgetPlus = intent.getBooleanExtra(TestLaunch.FORGET_PLUS, false))
+                forgetPlus = intent.getBooleanExtra(TestLaunch.FORGET_PLUS, false), realDrive = intent.getBooleanExtra(TestLaunch.REAL_DRIVE, false))
         } else AppGraph.open(this)
         val store = AppGraph.store
         if (test) store.failNextTap = intent.getBooleanExtra(TestLaunch.FAIL_TAP, false)
@@ -219,6 +219,8 @@ object TestLaunch {
     const val PLAY_BILLING = "playBilling"
     /** With [PLAY_BILLING]: the license tester's Plus purchase used up first, so the free plan shows again. */
     const val FORGET_PLUS = "forgetPlus"
+    /** Google Drive itself in a debug build's test launch (QA on the test phone): Google's chooser and permission screen. */
+    const val REAL_DRIVE = "realDrive"
     /** How many habits a demo keeps out; the rest are archived (5: the free plan's five). */
     const val KEEP = "keep"
     /** Shows running timers' Live Update in a test launch too (the player's flow 21, Figma 260:2). */
