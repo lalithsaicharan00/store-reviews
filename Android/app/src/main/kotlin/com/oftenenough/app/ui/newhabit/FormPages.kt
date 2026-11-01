@@ -1009,7 +1009,8 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
                 }
                 items(symbols, key = { "$name-$it" }) { s ->
                     val on = s == chosen
-                    AppFilledIconButton(HabitIcons.outlined(s), HabitIcons.spokenName(s) + if (on) ", chosen" else "", { chosen = s },
+                    // Filled, as the habit will show it (Figma's picker: Material Symbols with FILL 1; QA, 1 Nov 2026: outlined).
+                    AppFilledIconButton(HabitIcons.icon(s), HabitIcons.spokenName(s) + if (on) ", chosen" else "", { chosen = s },
                         done = on, color = form.color, size = IconButtonSize.Medium, tag = "icon-$s")
                 }
             }
