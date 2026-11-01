@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 19 |
+| create new | 381:2 | 28 | 20 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **235** |
+| **All** | | **290** | **236** |
 
 ## Bug log
 
@@ -372,6 +372,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 330. Create new 18 · Plus's ← opened Make room (each habit's ⋮ Archive or Delete, then Continue); the user removed it (Android A94): Plus's ← goes back with nothing added, here, on the form's Add and on Restore a 6th habit; the Make room page, its route and its test steps are gone (HabitFormTest now checks Plus for a build and a quit habit, and that a task goes on).
 331. Create new 18 · a sixth habit on the free plan met Plus only at Add, after its whole form; Figma's frame 2 and the user (A94): any new habit, Build or maintain, Quit or Cut down, opens Plus the moment it's chosen, and a task never does. ← is back on What do you want to do?; bought, it carries on to the habit's next step.
 332. Create new 18 (and Habits & tasks 12's Restore a 6th habit) · the five circles and "5 of 5 free habits" sat at the card's left; Figma centres them (`SixthPicture`).
+333. Create new 20 · on the free plan, If not done, remind again took Material's 10 above and below its words, so its words sat 2 lower than Figma's and its Plus tag 2 higher; Figma: 8 above and below, the tag 8 under the line (`belowPadding`).
+334. Create new 20 · Remind me again with Plus: the picture was 8 shorter than Figma's (each notification's app line lacked its 4 under, in Figma's 20-tall App), so everything under it sat 8 higher, and "Not done yet · an hour later" sat at the left where Figma centres it (`WalkPicture`, `Reminder`).
+335. Create new 20 · paying on Remind me again with Plus came back on the habit form, not Reminders, and anything typed in the form was lost: Plus was a screen of its own, and the form (kept with `remember`) started again on return. Remind me again's Plus opens inside the form now, as the 6th habit's does: ← or bought, it's Reminders again, "Plus is on", nothing lost (Edit habit gets the snackbar too).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -697,7 +700,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | passed ↻ ⁴⁰ (phone: “At most 1 h”, then “At most 1 h a day”) |
 | 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus (frames 1–2; Make room, frames 3–4, removed by the user: Android A94) | passed ↻ (phone, five habits on the free plan seeded with `keep 5`: Build or maintain and Quit or cut down open Add a 6th habit, ← is back on What do you want to do?, Add a task goes on. The price there is the test launch’s stand-in; an ordinary launch shows Play’s, ₹2,400.00 on this phone) |
 | 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | passed ⁴¹ (phone, free plan with four habits: Checklist’s Plus tag, the page and its end, Get Plus → the checklist form, “Plus is on”) |
-| 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | not started |
+| 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | passed ↻ (phone, free plan: the tag, the Plus page and its end, ← back on Reminders, Get Plus → Reminders without the tag, “Plus is on”, the typed name kept) |
 | 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | not started |
 | 22 | 469:2 | A new task: for today | + → Add a task → Once → New task → “Pick up parcel” → form → Add | not started |
 | 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | not started |

@@ -294,7 +294,7 @@ private fun AppMain(
         composable("edit/{id}") { e ->
             // Saved, the page it came back to says so (Figma): Habit details "Changes saved"; Habits & Tasks and Tasks
             // "Stretch saved · Undo". Today shows the change on the row itself.
-            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }, { nav.back(e) }) { saved, undo ->
+            EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }, { nav.back(e) }, plusOn) { saved, undo ->
                 val from = nav.previousBackStackEntry?.destination?.route
                 nav.back(e)
                 when {

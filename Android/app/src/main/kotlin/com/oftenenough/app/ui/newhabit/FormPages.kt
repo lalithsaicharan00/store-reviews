@@ -987,7 +987,9 @@ private fun MenuRow(
     Box {
         AppListItem(title, index, count, Modifier.semantics(mergeDescendants = true) { contentDescription = "$title, $value" + if (plus) ", Plus" else "" }, value,
             trailing = { Icon(Symbols.ArrowDropDown, null) }, onClick = { if (plus) onPlus() else open = true },
-            containerColor = MaterialTheme.colorScheme.surfaceBright, below = if (plus) ({ com.oftenenough.app.ui.components.PlusLabel(Modifier.padding(top = 4.dp)) }) else null, tag = tag)
+            // With Plus's tag under its line: 8 above and below the words, the tag 8 under the line (Figma's Reminders, free plan).
+            containerColor = MaterialTheme.colorScheme.surfaceBright, below = if (plus) ({ com.oftenenough.app.ui.components.PlusLabel(Modifier.padding(top = 8.dp)) }) else null,
+            belowPadding = 8.dp, tag = tag)
         AppMenu(open, { open = false }, offset = DpOffset(96.dp, 0.dp)) {
             options.forEachIndexed { i, o -> AppMenuItem(o, { onPick(i); open = false }, icon = icons?.get(i), selected = o == value, supporting = lines?.get(i)) }
         }

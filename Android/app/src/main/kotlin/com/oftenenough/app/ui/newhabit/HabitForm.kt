@@ -100,7 +100,7 @@ import java.time.ZoneId
 /** Text being typed, read only by its own field, so typing redraws only the field (S11). */
 class TypedText(initial: String) { var text by mutableStateOf(initial) }
 
-private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, REMINDERS, ICON, SIXTH }
+private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, REMINDERS, ICON, SIXTH, REMIND_PLUS }
 
 /**
  * New: what do you want to do → (build: how to track it | quit: quit or cut down) → the form. A copy opens its form
@@ -180,7 +180,8 @@ fun NewHabitFlow(
  * alerts).
  */
 @Composable
-fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> Unit, onClose: () -> Unit, onSaved: (Habit, () -> Unit) -> Unit) {
+fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> Unit, onClose: () -> Unit, onPlusOn: () -> Unit = {},
+                    onSaved: (Habit, () -> Unit) -> Unit) {
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
     // As it was when the form opened: the habit read again after Save is the edited one.
     val original = remember { habit }
@@ -190,7 +191,7 @@ fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> 
             store.undoEdit(original, before.first)
             store.setDescription(before.second, habit.id)
         }
-    }, onPlus)
+    }, onPlus, onPlusOn = onPlusOn)
 }
 
 /**
@@ -280,7 +281,10 @@ fun HabitForm(
         Page.OFTEN -> HowOftenPage(form, ::back)
         Page.TIME_OF_DAY -> TimeOfDayPage(form, store, ::back) { open(Page.NEW_PART) }
         Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null, listedAtOnce = true) { id -> back(); id?.let { form.choose(it) } }
-        Page.REMINDERS -> RemindersPage(form, store, ::back) { onPlus(PlusReason.REMIND) }
+        // Remind me again's Plus opens here, over the form, so nothing typed is lost; back or bought, it's Reminders again
+        // (Figma's "Remind again on the free plan", frame 4: "Paid: back on Reminders … Plus is on").
+        Page.REMINDERS -> RemindersPage(form, store, ::back) { open(Page.REMIND_PLUS) }
+        Page.REMIND_PLUS -> PlusScreen(PlusReason.REMIND, store, AppGraph.plus, onBack = ::back, onBought = { back(); onPlusOn() })
         Page.ICON -> IconPage(form, ::back)
         // ← on Plus is back on the form, nothing added (A94: no Make room).
         Page.SIXTH -> PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = ::back,

@@ -322,7 +322,8 @@ private fun WalkPicture() {
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Reminder("Often Enough · $nine", "Walk", "30 minutes")
-        Row(Modifier.padding(start = 4.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        // Between the two, centred (Figma's An hour later).
+        Row(Modifier.align(Alignment.CenterHorizontally), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Icon(Symbols.NotificationsActive, null, Modifier.size(20.dp), tint = c.habitDeep(HabitColor.GREEN))
             Text("Not done yet · an hour later", style = AppType.labelLarge, color = c.habitDeep(HabitColor.GREEN))
         }
@@ -336,7 +337,8 @@ private fun Reminder(appAndTime: String, title: String, line: String) {
     val s = MaterialTheme.colorScheme
     Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceContainerLowest)
         .padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+        // The app and time keep 4 under them, inside their 20 (Figma's App), before the 4 to the title.
+        Row(Modifier.padding(bottom = 4.dp), horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
             MarkIcon(16.dp)
             Text(appAndTime, style = AppType.bodySmall, color = s.onSurfaceVariant)
         }
