@@ -62,6 +62,8 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     var remindOn by mutableStateOf(from?.let { it.remind && it.reminders.isNotEmpty() } ?: false)
     var times by mutableStateOf<List<DraftTime>>(from?.reminders?.map { DraftTime(if (original != null) it.id else newId(), it.minuteOfDay, null) } ?: emptyList())
     var remindersEdited by mutableStateOf(from != null)
+    /** A limit's How often has been picked (or the habit exists): the form then says it whole, "At most 1 h a day". */
+    var limitOftenChosen by mutableStateOf(from != null)
     var startDate by mutableStateOf(original?.let { it.startsOn ?: store.rules.calendarDayOf(it.createdAt) } ?: store.today())
     var hasEnd by mutableStateOf(original?.endsOn != null)
     var endDate by mutableStateOf(original?.endsOn ?: store.today())

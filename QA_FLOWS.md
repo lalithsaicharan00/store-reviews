@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 16 |
+| create new | 381:2 | 28 | 17 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **232** |
+| **All** | | **290** | **233** |
 
 ## Bug log
 
@@ -366,6 +366,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 324. Create new 15 · the quit form's Started picker carried "The run counts up from here." under the date, the calendar 20 lower than Figma's; Figma's is Android's picker with nothing added (the line is the form's own footer). Removed, with `DayDialog`'s note, which nothing passes now (11's Starts and Ends lost theirs, 314).
 325. Create new 16 · the Limit page's Amount · Time laid out at its 48 touch height (words 4 lower than Figma's) and pushed the card 8 down, and the Unit field sat 16 under the number to its label, so Unit was 16 lower than Figma's and the footer with it. The group is laid out at its drawn 40 (`drawnHeight`), and 8 lead to the Unit field's label, as How much (318).
 326. Create new 16 · after picking "At most 2 cups a week", the form's How often said "A week"; Figma's says "At most 2 cups a week" (a daily limit stays "Every day"). A limit over a week or a month is said whole on the form (`HabitForm`).
+327. Create new 17 · a time limit's How often page said "At most 60 minutes a day"; Figma: "At most 1 h a day" (hours and minutes, as the Limit row's "At most 1 h"). A cut-down habit timed in minutes is worded as time there too.
+328. Create new 17 · back from How often with a day chosen, the form still said "Every day"; Figma's frame 7 says "At most 1 h a day" (frame 5, before How often is opened, "Every day"). Once a limit's How often has been seen the form says the limit whole, a day, a week or a month (`FormState.limitOftenChosen`); 16 rechecked.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -687,7 +689,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 14 | 405:1039 | A new habit: a checklist | Checklist → form → Steps → ← 3 steps | passed ↻ (phone: Dishes, Wipe the counters, Sink and an empty Step 4 → “3 steps”; dragging Sink’s handle to the top and ✕ on a step → “2 steps”) |
 | 15 | 406:523 | A new habit: quit | Quit or cut down → Quit → quit form → Started picker → At time → Add | passed ↻ ⁴⁰ (phone: Started Thu, 29 Oct at 8:00 PM → Smoking “Since 29 Oct” at the end of Quitting; the days after today greyed) |
 | 16 | 406:870 | A new habit: cut down | Cut down → form → Limit Amount → ← → How often for a limit → ← | passed ↻ ⁴⁰ (phone: “At most 2 cups”, then “At most 2 cups a week”) |
-| 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | not started |
+| 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | passed ↻ ⁴⁰ (phone: “At most 1 h”, then “At most 1 h a day”) |
 | 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus → Make room → Archive Read; Undo → Continue | not started |
 | 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | not started |
 | 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | not started |

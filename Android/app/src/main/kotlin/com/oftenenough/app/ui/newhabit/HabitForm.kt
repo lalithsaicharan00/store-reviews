@@ -531,10 +531,11 @@ private fun PlanRows(form: FormState, open: (Page) -> Unit) {
             }
             else -> {}
         }
-        // A limit over a week or a month says it whole, as its page does: "At most 2 cups a week" (Figma's cut-down form).
+        // A limit says it whole once its period is chosen, as its page does: "At most 1 h a day", "At most 2 cups a week";
+        // until then "Every day" (Figma's cut-down form, frames 4-7).
         val often = plan.often
-        val oftenWords = if (type == ItemType.CUT_DOWN && often is HowOften.Total && form.amountValue != null)
-            plan.howMuchLabel + " " + often.phrase(true, weekStart = form.weekStart)
+        val oftenWords = if (type == ItemType.CUT_DOWN && form.amountValue != null && (often is HowOften.Total || form.limitOftenChosen))
+            plan.howMuchLabel + " " + (if (often == HowOften.EveryDay) "a day" else often.phrase(true, weekStart = form.weekStart))
             else often.label(plan.hasAmount || form.hasAmount, plan.checklist, form.weekStart)
         OpenRow("How often", oftenWords, null, count - 1, count, "how-often-row", rowColor) { open(Page.OFTEN) }
     }

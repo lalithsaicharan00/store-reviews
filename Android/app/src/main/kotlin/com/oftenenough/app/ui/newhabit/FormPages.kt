@@ -531,7 +531,8 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
     val task = form.type == ItemType.TASK
     val checklist = form.type == ItemType.CHECKLIST
     val hasAmount = form.hasAmount
-    val amountText = form.amountValue?.let { if (form.timed) HabitCopy.minutes(it) else HabitCopy.amount(it, TextLimit.clean(form.unit, TextLimit.UNIT)) }
+    // A cut-down habit timed in minutes says hours and minutes too ("At most 1 h a day", not "60 minutes").
+    val amountText = form.amountValue?.let { if (form.timed || form.unit == HabitPlan.TIME_UNIT) HabitCopy.minutes(it) else HabitCopy.amount(it, TextLimit.clean(form.unit, TextLimit.UNIT)) }
     val ws = form.weekStart
     val d = form.often
     fun set(next: OftenDraft) { form.often = next }
@@ -572,6 +573,8 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
     FormPage("How often", onBack = onBack) {
         Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
             if (limit) {
+                // Seen here, the limit's period is chosen: the form says it whole from now on (Figma's cut-down frames 5 and 7).
+                LaunchedEffect(Unit) { form.limitOftenChosen = true }
                 Options(
                     Option(words(HowOften.EveryDay), d.choice == Choice.EVERY_DAY, "often-every-day") { set(d.copy(choice = Choice.EVERY_DAY)) },
                     Option(words(HowOften.Total(GoalPeriod.WEEK)), d.choice == Choice.TOTAL && d.totalPeriod == GoalPeriod.WEEK, "often-total-week") { set(d.copy(choice = Choice.TOTAL, totalPeriod = GoalPeriod.WEEK)) },
