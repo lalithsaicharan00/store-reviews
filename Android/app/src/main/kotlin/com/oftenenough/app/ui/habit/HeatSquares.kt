@@ -76,9 +76,12 @@ const val HEAT_KEY_FOLDED = "heatKey.folded"
 @Composable
 fun HabitKeyCard(open: Boolean, onToggle: () -> Unit, color: HabitColor, modifier: Modifier = Modifier) {
     val c = appColors
-    Column(modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).animateContentSize()) {
+    // Open, Figma draws it as two parts 2 apart, the page showing between them: the header (corners 24 over 4) and the
+    // key (4 over 24) (QA, 1 Nov 2026: one card with no line under the header).
+    Column(modifier.fillMaxWidth().animateContentSize()) {
         Row(
-            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp)
+            Modifier.fillMaxWidth().clip(if (open) RoundedCornerShape(24.dp, 24.dp, 4.dp, 4.dp) else RoundedCornerShape(24.dp)).background(c.surface)
+                .clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp)
                 .semantics(mergeDescendants = true) {
                     stateDescription = if (open) "Shown" else "Hidden"
                     testTag = "heat-key-toggle"
@@ -93,8 +96,10 @@ fun HabitKeyCard(open: Boolean, onToggle: () -> Unit, color: HabitColor, modifie
             Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (open) {
+            Spacer(Modifier.height(2.dp))
             Column(
-                Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 20.dp).semantics { testTag = "progress-key" },
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp)).background(c.surface)
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 20.dp).semantics { testTag = "progress-key" },
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
                 for ((cell, title) in keyRows) KeyRow(cell, title, color)
@@ -140,9 +145,12 @@ private fun KeyRow(cell: HeatCell, title: String, color: HabitColor, isToday: Bo
 @Composable
 fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifier) {
     val c = appColors
-    Column(modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).animateContentSize()) {
+    // Open, Figma draws it as two parts 2 apart, the page showing between them: the header (corners 24 over 4) and the
+    // key (4 over 24) (QA, 1 Nov 2026: one card with no line under the header).
+    Column(modifier.fillMaxWidth().animateContentSize()) {
         Row(
-            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp)
+            Modifier.fillMaxWidth().clip(if (open) RoundedCornerShape(24.dp, 24.dp, 4.dp, 4.dp) else RoundedCornerShape(24.dp)).background(c.surface)
+                .clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp)
                 .semantics(mergeDescendants = true) {
                     stateDescription = if (open) "Shown" else "Hidden"
                     testTag = "heat-key-toggle"

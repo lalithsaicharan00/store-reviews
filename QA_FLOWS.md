@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 5 |
+| details pages | 298:2 | 24 | 6 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **197** |
+| **All** | | **290** | **198** |
 
 ## Bug log
 
@@ -288,6 +288,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 246. Details pages 4 (and 1) · a run reaching today was written "10 Oct – 1 Nov" (Best streak, Streaks, a quit habit's Longest run); Figma writes "30 Sep – today", and TalkBack now says "to today" (`pageRunSpan`).
 247. Details pages 4 · ← from Streaks put Progress back at the tabs, not where it was: the effect that starts a new tab at its top ran again when the list came back from under Streaks (or All milestones, or History's search). It acts only on a real change of tab now.
 248. Details pages 5 · All milestones' 40 dp rings wrote a three-digit number ("200") in Label Large, filling the ring to its band; Figma's is Label Medium there (Label Large stays in the 52 dp ring) (`CircularProgressLabel`).
+249. Details pages 6 · the open key was one white card; Figma's is two parts 2 apart, the page showing between them as a line under the header (corners 24 over 4, then 4 over 24), so every row also sat 2 dp high.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -555,7 +556,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 3 | 322:2597 | Habit details' ⋮: Pause…, and Delete | ⋮ → Pause sheet → Paused card, Resume → Delete Water? → Delete; Undo | passed ↻ (the snackbar's "Sun, 8 Nov" against the card's "Sun 8 Nov" is D-56) |
 | 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | passed ↻ (several runs seen on the year demo's Skincare: the design demo's Water has one) |
 | 5 | 325:2 | Milestones: All milestones, and how they work | See all 4 → All milestones → How milestones work → reached one: pop-up → Close | passed ↻ |
-| 6 | 326:2 | What the squares mean | folded → open → folded | not started |
+| 6 | 326:2 | What the squares mean | folded → open → folded | passed ↻ |
 | 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | not started |
 | 8 | 329:2 | Month for other kinds of goal | Gym 3×/week → Read 20 min | not started |
 | 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | not started |
