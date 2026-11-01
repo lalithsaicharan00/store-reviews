@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 18 |
+| details pages | 298:2 | 24 | 19 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **210** |
+| **All** | | **290** | **211** |
 
 ## Bug log
 
@@ -321,6 +321,12 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 279. Details pages 18 · a quit habit's milestones were one older track, "45 days since a slip" (1, 3, 7, 10, 14, 30, 45 … days), with one Next; Figma, the Milestones doc and the app's own pop-ups have days clean in a row (3, 7, 14, 30 …: "30 days clean"), clean days in total (10, 25, 50 …: "50 clean days in total", "25 clean days" on the shelf) and anniversaries since quitting began, Next for both, and All milestones' sections "Days clean in a row", "Clean days in total", "Anniversaries". The page now counts them as the pop-ups do; the unused ladder is gone.
 280. Details pages 18 · Week, Month and Year on a quit habit's page showed the run ("19 days clean · Since 12 Oct · no slips this week", Habits & Tasks' card); Figma counts the days: "Clean on 6 of 6 days so far · No slips this week", "1 slip this month, on Sat 3 Oct" (A23's "clean" for Figma's "smoke-free"). Habits & Tasks' card keeps the run (A56).
 281. Details pages 18 · the Slips tile said "Last on 12 Oct" with one slip; Figma: "On 3 Oct" ("Last on" stays for two or more).
+282. Details pages 19 · a cut-down habit with nothing logged said No progress yet 30 days on; for a quit or cut-down habit a day with nothing logged is a good day, so that state holds only until its first day ends.
+283. Details pages 19 · a cut-down habit's record led with "0 cups recorded" and streak tiles (Current streak, Best streak, Within max with a percentage); Figma: "36 of 39 days within the limit", Current run, Longest run, Over the limit (days, "Last on 15 Oct"), Average a day ("2.1 cups", "Limit 3 cups"), See all runs, every count on days that have ended (`limitRecord`). Its runs page is "Runs".
+284. Details pages 19 · its milestones were the general ladder in a row ("10 days in a row") and "N days within the limit" totals; Figma: days within the limit in a row (3, 7, 14, 30 …) and in total (10, 25, 50 …), and anniversaries. The card says "25 days within the limit" · "In total · reached 10 Oct", the shelf "7 in a row" / "10 in total", Next "50 days in total · 14 to go · 36 so far"; All milestones has "Days within the limit in a row / in total" and "25 days in total" rows (`limitMilestones`; All milestones reads each milestone's page caption).
+285. Details pages 19 · Week, Month and Year said the period's total under "Within the limit on …"; Figma: the average against the limit when no day went over ("2 cups a day on average · limit 3"), the days when one or two did ("Over on Fri 2 Oct and Thu 15 Oct"), the count when more ("3 days over the limit this year").
+286. Details pages 19 · the Month card drew "Recorded each day" for a limit; Figma's cut-down Month goes from its squares to the comparison.
+287. Details pages 19 (and 18) · Week compared a limit's cups ("8 cups" against "0 cups", as if more were better) and a quit habit's slips; Figma's Coffee and Smoking Week cards have no comparison. Their Month compares days.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -354,6 +360,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁰ Details pages 16 (phone): Figma's frame 2 draws "Current streak" where its caption says "the current streak becomes Streak when archived"; the app keeps the caption's. Figma has no Day details for an archived habit: its read-only form follows the page's "read-only" and a paused day's Day details (no logging, Skip gone). Restore with no room left (free, three habits) shows the existing Make room message on Habit details; from Day details' ⋮ it does nothing, as before.
 ³¹ Details pages 17 (phone): Juice, made through + (8 glasses a day), then started on Fri 30 Oct through Edit habit with 8, 8 and 3 today, as Figma's Water made Wed 21 Oct on a Friday. Today is Sunday, the week's first day, so the Week card was compared on last week ("Reached on 2 of 2 days"). Figma's next total is "50 glasses in total"; the Milestones doc's ladder (10, 25, 50 × a day's goal: 80, 200, 400 glasses) and Figma's own Water card (80, then 400) give 80, which the app keeps.
 ³² Details pages 18 (phone): the demo's Smoking quit on 29 Jul and slipped twice (its longest run 45 days, now 19), where Figma's quit on 27 Sep with one slip. Figma's "smoke-free" is "clean" (A23: one word for every quit habit). Figma's Year card omits "so far" where its Week and Month have it, and Water's Year (flow 17) has it: the app keeps "so far" on every running period. Next in a row adds ", best 45" when the best run is longer than the one going on (Figma's are the same run).
+³³ Details pages 19 (phone): the days demo's Coffee (at most 2 cups, from 2 Oct) given 3 cups on 16 and 25 Oct and 2, 1, 2 on 28, 30, 31 Oct; Figma's is at most 3 cups from 14 Sep on a Friday, so Week and Month were compared on last week and October. The word is Figma's "within the limit", against A23's "within max": D-60. Figma's Coffee and Smoking anniversary rows have no "Next ·" where Water's has it; the app keeps it on every Next row. Logcat's only lines from the app's process are the phone maker's own libraries loading (QT, FBI libmagtsync).
 
 ## Open questions for the user
 
@@ -607,7 +614,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | passed ↻ ³⁰ (phone; Water archived today, on Sun 1 Nov) |
 | 17 | 351:2274 | A new habit: its first days | 2 days old: Progress → whole page → History First day → made today → No progress yet | passed ↻ ³¹ |
 | 18 | 354:1822 | A quit habit’s Progress | Smoking → whole page → See all 5 → How milestones work | passed ↻ ³² |
-| 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | not started |
+| 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | passed ↻ ³³ |
 | 20 | 1158:112719 | A cut-down habit’s Progress: time | Social media → whole page → See all 3 → How milestones work | not started |
 | 21 | 355:2234 | Larger text, and loading | Progress 200 % → History 200 % → Loading | not started |
 | 22 | 380:3192 | Task details: a one-time task | Car service → Task details → ⋮ → done today | not started |

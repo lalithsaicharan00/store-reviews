@@ -401,7 +401,20 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
                 val now = amounts[today] ?: 0.0
                 if (running) "${progressValue(now, rule)} of ${progressValue(rule.goal, rule)} so far today" else "Nothing judged that $noun"
             } else "Within the limit on $within of ${dayCount(judged.size)}$soFar"
-            detail = if (total > 0 && judged.isNotEmpty()) progressValue(total, rule) + " " + whenText else null
+            // Figma's cut-down Week, Month and Year: no day over, the average against the limit ("2 cups a day on
+            // average · limit 3"); one or two over, which ("Over on Fri 2 Oct and Thu 15 Oct"); more, how many ("3 days
+            // over the limit this year"). QA, 1 Nov 2026: it said the period's total.
+            val over = judged.filter { it.mark != DayMark.DONE }.map { it.day }
+            val limitWords = if (rule.kind is HabitKind.Amount) HabitCopy.number(rule.goal) else progressValue(rule.goal, rule)
+            detail = when {
+                judged.isEmpty() -> null
+                over.isEmpty() -> {
+                    val average = Math.round(judged.sumOf { amounts[it.day] ?: 0.0 } / judged.size * 10) / 10.0
+                    progressValue(average, rule) + " a day on average · limit " + limitWords
+                }
+                over.size <= 2 -> "Over on " + over.joinToString(" and ") { pageDayDate(it) }
+                else -> "${over.size} days over the limit $whenText"
+            }
         }
         else -> {
             val text = periodText(habit, rule, shape, span, range, today, strip, amounts, total)
@@ -920,6 +933,8 @@ data class HabitOverall(
     val metDates: List<Int>,
     /** Every kind of goal period the habit has had. */
     val kinds: Set<GoalPeriod>,
+    /** "See all streaks"; a limit's "See all runs". */
+    val seeAll: String = "See all streaks",
 ) {
     val headline: String get() = listOf(lead, value, trail).filter { it.isNotEmpty() }.joinToString(" ")
 }
@@ -1024,6 +1039,7 @@ fun HabitStore.habitRecord(habit: Habit, today: Int): HabitOverall {
         if (value > bestValue) { bestValue = value; bestDay = day }
         if (value > 0) doneDays++
     }
+    if (now.atMost && kind == GoalPeriod.DAY) return limitRecord(habit, now, since, kinds, today)
     val tally = goalTally(habit, kind, today, best = kind != GoalPeriod.DAY && !now.atMost)
 
     var lead = ""
@@ -1111,6 +1127,36 @@ fun HabitStore.habitRecord(habit: Habit, today: Int): HabitOverall {
         bestPeriod, tally.dates, kinds)
 }
 
+/**
+ * A day limit's record (Figma, a cut-down habit's Progress): "36 of 39 days within the limit", then Current run,
+ * Longest run, Over the limit (days, the last one) and Average a day against the limit; See all runs. Days count once
+ * they've ended, as the Month card judges them (QA, 1 Nov 2026: it led with "0 cups recorded" and streak tiles).
+ */
+private fun HabitStore.limitRecord(habit: Habit, now: Habit, since: String, kinds: Set<GoalPeriod>, today: Int): HabitOverall {
+    fun days(n: Int) = if (n == 1) "day" else "days"
+    val runs = rules.runs(habit, today)
+    val current = runs.lastOrNull()?.let { if (it.isCurrent) it.length else 0 } ?: 0
+    val best = runs.maxOfOrNull { it.length } ?: 0
+    val bestRun = if (best > 0) runs.lastOrNull { it.length == best } else null
+    val runSince = runs.lastOrNull()?.takeIf { it.isCurrent && it.length > 0 }?.let { "Since " + pageShortDate(it.start, today) }
+    val currentFact = RecordFact("Current run", HabitCopy.number(current.toDouble()), days(current), runSince, "Current run, $current ${days(current)}")
+    val bestEnd = bestRun?.let { if (it.isCurrent) today else it.end }
+    val bestFact = RecordFact("Longest run", HabitCopy.number(best.toDouble()), days(best), bestRun?.let { pageRunSpan(it.start, bestEnd!!, today) },
+        "Longest run, $best ${days(best)}" + (bestRun?.let { ", " + pageSpokenRunSpan(it.start, bestEnd!!, today) } ?: ""))
+    val judged = (rules.startDay(habit) until today).filter { rules.isDue(habit, it) }
+    val over = judged.filter { !rules.isDayMet(habit, it) }
+    val overFact = RecordFact("Over the limit", HabitCopy.number(over.size.toDouble()), days(over.size),
+        over.lastOrNull()?.let { "Last on " + pageShortDate(it, today) }, "Over the limit, ${over.size} ${days(over.size)}")
+    val average = if (judged.isEmpty()) 0.0 else Math.round(judged.sumOf { rules.dayProgress(habit, it) } / judged.size * 10) / 10.0
+    val parts = amountParts(average, now)
+    val averageFact = RecordFact("Average a day", parts.first, parts.second, "Limit " + progressValue(rules.dayGoal(now), now),
+        "Average a day, " + listOf(parts.first, parts.second).filter { it.isNotEmpty() }.joinToString(" ") + ", limit " + progressValue(rules.dayGoal(now), now))
+    // Only days that have ended count, as the Year card's "Within the limit on 36 of 39 days" (today waits).
+    val met = judged.filter { rules.isDayMet(habit, it) }
+    return HabitOverall("", HabitCopy.number(met.size.toDouble()), "of ${judged.size} ${days(judged.size)} within the limit",
+        met.size, judged.size, since, currentFact, bestFact, overFact, "of days", averageFact, met, kinds, seeAll = "See all runs")
+}
+
 // ---------------------------------------------------------------------------------------------------------- Comparisons
 
 /** This period against the one before, on the same footing. [note] replaces the rows when there's nothing to compare. */
@@ -1141,6 +1187,9 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
     // A week or month goal compares no days on Month: Figma's Gym has no comparison (QA, 1 Nov 2026: "12 of 12 days").
     if (!week) return if (rule(habit, today).let { pagePeriodKind(it) != GoalPeriod.DAY }) null
         else monthComparison(habit, span, previousFull, start, today, monthName)
+    // A quit or cut-down habit's Week has no comparison (Figma's Smoking and Coffee: the squares end it; amounts side by
+    // side would read as more is better); their Month compares days, above (QA, 1 Nov 2026).
+    if (habit.kind == HabitKind.Quit || rule(habit, min(span.last, today)).atMost) return null
     // Nothing to compare yet, no comparison: a habit with no whole week before this one, or a week whose first day is
     // still open. Figma's first days end Week at its squares and never word a missing comparison (QA, 1 Nov 2026: the
     // app said "partway through last week" and "Compared once today is over").
@@ -1151,12 +1200,6 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
     // Figma's Week: "Same days last week" while it runs.
     val title = if (running) "Same days last $noun" else "Compared with the $noun before"
     val rule = rule(habit, min(thisRange.last, today))
-    if (habit.kind == HabitKind.Quit) {
-        val a = thisRange.sumOf { entries(habit.id, it).size }
-        val b = previousRange.sumOf { entries(habit.id, it).size }
-        fun slips(n: Int) = if (n == 1) "1 slip" else "$n slips"
-        return PeriodComparison(title, thisLabel, previousLabel, slips(a), slips(b), a.toDouble(), b.toDouble(), null)
-    }
     return when (progressShape(rule)) {
         ProgressShape.ONCE, ProgressShape.CHECKLIST -> {
             fun goalDays(range: IntRange): Pair<Int, Int> {
@@ -1219,7 +1262,8 @@ fun HabitStore.recordedEachDay(habit: Habit, span: IntRange, today: Int): Pair<L
     val first = rules.startDay(habit)
     val rule = rule(habit, min(span.last, today))
     val shape = progressShape(rule)
-    if (shape !in setOf(ProgressShape.TIMES, ProgressShape.AMOUNT, ProgressShape.TIME, ProgressShape.PERIOD_TOTAL, ProgressShape.LIMIT_DAY)) return null
+    // A limit has no daily chart: Figma's cut-down Month card goes from its squares to the comparison (QA, 1 Nov 2026).
+    if (rule.atMost || shape !in setOf(ProgressShape.TIMES, ProgressShape.AMOUNT, ProgressShape.TIME, ProgressShape.PERIOD_TOTAL)) return null
     // A habit in its first week has no daily chart (Figma's first days: "small true numbers; no empty charts").
     if (today - first < 6) return null
     val values = span.map { day -> if (day <= today && day >= first) rules.dayProgress(habit, day) else 0.0 }
@@ -1248,6 +1292,8 @@ data class Milestone(
     val reachedText: String,
     val spoken: String,
     val id: String,
+    /** The Latest card's line when it isn't [reachedText]: a cut-down total, "In total · reached 10 Oct". */
+    val latestLine: String? = null,
 ) {
     enum class Track(val key: String) { IN_A_ROW("inARow"), IN_TOTAL("inTotal"), ANNIVERSARY("anniversary"), SINCE_SLIP("sinceSlip") }
 }
@@ -1284,21 +1330,6 @@ private val Milestone.Track.keepsWithoutStreaks: Boolean
 
 /** "7 days in a row", "8 weeks in a row". */
 fun milestoneRowTitle(n: Int, unit: StreakUnit): String = "$n ${unit.word(n)} in a row"
-
-/** What a total counts: "times" for day goals, days within a day limit, else the goal's period. */
-fun milestonePeriodWord(n: Int, kind: GoalPeriod, atMost: Boolean): String = when (kind) {
-    GoalPeriod.DAY -> if (atMost) (if (n == 1) "day" else "days") else (if (n == 1) "time" else "times")
-    GoalPeriod.WEEK -> if (n == 1) "week" else "weeks"
-    GoalPeriod.MONTH -> if (n == 1) "month" else "months"
-    GoalPeriod.YEAR -> if (n == 1) "year" else "years"
-}
-
-/** "10 times in total", "10 weeks of goals met", "10 days within the limit" (A42). */
-fun milestoneTotalTitle(n: Int, kind: GoalPeriod, atMost: Boolean): String {
-    val word = milestonePeriodWord(n, kind, atMost)
-    if (atMost) return "$n $word within the limit"
-    return if (kind == GoalPeriod.DAY) "$n $word in total" else "$n $word of goals met"
-}
 
 /** A track's next milestone, measured from where the person is now (current ÷ target). */
 fun milestoneNextRow(track: Milestone.Track, target: Int?, number: String, title: String, current: Int, best: Int?): MilestoneNext {
@@ -1349,60 +1380,74 @@ fun HabitStore.habitMilestones(habit: Habit, record: HabitOverall, today: Int): 
     // The decided rule (Milestones, 17 Oct 2026; Figma 1373:2, 1735:4), the pop-ups' own: in a row and in total by the
     // habit's bucket, plus anniversaries. A cut-down habit keeps counting days within max, below.
     if (!now.atMost) return decidedMilestones(habit, now, today)
-    val kind = pagePeriodKind(now)
+    return limitMilestones(habit, now, record, today)
+}
+
+/**
+ * A cut-down habit's milestones (Figma, a cut-down habit's Progress 1-4; How milestones work): days within the limit
+ * in a row (3, 7, 14, 30 …; weeks for a weekly limit) and in total (10, 25, 50 …), and anniversaries since it began
+ * when no day of the 30 before went over. The card says "25 days within the limit" · "In total · reached 10 Oct", All
+ * milestones "25 days in total" (QA, 1 Nov 2026: they were "N days in a row" on the in-a-row ladder of other habits).
+ */
+private fun HabitStore.limitMilestones(habit: Habit, now: Habit, record: HabitOverall, today: Int): HabitMilestones {
+    val bucket = rules.milestoneBucket(now)
     val unit = now.frequency.streakUnit
+    fun within(n: Int) = "$n ${unit.word(n)} within the limit"
+    fun inTotal(n: Int) = "$n ${unit.word(n)} in total"
     val runs = rules.runs(habit, today)
     val current = runs.lastOrNull()?.let { if (it.isCurrent) it.length else 0 } ?: 0
     val best = runs.maxOfOrNull { it.length } ?: 0
     val reached = ArrayList<Milestone>()
-    reached += rowMilestones(habit, runs, unit, today)
-    reached += totalMilestones(record.metDates, kind, now.atMost, today)
-    // Earlier goals of another kind (a week goal changed to a day goal): their runs and totals in their own unit.
-    for (other in (record.kinds - kind).sortedBy { it.key }) {
-        val theirs = rules.runs(habit, today, other)
-        theirs.firstOrNull()?.let { reached += rowMilestones(habit, theirs, rule(habit, it.start).frequency.streakUnit, today) }
-        val tally = goalTally(habit, other, today)
-        tally.dates.firstOrNull()?.let { reached += totalMilestones(tally.dates, other, rule(habit, it).atMost, today) }
-    }
-    reached.sortWith(newestFirst)
-
-    val target = rules.nextMilestone(unit, best)
-    val row = milestoneNextRow(Milestone.Track.IN_A_ROW, target, "$target", milestoneRowTitle(target, unit), current, best)
-    val totalTarget = rules.totalMilestones(kind).firstOrNull { it > record.met }
-    val total = milestoneNextRow(Milestone.Track.IN_TOTAL, totalTarget, totalTarget?.toString() ?: "",
-        totalTarget?.let { milestoneTotalTitle(it, kind, now.atMost) } ?: "", record.met, null)
-    return HabitMilestones(reached, listOf(row, total))
-}
-
-/** Each in-a-row milestone reached, dated by the first run that reached it: a run only adds the values above every run
- *  before it, so it's walked once for all of them. */
-private fun HabitStore.rowMilestones(habit: Habit, runs: List<Run>, unit: StreakUnit, today: Int): List<Milestone> {
-    val reached = ArrayList<Milestone>()
+    val next = ArrayList<MilestoneNext>()
     var longest = 0
     for (run in runs) {
         if (run.length <= longest) continue
-        val values = rules.milestonesUpTo(unit, run.length).filter { it > longest }
+        val values = (longest + 1..run.length).filter { bucket.isRowMilestone(it) }
         longest = run.length
         if (values.isEmpty()) continue
         val days = countedDays(habit, run, values, today)
-        for (n in values) {
-            val day = days[n] ?: continue
-            val daily = unit == StreakUnit.DAYS || unit == StreakUnit.TIMES
-            reached.add(pageMilestone(Milestone.Track.IN_A_ROW, n, unit.name.lowercase(), "$n", milestoneRowTitle(n, unit),
-                if (daily) "$n in a row" else "$n ${unit.word(n)}", if (daily) null else "in a row", "$n ${unit.word(n)}", day, today))
+        for (n in values) days[n]?.let { day ->
+            reached.add(pageMilestone(Milestone.Track.IN_A_ROW, n, "limit", "$n", within(n), "$n in a row", null, within(n), day, today))
         }
     }
-    return reached
-}
-
-/** The total milestones reached: `dates[k]` is the day the goals met reached k + 1. */
-private fun HabitStore.totalMilestones(dates: List<Int>, kind: GoalPeriod, atMost: Boolean, today: Int): List<Milestone> =
-    rules.totalMilestones(kind).filter { it <= dates.size }.map { n ->
-        val word = milestonePeriodWord(n, kind, atMost)
-        pageMilestone(Milestone.Track.IN_TOTAL, n, kind.key + (if (atMost) "-limit" else ""), "$n", milestoneTotalTitle(n, kind, atMost),
-            if (kind == GoalPeriod.DAY) "$n in total" else "$n $word",
-            if (kind == GoalPeriod.DAY) null else if (atMost) "within the limit" else "goals met", "$n $word", dates[n - 1], today)
+    bucket.nextRow(best)?.let { t -> next.add(milestoneNextRow(Milestone.Track.IN_A_ROW, t, "$t", within(t), current, best)) }
+    var target = bucket.nextTotal(1.0, 0.0)
+    while (target != null && target.toInt() <= record.metDates.size) {
+        val n = target.toInt()
+        val m = pageMilestone(Milestone.Track.IN_TOTAL, n, "limit-total", "$n", within(n), "$n in total", null, inTotal(n), record.metDates[n - 1], today)
+        reached.add(m.copy(latestLine = "In total · " + m.reachedText.replaceFirstChar { it.lowercase() }))
+        target = bucket.nextTotal(1.0, target)
     }
+    target?.let { v ->
+        val n = v.toInt()
+        val toGo = max(0, n - record.met)
+        next.add(MilestoneNext(Milestone.Track.IN_TOTAL, n, "$n", inTotal(n), inTotal(n),
+            "$toGo to go" + (if (record.met > 0) " · ${record.met} so far" else ""), min(1.0, record.met.toDouble() / n),
+            "Next: ${inTotal(n)}, $toGo to go."))
+    }
+    val start = rules.startDay(habit)
+    fun over(d: Int) = d < today && rules.isDue(habit, d) && !rules.isDayMet(habit, d)
+    var years = 0
+    while (true) {
+        val day = pageDate(start).plusYears((years + 1).toLong()).toEpochDay().toInt()
+        if (day > today) break
+        years++
+        if ((day - 29..day).none(::over)) {
+            val name = if (years == 1) "1 year" else "$years years"
+            reached.add(pageMilestone(Milestone.Track.ANNIVERSARY, years, "years", "${years}y", name, name, null, name, day, today))
+        }
+    }
+    val lastYear = pageDate(start).plusYears(years.toLong()).toEpochDay().toInt()
+    val nextYear = pageDate(start).plusYears((years + 1).toLong()).toEpochDay().toInt()
+    val name = if (years + 1 == 1) "1 year" else "${years + 1} years"
+    val left = nextYear - today
+    next.add(MilestoneNext(Milestone.Track.ANNIVERSARY, years + 1, "${years + 1}y", name, name,
+        DayWords.long(nextYear) + " · " + (if (left == 1) "1 day to go" else "$left days to go"),
+        ((today - lastYear).toDouble() / max(1, nextYear - lastYear)).coerceIn(0.0, 1.0), "Next: $name, on ${DayWords.long(nextYear)}."))
+    reached.sortWith(newestFirst)
+    val noun = HabitCopy.capitalized(unit.word(2))
+    return HabitMilestones(reached, next, "$noun within the limit in total", "$noun within the limit in a row")
+}
 
 /** The day a run reached each of [values] counted days (or weeks, months), in one walk from its start. */
 private fun HabitStore.countedDays(habit: Habit, run: Run, values: List<Int>, today: Int): Map<Int, Int> {
@@ -1532,7 +1577,8 @@ fun HabitStore.streakList(habit: Habit, today: Int): StreakList {
         StreakRow(words, dates, r.length / longest, r.isCurrent, "$words, " + pageSpokenRunSpan(r.start, end, today) + (if (r.isCurrent) ", going on now" else ""))
     }
     val noun = unit.word(3)
-    return StreakList("Streaks", "Since " + DayWords.long(rules.startDay(habit)), if (rows.size == 1) "1 run" else "${rows.size} runs", rows,
+    // A limit's page opens from See all runs, so it's Runs, as a quit habit's is (QA, 1 Nov 2026: "Streaks").
+    return StreakList(if (rule(habit, today).atMost) "Runs" else "Streaks", "Since " + DayWords.long(rules.startDay(habit)), if (rows.size == 1) "1 run" else "${rows.size} runs", rows,
         "Runs of 3 $noun or more, longest first. Skipped and paused days don’t end a run.")
 }
 

@@ -268,7 +268,10 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     }
     val earlier = remember(habit, store.habits) { store.earlierOf(habit.id) }
     val barColor = if (collapsed) scrolledTopBarColor else MaterialTheme.colorScheme.surfaceContainer
-    val fresh = !habit.archived && store.entries(habit.id).isEmpty()
+    // Nothing logged is no progress yet, except for a quit or cut-down habit once a day has ended: a day with nothing
+    // logged was clean, or within the limit (QA, 1 Nov 2026: Coffee 30 days old said No progress yet).
+    val judged = (habit.kind == HabitKind.Quit || store.rule(habit, today).atMost) && first < today
+    val fresh = !habit.archived && store.entries(habit.id).isEmpty() && !judged
     // Another tab starts at its own top, just under the pinned tabs, wherever the last one was scrolled to.
     LaunchedEffect(shown) {
         if (shown == listTab) return@LaunchedEffect

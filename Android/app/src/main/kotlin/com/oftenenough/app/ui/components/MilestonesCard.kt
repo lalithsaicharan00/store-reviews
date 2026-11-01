@@ -75,7 +75,7 @@ fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSeeAll: () 
                 Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
                     if (reached.size > 1) Text("Latest", style = AppType.labelMedium, color = s.onSurfaceVariant)
                     Text(latest.title, style = AppType.titleMedium, color = s.onSurface)
-                    Text(latest.reachedText, style = AppType.bodyMedium, color = s.onSurfaceVariant)
+                    Text(latest.latestLine ?: latest.reachedText, style = AppType.bodyMedium, color = s.onSurfaceVariant)
                 }
             }
         }

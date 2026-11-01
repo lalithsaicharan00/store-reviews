@@ -156,13 +156,14 @@ private fun RecordCard(record: HabitOverall, color: HabitColor, showStreaks: Boo
     }
     record.goalMet?.let { goal ->
         // The percentage follows Progress's "Show percentages".
-        val percent = if (showPercentages && record.eligible > 0) Math.round(record.met.toDouble() / record.eligible * 100).toInt() else null
-        boxes.add(RecordBoxData("habit-record-goal-met", goal, percent?.let { "$it% ${record.percentNoun}" },
+        // A limit's third tile is Over the limit, with its own line ("Last on 15 Oct"), never a percentage.
+        val percent = if (showPercentages && record.eligible > 0 && goal.detail == null) Math.round(record.met.toDouble() / record.eligible * 100).toInt() else null
+        boxes.add(RecordBoxData("habit-record-goal-met", goal, percent?.let { "$it% ${record.percentNoun}" } ?: goal.detail,
             goal.spoken + (percent?.let { ", $it percent ${record.percentNoun}" } ?: ""), false))
     }
     record.bestPeriod?.let { boxes.add(RecordBoxData("habit-record-best-period", it, it.detail, it.spoken, false)) }
     OverallRecordCard(
-        record.since, if (showStreaks && current != null) "See all streaks" else null, onSeeAll,
+        record.since, if (showStreaks && current != null) record.seeAll else null, onSeeAll,
         Modifier.pageItem().semantics { testTag = "habit-progress-record" }, seeAllTag = "habit-see-all-streaks",
         total = { OverallRecordTotal(record.lead, record.value, record.trail, record.headline, Modifier.semantics { testTag = "habit-record-headline" }) },
         tiles = boxes.map { box -> { m: Modifier -> RecordBox(box, color, m) } },
@@ -277,7 +278,7 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
                 }
                 itemsIndexed(reached, key = { _, m -> m.id }) { i, m ->
                     val index = i + (if (next != null) 1 else 0)
-                    AppListItem(m.title, index, count, Modifier.padding(bottom = if (index < count - 1) SegmentedListGap else 0.dp)
+                    AppListItem(m.pageCaption, index, count, Modifier.padding(bottom = if (index < count - 1) SegmentedListGap else 0.dp)
                         .clearAndSetSemantics {
                             contentDescription = m.spoken; testTag = "milestone-reached"
                             onClick("Show its pop-up") { again = m; true }

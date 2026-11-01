@@ -674,3 +674,18 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) no day chosen until the person picks one; (b) today chosen, "Open today" at once.
 - **My recommendation:** (b): adding to today is the most common case, so one tap (Open today) does it, and any other
   day is still one tap away; the button always names the day it opens.
+
+### D-60. A cut-down habit's good day: "within max" or "within the limit"?
+
+- **Where:** a cut-down habit's Progress, [Figma 1157:99625](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1157-99625) (details pages flows 19-20); `data/HabitPageWords.kt` (`limitRecord`, `limitMilestones`), and Today's and Habits & Tasks' limit words.
+- **What Figma shows / the decisions say:** A23 (19 Oct) chose **"within max"** for every cut-down habit ("Within max on
+  12 of 14 days", "30 days within max", "Limit 2 cups · within max"). A42 and A44 (22 Oct) word the milestone band and
+  notification **"30 days within the limit"**, and every Figma frame of the details pages, How milestones work and the
+  milestone pop-ups say "within the limit" ("36 of 39 days within the limit", "Within the limit on 20 of 22 days").
+  A77 (29 Oct) makes Figma the final word.
+- **What I did for now:** the details pages say "within the limit", as Figma, A42 and A44. Other places that already say
+  "within max" (the Habits & Tasks card's mark, Today's limit lines) are unchanged until this is settled.
+- **Question:** (a) "within the limit" everywhere, and A23 is updated; (b) "within max" everywhere, and Figma, the band,
+  the notification and How milestones work change to it.
+- **My recommendation:** (a). It says what the limit is without the reader needing Today's "max", it's what the later
+  decisions and every Figma page use, and "Over the limit" / "Limit reached" (U25) already pair with it.
