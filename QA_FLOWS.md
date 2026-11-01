@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 1 |
+| details pages | 298:2 | 24 | 2 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **193** |
+| **All** | | **290** | **194** |
 
 ## Bug log
 
@@ -281,6 +281,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 239. Details pages 1 · What the squares mean on Habit details had no help circle and an ink fold arrow; Figma's row (and the Progress page's) is help in its 40 dp circle, 16, the title, the arrow in On surface variant, 56 tall.
 240. Details pages 1 · the Month card's comparison weighed amounts over the same days ("176 glasses" against "0 glasses", "This month"); Figma's, for every kind of habit, is the month so far against the whole month before, in days the goal was met as the Month card counts them ("October 22 of 22 days · September 22 of 29 days"; clean days, days within the limit), the months named. A month before the habit began says "No earlier month to compare". A zero now draws no bar (it drew a dot).
 241. Details pages 1 · Year in pixels drew every month's letter alike; Figma draws today's month in Label Medium, On surface.
+242. Details pages 2 · More under a description was a Small Text button with 24 at its sides and laid out 48 tall: its label sat 12 in from the words and the tabs 8 dp low. Figma's is 40 tall with 12 at its sides, 4 in, 8 under it; and "Less" (54 wide) was centred in Material's 58 minimum, 2 dp right. A compact button now takes its label's width (`AppButton`), and More uses it at its drawn 40.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -544,7 +545,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 321:2 | Open Habit details: Progress, scrolling | Water card → Progress, large title → scrolled: small bar → whole tab | passed ↻ ²⁶ |
-| 2 | 322:2 | A habit's description: two lines, More, Less | two lines, More → More → Less | not started |
+| 2 | 322:2 | A habit's description: two lines, More, Less | two lines, More → More → Less | passed ↻ (the description typed through Edit habit; the demo's Water has none) |
 | 3 | 322:2597 | Habit details' ⋮: Pause…, and Delete | ⋮ → Pause sheet → Paused card, Resume → Delete Water? → Delete; Undo | not started |
 | 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | not started |
 | 5 | 325:2 | Milestones: All milestones, and how they work | See all 4 → All milestones → How milestones work → reached one: pop-up → Close | not started |

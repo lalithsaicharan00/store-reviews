@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.material3.Button
@@ -118,7 +119,9 @@ fun AppButton(
     val s = MaterialTheme.colorScheme
     val shapes = if (square) size.squareShapes() else size.roundShapes()
     val padding = padding(size, icon != null, compact)
-    val m = modifier.heightIn(min = size.height).semantics { tag?.let { testTag = it } }
+    // A compact button is as wide as its label and its 12s: any minimum from outside stops Material's 58 (its
+    // `defaultMinSize` steps aside), so Figma's "Less" (54) starts its label where the words above it do (QA, 1 Nov 2026).
+    val m = modifier.heightIn(min = size.height).let { if (compact) it.widthIn(min = 1.dp) else it }.semantics { tag?.let { testTag = it } }
     val off = s.surfaceContainerLow
     val offText = s.onSurface.copy(alpha = 0.38f)
     val quiet = if (destructive) s.error else s.onSurfaceVariant

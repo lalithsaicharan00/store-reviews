@@ -16,6 +16,7 @@ import com.oftenenough.app.ui.components.AppMenu
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
+import com.oftenenough.app.ui.components.drawnHeight
 import com.oftenenough.app.ui.components.AppExtendedFab
 import com.oftenenough.app.ui.components.MenuDivider
 import com.oftenenough.app.ui.components.PrimaryTabs
@@ -32,7 +33,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -368,9 +368,11 @@ private fun Header(habit: Habit, sentence: String, description: String?) {
                 maxLines = if (open) Int.MAX_VALUE else 2, overflow = TextOverflow.Ellipsis,
                 onTextLayout = { if (!open) cut = it.hasVisualOverflow })
             if (open || cut) {
-                // The Text button's 12 of padding, from 4 in: its label starts where the words do.
-                Row(Modifier.padding(start = 4.dp, bottom = 8.dp).heightIn(min = 48.dp), verticalAlignment = Alignment.CenterVertically) {
-                    AppButton(if (open) "Less" else "More", { open = !open }, style = ButtonStyle.Text, size = ButtonSize.Small, tag = "habit-description-more")
+                // Figma's More: a Text button 40 tall with 12 at its sides, from 4 in, so its label starts where the words do;
+                // 8 under it (QA, 1 Nov 2026: Small's 24 put the label 12 in, and its 48 target pushed the tabs 8 down).
+                Row(Modifier.padding(start = 4.dp, bottom = 8.dp), verticalAlignment = Alignment.CenterVertically) {
+                    AppButton(if (open) "Less" else "More", { open = !open }, Modifier.drawnHeight(), style = ButtonStyle.Text, size = ButtonSize.Small,
+                        compact = true, tag = "habit-description-more")
                 }
             } else Spacer(Modifier.height(16.dp))
         }
