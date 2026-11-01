@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 6 |
+| settings | 781:34017 | 23 | 7 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **250** |
+| **All** | | **290** | **251** |
 
 ## Bug log
 
@@ -395,6 +395,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 353. Settings 6 · Restore from Google Drive in Settings merged Drive's copy into the phone's own habits straight away, with no question; Figma asks first, "Restore this backup?" (the habits here, the ones in Drive, its date, 30-day undo), and Restore replaces. Drive's copy is now read into a scratch database while the phone stays untouched, and Restore replaces through the file restore, keeping its undo file (D5) (`BackupCenter.lookInDriveAside`). Habits are counted as people count them (not archived, not tasks).
 354. Settings 6 and 7 · a restore from Settings ended "Your habits are back: N habits, M logs" with no Undo; Figma: "12 habits restored" · Undo, which puts the phone back.
 355. Settings 6 · after Cancel on a Drive restore, the minute's Drive round merged that Drive into the phone anyway, and the phone stayed connected to a Drive it had never backed up to. No round runs while the question is open, and Cancel lets go of a Drive this restore connected (`BackupCenter.holding`).
+356. Settings 7 · a backup file chosen in Settings replaced the phone's habits at once; Figma asks first, "Restore this backup?" (… in this file, saved 12 Oct …), and Restoring says "From your backup file, saved 12 Oct" (the welcome back's Restoring keeps "From your backup file", as onboarding draws it).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -741,7 +742,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 4 | 1182:4382 | Change account | Change account → chooser → Back up to another Drive? → Backing up… → Backed up | passed ↻ ⁴² (phone: connected to lalithsaicharan9@gmail.com; Change account “Use a different Google account” → Google’s chooser → losalobi@gmail.com → Google’s permission screen (its first time) → Back up to another Drive? naming both accounts → Back up here → Backing up… “To losalobi@gmail.com.” → Backed up “Just now, to losalobi@gmail.com.”; again with Cancel: Google asks the old account once more, and it carries on with it (A97)) |
 | 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | passed ↻ ⁴² (phone: the app alone cut off with Android’s test firewall, `cmd connectivity set-package-networking-enabled` and `set-chain3-enabled`, both put back after; Wi-Fi stays on for adb. Back up now → Backing up… until the connection gives up (about 13 s) → Waiting for the internet “Last backed up today at 8:31 PM. Nothing is lost: …” and one snackbar “No internet. It backs up once you’re online.”, 16 above the bar as Figma; online again, it carries on by itself within the minute → Backed up “Just now, to …”) |
 | 6 | 1183:5575 | Restore from Google Drive | Restore from a backup → Google Drive → chooser → Allow → Restore this backup? → Restoring → Today + Undo | passed ↻ ⁴² (phone: a 3-habit phone, the test Drive holding one 17-habit demo set; Backup & Sync “Not backed up” → Restore from a backup → Google Drive → Google’s chooser → Restore this backup? “The 3 habits on this phone are replaced by the 17 in lalithsaicharan9@gmail.com’s Google Drive, backed up 1 Nov. You can undo this for 30 days.” → Cancel (after a minute’s wait): the phone as it was, Not backed up; again → Restore → Restoring your habits “From lalithsaicharan9@gmail.com’s Google Drive” → Today “17 habits restored · Undo”; Undo → the 3 habits back, still so a minute later) |
-| 7 | 1183:6412 | Restore from a backup file | Restore → A backup file → file picker → Restore this backup? → Restoring → Today + Undo | not started |
+| 7 | 1183:6412 | Restore from a backup file | Restore → A backup file → file picker → Restore this backup? → Restoring → Today + Undo | passed ↻ (phone: a 17-habit backup saved to Downloads first; a 3-habit phone → Restore from a backup → A backup file → Android’s file picker → “Often Enough backup 2026-11-01 2101.zip” → Restore this backup? “The 3 habits on this phone are replaced by the 17 in this file, saved 1 Nov. You can undo this for 30 days.” → Cancel: nothing changed; again → Restore → Restoring your habits “From your backup file, saved 1 Nov” → Today “17 habits restored · Undo” → Undo: the 3 habits and the task back) |
 | 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | not started |
 | 9 | 1183:8483 | Export a spreadsheet | Export CSV → save picker → saved | not started |
 | 10 | 1183:9112 | Delete the Google Drive backup | Delete Google Drive backup… → dialog → Not backed up + snackbar | not started |

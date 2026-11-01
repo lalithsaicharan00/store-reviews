@@ -108,8 +108,9 @@ fun RestoreFlow(
     /** Google Drive's restore while it runs: Cancel stops it and puts this phone back as it was (Figma 582:7893). */
     var bringing by remember { mutableStateOf<Job?>(null) }
     var driveFromEmpty by remember { mutableStateOf(false) }
-    /** Google Drive's copy, read aside, waiting on Restore this backup? (Settings, a phone with habits). */
+    /** Google Drive's copy read aside, or a checked file, waiting on Restore this backup? (Settings, a phone with habits). */
     var asking by remember { mutableStateOf<BackupCenter.Pending?>(null) }
+    var askingDrive by remember { mutableStateOf(false) }
     var askingBackedUp by remember { mutableStateOf<Long?>(null) }
     /** Drive was connected before this restore chose it; if not, Cancel lets go of it again. */
     var wasConnected by remember { mutableStateOf(true) }
@@ -194,7 +195,7 @@ fun RestoreFlow(
             scope.launch {
                 when (val look = center.lookInDriveAside()) {
                     is DriveLook.Offline -> { center.holding = false; step = NO_INTERNET_DRIVE }
-                    is DriveLook.Aside -> { askingBackedUp = look.backedUp; asking = look.pending }
+                    is DriveLook.Aside -> { askingBackedUp = look.backedUp; askingDrive = true; asking = look.pending }
                     else -> { center.holding = false; step = NO_BACKUP }
                 }
             }
@@ -244,6 +245,8 @@ fun RestoreFlow(
             when {
                 p == null -> { problem = BackupProblem.NOT_A_BACKUP; step = PROBLEM }
                 reason != null -> { problem = reason; step = PROBLEM }
+                // From Settings, a phone with habits is asked first (Figma 1183:5961).
+                fromSettings && store.habits.isNotEmpty() -> { askingDrive = false; asking = p }
                 else -> restoreFile(p)
             }
         }
@@ -299,7 +302,9 @@ fun RestoreFlow(
         // phone ends as it was, whether a file's or Google Drive's copy was coming in.
         RESTORING -> WaitScreen(
             "Restoring your habits",
-            if (fromDrive) "From " + (email?.plus("’s") ?: "your") + " Google Drive" else "From your backup file",
+            if (fromDrive) "From " + (email?.plus("’s") ?: "your") + " Google Drive"
+            // From Settings the file says when it was saved (Figma 1183:6027); the welcome back doesn't (1:5).
+            else "From your backup file" + (pending.value?.check?.preview?.createdAt?.takeIf { fromSettings }?.let { ", saved " + dayOf(it) } ?: ""),
             "restoring",
             onCancel = checking?.let { job -> { cancelFile(job) } }
                 ?: bringing?.let { job -> { cancelDrive(job) } },
@@ -379,11 +384,11 @@ fun RestoreFlow(
                 val preview = p.check.preview
                 // Habits as people count them, the free plan's way: not archived, not tasks (fileActiveHabits).
                 val on = store.activeHabitCount
-                val made = askingBackedUp?.let { ", backed up " + DayWords.dayMonth(java.time.Instant.ofEpochMilli(it).atZone(java.time.ZoneId.systemDefault()).toLocalDate().toEpochDay().toInt()) } ?: ""
+                val where = if (askingDrive) "in " + (email?.plus("’s") ?: "your") + " Google Drive" + (askingBackedUp?.let { ", backed up " + dayOf(it) } ?: "")
+                    else "in this file" + (preview?.createdAt?.let { ", saved " + dayOf(it) } ?: "")
                 AppDialog("Restore this backup?",
-                    "The $on ${if (on == 1) "habit" else "habits"} on this phone ${if (on == 1) "is" else "are"} replaced by the ${preview?.fileActiveHabits ?: 0} in " +
-                        (email?.plus("’s") ?: "your") + " Google Drive$made. You can undo this for 30 days.",
-                    "Restore", { asking = null; center.holding = false; restoreFile(p, drive = true, replacing = true) },
+                    "The $on ${if (on == 1) "habit" else "habits"} on this phone ${if (on == 1) "is" else "are"} replaced by the ${preview?.fileActiveHabits ?: 0} $where. You can undo this for 30 days.",
+                    "Restore", { asking = null; center.holding = false; restoreFile(p, drive = askingDrive, replacing = true) },
                     {
                         asking = null
                         center.holding = false
@@ -398,6 +403,10 @@ fun RestoreFlow(
 // ==================================================================== Parts
 
 private const val WHERE = "where"
+
+/** "12 Oct": the day a backup was made, from its moment (epoch ms). */
+private fun dayOf(millis: Long): String =
+    DayWords.dayMonth(java.time.Instant.ofEpochMilli(millis).atZone(java.time.ZoneId.systemDefault()).toLocalDate().toEpochDay().toInt())
 private const val RESTORING = "restoring"
 private const val NO_INTERNET_DRIVE = "no-internet-drive"
 private const val NO_INTERNET_PLUS = "no-internet-plus"
