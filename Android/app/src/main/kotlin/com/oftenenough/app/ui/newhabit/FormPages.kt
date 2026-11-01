@@ -493,7 +493,8 @@ fun StepsPage(form: FormState, onBack: () -> Unit) {
                     }
                 }
             }
-            AppListItem("Add step", items.size, count, leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null) } },
+            // The + in the handles' column, its words at 72 with the steps' (Figma).
+            AppListItem("Add step", items.size, count, leading = { Icon(Symbols.Add, null) },
                 onClick = {
                     val step = Step(name = "")
                     form.items = form.items + step

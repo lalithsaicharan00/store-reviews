@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 13 |
+| create new | 381:2 | 28 | 14 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **229** |
+| **All** | | **290** | **230** |
 
 ## Bug log
 
@@ -362,6 +362,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 320. Create new 12 (and 3) · the Search bar's words sat 12 after its icon (68 in); Figma's Search bar has 16 (72). The icon's slot is 52, not Material's 48, the icon where it was (`SearchBarField`: the Unit and Icon pages). 3's Icon page rechecked.
 321. Create new 13 · How long opened empty for a new time habit; Figma's How long page (and the flow's frame 3) opens on 0 h 10 min with 10 min chosen and the cursor after the 10. A new one starts at 10 minutes, and a value set from outside (the 10, a quick pick) leaves the cursor after it (`HowLongPage`, `TimeBox`).
 322. Create new 13 · Quick picks laid out at the chips' 48 touch height, the first row 8 lower than Figma's and the second 24, the footer 32 (Figma: 32 chips, 8 apart each way). Laid out at their drawn 32 (`drawnHeight`), here and on the cut-down Limit page's quick picks.
+323. Create new 14 · + Add step sat in a 40 box, its words at 88; Figma's + is in the handles' column, its words at 72 with the steps' (`StepsPage`), as 12's Create your own unit (319). Figma's keyboards draw a return key on text and ✓ on numbers; the phone's keyboard is Gboard's own.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -679,7 +680,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 11 | 404:1152 | Starts and Ends | Starts → picker → 26 → Ends menu → On a date… → 25 Dec → OK | passed ↻ (phone: today is Sun 1 Nov, so Starts Wed, 4 Nov (three days on, as Figma’s 23 → 26), Ends Fri, 25 Dec) |
 | 12 | 405:400 | A new habit: track an amount | Track an amount → form → How much → Unit → glasses → 8 glasses | passed ↻ (phone: the form says “8 glasses · each tap adds 1”) |
 | 13 | 405:710 | A new habit: time it | Time it → form → How long → 15 min → ← | passed ↻ (phone: the form says “15 min”) |
-| 14 | 405:1039 | A new habit: a checklist | Checklist → form → Steps → ← 3 steps | not started |
+| 14 | 405:1039 | A new habit: a checklist | Checklist → form → Steps → ← 3 steps | passed ↻ (phone: Dishes, Wipe the counters, Sink and an empty Step 4 → “3 steps”; dragging Sink’s handle to the top and ✕ on a step → “2 steps”) |
 | 15 | 406:523 | A new habit: quit | Quit or cut down → Quit → quit form → Started picker → At time → Add | not started |
 | 16 | 406:870 | A new habit: cut down | Cut down → form → Limit Amount → ← → How often for a limit → ← | not started |
 | 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | not started |
