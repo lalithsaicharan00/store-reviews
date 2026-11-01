@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 20 |
+| create new | 381:2 | 28 | 21 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **236** |
+| **All** | | **290** | **237** |
 
 ## Bug log
 
@@ -375,6 +375,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 333. Create new 20 · on the free plan, If not done, remind again took Material's 10 above and below its words, so its words sat 2 lower than Figma's and its Plus tag 2 higher; Figma: 8 above and below, the tag 8 under the line (`belowPadding`).
 334. Create new 20 · Remind me again with Plus: the picture was 8 shorter than Figma's (each notification's app line lacked its 4 under, in Figma's 20-tall App), so everything under it sat 8 higher, and "Not done yet · an hour later" sat at the left where Figma centres it (`WalkPicture`, `Reminder`).
 335. Create new 20 · paying on Remind me again with Plus came back on the habit form, not Reminders, and anything typed in the form was lost: Plus was a screen of its own, and the form (kept with `remember`) started again on return. Remind me again's Plus opens inside the form now, as the 6th habit's does: ← or bought, it's Reminders again, "Plus is on", nothing lost (Edit habit gets the snackbar too).
+336. Create new 21 · after a goal change, "The new goal starts today. Days before keep 8 glasses a day." sat 8 under How often, so it and every row under it were 8 higher than Figma's (16 under, as the groups are apart).
+337. Create new 21 (and every empty name field) · an emptied name said an example for its kind ("Name, e.g. Drink water" for Water); Figma's empty forms say "Name, e.g. Make bed" for every habit and "Name, e.g. Pick up parcel" for a task (`ItemType.namePlaceholder`; Decisions needed D-63).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -701,7 +703,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus (frames 1–2; Make room, frames 3–4, removed by the user: Android A94) | passed ↻ (phone, five habits on the free plan seeded with `keep 5`: Build or maintain and Quit or cut down open Add a 6th habit, ← is back on What do you want to do?, Add a task goes on. The price there is the test launch’s stand-in; an ordinary launch shows Play’s, ₹2,400.00 on this phone) |
 | 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | passed ⁴¹ (phone, free plan with four habits: Checklist’s Plus tag, the page and its end, Get Plus → the checklist form, “Plus is on”) |
 | 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | passed ↻ (phone, free plan: the tag, the Plus page and its end, ← back on Reminders, Get Plus → Reminders without the tag, “Plus is on”, the typed name kept) |
-| 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | not started |
+| 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | passed ↻ (phone: Water 8 → 10 glasses, “The new goal starts today …”, Save → “10 glasses a day”, “Changes saved”; ← with changes → Discard your changes? → Discard leaves 8; the name cleared turns Save off, typed again on) |
 | 22 | 469:2 | A new task: for today | + → Add a task → Once → New task → “Pick up parcel” → form → Add | not started |
 | 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | not started |
 | 24 | 474:2 | A task’s time | Time on → picker 2:00 PM → OK | not started |

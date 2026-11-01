@@ -339,7 +339,8 @@ private fun FormBody(
                     if (form.taskRepeats) StartEndRows(form, store)
                 }
                 else -> {
-                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    // "The new goal starts today …" 16 under How often, as the groups are apart (Figma's Edit habit).
+                    Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         PlanRows(form, open)
                         goalNote(form, store)?.let { Text(it, Modifier.padding(horizontal = 16.dp), style = AppType.bodyMedium, color = MaterialTheme.colorScheme.onSurfaceVariant) }
                     }

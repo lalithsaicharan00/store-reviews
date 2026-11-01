@@ -716,3 +716,14 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 - **Question:** (a) keep it, and add it to Create new's quit and cut-down forms in Figma; (b) remove it from the form
   (and How milestones work's line), so milestone notifications have no switch.
 - **My recommendation:** (a). The notification is off unless turned on, so without the switch nobody could get it.
+
+### D-63. The name field's example: one for every habit, or one per kind?
+
+- **Where:** the habit and task forms' name field, [Figma Create new 407:2156](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=407-2156) (flow 21, frame 7) and flows 2, 22 and 26; `ui/newhabit/Choices.kt` (`ItemType.namePlaceholder`).
+- **What Figma shows:** every empty habit form says "Name, e.g. Make bed", a check habit's and Water's (an amount)
+  alike; every empty task form says "Name, e.g. Pick up parcel". The app had an example per kind ("Drink water",
+  "Meditate", "Clean kitchen", "Coffee", "e.g. Smoking", "e.g. Pay the rent").
+- **What I did for now:** Figma's: "Name, e.g. Make bed" for every habit, "Name, e.g. Pick up parcel" for a task.
+- **Question:** (a) keep Figma's one example; (b) an example per kind (Figma's frames would change to match).
+- **My recommendation:** (b) reads better (a cut-down habit called "Make bed" is odd), but it's your call; (a) is
+  what Figma shows today.

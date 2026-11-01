@@ -35,14 +35,16 @@ import com.oftenenough.app.ui.components.segmentShape
 import androidx.compose.material3.MaterialTheme
 
 /** What the person wants to make (the iPhone's `ItemType`): the form each choice opens. */
+/** [namePlaceholder]: Figma's empty forms say "Name, e.g. Make bed" for every habit and "Name, e.g. Pick up parcel" for a
+ * task (QA, Create new 21; Decisions needed D-63). */
 enum class ItemType(val title: String, val summary: String, val example: String, val namePlaceholder: String) {
     CHECK("Check it off", "Done or not done.", "e.g. Make your bed", "Name, e.g. Make bed"),
-    AMOUNT("Track an amount", "How many or how much.", "e.g. 8 glasses of water", "Name, e.g. Drink water"),
-    TIME("Time it", "How long, with a timer.", "e.g. Meditate 10 min", "Name, e.g. Meditate"),
-    CHECKLIST("Checklist", "One habit, several steps.", "e.g. Workout: push-ups, squats", "Name, e.g. Clean kitchen"),
-    CUT_DOWN("Cut down", "Set a maximum and log how much.", "e.g. Coffee, 2 a day", "Name, e.g. Coffee"),
-    QUIT("Quit", "Stop completely. Track the time since you stopped.", "e.g. Smoking", "e.g. Smoking"),
-    TASK("Task", "Something to get done.", "e.g. Pay the rent", "e.g. Pay the rent");
+    AMOUNT("Track an amount", "How many or how much.", "e.g. 8 glasses of water", "Name, e.g. Make bed"),
+    TIME("Time it", "How long, with a timer.", "e.g. Meditate 10 min", "Name, e.g. Make bed"),
+    CHECKLIST("Checklist", "One habit, several steps.", "e.g. Workout: push-ups, squats", "Name, e.g. Make bed"),
+    CUT_DOWN("Cut down", "Set a maximum and log how much.", "e.g. Coffee, 2 a day", "Name, e.g. Make bed"),
+    QUIT("Quit", "Stop completely. Track the time since you stopped.", "e.g. Smoking", "Name, e.g. Make bed"),
+    TASK("Task", "Something to get done.", "e.g. Pay the rent", "Name, e.g. Pick up parcel");
 
     val isHabit: Boolean get() = this != TASK
     val isBuild: Boolean get() = this in setOf(CHECK, AMOUNT, TIME, CHECKLIST)
