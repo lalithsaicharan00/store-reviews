@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 8 |
+| details pages | 298:2 | 24 | 9 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **200** |
+| **All** | | **290** | **201** |
 
 ## Bug log
 
@@ -567,7 +567,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 6 | 326:2 | What the squares mean | folded → open → folded | passed ↻ |
 | 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | passed ↻ ²⁷ |
 | 8 | 329:2 | Month for other kinds of goal | Gym 3×/week → Read 20 min | passed ↻ ²⁸ |
-| 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | not started |
+| 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | passed (on 14 Oct: the demo's Water has nothing in September and no note; ✕ returns to the same place; a square to come opens nothing, as Week's and Month's) |
 | 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | not started |
 | 11 | 337:1861 | History: With notes, and searching notes | With notes → Search notes → “run” → “swim” none → ← | not started |
 | 12 | 339:3638 | History: Go to date | Go to date → picker → September → 14 → OK → lit row → fades | not started |
