@@ -227,7 +227,8 @@ fun LimitPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
     }
     FormPage("Limit", onBack = onBack) {
         Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            if (form.original == null) AppConnectedButtons(listOf(false to "Amount", true to "Time"), time, tag = "limit-kind") { toTime ->
+            // Amount · Time at its drawn 40, its touch spreading past, 24 above the card (Figma's Limit page).
+            if (form.original == null) AppConnectedButtons(listOf(false to "Amount", true to "Time"), time, Modifier.drawnHeight(40.dp), tag = "limit-kind") { toTime ->
                 if (toTime != time) {
                     // A new kind starts empty: two cups aren't two minutes.
                     form.amountText = ""; hours = ""; minutes = ""
@@ -239,8 +240,11 @@ fun LimitPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Column(card, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         Text("At most", style = AppType.bodyMedium, color = s.onSurfaceVariant)
-                        AmountField(form, limit = true)
-                        DropdownField("Unit", form.unit.ifEmpty { "No unit" }, onUnit, Modifier.fillMaxWidth(), tag = "much-unit")
+                        // 16 from the number to the Unit field's box: 8 to its label, over the box's edge, as How much.
+                        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                            AmountField(form, limit = true)
+                            DropdownField("Unit", form.unit.ifEmpty { "No unit" }, onUnit, Modifier.fillMaxWidth(), tag = "much-unit")
+                        }
                     }
                     val text = form.amountText.trim()
                     val error = text.isNotEmpty() && GoalNumber.parse(text)?.let { it > 0 } != true

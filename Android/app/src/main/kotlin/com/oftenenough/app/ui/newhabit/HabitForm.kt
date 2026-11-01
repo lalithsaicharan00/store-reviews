@@ -75,6 +75,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.oftenenough.app.data.HowOften
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitCopy
@@ -530,7 +531,12 @@ private fun PlanRows(form: FormState, open: (Page) -> Unit) {
             }
             else -> {}
         }
-        OpenRow("How often", plan.often.label(plan.hasAmount || form.hasAmount, plan.checklist, form.weekStart), null, count - 1, count, "how-often-row", rowColor) { open(Page.OFTEN) }
+        // A limit over a week or a month says it whole, as its page does: "At most 2 cups a week" (Figma's cut-down form).
+        val often = plan.often
+        val oftenWords = if (type == ItemType.CUT_DOWN && often is HowOften.Total && form.amountValue != null)
+            plan.howMuchLabel + " " + often.phrase(true, weekStart = form.weekStart)
+            else often.label(plan.hasAmount || form.hasAmount, plan.checklist, form.weekStart)
+        OpenRow("How often", oftenWords, null, count - 1, count, "how-often-row", rowColor) { open(Page.OFTEN) }
     }
 }
 
