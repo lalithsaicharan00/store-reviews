@@ -93,6 +93,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -434,14 +435,21 @@ private fun NameGroup(form: FormState, typed: TypedText, describing: TypedText, 
 /**
  * The name field on its own, so typing redraws only it (S11): the Form field atom (3.1), first in its group. A name is
  * at most 24 letters, and shows only what's kept (U6). With nothing typed it looks as usual: Add only stays quiet (A65).
+ * Nothing shows under it (Figma): typing past the 24 says so in a snackbar, and the field keeps the 24 (A65).
  */
 @Composable
 private fun NameField(typed: TypedText, placeholder: String, focus: FocusRequester, autoFocus: Boolean) {
     LaunchedEffect(Unit) { if (autoFocus) runCatching { focus.requestFocus() } }
-    FormField(typed.text, { typed.text = it.replace("\n", "").take(TextLimit.NAME) }, placeholder, 0, 3,
+    val snackbar = com.oftenenough.app.ui.components.LocalAppSnackbar.current
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
+    FormField(typed.text, { new ->
+        val line = new.replace("\n", "")
+        if (line.length > TextLimit.NAME && snackbar != null && snackbar.currentSnackbarData == null)
+            scope.launch { snackbar.showSnackbar("A name is at most ${TextLimit.NAME} characters.") }
+        typed.text = line.take(TextLimit.NAME)
+    }, placeholder, 0, 3,
         fieldModifier = Modifier.focusRequester(focus).semantics { testTag = "name-field"; contentDescription = "Name" },
         keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Sentences), containerColor = rowColor)
-    TextLimit.note(typed.text, TextLimit.NAME)?.let { Text(it, Modifier.padding(start = 16.dp, top = 4.dp), style = AppType.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant) }
 }
 
 /** The description, second in the group (Form field, Middle), up to four lines. */
