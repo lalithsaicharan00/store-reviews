@@ -157,9 +157,10 @@ fun AddRow(title: String, index: Int, count: Int, tag: String, indent: Boolean =
         containerColor = if (option) androidx.compose.ui.graphics.Color.Transparent else androidx.compose.ui.graphics.Color.Unspecified,
         headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, leading = {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            // Under an option the + takes the checkboxes' place, 72 to 96, and its words theirs, at 112 (Figma 1163:335652;
+            // QA, 1 Nov 2026: a 40 box put them at 92 and 128).
             if (indent) Spacer(Modifier.width(if (option) 40.dp else 36.dp))
-            // In an option the icon sits in its 40 box, as the checkboxes do.
-            if (option) Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null) } else Icon(Symbols.Add, null)
+            Icon(Symbols.Add, null)
         }
     })
 

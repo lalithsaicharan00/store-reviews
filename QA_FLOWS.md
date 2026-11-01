@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 0 |
+| create new | 381:2 | 28 | 1 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **216** |
+| **All** | | **290** | **217** |
 
 ## Bug log
 
@@ -336,6 +336,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 294. Details pages 22 · Task details' ⋮ took its words' width (234) and hung from the button's foot; Figma's is 244 wide, its top 4 over the foot, as Habit details' (bug 243).
 295. Details pages 22 · Task details wrote its days with a comma ("Wed, 18 Nov", "Sun, 1 Nov") as the Tasks page does; its own frames write "Tue 4 Nov", "Fri 23 Oct", which D-56 keeps per page until it's settled. TasksPageTest asks for the details pages' form there.
 296. Details pages 23 · a task's done day with a note put its square and › at the top of the row (Material's three-line item); Figma keeps both on the row's middle, as History's day rows (`centred`).
+297. Create new 1 · Time of day's New time of day sat in a 40 box after the indent, its + at 92 and its words at 128; Figma puts them in the checkboxes' column, the + at 72 and the words at 112 with the times of day (`AddRow`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -638,7 +639,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
-| 1 | 396:2 | A new habit: check it off | + → What do you want to do? → How track? → New habit (keyboard) → “Journal” → form → Time of day → ← → Add: end of Morning | not started |
+| 1 | 396:2 | A new habit: check it off | + → What do you want to do? → How track? → New habit (keyboard) → “Journal” → form → Time of day → ← → Add: end of Morning | passed ↻ (phone; every row 10.8 lower than Figma's, the phone's taller status bar. The app picks Journal's icon from its name, Figma's frames keep the star: Figma's habit glyphs are examples, the only rule is filled) |
 | 2 | 397:589 | A new habit: leaving it | + → New habit empty → ← nothing asked → typed, ← → Discard this habit? → Discard | not started |
 | 3 | 399:442 | A new habit: its icon and colour | Icon → icon page → book → Done → Colour → sheet of 14 → orange | not started |
 | 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | not started |
