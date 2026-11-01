@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 1 |
+| create new | 381:2 | 28 | 2 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **217** |
+| **All** | | **290** | **218** |
 
 ## Bug log
 
@@ -337,6 +337,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 295. Details pages 22 · Task details wrote its days with a comma ("Wed, 18 Nov", "Sun, 1 Nov") as the Tasks page does; its own frames write "Tue 4 Nov", "Fri 23 Oct", which D-56 keeps per page until it's settled. TasksPageTest asks for the details pages' form there.
 296. Details pages 23 · a task's done day with a note put its square and › at the top of the row (Material's three-line item); Figma keeps both on the row's middle, as History's day rows (`centred`).
 297. Create new 1 · Time of day's New time of day sat in a 40 box after the indent, its + at 92 and its words at 128; Figma puts them in the checkboxes' column, the + at 72 and the words at 112 with the times of day (`AddRow`).
+298. Create new 2 (and 26) · Discard this habit? said "This habit won’t be added." (a task's "This task won’t be added."); Figma: "What you’ve typed won’t be saved." for both (`HabitForm`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -375,6 +376,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁵ Details pages 21 (phone): Android's largest Font size, 200 % (`font_scale 2.0`, put back to 1.0 after). Figma's 200 % Week squeezes "Sun Mon …" until they overlap; the app gives way to letters (Rulebook: what sits beside a word gives way first). The Next ring stays Figma's 52 with its label growing inside, as Figma's does. Loading was caught from a screen recording, 20 frames a second: it shows only through the page's fade-in.
 ³⁶ Details pages 22 (phone): the tasks demo's Car service (Wed 18 Nov, Morning) and Book flights, done today at 9:12 AM; that demo's Book flights has no note, so the note under its day (frame 4's "Window seats, both ways.") was not seen on this page. Logcat's lines are the phone maker's libraries and Android's feature flags, not the app.
 ³⁷ Details pages 23 (phone): the tasks demo's Change water filter (2 months after it's done, done Mon 12 Oct) stands for Figma's Replace the water filter; a note was added to its day to see the note row. Figma's note row is 104 with a one-line note, its History twin's height for two lines; the app's grows with its text (88 with one line), as the Rulebook says.
+³⁸ Create new 2 (phone): ← on an empty form, and Discard, go back one screen, to How do you want to track it?, as Android's back does; Figma's captions say "back on Today", with frame 2 itself skipping the two choice screens (Today → New habit), read as the same shortcut. Another ← there and ✕ reach Today, nothing asked.
 
 ## Open questions for the user
 
@@ -640,7 +642,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 396:2 | A new habit: check it off | + → What do you want to do? → How track? → New habit (keyboard) → “Journal” → form → Time of day → ← → Add: end of Morning | passed ↻ (phone; every row 10.8 lower than Figma's, the phone's taller status bar. The app picks Journal's icon from its name, Figma's frames keep the star: Figma's habit glyphs are examples, the only rule is filled) |
-| 2 | 397:589 | A new habit: leaving it | + → New habit empty → ← nothing asked → typed, ← → Discard this habit? → Discard | not started |
+| 2 | 397:589 | A new habit: leaving it | + → New habit empty → ← nothing asked → typed, ← → Discard this habit? → Discard | passed ↻ ³⁸ |
 | 3 | 399:442 | A new habit: its icon and colour | Icon → icon page → book → Done → Colour → sheet of 14 → orange | not started |
 | 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | not started |
 | 5 | 401:536 | How often: days of the week, or every few | certain days → Every Friday → Mon, Wed → Every few days → weeks → set days → months → ← | not started |

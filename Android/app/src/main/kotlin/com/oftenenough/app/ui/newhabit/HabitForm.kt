@@ -299,7 +299,8 @@ fun HabitForm(
         null -> FormBody(form, store, typed, describing, scroll, nameFocus, ::open, ::close, ::save)
     }
     if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (form.type == ItemType.TASK) "Discard this task?" else "Discard this habit?",
-        if (form.editing) "${form.original?.name ?: "It"} stays as it was." else if (form.type == ItemType.TASK) "This task won’t be added." else "This habit won’t be added.",
+        // Figma's Discard this habit? / Discard this task?: "What you’ve typed won’t be saved." (QA, 1 Nov 2026).
+        if (form.editing) "${form.original?.name ?: "It"} stays as it was." else "What you’ve typed won’t be saved.",
         onKeep = { discard = false }, onDiscard = { discard = false; onClose() }, keepLabel = "Keep editing")
 }
 
