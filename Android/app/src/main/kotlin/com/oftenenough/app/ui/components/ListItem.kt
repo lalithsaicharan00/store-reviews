@@ -122,10 +122,14 @@ fun AppListItem(
     // choice with its example); Material pins them to the top from three lines (QA, 1 Nov 2026). Only a row whose
     // buttons sit under its words keeps the top, as Figma draws it (Keep reminders coming's Open settings).
     val align = if (topWithBelow && below != null) ListItemDefaults.verticalAlignment() else Alignment.CenterVertically
-    if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align,
-        onLongClick = onLongClick, colors = colors, contentPadding = padding, content = headlineText)
-    else SegmentedListItem(shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align, colors = colors,
-        contentPadding = padding, content = headlineText)
+    // Material settles a row's kind (one, two or three lines) when it's first drawn: a step whose button goes once it's
+    // done (Keep reminders coming) kept the three-line 88 dp. A row with and without something under it is a new item.
+    androidx.compose.runtime.key(below != null) {
+        if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align,
+            onLongClick = onLongClick, colors = colors, contentPadding = padding, content = headlineText)
+        else SegmentedListItem(shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align, colors = colors,
+            contentPadding = padding, content = headlineText)
+    }
 }
 
 /** Between the rows of one group (Material's `SegmentedGap`, 2 dp). */
@@ -171,7 +175,8 @@ fun ListChevron() = Icon(Symbols.ChevronRight, null)
  */
 @Composable
 fun ListAction(text: String, onClick: () -> Unit, tag: String? = null) =
-    AppButton(text, onClick, Modifier.padding(top = 12.dp), style = ButtonStyle.Tonal, tag = tag)
+    // Laid out at its drawn 40 (its 48 dp touch spills past): Figma's 12 above and under it (QA, Settings 18).
+    AppButton(text, onClick, Modifier.padding(top = 12.dp).drawnHeight(40.dp), style = ButtonStyle.Tonal, tag = tag)
 
 /** An example under a choice (Figma List item, Show example): "e.g. Make your bed" in a tag, 8 under the line. */
 @Composable

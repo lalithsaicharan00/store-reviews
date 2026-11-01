@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 17 |
+| settings | 781:34017 | 23 | 18 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **261** |
+| **All** | | **290** | **262** |
 
 ## Bug log
 
@@ -404,6 +404,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 362. Settings 13 · from Times of day, Your day left the new time of day out until its start was picked; Figma lists it at once (4:00 AM – 6:00 AM, New), as the habit form's does. From Today it still joins once a start is picked, as Today's Figma draws it (D-61).
 363. Settings 14 · Delete Morning? said "Its 4 habits will move to Anytime."; Settings' Figma: "Its 4 habits move to Anytime. Their logs, notes and streaks stay." Today's frame keeps the shorter line, so each page follows its own (Decisions needed D-64).
 364. Settings 16, 17 and 20 (New day starts at, Week starts on, Theme) · the choices' words started 8 too close to their radio (72); Figma's Choice is a List item with the radio in its 40 dp lead, so the words start at 80 (`RadioRow(choice = true)`; Create new's Option rows keep 72, as their Figma does).
+365. Settings 18 (every step row: Keep reminders coming) · a step's Open settings sat 16 under its line and the row ended 14 under it, the words 10 from the top: Figma's step is 12 · 12 · 12 (`ListAction` laid out at its drawn 40, the row's padding 12).
+366. Settings 18 (every list row that loses what's under it) · a step that turned done while the page was open kept Material's three-line 88 dp; it's 72 now, as when the page opens (`AppListItem` keyed on whether something sits under its words).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -444,6 +446,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁷ Details pages 23 (phone): the tasks demo's Change water filter (2 months after it's done, done Mon 12 Oct) stands for Figma's Replace the water filter; a note was added to its day to see the note row. Figma's note row is 104 with a one-line note, its History twin's height for two lines; the app's grows with its text (88 with one line), as the Rulebook says.
 ³⁸ Create new 2 (phone): ← on an empty form, and Discard, go back one screen, to How do you want to track it?, as Android's back does; Figma's captions say "back on Today", with frame 2 itself skipping the two choice screens (Today → New habit), read as the same shortcut. Another ← there and ✕ reach Today, nothing asked.
 ⁴² Settings 2–10 (phone): a test launch with `--ez realDrive true` (debug builds only) uses Google Drive itself, through Google’s own account chooser and permission screen, with the test account lalithsaicharan9@gmail.com (the user’s permission, 1 Nov 2026); every other test launch keeps its stand-in Drive (D8).
+⁴³ Settings 18 (phone): Figma's starting state (notifications on, battery Unrestricted, Alarms & reminders off) can't exist on Android 14 and later: an app whose battery is Unrestricted may set exact alarms, so the app rightly shows that step done. The flow was run from "2 things to fix" (battery at its default) instead; the app's permissions were set with `pm grant`, `cmd appops` and `dumpsys deviceidle` for the start and put back after.
 ³⁹ Create new 7 (phone): Figma's two New time of day flows disagree on Your day before a start is picked (Today 52's frame 3 leaves the new one out, Create new 7's frame 3 lists it); each page follows its own frames until the user decides (Decisions needed D-61).
 ⁴⁰ Create new 15-17 (phone): the quit and cut-down forms had Tell me at milestones and its line under them, which Create new's frames don't draw (A21's milestone notification). Asked, the user removed it (1 Nov 2026, Android A93; D-62): no switch, no notification; milestones show in the app as for every habit. How milestones work lost its line; Today's "Reached away: the milestone notification" flows (passed on the emulator) describe something no longer in the app.
 ⁴¹ Create new 19 (phone): frame 4's form, opened after paying, shows the name field as "Name" with no keyboard and Add filled; every other empty form on the page (New habit and New task, nothing typed, and a name cleared) says "Name, e.g. …" with the keyboard up and Add waiting for a name, which the app does here too. Paying was the test launch's stand-in; an ordinary launch buys through Google Play's own sheet.
@@ -761,7 +764,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 15 | 1183:368648 | Leaving Edit time of day with changes | Morning → renamed → ✕ → Discard your changes? → unchanged | passed (phone, no changes: Morning → “Early morning” (Your day follows) → ✕ → “Discard your changes?” “Morning stays as it was.” → Keep editing keeps it; Back asks again → Discard → Times of day, Morning 6:00 AM – 12:00 PM) |
 | 16 | 1186:373799 | New day starts at | Settings → page → 3:00 AM → ← | passed ↻ (phone: New day starts at → its line, the hours from 12:00 AM (to 12:00 PM: D-24) → 3:00 AM chosen → ← Settings “New day starts at · 3:00 AM”) |
 | 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | passed (phone, after flow 16’s fix: Week starts on → its line, Sunday to Saturday at Figma’s places (words at 80) → Monday → ← Settings “Week starts on · Monday”) |
-| 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | not started |
+| 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | passed ↻ ⁴³ (phone: notifications allowed, Alarms & reminders and battery at Android’s defaults → “2 things to fix” → Allow alarms & reminders’ Open settings → Android’s own Alarms & reminders switch for Often Enough → on → back: the row done at once → battery’s Open settings → App info › App battery usage › Unrestricted → back: “All set. Reminders will come on time.” → Settings “Keep reminders coming · All set” with the ringing bell) |
 | 19 | 1199:16989 | Reminders, before anything is set up | No reminders yet → nothing allowed → 3 things to fix | not started |
 | 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | not started |
 | 21 | 1183:374861 | Vibration and sound | Sound when done → on | not started |

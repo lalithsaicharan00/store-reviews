@@ -191,6 +191,6 @@ private fun PermissionRow(icon: ImageVector, title: String, path: String, ok: Bo
     AppListItem(
         title, index, count, Modifier.semantics { if (ok) stateDescription = "Done" }, path, tag = tag,
         leading = { ListAvatar(if (ok) Symbols.Check else icon, done = ok) },
-        below = if (ok) null else ({ ListAction(fix, onFix, "$tag-fix") }), topWithBelow = true,
+        below = if (ok) null else ({ ListAction(fix, onFix, "$tag-fix") }), topWithBelow = true, belowPadding = 12.dp,
         containerColor = MaterialTheme.colorScheme.surfaceBright,
     )
