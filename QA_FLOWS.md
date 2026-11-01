@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 9 |
+| settings | 781:34017 | 23 | 10 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **253** |
+| **All** | | **290** | **254** |
 
 ## Bug log
 
@@ -745,7 +745,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 7 | 1183:6412 | Restore from a backup file | Restore → A backup file → file picker → Restore this backup? → Restoring → Today + Undo | passed ↻ (phone: a 17-habit backup saved to Downloads first; a 3-habit phone → Restore from a backup → A backup file → Android’s file picker → “Often Enough backup 2026-11-01 2101.zip” → Restore this backup? “The 3 habits on this phone are replaced by the 17 in this file, saved 1 Nov. You can undo this for 30 days.” → Cancel: nothing changed; again → Restore → Restoring your habits “From your backup file, saved 1 Nov” → Today “17 habits restored · Undo” → Undo: the 3 habits and the task back) |
 | 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | passed (phone, no changes: Save a backup file → Android’s save picker in Downloads, “Often Enough backup 2026-11-01 2106.zip” → Save → “Backup file saved to Downloads”, 16 above the bar) |
 | 9 | 1183:8483 | Export a spreadsheet | Export CSV → save picker → saved | passed (phone, no changes: Export a spreadsheet (CSV) → Android’s save picker, “Often Enough Export 2026-11-01.csv” → Save → “Spreadsheet saved to Downloads”) |
-| 10 | 1183:9112 | Delete the Google Drive backup | Delete Google Drive backup… → dialog → Not backed up + snackbar | not started |
+| 10 | 1183:9112 | Delete the Google Drive backup | Delete Google Drive backup… → dialog → Not backed up + snackbar | passed ⁴² (phone, no changes: Backed up → Delete Google Drive backup… → “Delete your Google Drive backup?” with Figma’s words naming lalithsaicharan9@gmail.com, Cancel and Delete (red) at Figma’s places → Delete → Not backed up and “Google Drive backup deleted”) |
 | 11 | 1183:9556 | Erase all my data | Erase all my data… → dialog → Today, no habits yet | not started |
 | 12 | 1183:11921 | Edit a time of day | Times of day → Morning → Starts → 07:00 → Save → list | not started |
 | 13 | 1183:367054 | A new time of day | Add time of day → name, starts → “Before work” → Add | not started |
