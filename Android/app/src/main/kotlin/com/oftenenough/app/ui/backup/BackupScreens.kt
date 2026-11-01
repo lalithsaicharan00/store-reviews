@@ -142,8 +142,8 @@ private fun inDownloads(uri: Uri): Boolean = uri.authority == "com.android.provi
  * at the sides, 40 under, 24 between:
  *
  * - **Google Drive:** the Card notice saying where things stand (D4: always the truth), its one action a Tonal button
- *   under the words (Back up now; Back up to Google Drive); connected, 8 under it, Change account ("Backing up to
- *   sam@gmail.com").
+ *   under the words (Back up now; Back up to Google Drive), naming the account it backs up to ("Just now, to
+ *   sam@gmail.com."); connected, 8 under it, Change account ("Use a different Google account", A97).
  * - **Restore:** Restore from a backup ("From Google Drive or a file", ›).
  * - **Export:** Save a backup file ("To restore later, on any phone"), Export a spreadsheet (CSV) ("To open in Google
  *   Sheets or Excel"), each through Android's save picker, then a snackbar.
@@ -158,6 +158,8 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
     val scope = rememberCoroutineScope()
     val snack = snackbar ?: remember { SnackbarHostState() }
     var confirm by remember { mutableStateOf<String?>(null) }
+    // Change account: the account picked in Google's chooser, asked about before anything switches (D-22).
+    var picked by remember { mutableStateOf<String?>(null) }
     val save = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/zip")) { uri: Uri? ->
         if (uri != null) scope.launch {
             snack.showSnackbar(if (!center.saveFile(uri)) "Couldn't save the file. Your habits are safe on this phone."
@@ -190,7 +192,8 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                     // No Google Play services: Drive can't be reached from this phone at all. Say so (D4: the truth).
                     !center.link.available -> CardNotice(Symbols.CloudOff, "Not backed up",
                         "Backing up to Google Drive needs Google Play services, which this phone doesn’t have. Save a backup file below to keep a copy.", m)
-                    connected && center.working -> CardNotice(Symbols.CloudUpload, "Backing up…", "You can leave this page; it carries on.", m,
+                    connected && center.working -> CardNotice(Symbols.CloudUpload, "Backing up…",
+                        (email?.let { "To $it. " } ?: "") + "You can leave this page; it carries on.", m,
                         working = true, progress = count?.let { (saved, of) -> if (of == 0) 0f else saved / of.toFloat() })
                     !connected -> CardNotice(Symbols.CloudOff, "Not backed up",
                         "Your habits are only on this phone. Back them up to your own Google Drive to keep them safe.", m,
@@ -209,12 +212,20 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                     status?.state == DriveState.REMOVED -> CardNotice(Symbols.CloudAlert, "Your Google Drive backup was deleted",
                         "Your habits are still safe on this phone. Back them up again to keep a copy in Google Drive.", m,
                         action = "Back up again", onAction = again, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-again")
-                    else -> CardNotice(Symbols.CloudDone, "Backed up", (last ?: "Not yet") + ". It backs up by itself as you go.", m,
+                    // The account it backs up to is said here, with the state (A97), not under Change account.
+                    else -> CardNotice(Symbols.CloudDone, "Backed up", (last ?: "Not yet") + (email?.let { ", to $it" } ?: "") + ". It backs up by itself as you go.", m,
                         action = "Back up now", onAction = now, actionUnder = true, actionEnabled = !center.working, actionTag = "drive-now")
                 }
                 if (connected) SegmentedList {
-                    PageRow(Symbols.SwitchAccount, "Change account", "Backing up to " + (email ?: "your Google Drive"), 0, 1, "drive-change", chevron = false) {
-                        confirm = "switch"
+                    PageRow(Symbols.SwitchAccount, "Change account", "Use a different Google account", 0, 1, "drive-change", chevron = false) {
+                        // Google's own chooser first, then the question naming the account picked (D-22). Picking the
+                        // same account, or backing out, carries on with it (Google may ask its permission again: the
+                        // chooser only shows once the app's permission is taken back, GoogleDriveLink.pickAccount).
+                        scope.launch {
+                            val chosen = center.link.pickAccount()
+                            if (chosen != null && chosen != email) { picked = chosen; confirm = "switch" }
+                            else center.connectDrive(account = email)
+                        }
                     }
                 }
             }
@@ -254,11 +265,12 @@ fun BackupScreen(center: BackupCenter, store: HabitStore, onRestore: () -> Unit,
                 if (connected) "Your Google Drive backup stays, so you can bring them back." else "They aren’t backed up anywhere, so they can’t be brought back.",
             "Erase", { confirm = null; scope.launch { center.eraseThisPhone(); onErased() } },
             { confirm = null }, Modifier.semantics { testTag = "erase-dialog" }, destructive = true, confirmTag = "erase-confirm")
-        // Back up to another Drive? Asked before Google's own chooser: the Drive link chooses and connects in one step
-        // (Figma asks after it, naming the account; Decisions needed D-22).
+        // Back up to another Drive? Asked after Google's chooser, naming the account picked (Figma, D-22): nothing
+        // switches until Back up here; Cancel keeps backing up to the old one.
         "switch" -> AppDialog("Back up to another Drive?",
-            "From now on, your habits back up to the Google Drive you choose. The backup in $who Drive stays there until you delete it.",
-            "Choose account", { confirm = null; scope.launch { center.connectDrive(pick = true) } }, { confirm = null },
+            "From now on, your habits back up to ${picked}’s Google Drive. The backup in $who Drive stays there until you delete it.",
+            "Back up here", { val to = picked; confirm = null; picked = null; scope.launch { center.connectDrive(account = to) } },
+            { confirm = null; picked = null; scope.launch { center.connectDrive(account = email) } },
             Modifier.semantics { testTag = "switch-dialog" }, confirmTag = "switch-confirm")
     }
 }

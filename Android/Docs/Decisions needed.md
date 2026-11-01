@@ -468,6 +468,8 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 
 ### D-22. Change account: Google's chooser first, or the question first?
 
+- **Decided 1 Nov 2026 (the user): Figma's order**, (a), with Google's own chooser (Android A97).
+
 - **Where:** Backup & Sync (5.8.5), [Figma 1178:960](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1178-960), the flow "Change account"; `ui/backup/BackupScreens.kt`, `app/backup/BackupCenter.kt`.
 - **What Figma shows / what the app did:** Figma opens Google's account chooser first, then asks "Back up to another
   Drive?" naming the account chosen ("… back up to sam.work@gmail.com’s Google Drive"), with Cancel leaving it backing up

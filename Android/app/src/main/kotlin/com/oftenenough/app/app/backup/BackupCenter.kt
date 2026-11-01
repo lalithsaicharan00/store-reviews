@@ -48,11 +48,16 @@ interface DriveLink {
     /**
      * Asks Google for the app's own folder in the person's Drive: Android's account chooser and Google's permission
      * screen, shown only while the permission is missing. False when they back out, or when this phone can't reach
-     * Drive ([available]). [account] is unused since there are no accounts (D16, 21 Oct 2026). [pick] always shows the
-     * account chooser first (Try another Google account, Change account): without it Play Services hands back the
-     * account it already knows, and the person never gets to choose another.
+     * Drive ([available]). [account]: one already chosen with [pickAccount] (Change account). [pick] shows the account
+     * chooser first (Try another Google account): without it Play Services hands back the account it already knows,
+     * and the person never gets to choose another.
      */
     suspend fun connect(context: Context, account: String? = null, pick: Boolean = false): Boolean
+    /**
+     * Android's account chooser on its own, before anything connects: the chosen address, or null when they back out.
+     * Change account asks about the account picked before switching to it (Figma's order, D-22).
+     */
+    suspend fun pickAccount(): String? = null
     suspend fun disconnect()
     /** Deletes everything the app keeps in the person's Drive (its hidden folder only). */
     suspend fun deleteAll()
@@ -227,8 +232,8 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     private fun sync(): DriveSync? = link.api()?.let { DriveSync(store.repo, it, info.deviceName, "android") }
 
-    suspend fun connectDrive(pick: Boolean = false): Boolean {
-        if (!link.connect(context, pick = pick)) return false
+    suspend fun connectDrive(pick: Boolean = false, account: String? = null): Boolean {
+        if (!link.connect(context, account, pick)) return false
         val key = link.accountKey ?: return false
         sync()?.connect(key)
         syncNow()

@@ -34,6 +34,8 @@ class StandInLink(private val folder: File, private val prefs: SharedPreferences
         return true
     }
 
+    override suspend fun pickAccount(): String? = nextAccount
+
     override suspend fun disconnect() {
         account = null
         prefs.edit().putBoolean(KEY, false).apply()

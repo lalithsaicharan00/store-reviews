@@ -14,6 +14,7 @@ import app.habits.core.DriveSync
 import app.habits.core.DriveTokens
 import app.habits.core.GoogleDrive
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
+import com.google.android.gms.auth.api.identity.RevokeAccessRequest
 import com.google.android.gms.auth.api.identity.AuthorizationResult
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.api.Scope
@@ -75,11 +76,13 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
      * Connects a Google account: Android's own chooser and Google's permission screen, shown only when this phone
      * hasn't granted `drive.appdata` yet. False when the person backs out — nothing is kept, and nothing is sent.
      *
-     * [account] is ignored: there are no accounts to take a hint from any more (D16, 21 Oct 2026).
+     * [account]: one the person already chose in Google's chooser ([pickAccount], Change account).
      */
     override suspend fun connect(context: Context, account: String?, pick: Boolean): Boolean {
         // Figma's Try another Google account and Change account open the chooser every time (onboarding 10.8).
-        val chosen = if (pick) DriveConsent.pickAccount?.invoke() ?: return false else null
+        val chosen = account ?: if (pick) pickAccount() ?: return false else null
+        // Not connected yet: Google's chooser, never the account Play services last used for the app on its own.
+        if (chosen == null && email == null) forgetChoice()
         val result = authorize(chosen) ?: return false
         val granted = if (result.hasResolution()) {
             val pending = result.pendingIntent ?: return false
@@ -94,6 +97,51 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
         email = who
         prefs.edit().putString(EMAIL, who).apply()
         return true
+    }
+
+    /**
+     * Google's own chooser (Change account, the user's choice, 1 Nov 2026): the Drive permission screen's "Choose an
+     * account", not Android's plain list. Google shows it only while no account has allowed the app, so the current
+     * account's permission is taken back first; the account picked is allowed (its permission screen the first time)
+     * and its address returned, but nothing here switches to it: [connect] does, once the person says so. Null when
+     * they back out; the old account then needs its permission again, which [connect] asks for.
+     */
+    override suspend fun pickAccount(): String? {
+        forgetChoice()
+        email?.let { revoke(it) }
+        token = null
+        val result = authorize() ?: return null
+        val granted = if (result.hasResolution()) {
+            val pending = result.pendingIntent ?: return null
+            if (!(DriveConsent.ask?.invoke(pending) ?: false)) return null
+            authorize()?.takeIf { !it.hasResolution() } ?: return null
+        } else result
+        return who(granted)
+    }
+
+    /**
+     * Play services remembers an account for the app and hands it back without asking; signing out (there is no sign-in
+     * here: it only clears that memory) makes the next request show Google's chooser.
+     */
+    private suspend fun forgetChoice() = withContext(Dispatchers.IO) {
+        runCatching {
+            suspendCancellableCoroutine<Unit> { go ->
+                Identity.getSignInClient(appContext).signOut()
+                    .addOnCompleteListener { if (go.isActive) go.resume(Unit) }
+            }
+        }
+    }
+
+    private suspend fun revoke(account: String) = withContext(Dispatchers.IO) {
+        val request = RevokeAccessRequest.builder().setAccount(Account(account, "com.google")).setScopes(listOf(Scope(APPDATA))).build()
+        runCatching {
+            suspendCancellableCoroutine<Unit> { go ->
+                client.revokeAccess(request)
+                    .addOnSuccessListener { if (go.isActive) go.resume(Unit) }
+                    .addOnFailureListener { if (go.isActive) go.resume(Unit) }
+                    .addOnCanceledListener { if (go.isActive) go.resume(Unit) }
+            }
+        }
     }
 
     override suspend fun disconnect() {
@@ -162,6 +210,4 @@ class GoogleDriveLink(context: Context, private val prefs: SharedPreferences) : 
 object DriveConsent {
     /** Shows Google's permission screen and answers true when the person allowed it. */
     @Volatile var ask: (suspend (PendingIntent) -> Boolean)? = null
-    /** Shows Android's own account chooser for Google accounts; the chosen address, or null when they back out. */
-    @Volatile var pickAccount: (suspend () -> String?)? = null
 }
