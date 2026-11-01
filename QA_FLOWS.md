@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 16 |
+| details pages | 298:2 | 24 | 17 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **208** |
+| **All** | | **290** | **209** |
 
 ## Bug log
 
@@ -309,6 +309,14 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 267. Details pages 16 · an archived habit's Day details still logged: +1, Log, Add a note…, Skip this day, Edit habit in ⋮, and Delete | Edit on its logs and notes. Figma's archived habit is read-only, its days "open (to read)", "Restore it to log again": the day now shows its result and logs only (the note row off, as on a day that can't be logged), ⋮ is View habit, Restore, Delete (³⁰).
 268. Details pages 16 · Restore (the card, ⋮, and Day details' ⋮) said nothing; Figma: "Water restored to Today · Undo", Undo archiving it again from its own day.
 269. Details pages 16 · on History a message covered Add; it sits 8 above it now, as Material's Scaffold and Figma's Times of day place it (`HabitDetails`).
+270. Details pages 17 · the Week card of a habit made today added "Compared with the week before · No earlier week to compare" (and Month "No earlier month to compare"), words Figma never has: its first days end Week at the squares. A period with nothing before it has no comparison now.
+271. Details pages 17 (shared: `EmptyState`) · an empty state with no buttons still kept the 24 above them, so the Week card under No progress yet sat 64 below it, Figma's 40.
+272. Details pages 17 · History's Nothing here yet hung 40 under the tabs; Figma centres it in the room under them, down to the navigation bar.
+273. Details pages 17 · History didn't mark the habit's first day; Figma: "First day · 8/8 glasses · 3 logs".
+274. Details pages 17 · a habit two days old drew Month's "Recorded each day" chart; Figma's first days have none ("no empty charts"): a habit in its first seven days has no daily chart.
+275. Details pages 17 · Milestones with none reached went straight to Next; Figma first says "None yet. The first comes at 3 days in a row.", 12 under the title, whose row is 24 without See all (it took See all's 40).
+276. Details pages 17 · a best streak still going ended on yesterday's date ("30 Oct – 31 Oct") while today was open; Figma: "21 Oct – today". See all streaks' rows the same.
+277. Details pages 17 · comparisons worded what they couldn't compare ("Started on 30 Oct, partway through last week", "Compared once today is over"), and a running week was "Same 5 days last week"; Figma has no such lines and titles it "Same days last week". With nothing to compare yet the card leaves the comparison out.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -340,6 +348,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ²⁸ Details pages 8: Gym's kind (3 times a week) was checked on the demo's Call family. Today is the 1st, so no week of November has ended: "· this week 2 of 3" beside "Met 3 of 3 weeks so far" was checked from the code (the Year card shows it: "14 times this year · this week 2 of 3"). Read's frame also switches off its chart and comparison; with its caption about the minutes each day, and Water's past month switching off its comparison too, those frames are read as close-ups of the squares, and day goals keep both.
 ²⁹ Details pages 12 (phone): on 14 Oct (the demo has no September days). Later days can't be picked, as Figma's; its › "off" on today's month can't be had: Android's own date picker stops its arrows only at the end of its years, not at a month. The landing was checked from a screen recording (frames 4 a second).
 ³⁰ Details pages 16 (phone): Figma's frame 2 draws "Current streak" where its caption says "the current streak becomes Streak when archived"; the app keeps the caption's. Figma has no Day details for an archived habit: its read-only form follows the page's "read-only" and a paused day's Day details (no logging, Skip gone). Restore with no room left (free, three habits) shows the existing Make room message on Habit details; from Day details' ⋮ it does nothing, as before.
+³¹ Details pages 17 (phone): Juice, made through + (8 glasses a day), then started on Fri 30 Oct through Edit habit with 8, 8 and 3 today, as Figma's Water made Wed 21 Oct on a Friday. Today is Sunday, the week's first day, so the Week card was compared on last week ("Reached on 2 of 2 days"). Figma's next total is "50 glasses in total"; the Milestones doc's ladder (10, 25, 50 × a day's goal: 80, 200, 400 glasses) and Figma's own Water card (80, then 400) give 80, which the app keeps.
 
 ## Open questions for the user
 
@@ -591,7 +600,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 14 | 342:3249 | History: Add a note to any day | Add → ‹ → 20 → Open → Add a note… → Save → ✕ → scroll | passed (phone; on Tue 20 Oct. This flow opens Add to which day? on today, "Open today"; flow 13 says no day until one is picked: D-59) |
 | 15 | 347:2396 | Edit habit: Started moved earlier | ⋮ Edit habit → Started 25 Aug → Save: History runs to 25 Aug | passed ↻ (phone; moved to 10 Aug 2025, before the demo's 27 Sep 2025 start: "Changes saved", History runs to Sun 10 Aug, each day "Nothing logged") |
 | 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | passed ↻ ³⁰ (phone; Water archived today, on Sun 1 Nov) |
-| 17 | 351:2274 | A new habit: its first days | 2 days old: Progress → whole page → History First day → made today → No progress yet | not started |
+| 17 | 351:2274 | A new habit: its first days | 2 days old: Progress → whole page → History First day → made today → No progress yet | passed ↻ ³¹ |
 | 18 | 354:1822 | A quit habit’s Progress | Smoking → whole page → See all 5 → How milestones work | not started |
 | 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | not started |
 | 20 | 1158:112719 | A cut-down habit’s Progress: time | Social media → whole page → See all 3 → How milestones work | not started |

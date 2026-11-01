@@ -30,6 +30,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -148,10 +155,23 @@ internal fun MessageCard(title: String?, text: String, tag: String) {
 internal fun LazyListScope.historyItems(
     color: HabitColor, months: List<HistoryMonth>, filter: HistoryFilter, toggled: Set<Int>,
     onSearch: () -> Unit, onFilter: (HistoryFilter) -> Unit, onGoToDate: () -> Unit, onToggleMonth: (Int) -> Unit, onOpenDay: (Int) -> Unit,
-    lit: Int? = null,
+    lit: Int? = null, listState: LazyListState? = null,
 ) {
     if (months.isEmpty()) {
-        item(key = "history-empty") { NothingYet() }
+        item(key = "history-empty") {
+            // Figma's History · empty (frame 4 of a new habit's first days) centres it in the room under the tabs, down
+            // to the navigation bar: its middle at 498, between 220 and 776 (QA, 1 Nov 2026: it hung 40 under them).
+            // The room is the list's below this item, less the navigation bar; 16 of the gap above it is the tabs'.
+            val room by remember(listState) {
+                derivedStateOf {
+                    listState?.layoutInfo?.let { info -> info.visibleItemsInfo.firstOrNull { it.key == "history-empty" }?.let { info.viewportEndOffset - it.offset } } ?: 0
+                }
+            }
+            val density = LocalDensity.current
+            val bar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+            val min = with(density) { room.toDp() } - bar
+            Box(Modifier.fillMaxWidth().heightIn(min = min.coerceAtLeast(0.dp)).padding(bottom = 16.dp), contentAlignment = Alignment.Center) { NothingYet() }
+        }
         return
     }
     item(key = "history-search") { SearchBarButton("Search notes", onSearch, Modifier.pageItem().semantics { testTag = "history-search" }) }
@@ -233,7 +253,7 @@ private fun highlighted(text: String, query: String): AnnotatedString = buildAnn
 @Composable
 private fun NothingYet() =
     EmptyState(Symbols.History, "Nothing here yet", "Each day you log or write a note shows here, newest first. Add opens any day.",
-        Modifier.padding(top = 24.dp).semantics(mergeDescendants = true) { testTag = "history-empty" })
+        Modifier.semantics(mergeDescendants = true) { testTag = "history-empty" })
 
 // ------------------------------------------------------------------------------------------------------------ Search
 

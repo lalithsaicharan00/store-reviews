@@ -317,12 +317,13 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                             color = habit.color, months = months, filter = filter, toggled = historyToggled,
                             onSearch = { searching = true }, onFilter = { filter = it }, onGoToDate = { goToDate = true },
                             onToggleMonth = { m -> historyToggled = if (m in historyToggled) historyToggled - m else historyToggled + m },
-                            onOpenDay = { day -> nav.openDay(habit, day) }, lit = lit,
+                            onOpenDay = { day -> nav.openDay(habit, day) }, lit = lit, listState = listState,
                         )
                     }
                 }
                 // Room for Add over the last row.
-                item(key = "end") { Spacer(Modifier.navigationBarsPadding().height(if (shown == HabitTab.HISTORY) 88.dp else 8.dp)) }
+                // (Nothing here yet fills the room itself.)
+                if (!(shown == HabitTab.HISTORY && months.isEmpty())) item(key = "end") { Spacer(Modifier.navigationBarsPadding().height(if (shown == HabitTab.HISTORY) 88.dp else 8.dp)) }
             }
         }
         // Add (Figma 2.1, 2.11): on History, while the habit can be logged (an archived one can't, Figma 6.2).

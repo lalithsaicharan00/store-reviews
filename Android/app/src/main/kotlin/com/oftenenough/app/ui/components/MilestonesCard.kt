@@ -51,7 +51,8 @@ fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSeeAll: () 
             .semantics { testTag = "habit-milestones" },
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        Row(Modifier.fillMaxWidth().heightIn(min = 40.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+        // The row is See all's 40 when it has it, else the title's own 24 (Figma's first days: the line 12 under it).
+        Row(Modifier.fillMaxWidth().heightIn(min = if (reached.size >= 2) 40.dp else 0.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("Milestones", Modifier.weight(1f).semantics { heading() }, style = AppType.titleMedium, color = s.onSurface)
             if (reached.size >= 2) {
                 AppButton("See all ${reached.size}", onSeeAll, Modifier.drawnHeight().semantics { contentDescription = "See all ${reached.size} milestones" },
@@ -88,6 +89,11 @@ fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSeeAll: () 
         }
         // Anniversaries are counted on All milestones only: every Figma card's Next is in a row and in total (QA, 1 Nov 2026).
         val next = milestones.next.filter { it.track != Milestone.Track.ANNIVERSARY }
+        // Nothing reached yet says so, and what comes first (Figma, a new habit's first days: "None yet. The first comes
+        // at 3 days in a row.").
+        if (reached.isEmpty()) next.firstOrNull()?.let { first ->
+            Text("None yet. The first comes at ${first.title}.", style = AppType.bodyMedium, color = s.onSurfaceVariant)
+        }
         if (next.isNotEmpty()) {
             Text("Next", style = AppType.labelMedium, color = s.onSurfaceVariant)
             for (n in next) NextMilestone(n, color)

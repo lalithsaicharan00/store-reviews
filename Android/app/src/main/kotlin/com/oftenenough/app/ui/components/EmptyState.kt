@@ -27,7 +27,7 @@ import com.oftenenough.app.ui.theme.AppType
  * under it, 8 apart.
  */
 @Composable
-fun EmptyState(icon: ImageVector, title: String, body: String, modifier: Modifier = Modifier, bodyWidth: Dp = Dp.Unspecified, actions: @Composable ColumnScope.() -> Unit = {}) {
+fun EmptyState(icon: ImageVector, title: String, body: String, modifier: Modifier = Modifier, bodyWidth: Dp = Dp.Unspecified, actions: (@Composable ColumnScope.() -> Unit)? = null) {
     val s = MaterialTheme.colorScheme
     Column(modifier.padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(24.dp)) {
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -38,6 +38,8 @@ fun EmptyState(icon: ImageVector, title: String, body: String, modifier: Modifie
                 Text(body, Modifier.padding(horizontal = 24.dp).widthIn(max = bodyWidth).fillMaxWidth(), style = AppType.bodyLarge, color = s.onSurfaceVariant, textAlign = TextAlign.Center)
             }
         }
-        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp), content = actions)
+        // No actions, no 24 under the words: an empty column still took its gap (QA, 1 Nov 2026: the Week card under
+        // No progress yet sat 64 below it, Figma's 40).
+        if (actions != null) Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp), content = actions)
     }
 }

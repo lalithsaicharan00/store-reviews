@@ -817,7 +817,7 @@ data class HistoryDay(
     val heat: HeatCell,
     /** "Sat 3". */
     val title: String,
-    /** "Today", "Yesterday", or null. */
+    /** "Today", "Yesterday", "First day", or null. */
     val relative: String?,
     /** "8/8 glasses · 2 logs", "Skipped", "Not done". */
     val detail: String,
@@ -866,7 +866,8 @@ fun HabitStore.history(habit: Habit, today: Int): List<HistoryMonth> {
             val due = !quit && day < today && rule(habit, day).frequency.isDayBased && rules.isDue(habit, day)
             if (due || logs.isNotEmpty() || note != null || skipped) {
                 rows.add(HistoryDay(day, heat?.getOrNull(day - span.first) ?: HeatCell.Blank, historyDayTitle(day),
-                    DayWords.relative(day, today), historyDetail(habit, day, logs, skipped, today), note))
+                    // The habit's first day says so (Figma, a new habit's first days 3: "First day · 8/8 glasses").
+                    DayWords.relative(day, today) ?: "First day".takeIf { day == start }, historyDetail(habit, day, logs, skipped, today), note))
             }
             day--
         }
@@ -1066,9 +1067,12 @@ fun HabitStore.habitRecord(habit: Habit, today: Int): HabitOverall {
     val runSince = runs.lastOrNull()?.takeIf { it.isCurrent && it.length > 0 }?.let { "Since " + pageShortDate(it.start, today) }
     val currentFact = RecordFact("Current streak", HabitCopy.number(current.toDouble()), unit.word(current), thisPeriod ?: runSince,
         "Current streak, $current ${unit.word(current)}" + (thisPeriod?.let { ". $it" } ?: ""))
+    // A run still going ends "today", today open or not (Figma, a new habit's first days: "21 Oct – today" on a day
+    // 3 of 8; QA, 1 Nov 2026: it ended on yesterday's date).
+    val bestEnd = bestRun?.let { if (it.isCurrent) today else it.end }
     val bestFact = RecordFact("Best streak", HabitCopy.number(best.toDouble()), unit.word(best),
-        bestRun?.let { pageRunSpan(it.start, it.end, today) },
-        "Best streak, $best ${unit.word(best)}" + (bestRun?.let { ", " + pageSpokenRunSpan(it.start, it.end, today) } ?: ""))
+        bestRun?.let { pageRunSpan(it.start, bestEnd!!, today) },
+        "Best streak, $best ${unit.word(best)}" + (bestRun?.let { ", " + pageSpokenRunSpan(it.start, bestEnd!!, today) } ?: ""))
 
     fun periods(n: Int): String = when (kind) {
         GoalPeriod.DAY -> if (n == 1) "day" else "days"
@@ -1142,19 +1146,15 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
     // A week or month goal compares no days on Month: Figma's Gym has no comparison (QA, 1 Nov 2026: "12 of 12 days").
     if (!week) return if (rule(habit, today).let { pagePeriodKind(it) != GoalPeriod.DAY }) null
         else monthComparison(habit, span, previousFull, start, today, monthName)
-    if (previousFull.first < start) {
-        val note = if (start <= previousFull.last) "Started on ${DayWords.dayMonth(start)}, partway through ${if (week) previousLabel.lowercase() else previousLabel}"
-        else "No earlier $noun to compare"
-        return PeriodComparison("Compared with the $noun before", thisLabel, previousLabel, "", "", null, null, note)
-    }
-    if (completed <= 0) {
-        return PeriodComparison("Compared with last $noun", thisLabel, previousLabel, "", "", null, null, "Compared once today is over")
-    }
+    // Nothing to compare yet, no comparison: a habit with no whole week before this one, or a week whose first day is
+    // still open. Figma's first days end Week at its squares and never word a missing comparison (QA, 1 Nov 2026: the
+    // app said "partway through last week" and "Compared once today is over").
+    if (previousFull.first < start || completed <= 0) return null
     val thisRange = span.first..(span.first + completed - 1)
     val previousLength = previousFull.last - previousStart + 1
     val previousRange = previousStart..(previousStart + min(completed, previousLength) - 1)
-    val title = if (running) (if (completed == 1) "Same first day last $noun" else "Same $completed days last $noun")
-    else "Compared with the $noun before"
+    // Figma's Week: "Same days last week" while it runs.
+    val title = if (running) "Same days last $noun" else "Compared with the $noun before"
     val rule = rule(habit, min(thisRange.last, today))
     if (habit.kind == HabitKind.Quit) {
         val a = thisRange.sumOf { entries(habit.id, it).size }
@@ -1191,11 +1191,12 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
  * that began this month has nothing to compare (QA, 1 Nov 2026: the app compared amounts over the same days).
  */
 private fun HabitStore.monthComparison(habit: Habit, span: IntRange, previous: IntRange, start: Int, today: Int,
-                                       monthName: (Int) -> String): PeriodComparison {
+                                       monthName: (Int) -> String): PeriodComparison? {
     val title = "Compared with the month before"
     val thisLabel = monthName(span.first)
     val previousLabel = monthName(previous.first)
-    if (previous.last < start) return PeriodComparison(title, thisLabel, previousLabel, "", "", null, null, "No earlier month to compare")
+    // Nothing before it, nothing to compare: the card leaves the comparison out (Figma's first days, frames 1-2).
+    if (previous.last < start) return null
     val quit = habit.kind == HabitKind.Quit
     val judgedAtEnd = quit || rule(habit, min(span.last, today)).atMost
     fun tally(range: IntRange): Pair<Int, Int> {
@@ -1209,7 +1210,7 @@ private fun HabitStore.monthComparison(habit: Habit, span: IntRange, previous: I
         return days.count { it.mark == DayMark.DONE } to days.size
     }
     val a = tally(span)
-    if (a.second == 0) return PeriodComparison(title, thisLabel, previousLabel, "", "", null, null, "Compared once today is over")
+    if (a.second == 0) return null
     val b = tally(previous)
     fun text(x: Pair<Int, Int>) = "${x.first} of ${if (x.second == 1) "1 day" else "${x.second} days"}"
     return PeriodComparison(title, thisLabel, previousLabel, text(a), text(b), a.first.toDouble(), b.first.toDouble(), null)
@@ -1224,6 +1225,8 @@ fun HabitStore.recordedEachDay(habit: Habit, span: IntRange, today: Int): Pair<L
     val rule = rule(habit, min(span.last, today))
     val shape = progressShape(rule)
     if (shape !in setOf(ProgressShape.TIMES, ProgressShape.AMOUNT, ProgressShape.TIME, ProgressShape.PERIOD_TOTAL, ProgressShape.LIMIT_DAY)) return null
+    // A habit in its first week has no daily chart (Figma's first days: "small true numbers; no empty charts").
+    if (today - first < 6) return null
     val values = span.map { day -> if (day <= today && day >= first) rules.dayProgress(habit, day) else 0.0 }
     if (values.none { it > 0 }) return null
     val goal = if (rule.frequency.isDayBased && !rule.frequency.isFlexible && pageDayGoal(rule) > 0) pageDayGoal(rule) else null
@@ -1484,8 +1487,9 @@ fun HabitStore.streakList(habit: Habit, today: Int): StreakList {
     val longest = runs.firstOrNull()?.length?.toFloat() ?: 1f
     val rows = runs.map { r ->
         val words = HabitCopy.number(r.length.toDouble()) + " " + unit.word(r.length)
-        val dates = pageRunSpan(r.start, r.end, today) + (if (r.isCurrent) " · now" else "")
-        StreakRow(words, dates, r.length / longest, r.isCurrent, "$words, " + pageSpokenRunSpan(r.start, r.end, today) + (if (r.isCurrent) ", going on now" else ""))
+        val end = if (r.isCurrent) today else r.end
+        val dates = pageRunSpan(r.start, end, today) + (if (r.isCurrent) " · now" else "")
+        StreakRow(words, dates, r.length / longest, r.isCurrent, "$words, " + pageSpokenRunSpan(r.start, end, today) + (if (r.isCurrent) ", going on now" else ""))
     }
     val noun = unit.word(3)
     return StreakList("Streaks", "Since " + DayWords.long(rules.startDay(habit)), if (rows.size == 1) "1 run" else "${rows.size} runs", rows,
