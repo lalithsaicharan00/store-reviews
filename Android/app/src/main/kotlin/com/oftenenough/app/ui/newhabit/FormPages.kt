@@ -260,8 +260,8 @@ fun LimitPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Text("Quick picks", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                        for (m in listOf(15, 30, 45, 60, 90, 120, 180)) AppFilterChip(HabitCopy.minutes(m.toDouble()), form.amountValue?.toInt() == m, tag = "limit-pick-$m",
-                            onClick = { setTime(if (m >= 60) (m / 60).toString() else "", (m % 60).toString()) })
+                        for (m in listOf(15, 30, 45, 60, 90, 120, 180)) AppFilterChip(HabitCopy.minutes(m.toDouble()), form.amountValue?.toInt() == m,
+                            onClick = { setTime(if (m >= 60) (m / 60).toString() else "", (m % 60).toString()) }, Modifier.drawnHeight(32.dp), tag = "limit-pick-$m")
                     }
                     Text(if (minutes.toIntOrNull()?.let { it >= 60 } == true) "Minutes go up to 59; use hours for more."
                         else "Log time spent, or use the timer. At or under the limit counts as a good day.",
@@ -287,7 +287,13 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
     val s = MaterialTheme.colorScheme
     FormPage("How long", onBack = onBack) {
         val minutesFocus = remember { FocusRequester() }
-        LaunchedEffect(Unit) { if (form.amountValue == null) runCatching { minutesFocus.requestFocus() } }
+        // A new one starts at 10 minutes, 10 min chosen, the cursor after it (Figma's How long page, Create new 13).
+        LaunchedEffect(Unit) {
+            if (form.amountValue == null) {
+                if (form.hours.isEmpty() && form.minutes.isEmpty()) form.minutes = "10"
+                runCatching { minutesFocus.requestFocus() }
+            }
+        }
         Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             Row(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(horizontal = 20.dp, vertical = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp)) {
@@ -298,9 +304,10 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Quick picks", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    for (m in listOf(5, 10, 15, 20, 30, 45, 60)) AppFilterChip(if (m == 60) "1 h" else "$m min", total == m, tag = "pick-$m", onClick = {
+                    // The chips at their drawn 32, 8 apart each way, their touch spreading past (Figma's Quick picks).
+                    for (m in listOf(5, 10, 15, 20, 30, 45, 60)) AppFilterChip(if (m == 60) "1 h" else "$m min", total == m, {
                         form.hours = if (m >= 60) (m / 60).toString() else ""; form.minutes = (m % 60).toString().padStart(2, '0')
-                    })
+                    }, Modifier.drawnHeight(32.dp), tag = "pick-$m")
                 }
                 val period = form.amountPeriod
                 Text(if (form.minutes.toIntOrNull()?.let { it >= 60 } == true) "Minutes go up to 59; use hours for more."
@@ -317,9 +324,16 @@ fun HowLongPage(form: FormState, onBack: () -> Unit) {
 private fun TimeBox(value: String, label: String, tag: String, modifier: Modifier, fieldModifier: Modifier, onChange: (String) -> Unit) {
     val s = MaterialTheme.colorScheme
     var focused by remember { mutableStateOf(false) }
+    // A value set from outside (the 10 a new one starts at, a quick pick) puts the cursor after it, as Figma's does.
+    var field by remember { mutableStateOf(androidx.compose.ui.text.input.TextFieldValue(value, androidx.compose.ui.text.TextRange(value.length))) }
+    if (field.text != value) field = androidx.compose.ui.text.input.TextFieldValue(value, androidx.compose.ui.text.TextRange(value.length))
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         BasicTextField(
-            value, { onChange(it.filter { c -> c.isDigit() }.take(3)) },
+            field, { v ->
+                val t = v.text.filter { c -> c.isDigit() }.take(3)
+                field = if (t == v.text) v else androidx.compose.ui.text.input.TextFieldValue(t, androidx.compose.ui.text.TextRange(t.length))
+                onChange(t)
+            },
             fieldModifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(s.surfaceContainerHighest)
                 .border(if (focused) 2.dp else 0.dp, if (focused) s.primary else Color.Transparent, RoundedCornerShape(16.dp))
                 .heightIn(min = 80.dp).onFocusChanged { focused = it.isFocused }.semantics { testTag = tag; contentDescription = label },
