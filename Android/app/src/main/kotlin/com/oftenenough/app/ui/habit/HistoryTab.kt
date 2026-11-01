@@ -88,8 +88,12 @@ fun historyShown(months: List<HistoryMonth>, filter: HistoryFilter): List<Histor
         if (days.isEmpty()) null else m.copy(summary = if (days.size == 1) "1 day with a note" else "${days.size} days with a note", days = days)
     }
 
-/** Whether month [index] of the list is open: the newest two start open; a tap on the header turns that around. */
-fun historyMonthOpen(index: Int, month: HistoryMonth, toggled: Set<Int>): Boolean = (index < 2) != (month.first in toggled)
+/**
+ * Whether month [index] of the list is open: every month starts open, as Figma's History draws them (QA, 1 Nov 2026:
+ * only the newest two were, so a start moved back showed folded months); a tap on the header folds it.
+ */
+@Suppress("UNUSED_PARAMETER")
+fun historyMonthOpen(index: Int, month: HistoryMonth, toggled: Set<Int>): Boolean = month.first !in toggled
 
 /**
  * Where [day]'s row is among History's items (counted from History's first item, the search field), or the nearest

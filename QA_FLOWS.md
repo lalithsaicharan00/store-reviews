@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 14 |
+| details pages | 298:2 | 24 | 15 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **206** |
+| **All** | | **290** | **207** |
 
 ## Bug log
 
@@ -301,6 +301,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 259. Details pages 11 · With notes counted "2 notes" and added a line Figma doesn't have ("Days without a note are hidden while With notes is on."); Figma: "2 days with a note", and no line (gone). HabitDetailsTest asks for Figma's words.
 260. Details pages 11 · a History day with a note was 108 dp, its square and › pinned to the top (Material's tall row); Figma's Day row is 104, 8 above and below, both centred on the row (`AppListItem(centred)`).
 261. Details pages 12 · Go to date scrolled the day to the top of the list, where the pinned tabs hid it (from the top of History only a lit sliver showed), and lit it before the scroll arrived; Figma puts the day mid-screen, lit, then fading. It scrolls to the middle and lights the day on arrival now (and again if the same day is chosen twice).
+262. Details pages 15 · Edit habit's start row said "Started" (and its date picker's title); Figma's Edit habit says "Starts" for a habit's first day, the quit form keeps "Started" (`HabitForm`).
+263. Details pages 15 · History opened only its two newest months, every older month folded; Figma's History draws every month open, so moving the start earlier shows the new days at once (`historyMonthOpen`). A month still folds and opens on its header.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -580,7 +582,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 12 | 339:3638 | History: Go to date | Go to date → picker → September → 14 → OK → lit row → fades | passed ↻ ²⁹ |
 | 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | passed (phone; on Fri 9 Oct. Figma's frame 3 reads "Open today" before a day is picked, against frame 2's caption "Open stays off until one is picked"; the app keeps Open off) |
 | 14 | 342:3249 | History: Add a note to any day | Add → ‹ → 20 → Open → Add a note… → Save → ✕ → scroll | passed (phone; on Tue 20 Oct. This flow opens Add to which day? on today, "Open today"; flow 13 says no day until one is picked: D-59) |
-| 15 | 347:2396 | Edit habit: Started moved earlier | ⋮ Edit habit → Started 25 Aug → Save: History runs to 25 Aug | not started |
+| 15 | 347:2396 | Edit habit: Started moved earlier | ⋮ Edit habit → Started 25 Aug → Save: History runs to 25 Aug | passed ↻ (phone; moved to 10 Aug 2025, before the demo's 27 Sep 2025 start: "Changes saved", History runs to Sun 10 Aug, each day "Nothing logged") |
 | 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | not started |
 | 17 | 351:2274 | A new habit: its first days | 2 days old: Progress → whole page → History First day → made today → No progress yet | not started |
 | 18 | 354:1822 | A quit habit’s Progress | Smoking → whole page → See all 5 → How milestones work | not started |

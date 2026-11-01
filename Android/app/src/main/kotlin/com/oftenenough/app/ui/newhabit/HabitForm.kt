@@ -554,7 +554,9 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
     var picking by remember { mutableStateOf<String?>(null) }
     var endsMenu by remember { mutableStateOf(false) }
     SegmentedList {
-        OpenRow(if (form.startDate < today) "Started" else "Starts", dayWords(form.startDate, today), null, 0, 2, "starts-row", rowColor) { picking = "start" }
+        // "Starts" whether the day is past or to come, as Figma's Edit habit has it ("Starts · Tue, 25 Aug"); "Started" is
+        // the quit form's moment (QA, 1 Nov 2026).
+        OpenRow("Starts", dayWords(form.startDate, today), null, 0, 2, "starts-row", rowColor) { picking = "start" }
         Box {
             val ends = if (form.hasEnd) dayWords(form.endDate, today) else "Never"
             AppListItem("Ends", 1, 2, Modifier.semantics(mergeDescendants = true) { contentDescription = "Ends, $ends" }, ends,
@@ -570,7 +572,7 @@ private fun StartEndRows(form: FormState, store: HabitStore) {
         }
     }
     when (picking) {
-        "start" -> DayDialog(form.startDate, { firstLog == null || it <= firstLog }, { picking = null }, title = if (form.startDate < today) "Started" else "Starts",
+        "start" -> DayDialog(form.startDate, { firstLog == null || it <= firstLog }, { picking = null }, title = "Starts",
             note = firstLog?.let { "Up to ${DayWords.dayMonth(it)}, the first log, so no log is hidden." } ?: "A start date in the past lets you tick the days since then.") { form.startDate = it; if (form.hasEnd && form.endDate < it) form.endDate = it }
         "end" -> DayDialog(maxOf(form.endDate, form.startDate), { it >= form.startDate }, { picking = null }, title = "Ends",
             note = "After it, the habit leaves Today. Its history stays.") { form.endDate = it; form.hasEnd = true }
