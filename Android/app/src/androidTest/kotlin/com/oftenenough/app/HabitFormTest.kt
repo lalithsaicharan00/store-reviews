@@ -39,7 +39,7 @@ import org.junit.runner.RunWith
 
 /**
  * The New habit and Edit habit flows (Create new form, 5.7.3, Figma 1065:2597): Edit has no Type row (A68) and asks
- * before leaving with changes, a goal change says it starts today, the 6th habit and Make room, a new time of day set by its start alone
+ * before leaving with changes, a goal change says it starts today, the 6th habit's Plus, a new time of day set by its start alone
  * (Current Work 108), How long's quick picks and a task's Time. Every launch is a test launch (D8) at 10:30 (T11); a
  * failure says, on one line, what was on screen (T14).
  */
@@ -363,29 +363,24 @@ class HabitFormTest {
         waitUntil("Water's goal saved as 10") { water().single().goal == 10.0 }
     }
 
-    @Test fun aSixthHabitOpensPlusWhoseBackMakesRoom() {
+    @Test fun aSixthHabitOpensPlusButATaskDoesNot() {
         launch()
         // The free plan's five: archive the demo's other habits.
         onMain { store.archive(store.habits.filter { !it.archived && it.kind != HabitKind.Task }.drop(HabitStore.FREE_HABIT_LIMIT)) }
         waitUntil("five habits") { store.activeHabitCount == HabitStore.FREE_HABIT_LIMIT && !store.canAddHabit }
+        // Any new habit opens Plus the moment it's chosen (5.9.1, Figma 1204:175 Reason=6th habit; Android A94): Build or
+        // maintain, then Quit or cut down; ← is back on What do you want to do?, nothing added, and a task still goes on.
         tapTag("new-habit")
-        tapTag("new-build")
-        tapTag("type-check")
-        type("name-field", "Stretch")
-        tapTag("form-add")
-        // Plus, for a sixth habit (5.9.1, Figma 1204:175 Reason=6th habit); its ← opens Make room.
-        waitFor(hasTestTag("plus-screen").and(hasAnyDescendant(hasText("Add a 6th habit"))), "Add a 6th habit")
-        waitFor(hasText("5 of 5 free habits"), "the count")
-        tapTag("plus-back")
-        waitFor(hasText("Make room"), "Make room")
-        // Make room (5.9.2, Figma 1167:351072): ⋮ › Archive, the snackbar, then Continue.
-        val first = store.habits.first { !it.archived && it.kind != HabitKind.Task }
-        tapTag("room-more-${first.name}")
-        tapTag("room-archive-${first.name}")
-        waitFor(hasText("${first.name} archived"), "the snackbar")
-        tapTag("room-continue")
-        waitUntil("Stretch added after making room") { store.habits.any { it.name == "Stretch" && !it.archived } }
-        assertTrue(store.habits.first { it.id == first.id }.archived)
+        for (kind in listOf("new-build", "new-quit")) {
+            tapTag(kind)
+            waitFor(hasTestTag("plus-screen").and(hasAnyDescendant(hasText("Add a 6th habit"))), "Add a 6th habit")
+            waitFor(hasText("5 of 5 free habits"), "the count")
+            tapTag("plus-back")
+            waitFor(hasTestTag("new-task"), "back on What do you want to do?")
+        }
+        assertTrue(store.activeHabitCount == HabitStore.FREE_HABIT_LIMIT)
+        tapTag("new-task")
+        waitFor(hasTestTag("task-once"), "What kind of task?, no Plus")
     }
 
     /** Quit or cut down (5.7.2, Figma 1061:2101): ←, the question, Quit and Cut down with their lines and examples. */

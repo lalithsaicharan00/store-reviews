@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 17 |
+| create new | 381:2 | 28 | 18 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **233** |
+| **All** | | **290** | **234** |
 
 ## Bug log
 
@@ -369,6 +369,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 327. Create new 17 · a time limit's How often page said "At most 60 minutes a day"; Figma: "At most 1 h a day" (hours and minutes, as the Limit row's "At most 1 h"). A cut-down habit timed in minutes is worded as time there too.
 328. Create new 17 · back from How often with a day chosen, the form still said "Every day"; Figma's frame 7 says "At most 1 h a day" (frame 5, before How often is opened, "Every day"). Once a limit's How often has been seen the form says the limit whole, a day, a week or a month (`FormState.limitOftenChosen`); 16 rechecked.
 329. Create new 15-17 · the quit and cut-down forms ended with Tell me at milestones and its line, which Create new's frames don't have; the user removed it (Android A93): the switch, the milestone notification and How milestones work's line are gone, and a phone that had it on has its alarm and channel cleared at start (`MilestoneAlerts.retire`). 15-17 rechecked on the phone: both forms end at their last row, the old channel is deleted, and a quit habit still adds.
+330. Create new 18 · Plus's ← opened Make room (each habit's ⋮ Archive or Delete, then Continue); the user removed it (Android A94): Plus's ← goes back with nothing added, here, on the form's Add and on Restore a 6th habit; the Make room page, its route and its test steps are gone (HabitFormTest now checks Plus for a build and a quit habit, and that a task goes on).
+331. Create new 18 · a sixth habit on the free plan met Plus only at Add, after its whole form; Figma's frame 2 and the user (A94): any new habit, Build or maintain, Quit or Cut down, opens Plus the moment it's chosen, and a task never does. ← is back on What do you want to do?; bought, it carries on to the habit's next step.
+332. Create new 18 (and Habits & tasks 12's Restore a 6th habit) · the five circles and "5 of 5 free habits" sat at the card's left; Figma centres them (`SixthPicture`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -691,7 +694,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 15 | 406:523 | A new habit: quit | Quit or cut down → Quit → quit form → Started picker → At time → Add | passed ↻ ⁴⁰ (phone: Started Thu, 29 Oct at 8:00 PM → Smoking “Since 29 Oct” at the end of Quitting; the days after today greyed) |
 | 16 | 406:870 | A new habit: cut down | Cut down → form → Limit Amount → ← → How often for a limit → ← | passed ↻ ⁴⁰ (phone: “At most 2 cups”, then “At most 2 cups a week”) |
 | 17 | 459:8 | A new habit: cut down time | Cut down → Limit → Time → 1 h → ← → How often → ← | passed ↻ ⁴⁰ (phone: “At most 1 h”, then “At most 1 h a day”) |
-| 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus → Make room → Archive Read; Undo → Continue | not started |
+| 18 | 406:1153 | A sixth habit on the free plan | 5 habits → Add a 6th habit: Plus (frames 1–2; Make room, frames 3–4, removed by the user: Android A94) | passed ↻ (phone, five habits on the free plan seeded with `keep 5`: Build or maintain and Quit or cut down open Add a 6th habit, ← is back on What do you want to do?, Add a task goes on. The price there is the test launch’s stand-in; an ordinary launch shows Play’s, ₹2,400.00 on this phone) |
 | 19 | 1220:383082 | A checklist on the free plan | Checklist → Checklists come with Plus → scrolled → Paid: form; Plus is on | not started |
 | 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | not started |
 | 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | not started |

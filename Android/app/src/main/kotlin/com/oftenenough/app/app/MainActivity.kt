@@ -140,7 +140,8 @@ class MainActivity : ComponentActivity() {
         val test = intent.getBooleanExtra(TestLaunch.UITEST, false)
         if (test) {
             AppGraph.openForTest(this, intent.getIntExtra(TestLaunch.CLOCK_HOUR, -1).takeIf { it >= 0 },
-                plus = intent.getBooleanExtra(TestLaunch.PLUS, false))
+                plus = intent.getBooleanExtra(TestLaunch.PLUS, false), playBilling = intent.getBooleanExtra(TestLaunch.PLAY_BILLING, false),
+                forgetPlus = intent.getBooleanExtra(TestLaunch.FORGET_PLUS, false))
         } else AppGraph.open(this)
         val store = AppGraph.store
         if (test) store.failNextTap = intent.getBooleanExtra(TestLaunch.FAIL_TAP, false)
@@ -164,6 +165,10 @@ class MainActivity : ComponentActivity() {
                 }.toMap()
                 DemoData.seed(store, year = demo == "year", many = demo == "many", design = demo == "design", days = demo == "days", habitsPage = demo == "habits",
                     tasks = demo == "tasks", streaks = named(TestLaunch.STREAK), todays = named(TestLaunch.TODAY), runsBefore = named(TestLaunch.EARLIER))
+                // Only the first N habits stay out (the rest archived): the free plan's five, for its sixth-habit Plus.
+                intent.getIntExtra(TestLaunch.KEEP, 0).takeIf { it > 0 }?.let { n ->
+                    store.archive(store.habits.filter { !it.archived && it.kind != com.oftenenough.app.data.HabitKind.Task }.drop(n))
+                }
                 when (intent.getStringExtra(TestLaunch.MOMENTS)) {
                     "used" -> store.milestones.useUpToday()
                     "week" -> store.milestones.popupsThisWeek()
@@ -210,6 +215,12 @@ object TestLaunch {
     const val MOMENTS = "moments"
     /** A habit's name: one widget tap for it (✓ or +), saved as a widget saves it, as if made away from the app. */
     const val AWAY = "away"
+    /** Google Play's own billing in a test launch (a build made with -PrealBilling): Play's price and purchase sheet. */
+    const val PLAY_BILLING = "playBilling"
+    /** With [PLAY_BILLING]: the license tester's Plus purchase used up first, so the free plan shows again. */
+    const val FORGET_PLUS = "forgetPlus"
+    /** How many habits a demo keeps out; the rest are archived (5: the free plan's five). */
+    const val KEEP = "keep"
     /** Shows running timers' Live Update in a test launch too (the player's flow 21, Figma 260:2). */
     const val LIVE_UPDATE = "liveUpdate"
 }

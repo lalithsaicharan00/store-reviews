@@ -283,13 +283,12 @@ private fun AppMain(
             })
         }
         composable("restoreroom/{id}") { e ->
-            // Restore a 6th habit (Habits, Figma 6.4): Plus (Reason=6th habit), whose ← opens Make room; then the habit comes back.
+            // Restore a 6th habit (Habits, Figma 6.4): Plus (Reason=6th habit); bought, the habit comes back; ← leaves it
+            // archived (A94: no Make room).
             val habit = store.habit(e.arguments!!.getString("id")!!)
-            var making by rememberSaveable { mutableStateOf(false) }
             val done = { habit?.let { store.restore(it) }; nav.popBackStack(); Unit }
             if (habit == null) LaunchedEffect(Unit) { nav.popBackStack() }
-            else if (making) com.oftenenough.app.ui.newhabit.MakeRoomPage(store, { nav.popBackStack() }, done)
-            else PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { making = true }, onBought = { plusOn(); done() },
+            else PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { nav.popBackStack() }, onBought = { plusOn(); done() },
                 title = "Restore a 6th habit")
         }
         composable("edit/{id}") { e ->

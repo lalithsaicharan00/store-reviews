@@ -277,6 +277,8 @@ private fun SixthPicture(store: HabitStore) {
         Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 20.dp)
             .semantics(mergeDescendants = true) { contentDescription = used; testTag = "plus-sixth" },
         verticalArrangement = Arrangement.spacedBy(16.dp),
+        // The circles and their line centred in the card (Figma's Your habits: counter-axis centre).
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             habits.take(HabitStore.FREE_HABIT_LIMIT).forEach { HabitIcon(it.symbol, it.color, 40.dp, glyph = 22f / 40f) }

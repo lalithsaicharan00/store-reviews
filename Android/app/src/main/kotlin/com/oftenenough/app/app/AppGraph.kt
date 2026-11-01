@@ -139,7 +139,7 @@ object AppGraph {
             .isGooglePlayServicesAvailable(context) == com.google.android.gms.common.ConnectionResult.SUCCESS
 
     /** A test launch: an in-memory database, its own preferences, and (optionally) a clock that starts at [clockHour]:30. */
-    fun openForTest(context: Context, clockHour: Int?, plus: Boolean = false) {
+    fun openForTest(context: Context, clockHour: Int?, plus: Boolean = false, playBilling: Boolean = false, forgetPlus: Boolean = false) {
         init(context)
         isTest = true
         val offset = clockHour?.let {
@@ -160,9 +160,14 @@ object AppGraph {
         val drivePrefs = context.getSharedPreferences("uitest-drive", Context.MODE_PRIVATE).also { it.edit().clear().commit() }
         backupInstance = com.oftenenough.app.app.backup.BackupCenter(context, store,
             com.oftenenough.app.app.backup.StandInLink(driveFolder, drivePrefs), test = true)
-        // Its own purchases, none each launch unless the launch asks for Plus (TestLaunch.PLUS).
-        plusInstance = FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
-            .also { if (plus) it.ownForTest() }
+        // Google Play itself when the launch asks and the build has it (QA on the phone: Play's price and its purchase
+        // sheet, the license tester's account); otherwise its own stand-in purchases, none each launch unless the launch
+        // asks for Plus (TestLaunch.PLUS), as the automated tests need.
+        plusInstance = if (playBilling && BuildConfig.REAL_BILLING)
+            PlayPlusStore(context, scope, context.getSharedPreferences("uitest-plus-play", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
+                .also { p -> if (forgetPlus) scope.launch { p.forgetForTest() } }
+            else FakePlusStore(context.getSharedPreferences("uitest-plus", Context.MODE_PRIVATE).also { it.edit().clear().commit() })
+                .also { if (plus) it.ownForTest() }
         followPlus(store)
     }
 

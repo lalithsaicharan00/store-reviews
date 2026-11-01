@@ -100,7 +100,7 @@ import java.time.ZoneId
 /** Text being typed, read only by its own field, so typing redraws only the field (S11). */
 class TypedText(initial: String) { var text by mutableStateOf(initial) }
 
-private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, REMINDERS, ICON, SIXTH, MAKE_ROOM }
+private enum class Page { HOW_MUCH, UNIT, STEPS, OFTEN, TIME_OF_DAY, NEW_PART, REMINDERS, ICON, SIXTH }
 
 /**
  * New: what do you want to do → (build: how to track it | quit: quit or cut down) → the form. A copy opens its form
@@ -123,16 +123,16 @@ fun NewHabitFlow(
     var step by rememberSaveable { mutableStateOf(copyType?.let { "form:${it.name}" } ?: if (task) "task" else "choose") }
     var repeats by rememberSaveable { mutableStateOf(false) }
     var room by rememberSaveable { mutableStateOf(if (roomFirst && !store.canAddHabit && copyType != ItemType.TASK) "sixth" else "") }
-    // The free plan's five habits (Figma's "A sixth habit on the free plan"): Plus first; its ← opens Make room ("Back (←),
-    // then archive one"), and Make room's ← leaves, so the two never send each other back and forth.
+    // The free plan's five habits (Figma's "A sixth habit on the free plan"; the user, 1 Nov 2026, Android A94): any new
+    // habit, built, quit or cut down, opens Plus the moment it's chosen; a task never does. Its ← goes back to What do you
+    // want to do? (or leaves, from the Habits page's +); bought, it carries on where the person was going. No Make room.
+    var afterPlus by rememberSaveable { mutableStateOf("") }
     if (room == "sixth") {
-        PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { room = "make" }, onBought = { room = ""; onPlusOn() })
+        PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { if (roomFirst) onClose() else room = "" },
+            onBought = { room = ""; if (afterPlus.isNotEmpty()) step = afterPlus; afterPlus = ""; onPlusOn() })
         return
     }
-    if (room == "make") {
-        MakeRoomPage(store, onClose) { room = "" }
-        return
-    }
+    fun habitStep(next: String) { if (store.canAddHabit) step = next else { afterPlus = next; room = "sixth" } }
     // Checklist on the free plan opened Plus (A73): once it's bought, the checklist form opens straight away (Figma's
     // "A checklist on the free plan", 4).
     var wantsChecklist by rememberSaveable { mutableStateOf(false) }
@@ -143,7 +143,7 @@ fun NewHabitFlow(
     when {
         step == "choose" -> {
             BackHandler(onBack = onClose)
-            NewChoices(onClose, onBuild = { step = "build" }, onQuit = { step = "quit" }, onTask = { step = "task" })
+            NewChoices(onClose, onBuild = { habitStep("build") }, onQuit = { habitStep("quit") }, onTask = { step = "task" })
         }
         step == "task" -> {
             // From Tasks' +, back closes; from What do you want to do?, it goes back there.
@@ -282,10 +282,9 @@ fun HabitForm(
         Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null, listedAtOnce = true) { id -> back(); id?.let { form.choose(it) } }
         Page.REMINDERS -> RemindersPage(form, store, ::back) { onPlus(PlusReason.REMIND) }
         Page.ICON -> IconPage(form, ::back)
-        // ← on Plus opens Make room in its place; Make room's ← is back on the form.
-        Page.SIXTH -> PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { pages = pages.dropLast(1) + Page.MAKE_ROOM },
+        // ← on Plus is back on the form, nothing added (A94: no Make room).
+        Page.SIXTH -> PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = ::back,
             onBought = { pages = emptyList(); onPlusOn(); add() })
-        Page.MAKE_ROOM -> MakeRoomPage(store, ::back) { pages = emptyList(); add() }
         null -> FormBody(form, store, typed, describing, scroll, nameFocus, ::open, ::close, ::save)
     }
     if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (form.type == ItemType.TASK) "Discard this task?" else "Discard this habit?",

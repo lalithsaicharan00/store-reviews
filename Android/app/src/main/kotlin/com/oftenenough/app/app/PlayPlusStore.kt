@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.oftenenough.app.BuildConfig
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
@@ -16,7 +17,9 @@ import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchasesParams
+import com.android.billingclient.api.ConsumeParams
 import com.android.billingclient.api.acknowledgePurchase
+import com.android.billingclient.api.consumePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
 import kotlinx.coroutines.CompletableDeferred
@@ -162,6 +165,18 @@ class PlayPlusStore(context: Context, private val scope: CoroutineScope, private
     private fun online(): Boolean {
         val caps = network?.getNetworkCapabilities(network.activeNetwork) ?: return network == null
         return caps.hasCapability(android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+
+    /**
+     * A license tester's purchase, used up so Plus can be bought again (debug builds only): a QA run on the phone buys
+     * with Play's test card, then needs the free plan again. Never in a release build; a real purchase is never consumed.
+     */
+    suspend fun forgetForTest() {
+        if (!BuildConfig.DEBUG || !connected()) return
+        val result = client.queryPurchasesAsync(QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.INAPP).build())
+        for (p in result.purchasesList.filter { PlusProduct.PLUS.id in it.products })
+            runCatching { client.consumePurchase(ConsumeParams.newBuilder().setPurchaseToken(p.purchaseToken).build()) }
+        refresh()
     }
 
     companion object { private const val KEY_OWNED = "owned" }
