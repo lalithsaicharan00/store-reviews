@@ -935,7 +935,7 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
         else MinuteDialog(t.minute, { editing = null }) { picked ->
             form.remindersEdited = true
             val minute = t.part?.let { clampToPart(it, picked, store) } ?: picked
-            form.times = form.times.map { if (it.id == id) it.copy(minute = minute) else it }
+            form.times = form.times.map { if (it.id == id) it.copy(minute = minute) else it }.sortedBy { store.rules.dayMinute(it.minute) }
         }
     }
     // Add a time: Android's time picker, starting at now; OK adds it.

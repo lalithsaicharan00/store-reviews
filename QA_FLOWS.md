@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 7 |
+| create new | 381:2 | 28 | 8 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **223** |
+| **All** | | **290** | **224** |
 
 ## Bug log
 
@@ -350,6 +350,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 308. Create new 6 (and 5) · a chosen day or date drew its letter or number in On surface, dark on the Primary circle, nearly unreadable; Figma's are white (On primary). `DayToggle` gave Material only the switched-off colours, so the chosen content colour fell back to the surrounding On surface; it names Primary and On primary now. Missed in 5's first pass (its S, M, W were the same); 5 rechecked on the phone.
 309. Create new 7 · New time of day, opened from the habit form, left the new one out of Your day until a start was picked; Create new's frame 3 lists "New time of day · 4:00 AM – 6:00 AM · New" at once. From the form it's listed at once (`listedAtOnce`); from Today it still joins once a start is picked, as Today's own frames have it ³⁹.
 310. Create new 7 · the form's Time of day said the times in the order they were ticked ("Morning, Evening and Before work"); Figma says them in the day's order: "Before work, Morning and Evening" (`HabitForm`).
+311. Create new 8 · Remind me's first times followed the order the times of day were ticked (Morning, Evening and Before work gave 7:00 AM, 7:00 PM, 5:00 AM), and a time changed in the picker kept its place; Figma keeps the times in order (frame 6, "two times, in order"), as Add a time already did. Both keep the day's order now (`FormState.syncReminders`, `RemindersPage`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -661,7 +662,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 5 | 401:536 | How often: days of the week, or every few | certain days → Every Friday → Mon, Wed → Every few days → weeks → set days → months → ← | passed ↻ (phone: today is Sunday, so “Every Sunday”, then “Every Sunday, Monday and Wednesday”, “Every other day”, “Every other week on Sunday”, “On the 1st of every month”; the form says it) |
 | 6 | 401:1116 | How often: on a date each month or year | date each month → 1 and 15 → a weekday → Year → ← | passed ↻ (phone: today is the 1st, so “On the 1st of every month”, then “On the 1st and 15th of every month”, “On the first Sunday of every month”, “Every year on November 1”; the form says it) |
 | 7 | 402:488 | Time of day: more than one, and a new one | Morning + Evening → New time of day → “Before work” → Add → ← | passed ↻ ³⁹ |
-| 8 | 403:361 | Reminders: turned on | Reminders → Remind me → Android asks → Allow → Add a time → 2:00 PM → ← | not started |
+| 8 | 403:361 | Reminders: turned on | Reminders → Remind me → Android asks → Allow → Add a time → 2:00 PM → ← | passed ↻ (phone. Android’s question is never asked in a test launch, so it was checked on an ordinary launch, the form discarded unsaved: Allow kept Remind me on. This phone holds exact times back, so Get reminders on time came next, which is flow 10; Figma’s frame 4 is a phone that allows them) |
 | 9 | 403:501 | Reminders: notifications not allowed | Remind me → Don’t allow → back off, says why → Open settings after second no | not started |
 | 10 | 403:640 | Reminders: on time, on some phones | after Allow → Open settings: Alarms & reminders → Back | not started |
 | 11 | 404:1152 | Starts and Ends | Starts → picker → 26 → Ends menu → On a date… → 25 Dec → OK | not started |

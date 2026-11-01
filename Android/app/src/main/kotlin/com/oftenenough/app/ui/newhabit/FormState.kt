@@ -201,7 +201,9 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     fun syncReminders(force: Boolean = false) {
         if (!force && !(remind && !remindersEdited)) return
+        // In the day's order, as Add a time keeps them (Figma: "two times, in order"), not the order the times of day were ticked.
         times = reminderParts.mapIndexed { i, id -> DraftTime(times.getOrNull(i)?.id ?: newId(), defaultMinute(id), id.takeIf { it != DaySection.ANYTIME }) }
+            .sortedBy { store.rules.dayMinute(it.minute) }
     }
 
     /** Add a time (Figma 2.1.6.2.1): the minute picked, in whichever time of day it falls. */
