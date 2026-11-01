@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 14 |
+| settings | 781:34017 | 23 | 15 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **258** |
+| **All** | | **290** | **259** |
 
 ## Bug log
 
@@ -757,7 +757,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 12 | 1183:11921 | Edit a time of day | Times of day → Morning → Starts → 07:00 → Save → list | passed ↻ (phone: Times of day’s rows at Figma’s places; Morning → Edit time of day (✕, Save, Starts 6:00 AM, Ends “12:00 PM, when Afternoon starts”, Your day with Editing) → Starts → the time picker titled “Starts” → 07:00 → OK: Starts 7:00 AM, Morning 7:00 AM – 12:00 PM → Save → the list says 7:00 AM – 12:00 PM, “Changes saved” 8 above Add time of day. The picker’s a.m./p.m. are the phone’s own words) |
 | 13 | 1183:367054 | A new time of day | Add time of day → name, starts → “Before work” → Add | passed ↻ ³⁹ (phone: Add time of day → New time of day with the keyboard up, “e.g. Before work”, Starts 4:00 AM, Ends “6:00 AM, when Morning starts”, and Your day listing “New time of day · 4:00 AM – 6:00 AM · New” at once → “Before work” → Add → Times of day: Before work 4:00 AM – 6:00 AM first, in time order) |
 | 14 | 1183:368079 | Delete a time of day | Morning → Delete time of day → Delete Morning? → Undo | passed ↻ (phone: Morning → Delete time of day → “Delete Morning?” “Its 4 habits move to Anytime. Their logs, notes and streaks stay.” → Delete → Times of day without Morning, “Morning deleted · Undo” 8 above Add time of day → Undo: Morning back in its place) |
-| 15 | 1183:368648 | Leaving Edit time of day with changes | Morning → renamed → ✕ → Discard your changes? → unchanged | not started |
+| 15 | 1183:368648 | Leaving Edit time of day with changes | Morning → renamed → ✕ → Discard your changes? → unchanged | passed (phone, no changes: Morning → “Early morning” (Your day follows) → ✕ → “Discard your changes?” “Morning stays as it was.” → Keep editing keeps it; Back asks again → Discard → Times of day, Morning 6:00 AM – 12:00 PM) |
 | 16 | 1186:373799 | New day starts at | Settings → page → 3:00 AM → ← | not started |
 | 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | not started |
 | 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | not started |
