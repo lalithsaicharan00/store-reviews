@@ -131,9 +131,9 @@ class MainActivity : ComponentActivity() {
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        // The navigation bar takes the screen's own colour (the user, 13 Oct 2026). With three-button navigation Android
-        // otherwise lays a white scrim behind the buttons, a white strip under the grey screens (seen on a moto g54).
-        // Screens keep their content clear of it with navigationBarsPadding; gesture navigation is unchanged.
+        // Android's own scrim behind three-button navigation is off: it laid a white strip under the grey screens (seen on
+        // a moto g54). The app draws its own instead, the page's colour at 90 % over what scrolls behind (A96,
+        // NavBarScrim); gesture navigation is unchanged.
         // Android 8–9 keep the library's scrim: they can't always draw dark buttons on a light bar.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) window.isNavigationBarContrastEnforced = false
         driveConsent()

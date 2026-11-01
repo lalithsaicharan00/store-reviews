@@ -1,5 +1,7 @@
 package com.oftenenough.app.ui.today
 
+import com.oftenenough.app.ui.components.NavBarScrimAlpha
+import com.oftenenough.app.ui.components.threeButtonNavigation
 import com.oftenenough.app.ui.components.AppDatePicker
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.navigationBars
@@ -352,14 +354,17 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
 
 /**
  * The fade under the day bar (Figma's Bottom fade): the page colour from clear to 90 % at 60 % of its 80 dp, then
- * solid, and solid under it over the gesture bar.
+ * solid, and solid under it over the gesture bar. Under Android's three buttons it stays at 90 % and the app's tint
+ * lies under the buttons (NavBarScrim), so what scrolls behind shows faintly there as on every page.
  */
 @Composable
 private fun BottomFade(modifier: Modifier) {
     val s = appColors.screen
+    val buttons = threeButtonNavigation()
     Column(modifier.fillMaxWidth()) {
-        Box(Modifier.fillMaxWidth().height(80.dp).background(Brush.verticalGradient(0f to s.copy(alpha = 0f), 0.6f to s.copy(alpha = 0.9f), 1f to s)))
-        Spacer(Modifier.fillMaxWidth().windowInsetsBottomHeight(WindowInsets.navigationBars).background(s))
+        Box(Modifier.fillMaxWidth().height(80.dp).background(Brush.verticalGradient(0f to s.copy(alpha = 0f), 0.6f to s.copy(alpha = 0.9f),
+            1f to s.copy(alpha = if (buttons) NavBarScrimAlpha else 1f))))
+        Spacer(Modifier.fillMaxWidth().windowInsetsBottomHeight(WindowInsets.navigationBars).let { if (buttons) it else it.background(s) })
     }
 }
 

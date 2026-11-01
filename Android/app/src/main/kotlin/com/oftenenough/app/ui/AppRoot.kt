@@ -199,7 +199,9 @@ private fun AppMain(
         "page/{title}" -> entry?.arguments?.getString("title")?.let { t -> MenuItem.entries.firstOrNull { it.title == t } }
         else -> null
     }
-    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo, LocalDeleteWithUndo provides deleteWithUndo, com.oftenenough.app.ui.components.LocalAppSnackbar provides snackbar) {
+    val menuOpen = remember { androidx.compose.runtime.mutableStateOf(false) }
+    androidx.compose.runtime.CompositionLocalProvider(LocalPause provides askPause, LocalSayUndo provides sayUndo, LocalDeleteWithUndo provides deleteWithUndo, com.oftenenough.app.ui.components.LocalAppSnackbar provides snackbar,
+        com.oftenenough.app.ui.components.LocalMenuOpen provides menuOpen) {
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
@@ -209,6 +211,7 @@ private fun AppMain(
             val scope = rememberCoroutineScope()
             // Back closes the open menu first; it used to leave the app.
             androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
+            com.oftenenough.app.ui.components.ReportMenu(drawer)
             // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
             if (LocalSidebar.current) {
                 TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
@@ -456,6 +459,8 @@ private fun AppMain(
         route?.startsWith(Routes.NEW) == true || route == "edit/{id}"
     // The timer's 96 dp buttons: its messages sit over the card's foot, 18 above them (Figma 956:75584: 602 to 650).
     val overTimer = route?.startsWith("timer/") == true
+    // Under Android's three buttons, the page's colour at 90 % over what scrolls behind (NavBarScrim).
+    com.oftenenough.app.ui.components.NavBarScrim(Modifier.align(Alignment.BottomCenter))
     if (route != null && route != Routes.TODAY) AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().imePadding()
         .let { if (nothingPinned) it.padding(start = 4.dp, end = 4.dp, bottom = 4.dp) else it.padding(bottom = if (overTimer) 114.dp else 96.dp) })
     }
@@ -588,6 +593,7 @@ private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostControlle
     val scope = rememberCoroutineScope()
     val pageContext = androidx.compose.ui.platform.LocalContext.current
     androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
+    com.oftenenough.app.ui.components.ReportMenu(drawer)
     ModalNavigationDrawer(drawerContent = {
         MenuDrawer(store, current) { item ->
             scope.launch { drawer.close() }
