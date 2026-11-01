@@ -228,6 +228,10 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     val first = if (habit.kind == HabitKind.Quit) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
 
     val progress = if ((shown == HabitTab.PROGRESS && ready) || allMilestones || allStreaks) model.progress(store, habit, revision, today) else null
+    // The tab the list was last scrolled on, kept above the pages that cover the list (Streaks, All milestones, search):
+    // coming back from one isn't a change of tab, so the list stays where it was (QA, 1 Nov 2026: ← from Streaks
+    // jumped to the tabs).
+    var listTab by remember(habitId) { mutableStateOf(shown) }
     if (howMilestones) {
         // Over All milestones: ← goes back there.
         HowMilestonesWorkPage(habit.kind == HabitKind.Quit || habit.atMost) { howMilestones = false }
@@ -250,7 +254,11 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     val barColor = if (collapsed) scrolledTopBarColor else MaterialTheme.colorScheme.surfaceContainer
     val fresh = !habit.archived && store.entries(habit.id).isEmpty()
     // Another tab starts at its own top, just under the pinned tabs, wherever the last one was scrolled to.
-    LaunchedEffect(shown) { if (listState.firstVisibleItemIndex > 1) listState.scrollToItem(1) }
+    LaunchedEffect(shown) {
+        if (shown == listTab) return@LaunchedEffect
+        listTab = shown
+        if (listState.firstVisibleItemIndex > 1) listState.scrollToItem(1)
+    }
 
     Box(Modifier.fillMaxSize().background(MaterialTheme.colorScheme.surfaceContainer).semantics { testTag = "habit-details" }) {
         Column(Modifier.fillMaxSize()) {

@@ -68,6 +68,14 @@ fun pageDaySpan(first: Int, last: Int, today: Int): String {
     return "${a.dayOfMonth} ${pageMonthShort(a.monthValue)} – ${b.dayOfMonth} ${pageMonthShort(b.monthValue)}$year"
 }
 
+/** A run's days: [pageDaySpan], but one that reaches today ends "today", as Figma writes it ("30 Sep – today"). */
+fun pageRunSpan(first: Int, last: Int, today: Int): String =
+    if (last == today && first < today) pageShortDate(first, today) + " – today" else pageDaySpan(first, last, today)
+
+/** TalkBack's [pageRunSpan]: "30 September to today". */
+fun pageSpokenRunSpan(first: Int, last: Int, today: Int): String =
+    if (last == today && first < today) pageSpokenDate(first, today) + " to today" else pageSpokenSpan(first, last, today)
+
 /** "21–27 Sep", "27 Sep – 3 Oct"; with the year when the week isn't in the current one (the Week card's title). */
 fun pageWeekTitle(first: Int, last: Int, today: Int): String {
     val a = pageDate(first)
@@ -1030,8 +1038,8 @@ fun HabitStore.habitRecord(habit: Habit, today: Int): HabitOverall {
     val currentFact = RecordFact("Current streak", HabitCopy.number(current.toDouble()), unit.word(current), thisPeriod ?: runSince,
         "Current streak, $current ${unit.word(current)}" + (thisPeriod?.let { ". $it" } ?: ""))
     val bestFact = RecordFact("Best streak", HabitCopy.number(best.toDouble()), unit.word(best),
-        bestRun?.let { pageDaySpan(it.start, it.end, today) },
-        "Best streak, $best ${unit.word(best)}" + (bestRun?.let { ", " + pageSpokenSpan(it.start, it.end, today) } ?: ""))
+        bestRun?.let { pageRunSpan(it.start, it.end, today) },
+        "Best streak, $best ${unit.word(best)}" + (bestRun?.let { ", " + pageSpokenRunSpan(it.start, it.end, today) } ?: ""))
 
     fun periods(n: Int): String = when (kind) {
         GoalPeriod.DAY -> if (n == 1) "day" else "days"
@@ -1458,8 +1466,8 @@ fun HabitStore.streakList(habit: Habit, today: Int): StreakList {
             val first = today(r.start)
             val last = r.end?.let { today(it) } ?: today
             val days = Format.run(r.seconds(now))
-            val dates = pageDaySpan(first, last, today) + (if (r.end == null) " · now" else "")
-            StreakRow(days, dates, (r.seconds(now) / longest).toFloat(), r.end == null, "$days, " + pageSpokenSpan(first, last, today) + (if (r.end == null) ", going on now" else ""))
+            val dates = pageRunSpan(first, last, today) + (if (r.end == null) " · now" else "")
+            StreakRow(days, dates, (r.seconds(now) / longest).toFloat(), r.end == null, "$days, " + pageSpokenRunSpan(first, last, today) + (if (r.end == null) ", going on now" else ""))
         }
         return StreakList("Runs", "Since " + DayWords.long(rules.quitStartDay(habit)), if (rows.size == 1) "1 run" else "${rows.size} runs", rows,
             "Every run, longest first. A slip ends a run.")
@@ -1469,8 +1477,8 @@ fun HabitStore.streakList(habit: Habit, today: Int): StreakList {
     val longest = runs.firstOrNull()?.length?.toFloat() ?: 1f
     val rows = runs.map { r ->
         val words = HabitCopy.number(r.length.toDouble()) + " " + unit.word(r.length)
-        val dates = pageDaySpan(r.start, r.end, today) + (if (r.isCurrent) " · now" else "")
-        StreakRow(words, dates, r.length / longest, r.isCurrent, "$words, " + pageSpokenSpan(r.start, r.end, today) + (if (r.isCurrent) ", going on now" else ""))
+        val dates = pageRunSpan(r.start, r.end, today) + (if (r.isCurrent) " · now" else "")
+        StreakRow(words, dates, r.length / longest, r.isCurrent, "$words, " + pageSpokenRunSpan(r.start, r.end, today) + (if (r.isCurrent) ", going on now" else ""))
     }
     val noun = unit.word(3)
     return StreakList("Streaks", "Since " + DayWords.long(rules.startDay(habit)), if (rows.size == 1) "1 run" else "${rows.size} runs", rows,
@@ -1496,7 +1504,7 @@ fun HabitStore.quitRecord(habit: Habit, today: Int): QuitRecord {
     val current = RecordFact("Current run", HabitCopy.number(currentDays.toDouble()), days(currentDays),
         ongoing?.let { "Since " + pageShortDate(today(it.start), today) }, "Current run, $currentDays ${days(currentDays)}")
     val longest = RecordFact("Longest run", HabitCopy.number(bestDays.toDouble()), days(bestDays),
-        best?.let { pageDaySpan(today(it.start), it.end?.let { e -> today(e) } ?: today, today) }, "Longest run, $bestDays ${days(bestDays)}")
+        best?.let { pageRunSpan(today(it.start), it.end?.let { e -> today(e) } ?: today, today) }, "Longest run, $bestDays ${days(bestDays)}")
     val n = stats.slips.size
     val slips = RecordFact("Slips", HabitCopy.number(n.toDouble()), "since " + DayWords.dayMonth(start),
         lastSlip?.let { "Last on " + pageShortDate(it, today) }, "$n ${if (n == 1) "slip" else "slips"} since " + DayWords.dayMonth(start))

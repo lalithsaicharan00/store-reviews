@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 3 |
+| details pages | 298:2 | 24 | 4 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **195** |
+| **All** | | **290** | **196** |
 
 ## Bug log
 
@@ -285,6 +285,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 243. Details pages 3 · Habit details' ⋮ took its words' width (138) and hung from the button's foot; Figma's is 220 wide, its top 4 over the foot.
 244. Details pages 3 (every menu) · a menu item's label sat 8 after its icon (Material's gap); Figma's Menu item has 12, so every label was 4 dp left (`AppMenuItem`). Its 48 height stays (the touch target, decided before).
 245. Details pages 3 · pausing from today, after today's goal was met, took one off Goal met (23 → 22 of 400 days) while the current streak kept today; Goal met now counts a day met today that's then paused or skipped, as the streak does (`goalTally`).
+246. Details pages 4 (and 1) · a run reaching today was written "10 Oct – 1 Nov" (Best streak, Streaks, a quit habit's Longest run); Figma writes "30 Sep – today", and TalkBack now says "to today" (`pageRunSpan`).
+247. Details pages 4 · ← from Streaks put Progress back at the tabs, not where it was: the effect that starts a new tab at its top ran again when the list came back from under Streaks (or All milestones, or History's search). It acts only on a real change of tab now.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -550,7 +552,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 1 | 321:2 | Open Habit details: Progress, scrolling | Water card → Progress, large title → scrolled: small bar → whole tab | passed ↻ ²⁶ |
 | 2 | 322:2 | A habit's description: two lines, More, Less | two lines, More → More → Less | passed ↻ (the description typed through Edit habit; the demo's Water has none) |
 | 3 | 322:2597 | Habit details' ⋮: Pause…, and Delete | ⋮ → Pause sheet → Paused card, Resume → Delete Water? → Delete; Undo | passed ↻ (the snackbar's "Sun, 8 Nov" against the card's "Sun 8 Nov" is D-56) |
-| 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | not started |
+| 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | passed ↻ (several runs seen on the year demo's Skincare: the design demo's Water has one) |
 | 5 | 325:2 | Milestones: All milestones, and how they work | See all 4 → All milestones → How milestones work → reached one: pop-up → Close | not started |
 | 6 | 326:2 | What the squares mean | folded → open → folded | not started |
 | 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | not started |
