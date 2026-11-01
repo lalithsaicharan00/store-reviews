@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 15 |
+| details pages | 298:2 | 24 | 16 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **207** |
+| **All** | | **290** | **208** |
 
 ## Bug log
 
@@ -303,6 +303,12 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 261. Details pages 12 · Go to date scrolled the day to the top of the list, where the pinned tabs hid it (from the top of History only a lit sliver showed), and lit it before the scroll arrived; Figma puts the day mid-screen, lit, then fading. It scrolls to the middle and lights the day on arrival now (and again if the same day is chosen twice).
 262. Details pages 15 · Edit habit's start row said "Started" (and its date picker's title); Figma's Edit habit says "Starts" for a habit's first day, the quit form keeps "Started" (`HabitForm`).
 263. Details pages 15 · History opened only its two newest months, every older month folded; Figma's History draws every month open, so moving the start earlier shows the new days at once (`historyMonthOpen`). A month still folds and opens on its header.
+264. Details pages 16 · archiving took the day it was archived off Goal met (23 of 401 → 22 of 400) while the streak kept it; Figma's record stays as it was ("The whole record stays"). The shared rules count no day from the archive on, so `goalTally` and the period cards now count the archive day when its goal was met (as bug 245's paused day), leaving the rules and their golden answers as they are.
+265. Details pages 16 · History on an archived habit had no Archived card; Figma's History keeps it on top with Restore (frame 3).
+266. Details pages 16 · History's month of the archive said "Not planned this month" for a month whose only day was met; now "Goal met on 1 of 1 day so far" (bug 264's cause).
+267. Details pages 16 · an archived habit's Day details still logged: +1, Log, Add a note…, Skip this day, Edit habit in ⋮, and Delete | Edit on its logs and notes. Figma's archived habit is read-only, its days "open (to read)", "Restore it to log again": the day now shows its result and logs only (the note row off, as on a day that can't be logged), ⋮ is View habit, Restore, Delete (³⁰).
+268. Details pages 16 · Restore (the card, ⋮, and Day details' ⋮) said nothing; Figma: "Water restored to Today · Undo", Undo archiving it again from its own day.
+269. Details pages 16 · on History a message covered Add; it sits 8 above it now, as Material's Scaffold and Figma's Times of day place it (`HabitDetails`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -333,6 +339,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ²⁷ Details pages 7: done on October's Fri 9 Oct (the demo's Water has nothing in September). Figma's Day details frames here are older copies (titled "Today", "Fri, …" aside, D-56); the app follows the Day details page where they differ. Its September frame bolds Friday's letter on a past month, where Habits & Tasks' past week bolds none: the app bolds today's letter only on the period holding today.
 ²⁸ Details pages 8: Gym's kind (3 times a week) was checked on the demo's Call family. Today is the 1st, so no week of November has ended: "· this week 2 of 3" beside "Met 3 of 3 weeks so far" was checked from the code (the Year card shows it: "14 times this year · this week 2 of 3"). Read's frame also switches off its chart and comparison; with its caption about the minutes each day, and Water's past month switching off its comparison too, those frames are read as close-ups of the squares, and day goals keep both.
 ²⁹ Details pages 12 (phone): on 14 Oct (the demo has no September days). Later days can't be picked, as Figma's; its › "off" on today's month can't be had: Android's own date picker stops its arrows only at the end of its years, not at a month. The landing was checked from a screen recording (frames 4 a second).
+³⁰ Details pages 16 (phone): Figma's frame 2 draws "Current streak" where its caption says "the current streak becomes Streak when archived"; the app keeps the caption's. Figma has no Day details for an archived habit: its read-only form follows the page's "read-only" and a paused day's Day details (no logging, Skip gone). Restore with no room left (free, three habits) shows the existing Make room message on Habit details; from Day details' ⋮ it does nothing, as before.
 
 ## Open questions for the user
 
@@ -583,7 +590,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | passed (phone; on Fri 9 Oct. Figma's frame 3 reads "Open today" before a day is picked, against frame 2's caption "Open stays off until one is picked"; the app keeps Open off) |
 | 14 | 342:3249 | History: Add a note to any day | Add → ‹ → 20 → Open → Add a note… → Save → ✕ → scroll | passed (phone; on Tue 20 Oct. This flow opens Add to which day? on today, "Open today"; flow 13 says no day until one is picked: D-59) |
 | 15 | 347:2396 | Edit habit: Started moved earlier | ⋮ Edit habit → Started 25 Aug → Save: History runs to 25 Aug | passed ↻ (phone; moved to 10 Aug 2025, before the demo's 27 Sep 2025 start: "Changes saved", History runs to Sun 10 Aug, each day "Nothing logged") |
-| 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | not started |
+| 16 | 349:4001 | An archived habit | ⋮ Archive → card with Restore; Undo → History read-only → ⋮ Restore, Delete → Restore | passed ↻ ³⁰ (phone; Water archived today, on Sun 1 Nov) |
 | 17 | 351:2274 | A new habit: its first days | 2 days old: Progress → whole page → History First day → made today → No progress yet | not started |
 | 18 | 354:1822 | A quit habit’s Progress | Smoking → whole page → See all 5 → How milestones work | not started |
 | 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | not started |

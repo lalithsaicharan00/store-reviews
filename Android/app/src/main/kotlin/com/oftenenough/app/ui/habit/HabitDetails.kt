@@ -223,6 +223,19 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             }
         }
     }
+    fun restore() {
+        // Restore from the card or ⋮ says so with Undo (Figma, An archived habit 5: "Water restored to Today · Undo"),
+        // which archives it again from its own day, as Archived habits' Undo does (QA, 1 Nov 2026: it said nothing).
+        val day = store.archivedOn[habit.id]
+        val pausesBefore = store.pauses[habit.id] ?: emptyList()
+        if (!store.restore(habit)) { noRoom = true; return }
+        scope.launch {
+            snackbar.currentSnackbarData?.dismiss()
+            if (snackbar.showSnackbar("${habit.name} restored to Today", "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) {
+                store.habit(habit.id)?.let { if (day != null) store.undoRestore(it, day, pausesBefore) else store.archive(listOf(it)) }
+            }
+        }
+    }
     // The header has scrolled away: its name moves into the top bar and the tabs stay under it (Figma 1.5).
     val collapsed by remember { derivedStateOf { listState.firstVisibleItemIndex > 0 } }
     // Progress's cards show their shapes for the first frame, then their numbers: the header never waits (Figma 6.7).
@@ -272,8 +285,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                     Box {
                         IconButton({ menuOpen = true }, Modifier.semantics { testTag = "habit-menu" }) { Icon(Symbols.MoreVert, "More") }
                         HabitMenu(habit, store, today, menuOpen, onDismiss = { menuOpen = false }, nav = nav,
-                            onDelete = { confirmDelete = true }, onArchive = ::archive,
-                            onNoRoom = { noRoom = true })
+                            onDelete = { confirmDelete = true }, onArchive = ::archive, onRestore = ::restore)
                     }
                 },
                 containerColor = barColor,
@@ -287,7 +299,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                 item(key = "tabs-gap") { Spacer(Modifier.height(16.dp)) }
                 when (shown) {
                     HabitTab.PROGRESS -> {
-                        stateCards(habit, store, today, onRestore = { if (!store.restore(habit)) noRoom = true }, onOpen = nav::openHabit)
+                        stateCards(habit, store, today, onRestore = ::restore, onOpen = nav::openHabit)
                         if (progress == null) loadingItems(habit.color, keyOpen, toggleKey)
                         else if (fresh) freshItems(habit, store, today, revision, keyOpen, toggleKey) { day -> nav.openDay(habit, day) }
                         else progressItems(
@@ -298,6 +310,8 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                         )
                     }
                     HabitTab.HISTORY -> {
+                        // An archived habit's card stays over History too (Figma, An archived habit 3), Restore one tap away.
+                        if (habit.archived) stateCards(habit, store, today, onRestore = ::restore, onOpen = nav::openHabit)
                         if (earlier != null) item(key = "earlier") { EarlierCard(habit, earlier, store) { nav.openHabit(earlier) } }
                         historyItems(
                             color = habit.color, months = months, filter = filter, toggled = historyToggled,
@@ -312,11 +326,15 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             }
         }
         // Add (Figma 2.1, 2.11): on History, while the habit can be logged (an archived one can't, Figma 6.2).
-        if (shown == HabitTab.HISTORY && !habit.archived) {
+        val fab = shown == HabitTab.HISTORY && !habit.archived
+        if (fab) {
             AppExtendedFab("Add", Symbols.Add, { adding = true },
                 Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp), tag = "history-add")
         }
-        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
+        // Over Add, a message sits 8 above it, as Material's Scaffold places it (Figma's Times of day: 696 over 704); it
+        // covered Add (QA, 1 Nov 2026: "Water restored to Today" on History).
+        AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding()
+            .padding(start = 4.dp, end = 4.dp, top = 4.dp, bottom = if (fab) 4.dp + 56.dp + 8.dp else 4.dp))
     }
 
     if (adding) AddToWhichDay(minOf(first, today), today, onDismiss = { adding = false }) { day -> nav.openDay(habit, day) }
@@ -331,7 +349,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             val index = historyIndexOf(day, list, toggled)
             if (index != null) {
                 // The header, the tabs and the gap come first; then the earlier habit's card, if any.
-                val lead = 3 + (if (earlier != null) 1 else 0)
+                val lead = 3 + (if (earlier != null) 1 else 0) + (if (habit.archived) 1 else 0)
                 // Figma 2.7: the day mid-screen, then lit; scrolled to the top it sat under the pinned tabs, and its light
                 // had mostly faded on the way (QA, 1 Nov 2026).
                 lit = null
@@ -489,7 +507,7 @@ private fun LoadingCard(content: @Composable ColumnScope.() -> Unit) =
 @Composable
 private fun HabitMenu(
     habit: Habit, store: HabitStore, today: Int, expanded: Boolean, onDismiss: () -> Unit, nav: HabitDetailsNav,
-    onDelete: () -> Unit, onArchive: () -> Unit, onNoRoom: () -> Unit,
+    onDelete: () -> Unit, onArchive: () -> Unit, onRestore: () -> Unit,
 ) {
     val pause = store.pause(habit, today)
     @Composable
@@ -506,7 +524,7 @@ private fun HabitMenu(
             else item("Pause…", Symbols.PauseCircle, "habit-menu-pause") { nav.pause(habit) }
         }
         // Figma's ⋮: Edit habit, Pause…, a line, Archive, Delete (red); archived: Restore and Delete.
-        if (habit.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore") { if (!store.restore(habit)) onNoRoom() }
+        if (habit.archived) item("Restore", Symbols.Unarchive, "habit-menu-restore", act = onRestore)
         else { MenuDivider(); item("Archive", Symbols.Archive, "habit-menu-archive", act = onArchive) }
         item("Delete", Symbols.Delete, "habit-menu-delete", danger = true, act = onDelete)
     }

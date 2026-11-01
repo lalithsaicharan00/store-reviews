@@ -441,7 +441,8 @@ fun LogScreen(entryId: String, store: HabitStore, say: (String) -> Unit = {}, sa
                 if (slip && !moved) sayUndo("Slip changed") { store.editEntry(entry.id, entry.value, entry.createdAt) }
                 else say(if (moved) "Moved to ${dayName(day, today)}" else if (slip) "Slip changed" else "Log changed")
             }
-        } else DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
+        // An archived habit's logs are kept to read (Figma, An archived habit 3): Restore it to change them.
+        } else if (!habit.archived) DeleteEditBar(noun, "record-delete", "record-edit", { confirmDelete = true }, { editing = true })
     }
     if (confirmDelete) AppDialog(if (oneCheck) "Delete this check?" else "Delete this $noun?",
         if (slip) "The ${clockText(entry)} slip will be removed." + slipRunAfterDelete(store, habit, entry)

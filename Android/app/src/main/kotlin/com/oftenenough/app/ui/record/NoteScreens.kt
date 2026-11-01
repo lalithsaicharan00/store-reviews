@@ -121,7 +121,7 @@ fun NoteScreen(habitId: String, startDay: Int, store: HabitStore, say: (String, 
             save(text)
             onDone()
             say("Note saved", null)
-        } else DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
+        } else if (!habit.archived) DeleteEditBar("note", "note-delete", "note-edit", { confirmDelete = true }, { editing = true })
     }
     if (discard) DiscardDialog(if (adding) "Discard this note?" else "Discard your changes?",
         if (adding) "What you typed won’t be saved." else "The note stays as it was.", { discard = false }, {

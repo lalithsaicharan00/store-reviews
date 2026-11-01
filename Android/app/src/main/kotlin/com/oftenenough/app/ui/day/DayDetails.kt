@@ -204,7 +204,9 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
     var reschedule by remember { mutableStateOf(false) }
     val isTask = habit.kind == HabitKind.Task
     val started = day >= store.rules.startDay(habit)
-    val editable = day <= today && started
+    // An archived habit's days open to read (Figma, An archived habit 3: "read-only … days still open (to read)"):
+    // no logging, note or skip; Restore is in ⋮ and on its page (QA, 1 Nov 2026).
+    val editable = day <= today && started && !habit.archived
     Column(Modifier.navigationBarsPadding().semantics { testTag = "day-details" }) {
         // The top bar (Figma: the Top app bar, 64, on the sheet's colour): ✕, the day, ⋮. It stays while the rest scrolls
         // (Figma 956:55459: "Day details scrolls as one page; the title bar stays").
@@ -226,7 +228,7 @@ fun DayDetailsContent(habit: Habit, day: Int, store: HabitStore, nav: DayNav, on
                     RowAction("Do tomorrow", DayWords.short(today + 1), 0, 2, "day-do-tomorrow") { store.reschedule(habit, day, today + 1); onDismiss() }
                     RowAction("Another day…", null, 1, 2, "day-another-day") { reschedule = true }
                 }
-            } else if (!isTask && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
+            } else if (!isTask && !habit.archived && habit.kind != HabitKind.Quit && started && !habit.atMost && !store.isPaused(habit, day)) {
                 val skipped = store.isSkipped(habit, day)
                 val planned = store.rules.isDue(habit, day, countingSkips = false) || !store.rule(habit, day).frequency.isDayBased || store.rule(habit, day).frequency.isFlexible
                 // A once-a-day check that's done has nothing to skip (Figma 906:92686); a count at its goal keeps Skip.
@@ -264,13 +266,21 @@ private fun DayMenu(open: Boolean, onDismiss: () -> Unit, habit: Habit, store: H
         @Composable fun item(text: String, icon: ImageVector, red: Boolean = false, tag: String, action: () -> Unit) =
             AppMenuItem(text, { onDismiss(); action() }, icon = icon, destructive = red, tag = tag)
         if (!isTask) item("View habit", Symbols.Visibility, tag = "day-menu-view") { nav.habitPage(habit) }
-        item(if (isTask) "Edit task" else "Edit habit", Symbols.Edit, tag = "day-menu-edit") { nav.edit(habit) }
+        // Archived, it's Restore and Delete, as Habit details' ⋮ (Figma, An archived habit 4).
+        if (!habit.archived) item(if (isTask) "Edit task" else "Edit habit", Symbols.Edit, tag = "day-menu-edit") { nav.edit(habit) }
         if (!isTask && store.rules.canPause(habit)) {
             if (store.isPaused(habit, today)) item("Resume habit", Symbols.PlayCircle, tag = "day-menu-resume") { resume(habit, store, nav, onClose) }
             else item("Pause…", Symbols.PauseCircle, tag = "day-menu-pause") { nav.pause(habit) }
         }
         MenuDivider()
-        if (habit.archived) item("Restore", Symbols.Unarchive, tag = "day-menu-restore") { store.restore(habit) }
+        if (habit.archived) item("Restore", Symbols.Unarchive, tag = "day-menu-restore") {
+            // As Habit details' Restore (Figma, An archived habit 5): "Water restored to Today · Undo".
+            val day = store.archivedOn[habit.id]
+            val pausesBefore = store.pauses[habit.id] ?: emptyList()
+            if (store.restore(habit)) nav.sayUndo("${habit.name} restored to Today") {
+                store.habit(habit.id)?.let { if (day != null) store.undoRestore(it, day, pausesBefore) else store.archive(listOf(it)) }
+            }
+        }
         else item("Archive", Symbols.Archive, tag = "day-menu-archive") {
             store.archive(listOf(habit)); onClose()
             nav.sayUndo("${habit.name} archived") { store.habit(habit.id)?.let { store.restore(it, undo = true) } }  // Figma 933:45568
@@ -402,7 +412,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
             Spacer(Modifier.height(8.dp))
             HabitProgress((progress / goal).toFloat(), running, color = c.habit(habit.color), trackColor = c.habitFill(habit.color))
         }
-        if (future && !skipped) {
+        if (future && !skipped && !habit.archived) {
             Spacer(Modifier.height(12.dp))
             Text("You can log this on the day.", style = AppType.bodyMedium, color = c.secondary)
         }
@@ -427,7 +437,7 @@ private fun DayActivity(habit: Habit, day: Int, editable: Boolean, started: Bool
     AppListItem(if (note == null) "Add a note…" else "Note", 1, 2, supporting = note, supportingLines = 2, headlineLines = 1,
         containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
         leading = { ListAvatar(Symbols.StickyNote2) }, trailing = { ListChevron() },
-        onClick = { nav.note(habit, day) }, enabled = editable || note != null || future, tag = if (note == null) "day-add-note" else "day-edit-note")
+        onClick = { nav.note(habit, day) }, enabled = editable || note != null || future && !habit.archived, tag = if (note == null) "day-add-note" else "day-edit-note")
     }
     if (logs.isNotEmpty()) {
         val shown = if (logs.size <= 3) logs else logs.take(2)

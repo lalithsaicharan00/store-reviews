@@ -338,7 +338,11 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
         // A week, month or year goal names no day, so a day still to come isn't "coming up": nothing is asked of it.
         if (mark == DayMark.UPCOMING && (!dayRule.frequency.isDayBased || dayRule.frequency.isFlexible)) mark = DayMark.NOT_ITS_DAY
         var extra = false
-        if (mark == DayMark.NOT_ITS_DAY && amount > 0 && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && !dayRule.atMost) {
+        // The day it was archived, met before it was, counts as Goal met does (`goalTally`): the rules count no day from
+        // the archive on, so archiving left a met day "extra" and the month "Not planned" (QA, 1 Nov 2026).
+        if (mark == DayMark.NOT_ITS_DAY && day == archivedOn[habit.id] && pagePeriodKind(dayRule) == GoalPeriod.DAY &&
+            !dayRule.atMost && rules.isDayMet(habit, day)) mark = DayMark.DONE
+        else if (mark == DayMark.NOT_ITS_DAY && amount > 0 && dayRule.frequency.isDayBased && !dayRule.frequency.isFlexible && !dayRule.atMost) {
             extra = true
             mark = if (rules.isDayMet(habit, day)) DayMark.DONE else DayMark.SOME
         }
@@ -939,6 +943,7 @@ class GoalTally {
 fun HabitStore.goalTally(habit: Habit, kind: GoalPeriod, today: Int, best: Boolean = false): GoalTally {
     val tally = GoalTally()
     val start = rules.startDay(habit)
+    val archived = archivedOn[habit.id]
     var day = start
     if (kind == GoalPeriod.DAY) {
         while (day <= today) {
@@ -949,9 +954,11 @@ fun HabitStore.goalTally(habit: Habit, kind: GoalPeriod, today: Int, best: Boole
                     tally.eligible++
                     if (isMet) { tally.met++; tally.dates.add(day) }
                 }
-            } else if (day == today && pagePeriodKind(r) == GoalPeriod.DAY && (isPaused(habit, day) || isSkipped(habit, day)) && rules.isDayMet(habit, day)) {
+            } else if ((day == archived || day == today && (isPaused(habit, day) || isSkipped(habit, day))) &&
+                pagePeriodKind(r) == GoalPeriod.DAY && rules.isDayMet(habit, day)) {
                 // Today met, then paused or skipped, still counts, as its streak does (`runs`): pausing from today
-                // took one off Goal met while the streak kept it (QA, 1 Nov 2026).
+                // took one off Goal met while the streak kept it (QA, 1 Nov 2026). So does the day it was archived, met
+                // before it was: the rules count no day from the archive on, and archiving took one off (QA, 1 Nov 2026).
                 tally.eligible++; tally.met++; tally.dates.add(day)
             }
             day++
