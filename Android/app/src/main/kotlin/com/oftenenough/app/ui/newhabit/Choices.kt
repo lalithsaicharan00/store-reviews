@@ -80,7 +80,8 @@ fun ChoiceCard(icon: ImageVector, title: String, line: String, example: String?,
         title, index, count, Modifier, line,
         leading = { ListAvatar(icon) }, trailing = { ListChevron() }, onClick = onClick, tag = tag,
         beside = if (plus) ({ com.oftenenough.app.ui.components.PlusLabel() }) else null,
-        below = example?.let { { ListExample(it) } }, containerColor = MaterialTheme.colorScheme.surfaceBright,
+        // 12 above and below the words with an example under them, 96 tall (Figma's How do you want to track it?).
+        below = example?.let { { ListExample(it) } }, belowPadding = 12.dp, containerColor = MaterialTheme.colorScheme.surfaceBright,
     )
 
 /**

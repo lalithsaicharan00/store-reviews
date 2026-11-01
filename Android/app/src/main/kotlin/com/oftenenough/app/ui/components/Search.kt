@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
@@ -102,7 +103,9 @@ fun SearchBarField(
             onSearch = {},
             modifier = Modifier.fillMaxWidth().semantics { fieldTag?.let { testTag = it }; contentDescription = placeholder },
             placeholder = { Text(placeholder) },
-            leadingIcon = { Icon(Symbols.Search, null) },
+            // Figma's Search bar has 16 between the icon and the words, Material 12: the icon's slot is 52, not 48, the
+            // icon where Material puts it (32 in), the words at 72 (QA, Create new 12).
+            leadingIcon = { Box(Modifier.width(52.dp), contentAlignment = Alignment.CenterStart) { Icon(Symbols.Search, null, Modifier.padding(start = 12.dp)) } },
             trailingIcon = if (query.isEmpty()) null else {
                 { StandardIconButton(Symbols.Close, clearLabel, { onQueryChange("") }) }
             },

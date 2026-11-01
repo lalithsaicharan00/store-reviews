@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 11 |
+| create new | 381:2 | 28 | 12 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **227** |
+| **All** | | **290** | **228** |
 
 ## Bug log
 
@@ -356,6 +356,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 314. Create new 11 · the Starts and Ends pickers carried a line of ours under the date ("A start date in the past lets you tick the days since then.", Edit's "Up to …, the first log, so no log is hidden.", "After it, the habit leaves Today. Its history stays."), pushing the calendar 36 lower; Figma's are Android's own picker with nothing added, and no frame anywhere has those words (A77). Removed; Edit still can't start a habit after its first log (greyed days). HabitDetailsTest's start-date test read the old words and now checks today is greyed for Water.
 315. Create new 11 · a new habit's Starts let any past day be picked; Figma's frame 2 greys every day before today. A new habit starts today or later (`StartEndRows`).
 316. Create new 11 · Ends kept ▼ while its menu was open, and the menu sat at a fixed 130 from the row's left, 70 short of the card's edge on this phone; Figma turns it to ▲ and hangs the 200-wide menu from the row's right edge, 4 under it. The arrow turns, and the menu is anchored at the row's bottom right on any width. Its items stay Material's 48 tall where Figma's Menu item is 44 (the touch target, as every menu in the app).
+317. Create new 12 (and 1, and Habits & tasks 32's What kind of task?) · the choice cards with an example (Check it off, Track an amount …; Once, On repeat) were 92 tall, Material's 10 above and below the words, so each card sat 4 higher than the last (14 by Checklist); Figma's are 96, 12 above and below. `AppListItem(belowPadding)`, 12 for `ChoiceCard`; rows with a note or a log's buttons keep theirs. Missed in 1's first pass; both screens rechecked on the phone.
+318. Create new 12 · How much: the 80 dp number field grew to 84.8 once a digit was in it (Display Medium's line is the font's own 56 on Android, padded 14 above and under), and the Unit field sat 16 under it to its label, not its box, so Unit's label was 12.8 lower than Figma's (the field 80 at 140, the Unit box 16 under it, its label over the box's edge). The number is centred in the field's 80, which grows only with large text, and 8 lead to the label (`AmountField`, `HowMuchPage`).
+319. Create new 12 · the Unit page drew its rows as How often's Options, Body Large until chosen; Figma's are List items, every unit (and No unit, Create your own unit) in Title Medium. And Create your own unit's + sat in a 40 box, its words at 88; Figma's + is in the radio buttons' column, its words at 72 with theirs.
+320. Create new 12 (and 3) · the Search bar's words sat 12 after its icon (68 in); Figma's Search bar has 16 (72). The icon's slot is 52, not Material's 48, the icon where it was (`SearchBarField`: the Unit and Icon pages). 3's Icon page rechecked.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -671,7 +675,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 9 | 403:501 | Reminders: notifications not allowed | Remind me → Don’t allow → back off, says why → Open settings after second no | passed ↻ (phone, an ordinary launch, the form discarded unsaved; the app’s notification permission put back to never asked afterwards. Open settings lands on Often Enough’s own notifications switch) |
 | 10 | 403:640 | Reminders: on time, on some phones | after Allow → Open settings: Alarms & reminders → Back | passed ↻ (phone, an ordinary launch with notifications allowed: Open settings lands on Often Enough’s own Alarms & reminders switch; Back returns to Reminders with the sheet gone. The switch itself was left as it was, a phone setting) |
 | 11 | 404:1152 | Starts and Ends | Starts → picker → 26 → Ends menu → On a date… → 25 Dec → OK | passed ↻ (phone: today is Sun 1 Nov, so Starts Wed, 4 Nov (three days on, as Figma’s 23 → 26), Ends Fri, 25 Dec) |
-| 12 | 405:400 | A new habit: track an amount | Track an amount → form → How much → Unit → glasses → 8 glasses | not started |
+| 12 | 405:400 | A new habit: track an amount | Track an amount → form → How much → Unit → glasses → 8 glasses | passed ↻ (phone: the form says “8 glasses · each tap adds 1”) |
 | 13 | 405:710 | A new habit: time it | Time it → form → How long → 15 min → ← | not started |
 | 14 | 405:1039 | A new habit: a checklist | Checklist → form → Steps → ← 3 steps | not started |
 | 15 | 406:523 | A new habit: quit | Quit or cut down → Quit → quit form → Started picker → At time → Add | not started |

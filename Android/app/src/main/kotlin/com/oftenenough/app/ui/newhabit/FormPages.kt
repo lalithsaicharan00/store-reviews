@@ -132,8 +132,9 @@ fun HowMuchPage(form: FormState, onUnit: () -> Unit, onBack: () -> Unit) {
         val error = if (text.isNotEmpty() && (GoalNumber.parse(text)?.let { it > 0 } != true)) "Enter a number above 0, with up to 2 decimal places." else null
         Column(Modifier.padding(top = 16.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                // 16 from the number to the Unit field's box: 8 to its label, which sits over the box's top edge (Figma's Amount).
                 Column(Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(s.surfaceBright).padding(horizontal = 20.dp, vertical = 24.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(16.dp)) { number() }
+                    horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.spacedBy(8.dp)) { number() }
                 Text(error ?: "Up to 2 decimal places. The unit is optional.", Modifier.padding(horizontal = 16.dp),
                     style = AppType.bodySmall, color = s.onSurfaceVariant)
             }
@@ -161,8 +162,10 @@ private fun AmountField(form: FormState, limit: Boolean) {
         textStyle = AppType.displayMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal, imeAction = ImeAction.Done),
         singleLine = true, cursorBrush = SolidColor(s.primary),
+        // The number centred in the field's 80, not padded 14 above and under: Display Medium's line is the font's own
+        // height on Android (56, not 52), and the field must stay Figma's 80 (it grows only with large text).
         decorationBox = { inner ->
-            Box(Modifier.padding(horizontal = 16.dp, vertical = 14.dp), contentAlignment = Alignment.Center) {
+            Box(Modifier.heightIn(min = 80.dp).padding(horizontal = 16.dp), contentAlignment = Alignment.Center) {
                 if (form.amountText.isEmpty() && !focused) Text(if (limit) "2" else "8", style = AppType.displayMedium.copy(color = s.onSurfaceVariant.copy(alpha = 0.45f)))
                 inner()
             }
@@ -380,11 +383,12 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                 Subheader("Your own")
                 SegmentedList {
                     val count = 2 + yours.size + (if (creating) 1 else 0)
-                    RadioRow("No unit", form.unit.isBlank(), 0, count, "no-unit", option = true) { pick("") }
+                    // Figma's Unit page is List items, every name in Title Medium (not How often's Options).
+                    RadioRow("No unit", form.unit.isBlank(), 0, count, "no-unit", containerColor = s.surfaceBright) { pick("") }
                     yours.forEachIndexed { i, u ->
                         AppListItem(u, 1 + i, count, leading = { RadioButton(form.unit == u, onClick = null) }, onClick = { pick(u) },
                             trailing = if (u == mine) ({ StandardIconButton(Symbols.Close, "Remove $u", { form.unit = "" }) }) else null,
-                            containerColor = s.surfaceBright, headlineStyle = AppType.bodyLarge, tag = "unit-$u")
+                            containerColor = s.surfaceBright, tag = "unit-$u")
                     }
                     if (creating) {
                         val focus = remember { FocusRequester() }
@@ -397,8 +401,9 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                             AppButton("Done", { done() }, Modifier.padding(end = 4.dp), enabled = custom.isNotBlank(), style = ButtonStyle.Text, tag = "custom-unit-done")
                         }
                     }
-                    AppListItem("Create your own unit", count - 1, count, leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { Icon(Symbols.Add, null) } },
-                        onClick = { creating = true }, containerColor = s.surfaceBright, headlineStyle = AppType.bodyLarge, tag = "create-unit")
+                    // The + in the radio buttons' column, its words at 72 with theirs (Figma).
+                    AppListItem("Create your own unit", count - 1, count, leading = { Icon(Symbols.Add, null) },
+                        onClick = { creating = true }, containerColor = s.surfaceBright, tag = "create-unit")
                 }
                 Text(TextLimit.note(custom, TextLimit.UNIT) ?: "Anything you count, in a word or two: prayers, laps, sets.",
                     Modifier.padding(horizontal = 16.dp), style = AppType.bodySmall, color = s.onSurfaceVariant)
@@ -408,7 +413,7 @@ fun UnitPage(form: FormState, store: HabitStore, onBack: () -> Unit) {
                 if (shown.isEmpty()) continue
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                     Subheader(title)
-                    SegmentedList { shown.forEachIndexed { i, u -> RadioRow(u, form.unit == u, i, shown.size, "unit-$u", option = true) { pick(u) } } }
+                    SegmentedList { shown.forEachIndexed { i, u -> RadioRow(u, form.unit == u, i, shown.size, "unit-$u", containerColor = s.surfaceBright) { pick(u) } } }
                 }
             }
         }
