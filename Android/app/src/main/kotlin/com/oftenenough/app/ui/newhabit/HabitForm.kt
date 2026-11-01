@@ -604,7 +604,7 @@ private fun QuitStarted(form: FormState, store: HabitStore) {
     val lastDay = Instant.ofEpochMilli(now).atZone(zone).toLocalDate().toEpochDay()
     when (picking) {
         "date" -> DayDialog(at.toLocalDate().toEpochDay().toInt(), { it <= lastDay }, { picking = null },
-            title = "Started", note = "The run counts up from here.") { day ->
+            title = "Started") { day ->
             form.quitSince = minOf(now, LocalDate.ofEpochDay(day.toLong()).atTime(at.toLocalTime()).atZone(zone).toInstant().toEpochMilli())
         }
         "time" -> MinuteDialog(at.hour * 60 + at.minute, { picking = null }) { m ->

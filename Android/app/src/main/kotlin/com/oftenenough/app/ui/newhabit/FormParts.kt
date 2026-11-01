@@ -210,12 +210,12 @@ fun WeekdayCircles(selected: Set<Int>, weekStart: Int, tag: String, onChange: (S
 
 /**
  * The Date picker (5.3.6, [AppDatePicker]); [allowed] limits the days. Figma 2.1.7, 3.1.1, 4.3: its title says what's
- * being chosen ("Starts", "Started", "Select date"), and a [note] under the day says what it does.
+ * being chosen ("Starts", "Started", "Select date"), with no line of ours under the day (QA, Create new 11 and 15).
  */
 @Composable
-fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date", note: String? = null,
+fun DayDialog(day: Int, allowed: (Int) -> Boolean, onDismiss: () -> Unit, title: String = "Select date",
               noDate: (() -> Unit)? = null, onPick: (Int) -> Unit) =
-    AppDatePicker(day, allowed, onDismiss, title, confirmTag = "date-ok", note = note, left = noDate?.let { "No date" to it }, onPick = onPick)
+    AppDatePicker(day, allowed, onDismiss, title, confirmTag = "date-ok", left = noDate?.let { "No date" to it }, onPick = onPick)
 
 /** The Time picker (5.3.5, [AppTimePicker]) with minutes of the day in and out. */
 @Composable

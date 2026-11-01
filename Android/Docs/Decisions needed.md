@@ -702,3 +702,15 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   (b) listed only once a start is picked, everywhere, and Create new's frames change.
 - **My recommendation:** (a). The start shown is the one Add will save, so Your day should show it too; hiding it
   until a tap makes the list disagree with the Starts row above it.
+
+### D-62. Tell me at milestones on the quit and cut-down forms: draw it in Create new?
+
+- **Where:** the quit and cut-down forms, [Figma Create new 406:523](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=406-523) (Create new flows 15-17); `ui/newhabit/HabitForm.kt` (`milestone-alerts`).
+- **What Figma shows / the decisions say:** A21 (18 Oct) puts a switch, *Tell me at milestones*, on a quit or cut-down
+  habit's form, off by default. Figma's How milestones work (details pages) says it's "on the habit’s form", and
+  Today's milestone-notification flows assume it. Create new's quit and cut-down frames end at the form's footer
+  without it.
+- **What I did for now:** kept the switch and its line, as A21 and the rest of Figma have it.
+- **Question:** (a) keep it, and add it to Create new's quit and cut-down forms in Figma; (b) remove it from the form
+  (and How milestones work's line), so milestone notifications have no switch.
+- **My recommendation:** (a). The notification is off unless turned on, so without the switch nobody could get it.
