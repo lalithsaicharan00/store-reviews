@@ -173,6 +173,10 @@ fun HabitStore.repeatingLine(task: Habit, today: Int): String {
     return listOfNotNull(first, second).joinToString(" · ")
 }
 
+/** A day as the details pages write it, with no comma (D-56: each page as Figma draws it): "Tue 4 Nov", "Tue 4 Nov 2027". */
+internal fun detailsDay(day: Int, today: Int): String =
+    pageDayDate(day) + if (pageYear(day) == pageYear(today)) "" else " " + pageYear(day)
+
 /**
  * The line under a task's name on its Task details (Figma 1136:9271): "One-time · Tue 4 Nov, Morning", "One-time · done
  * today", "One-time · No date"; a repeating task's rhythm and day, "Every 2 months · Next Wed 9 Dec" (never "missed", U3).
@@ -181,14 +185,14 @@ fun HabitStore.taskDetailsLine(task: Habit, today: Int): String {
     if (task.isRepeatingTask) {
         val n = taskNext(task, today)
         val second = when {
-            n.waitingSince != null -> "Waiting since " + taskDay(n.waitingSince, today)
+            n.waitingSince != null -> "Waiting since " + detailsDay(n.waitingSince, today)
             n.today -> "Next today"
-            n.next != null -> "Next " + taskDay(n.next, today)
+            n.next != null -> "Next " + detailsDay(n.next, today)
             else -> null
         }
         return listOfNotNull(taskRhythmText(task.frequency), second).joinToString(" · ")
     }
-    doneEntry(task)?.let { return "One-time · done " + if (it.day == today) "today" else taskDay(it.day, today) }
+    doneEntry(task)?.let { return "One-time · done " + if (it.day == today) "today" else detailsDay(it.day, today) }
     return "One-time · " + (taskPlannedFor(task, today) ?: "No date")
 }
 
@@ -197,5 +201,5 @@ fun HabitStore.taskPlannedFor(task: Habit, today: Int): String? {
     val due = task.dueDay?.takeIf { it != NO_DATE_DAY } ?: return null
     val part = task.parts.firstOrNull()?.takeIf { it != DaySection.ANYTIME }?.let { section(it).name }
     val time = task.dueMinute?.let { DayWords.clockMinute(it) }
-    return listOfNotNull(if (due == today) "Today" else taskDay(due, today), time, part).joinToString(", ")
+    return listOfNotNull(if (due == today) "Today" else detailsDay(due, today), time, part).joinToString(", ")
 }

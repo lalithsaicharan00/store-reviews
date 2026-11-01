@@ -161,20 +161,9 @@ internal fun LazyListScope.historyItems(
     lit: Int? = null, listState: LazyListState? = null,
 ) {
     if (months.isEmpty()) {
-        item(key = "history-empty") {
-            // Figma's History · empty (frame 4 of a new habit's first days) centres it in the room under the tabs, down
-            // to the navigation bar: its middle at 498, between 220 and 776 (QA, 1 Nov 2026: it hung 40 under them).
-            // The room is the list's below this item, less the navigation bar; 16 of the gap above it is the tabs'.
-            val room by remember(listState) {
-                derivedStateOf {
-                    listState?.layoutInfo?.let { info -> info.visibleItemsInfo.firstOrNull { it.key == "history-empty" }?.let { info.viewportEndOffset - it.offset } } ?: 0
-                }
-            }
-            val density = LocalDensity.current
-            val bar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-            val min = with(density) { room.toDp() } - bar
-            Box(Modifier.fillMaxWidth().heightIn(min = min.coerceAtLeast(0.dp)).padding(bottom = 16.dp), contentAlignment = Alignment.Center) { NothingYet() }
-        }
+        // Figma's History · empty (frame 4 of a new habit's first days) centres it under the tabs: its middle at 498,
+        // between 220 and 776 (QA, 1 Nov 2026: it hung 40 under them).
+        item(key = "history-empty") { CentredInRoom(listState, "history-empty") { NothingYet() } }
         return
     }
     item(key = "history-search") { SearchBarButton("Search notes", onSearch, Modifier.pageItem().semantics { testTag = "history-search" }) }
@@ -250,6 +239,23 @@ private fun highlighted(text: String, query: String): AnnotatedString = buildAnn
         withStyle(SpanStyle(fontWeight = FontWeight.Medium)) { append(text.substring(found, found + q.length)) }
         at = found + q.length
     }
+}
+
+/**
+ * An empty state centred in the room a page's list has left below it (item [key]), down to the navigation bar, 16 clear
+ * of each end (the 16 above being the gap the item already sits under). The list's last item, so nothing scrolls.
+ */
+@Composable
+internal fun CentredInRoom(listState: LazyListState?, key: String, content: @Composable () -> Unit) {
+    val room by remember(listState, key) {
+        derivedStateOf {
+            listState?.layoutInfo?.let { info -> info.visibleItemsInfo.firstOrNull { it.key == key }?.let { info.viewportEndOffset - it.offset } } ?: 0
+        }
+    }
+    val density = LocalDensity.current
+    val bar = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val min = with(density) { room.toDp() } - bar
+    Box(Modifier.fillMaxWidth().heightIn(min = min.coerceAtLeast(0.dp)).padding(bottom = 16.dp), contentAlignment = Alignment.Center) { content() }
 }
 
 /** Nothing here yet (Figma's History · empty): a habit with no logs and no notes, as the Empty state (history). */

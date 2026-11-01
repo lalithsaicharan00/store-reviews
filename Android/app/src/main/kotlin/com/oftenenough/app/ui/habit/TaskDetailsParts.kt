@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
@@ -42,6 +43,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.semantics.testTagsAsResourceId
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Entry
@@ -55,6 +57,7 @@ import com.oftenenough.app.data.isRepeatingTask
 import com.oftenenough.app.data.pageDayDate
 import com.oftenenough.app.data.taskDetailsLine
 import com.oftenenough.app.data.taskMoveRange
+import com.oftenenough.app.data.detailsDay
 import com.oftenenough.app.data.taskDay
 import com.oftenenough.app.data.taskOpenDay
 import com.oftenenough.app.data.taskPlannedFor
@@ -156,7 +159,10 @@ internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetails
                 actions = {
                     Box {
                         IconButton({ menuOpen = true }, Modifier.semantics { testTag = "habit-menu" }) { Icon(Symbols.MoreVert, "More") }
-                        AppMenu(menuOpen, { menuOpen = false }, modifier = Modifier.semantics { testTagsAsResourceId = true }) {
+                        // Figma's task menu: 244 wide, its top 4 over the ⋮ button's foot, as Habit details' (QA, 1 Nov 2026:
+                        // it took its words' width and hung from the foot).
+                        AppMenu(menuOpen, { menuOpen = false }, modifier = Modifier.width(244.dp).semantics { testTagsAsResourceId = true },
+                            offset = DpOffset(0.dp, (-4).dp)) {
                             val dismiss = { menuOpen = false }
                             if (task.archived) {
                                 AppMenuItem("Restore", { dismiss(); store.restore(task) }, icon = Symbols.Unarchive, tag = "habit-menu-restore")
@@ -181,9 +187,10 @@ internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetails
             )
             LazyColumn(Modifier.fillMaxWidth().weight(1f).semantics { testTag = "habit-details-list" }, state = listState) {
                 item(key = "header") { TaskHeader(task, line) }
-                taskDays(task, store, today, kind, done, folded, { key -> folded = if (key in folded) folded - key else folded + key }) { day -> nav.openDay(task, day) }
-                // Room for Add note over the last row.
-                item(key = "end") { Spacer(Modifier.navigationBarsPadding().height(if (task.archived) 40.dp else 88.dp)) }
+                taskDays(task, store, today, kind, done, folded, { key -> folded = if (key in folded) folded - key else folded + key },
+                    listState = listState) { day -> nav.openDay(task, day) }
+                // Room for Add note over the last row (Nothing done yet fills the room itself).
+                if (done.isNotEmpty()) item(key = "end") { Spacer(Modifier.navigationBarsPadding().height(if (task.archived) 40.dp else 88.dp)) }
             }
         }
         if (!task.archived) AppExtendedFab("Add note", Symbols.EditNote, addNote,
@@ -215,11 +222,12 @@ internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetails
     }
 }
 
-/** The task in a glance: its icon (56), its name in Headline Medium Emphasized and its line, 16 at the sides and under. */
+/** The task in a glance: its icon (56), its name in Headline Medium Emphasized and its line, 16 at the sides, 32 under. */
 @Composable
 private fun TaskHeader(task: Habit, line: String) {
     val s = MaterialTheme.colorScheme
-    Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp).semantics { testTag = "habit-header" },
+    // 32 under it, as Figma's Task details (the header's 16 and the cards' 16 above them; QA, 1 Nov 2026: 16).
+    Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 32.dp).semantics { testTag = "habit-header" },
         verticalAlignment = Alignment.CenterVertically) {
         HabitIcon(task.symbol, task.color, 56.dp, CircleShape, glyph = 0.5f)
         Spacer(Modifier.width(16.dp))
@@ -235,7 +243,8 @@ private fun TaskHeader(task: Habit, line: String) {
  * done, "Done" and the day; repeating, a list per year of every time it was done. Each list folds from its first row.
  */
 private fun LazyListScope.taskDays(
-    task: Habit, store: HabitStore, today: Int, kind: RowKind, done: List<Entry>, folded: Set<String>, onFold: (String) -> Unit, onOpenDay: (Int) -> Unit,
+    task: Habit, store: HabitStore, today: Int, kind: RowKind, done: List<Entry>, folded: Set<String>, onFold: (String) -> Unit,
+    listState: LazyListState? = null, onOpenDay: (Int) -> Unit,
 ) {
     if (task.archived) item(key = "task-archived") {
         val on = store.archivedOn[task.id]?.let { if (it == today) "today" else DayWords.dayMonth(it) }
@@ -248,9 +257,13 @@ private fun LazyListScope.taskDays(
             CardNotice(Symbols.Event, "Planned for " + store.taskPlannedFor(task, today), "It shows on Today that day; tick it there.",
                 Modifier.pageItem(), tag = "task-planned")
         }
+        // Centred in the room under the Planned card (Figma's Task details: 296 to 760, the cookie at 420; QA, 1 Nov 2026:
+        // it hung under the card).
         item(key = "task-nothing-done") {
-            EmptyState(Symbols.TaskAlt, "Nothing done yet", "When it’s done, the day shows here, with any note.",
-                Modifier.padding(top = 8.dp, bottom = 16.dp).semantics { testTag = "task-nothing-done" })
+            CentredInRoom(listState, "task-nothing-done") {
+                EmptyState(Symbols.TaskAlt, "Nothing done yet", "When it’s done, the day shows here, with any note.",
+                    Modifier.semantics { testTag = "task-nothing-done" })
+            }
         }
         return
     }
@@ -270,7 +283,7 @@ private fun LazyListScope.taskDays(
         if (open) list.forEachIndexed { i, e ->
             item(key = "task-done-" + e.id) {
                 val note = store.note(task, e.day)?.takeIf { it.isNotBlank() }
-                AppListItem(taskDay(e.day, today), i + 1, count, Modifier.pagePiece(i + 1, count).semantics(mergeDescendants = true) {},
+                AppListItem(detailsDay(e.day, today), i + 1, count, Modifier.pagePiece(i + 1, count).semantics(mergeDescendants = true) {},
                     "Done at " + DayWords.clock(e.createdAt),
                     leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { DayCell(HeatCell.level(4), task.color, size = DayCellSize.small) } },
                     below = note?.let { { ListNote(AnnotatedString(it)) } }, trailing = { ListChevron() },

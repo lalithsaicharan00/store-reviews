@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 21 |
+| details pages | 298:2 | 24 | 22 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **213** |
+| **All** | | **290** | **214** |
 
 ## Bug log
 
@@ -331,6 +331,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 289. Details pages 21 · at 200 % text Year in pixels' month letters ran into its first row of squares, and its day numbers ("26") into the first column: the grid kept Figma's 16 dp letter row and 18 dp number column whatever the text size. Both are their text's size now, never less than Figma's (`YearInPixelsCard`).
 290. Details pages 21 · at 200 % a History month's ⌃ went to the top of its header (Material's list item tops its trailing content at three lines); Figma keeps it on the header's middle, as the day rows (`FoldHeader`, `centred`).
 291. Details pages 21 · loading's Week skeletons were 36 dp tall where the squares that replace them fill the width (A92), so the card jumped; and the medal skeletons were spread edge to edge, not centred in the shelf's three columns as Figma draws them.
+292. Details pages 22 · Task details' first card sat 16 under the header; Figma's is 32 (the header's 16 and the cards' 16), as Habit details' tabs give it.
+293. Details pages 22 · Nothing done yet hung under the Planned card; Figma centres it in the room down to the navigation bar (296 to 760). It and History's Nothing here yet share one rule now (`CentredInRoom`).
+294. Details pages 22 · Task details' ⋮ took its words' width (234) and hung from the button's foot; Figma's is 244 wide, its top 4 over the foot, as Habit details' (bug 243).
+295. Details pages 22 · Task details wrote its days with a comma ("Wed, 18 Nov", "Sun, 1 Nov") as the Tasks page does; its own frames write "Tue 4 Nov", "Fri 23 Oct", which D-56 keeps per page until it's settled. TasksPageTest asks for the details pages' form there.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -367,6 +371,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³³ Details pages 19 (phone): the days demo's Coffee (at most 2 cups, from 2 Oct) given 3 cups on 16 and 25 Oct and 2, 1, 2 on 28, 30, 31 Oct; Figma's is at most 3 cups from 14 Sep on a Friday, so Week and Month were compared on last week and October. The word is Figma's "within the limit", against A23's "within max": D-60. Figma's Coffee and Smoking anniversary rows have no "Next ·" where Water's has it; the app keeps it on every Next row. Logcat's only lines from the app's process are the phone maker's own libraries loading (QT, FBI libmagtsync).
 ³⁴ Details pages 20 (phone): the design demo's Social media (at most 30 min, from 25 Oct) with 45 min logged on Wed 28 Oct through Day details' Log time; Figma's is at most 1 h from 28 Sep. Its milestones and How milestones work are flow 19's code, rechecked here for time ("7 days within the limit", "10 days in total").
 ³⁵ Details pages 21 (phone): Android's largest Font size, 200 % (`font_scale 2.0`, put back to 1.0 after). Figma's 200 % Week squeezes "Sun Mon …" until they overlap; the app gives way to letters (Rulebook: what sits beside a word gives way first). The Next ring stays Figma's 52 with its label growing inside, as Figma's does. Loading was caught from a screen recording, 20 frames a second: it shows only through the page's fade-in.
+³⁶ Details pages 22 (phone): the tasks demo's Car service (Wed 18 Nov, Morning) and Book flights, done today at 9:12 AM; that demo's Book flights has no note, so the note under its day (frame 4's "Window seats, both ways.") was not seen on this page. Logcat's lines are the phone maker's libraries and Android's feature flags, not the app.
 
 ## Open questions for the user
 
@@ -623,7 +628,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 19 | 1157:99625 | A cut-down habit’s Progress: an amount | Coffee → whole page → See all 4 → How milestones work | passed ↻ ³³ |
 | 20 | 1158:112719 | A cut-down habit’s Progress: time | Social media → whole page → See all 3 → How milestones work | passed ↻ ³⁴ |
 | 21 | 355:2234 | Larger text, and loading | Progress 200 % → History 200 % → Loading | passed ↻ ³⁵ |
-| 22 | 380:3192 | Task details: a one-time task | Car service → Task details → ⋮ → done today | not started |
+| 22 | 380:3192 | Task details: a one-time task | Car service → Task details → ⋮ → done today | passed ↻ ³⁶ |
 | 23 | 358:679 | Task details: a repeating task | Replace the water filter → Task details → ← | not started |
 | 24 | 367:2718 | History: a skipped day | Tue 8 → Day details → Skip this day → Add a note… → Save → ✕ | not started |
 

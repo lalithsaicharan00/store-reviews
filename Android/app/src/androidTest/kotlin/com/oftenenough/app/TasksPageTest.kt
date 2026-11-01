@@ -24,6 +24,7 @@ import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.NO_DATE_DAY
 import com.oftenenough.app.data.doneEntry
 import com.oftenenough.app.data.isOneTimeTask
+import com.oftenenough.app.data.pageDayDate
 import com.oftenenough.app.data.taskDay
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -196,8 +197,9 @@ class TasksPageTest {
         launch()
         tapTag("tasks-row-Call the dentist")
         waitHere(hasTestTag("habit-details"), "Task details")
-        waitFor(hasText("One-time · " + taskDay(today - 2), substring = true), "its line")
-        waitFor(hasText("Planned for " + taskDay(today - 2), substring = true), "the Planned notice")
+        // Task details writes its days as the details pages do, "Tue 4 Nov" (Figma 1158:339821; D-56).
+        waitFor(hasText("One-time · " + pageDayDate(today - 2), substring = true), "its line")
+        waitFor(hasText("Planned for " + pageDayDate(today - 2), substring = true), "the Planned notice")
         waitFor(hasText("Nothing done yet"), "Nothing done yet")
         assertFalse("no tabs", has(hasTestTag("habit-tabs")))
         tapTag("page-back")
