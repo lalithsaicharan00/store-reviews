@@ -54,6 +54,10 @@ fun DayToggle(
     val colors = IconButtonDefaults.filledIconToggleButtonColors(
         containerColor = if (size == DayToggleSize.Week) s.surfaceContainerHighest else Color.Transparent,
         contentColor = s.onSurface,
+        // Named, not left to Material: with only the switched-off pair given, the chosen words took the surrounding
+        // On surface, dark on the Primary circle (QA, Create new 5 and 6).
+        checkedContainerColor = s.primary,
+        checkedContentColor = s.onPrimary,
     )
     CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides Dp.Unspecified) {
         FilledIconToggleButton(checked, onCheckedChange, modifier.size(size.size).semantics { contentDescription = spoken },

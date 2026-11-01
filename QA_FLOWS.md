@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 5 |
+| create new | 381:2 | 28 | 6 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **221** |
+| **All** | | **290** | **222** |
 
 ## Bug log
 
@@ -345,6 +345,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 303. Create new 5 · a count with a unit (Every 2 days, weeks, month) gave the unit its word's width, so − n + moved with the word and sat 18 right of Figma's; Figma's unit is a column of 52, left-aligned. The unit takes at least 52 (`Stepper`), so − n + stay put from "day" to "weeks", and a longer word ("months", large text) still fits.
 304. Create new 5 (and every create new choice: 1's Time of day, 4's How often, How much) · the chosen option's words were Body Large like the rest; Figma sets the chosen one in Title Medium (36 of 36 chosen Options on the page), the others Body Large. `RadioRow(option = true)` draws the chosen one in Title Medium. Flows 1 and 4 rechecked on the phone.
 305. Create new 5 · Every few months opened at every 3 months ("On the 1st, every 3 months"); Figma opens it at 1: "On the 23rd of every month", Every 1 month (`OftenDraft.monthsInterval`).
+306. Create new 6 · On a date's Month · Year laid out at its 48 touch height, its words 4 lower than Figma's (the group 40 tall, 4 under the option's row, 16 above Repeat on). Laid out at its drawn 40 (`drawnHeight`), 16 under (`DateControls`), as 4's Week · Month · Year (301).
+307. Create new 6 · Repeat on had 8 under it, so the 31 dates (and A weekday's Which and Day) sat 8 higher than Figma's, whose Repeat on frame keeps 16 under the field before the 8 between parts. 16 under now (`DateControls`, as its own comment said).
+308. Create new 6 (and 5) · a chosen day or date drew its letter or number in On surface, dark on the Primary circle, nearly unreadable; Figma's are white (On primary). `DayToggle` gave Material only the switched-off colours, so the chosen content colour fell back to the surrounding On surface; it names Primary and On primary now. Missed in 5's first pass (its S, M, W were the same); 5 rechecked on the phone.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -653,7 +656,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 3 | 399:442 | A new habit: its icon and colour | Icon → icon page → book → Done → Colour → sheet of 14 → orange | passed ↻ (phone; the sheet holds 13, as Figma's own swatches do: the frame's name says 14. The picker fits seven to a row on this 432 dp phone, Figma's five at 360, the same 56 dp buttons spread across) |
 | 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | passed ↻ (phone: “3 times a day”, “3 times a week”, “3 times a month”, and the form says “3 times a month”) |
 | 5 | 401:536 | How often: days of the week, or every few | certain days → Every Friday → Mon, Wed → Every few days → weeks → set days → months → ← | passed ↻ (phone: today is Sunday, so “Every Sunday”, then “Every Sunday, Monday and Wednesday”, “Every other day”, “Every other week on Sunday”, “On the 1st of every month”; the form says it) |
-| 6 | 401:1116 | How often: on a date each month or year | date each month → 1 and 15 → a weekday → Year → ← | not started |
+| 6 | 401:1116 | How often: on a date each month or year | date each month → 1 and 15 → a weekday → Year → ← | passed ↻ (phone: today is the 1st, so “On the 1st of every month”, then “On the 1st and 15th of every month”, “On the first Sunday of every month”, “Every year on November 1”; the form says it) |
 | 7 | 402:488 | Time of day: more than one, and a new one | Morning + Evening → New time of day → “Before work” → Add → ← | not started |
 | 8 | 403:361 | Reminders: turned on | Reminders → Remind me → Android asks → Allow → Add a time → 2:00 PM → ← | not started |
 | 9 | 403:501 | Reminders: notifications not allowed | Remind me → Don’t allow → back off, says why → Open settings after second no | not started |

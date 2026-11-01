@@ -654,13 +654,14 @@ private fun setDaysNote(d: OftenDraft): String? {
  */
 @Composable
 private fun ColumnScope.DateControls(rule: CalendarRule, onChange: (CalendarRule) -> Unit) {
-    Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)) {
-        AppConnectedButtons(listOf(GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), rule.unit, tag = "often-date-unit") { onChange(rule.copy(unit = it)) }
+    // Month · Year at its drawn 40, its touch spreading past, as Figma's Period (4 above, 16 under).
+    Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 16.dp)) {
+        AppConnectedButtons(listOf(GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), rule.unit, Modifier.drawnHeight(40.dp), tag = "often-date-unit") { onChange(rule.copy(unit = it)) }
     }
     if (rule.unit == GoalPeriod.MONTH) {
         val patterns = listOf("Dates" to "Dates", "Last day" to "The last day", "Weekday" to "A weekday")
         DropdownField("Repeat on", patterns.first { it.first == rule.pattern }.second, patterns.map { it.second },
-            { onChange(rule.copy(pattern = patterns[it].first)) }, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 8.dp), tag = "often-date-pattern")
+            { onChange(rule.copy(pattern = patterns[it].first)) }, Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp), tag = "often-date-pattern")
         when (rule.pattern) {
             "Dates" -> {
                 // A plain grid sized up front, never a lazy one (S13): seven dates a row, spread across it, rows 8 apart (Figma).
