@@ -650,8 +650,8 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
                 val after = d.choice == Choice.AFTER_DONE
                 Options(Option(if (after) HabitCopy.capitalized(words(d.often(false))) else "A while after it’s done", after, "often-after-done",
                     settings = {
-                        Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
-                            AppConnectedButtons(listOf(GoalPeriod.DAY, GoalPeriod.WEEK, GoalPeriod.MONTH).map { it to HabitCopy.capitalized(it.noun) + "s" }, d.afterUnit, tag = "often-after-unit") { set(d.copy(afterUnit = it)) }
+                        Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)) {
+                            AppConnectedButtons(listOf(GoalPeriod.DAY, GoalPeriod.WEEK, GoalPeriod.MONTH).map { it to HabitCopy.capitalized(it.noun) + "s" }, d.afterUnit, Modifier.drawnHeight(40.dp), tag = "often-after-unit") { set(d.copy(afterUnit = it)) }
                         }
                         Stepper("Again after", d.afterCount, 1..365, "often-after-count") { set(d.copy(afterCount = it)) }
                     }) { set(d.copy(choice = Choice.AFTER_DONE)) })

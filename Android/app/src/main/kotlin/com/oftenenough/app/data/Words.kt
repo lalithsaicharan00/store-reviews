@@ -218,7 +218,7 @@ object HabitCopy {
         is Frequency.EveryNWeeks -> everyN(f.n, "week")
         is Frequency.MonthDates -> monthDates(f.dates)
         is Frequency.Calendar -> calendarText(f.rule, weekStart, short)
-        is Frequency.AfterCompletion -> "${f.n} ${if (f.n == 1) f.unit.key else f.unit.plural} after it's done"
+        is Frequency.AfterCompletion -> "${f.n} ${if (f.n == 1) f.unit.key else f.unit.plural} after it’s done"
         is Frequency.PerWeek, is Frequency.PerMonth, is Frequency.PerYear, is Frequency.Flexible -> ""
     }
 

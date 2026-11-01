@@ -330,7 +330,9 @@ private fun FormBody(
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         TaskRows(form, store, open)
                         Footer(when {
-                            form.taskRepeats -> "It comes back on the days you pick."
+                            form.taskRepeats -> (form.often.often(false) as? HowOften.AfterDone)
+                                ?.let { "It comes back ${it.n} ${if (it.n == 1) it.unit.key else it.unit.plural} after it’s ticked." }
+                                ?: "It comes back on the days you pick."
                             form.taskHasNoDate -> "With no date, it stays on Tasks, under No date, and doesn’t show on Today."
                             else -> "If it isn’t done, it moves to today until it is."
                         })
