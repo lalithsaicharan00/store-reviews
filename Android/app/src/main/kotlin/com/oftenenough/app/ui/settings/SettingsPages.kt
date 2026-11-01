@@ -163,6 +163,8 @@ fun SectionEditorScreen(
     store: HabitStore, existingId: String?,
     /** After a delete, with what its Undo needs; without it, a delete just closes. */
     onDeleted: ((name: String, undo: HabitStore.SectionUndo) -> Unit)? = null,
+    /** The new one is in Your day from the start, at its first free start (Figma's Create new, flow 7, frame 3). */
+    listedAtOnce: Boolean = false,
     onClose: (String?) -> Unit,
 ) {
     val existing = existingId?.let { id -> store.sections.firstOrNull { it.id == id } }
@@ -171,8 +173,9 @@ fun SectionEditorScreen(
     val dayEnd = 24 * 60 + store.dayEndHour * 60
     var start by remember { mutableStateOf(existing?.start ?: SectionPlan.freeStart(store.sections, dayEnd)) }
     var picking by remember { mutableStateOf<String?>(null) }
-    // A new time of day joins Your day once its start is picked (Figma's Today, flow 52: frame 3 without it, frame 5 with).
-    var startPicked by remember { mutableStateOf(existing != null) }
+    // A new time of day joins Your day once its start is picked (Figma's Today, flow 52: frame 3 without it, frame 5 with);
+    // from the habit form it's there from the start (Figma's Create new, flow 7: frame 3 with it). Decisions needed D-61.
+    var startPicked by remember { mutableStateOf(existing != null || listedAtOnce) }
     var confirmDelete by remember { mutableStateOf(false) }
     var discard by remember { mutableStateOf(false) }
     val trimmed = TextLimit.clean(name, TextLimit.SECTION)

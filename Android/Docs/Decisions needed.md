@@ -689,3 +689,16 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   the notification and How milestones work change to it.
 - **My recommendation:** (a). It says what the limit is without the reader needing Today's "max", it's what the later
   decisions and every Figma page use, and "Over the limit" / "Limit reached" (U25) already pair with it.
+
+### D-61. A new time of day: in Your day before its start is picked?
+
+- **Where:** New time of day, [Figma Today 59:712](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=59-712) (Today flow 52) and [Figma Create new 402:488](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=402-488) (Create new flow 7); `ui/settings/SettingsPages.kt` (`SectionEditorScreen`).
+- **What Figma shows:** both open with the same first free start (Starts 4:00 AM, Ends "6:00 AM, when Morning starts").
+  Today's frame 3 leaves the new one out of Your day until a start is picked (frame 5 lists Night · New); Create new's
+  frame 3 lists "New time of day · 4:00 AM – 6:00 AM · New" at once, before any name or start.
+- **What I did for now:** each page follows its own Figma, as D-56 does for dates: from Today it joins once a start is
+  picked; from the habit form it's listed at once (`listedAtOnce`).
+- **Question:** (a) listed at once everywhere: the 4:00 AM start is already real, and Your day shows where it lands;
+  (b) listed only once a start is picked, everywhere, and Create new's frames change.
+- **My recommendation:** (a). The start shown is the one Add will save, so Your day should show it too; hiding it
+  until a tap makes the list disagree with the Starts row above it.

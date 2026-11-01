@@ -289,7 +289,7 @@ fun HabitForm(
         Page.STEPS -> StepsPage(form, ::back)
         Page.OFTEN -> HowOftenPage(form, ::back)
         Page.TIME_OF_DAY -> TimeOfDayPage(form, store, ::back) { open(Page.NEW_PART) }
-        Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null) { id -> back(); id?.let { form.choose(it) } }
+        Page.NEW_PART -> com.oftenenough.app.ui.settings.SectionEditorScreen(store, null, listedAtOnce = true) { id -> back(); id?.let { form.choose(it) } }
         Page.REMINDERS -> RemindersPage(form, store, ::back) { onPlus(PlusReason.REMIND) }
         Page.ICON -> IconPage(form, ::back)
         // ← on Plus opens Make room in its place; Make room's ← is back on the form.
@@ -536,7 +536,9 @@ private fun PlanRows(form: FormState, open: (Page) -> Unit) {
 private fun PlaceRows(form: FormState, store: HabitStore, open: (Page) -> Unit, withTime: Boolean) {
     SegmentedList {
         val count = if (withTime) 2 else 1
-        if (withTime) OpenRow("Time of day", HabitCopy.join(form.timesOfDay.map { store.section(it).name }), null, 0, count, "time-of-day-row", rowColor) { open(Page.TIME_OF_DAY) }
+        // In the day's order, whatever order they were ticked in (Figma: "Before work, Morning and Evening").
+        val dayOrder = form.timesOfDay.sortedBy { id -> store.sections.indexOfFirst { it.id == id }.let { if (it < 0) Int.MAX_VALUE else it } }
+        if (withTime) OpenRow("Time of day", HabitCopy.join(dayOrder.map { store.section(it).name }), null, 0, count, "time-of-day-row", rowColor) { open(Page.TIME_OF_DAY) }
         OpenRow("Reminders", form.remindersSummary(), null, count - 1, count, "reminders-row", rowColor) { open(Page.REMINDERS) }
     }
 }

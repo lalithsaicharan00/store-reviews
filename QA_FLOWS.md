@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 6 |
+| create new | 381:2 | 28 | 7 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **222** |
+| **All** | | **290** | **223** |
 
 ## Bug log
 
@@ -348,6 +348,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 306. Create new 6 · On a date's Month · Year laid out at its 48 touch height, its words 4 lower than Figma's (the group 40 tall, 4 under the option's row, 16 above Repeat on). Laid out at its drawn 40 (`drawnHeight`), 16 under (`DateControls`), as 4's Week · Month · Year (301).
 307. Create new 6 · Repeat on had 8 under it, so the 31 dates (and A weekday's Which and Day) sat 8 higher than Figma's, whose Repeat on frame keeps 16 under the field before the 8 between parts. 16 under now (`DateControls`, as its own comment said).
 308. Create new 6 (and 5) · a chosen day or date drew its letter or number in On surface, dark on the Primary circle, nearly unreadable; Figma's are white (On primary). `DayToggle` gave Material only the switched-off colours, so the chosen content colour fell back to the surrounding On surface; it names Primary and On primary now. Missed in 5's first pass (its S, M, W were the same); 5 rechecked on the phone.
+309. Create new 7 · New time of day, opened from the habit form, left the new one out of Your day until a start was picked; Create new's frame 3 lists "New time of day · 4:00 AM – 6:00 AM · New" at once. From the form it's listed at once (`listedAtOnce`); from Today it still joins once a start is picked, as Today's own frames have it ³⁹.
+310. Create new 7 · the form's Time of day said the times in the order they were ticked ("Morning, Evening and Before work"); Figma says them in the day's order: "Before work, Morning and Evening" (`HabitForm`).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -387,6 +389,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁶ Details pages 22 (phone): the tasks demo's Car service (Wed 18 Nov, Morning) and Book flights, done today at 9:12 AM; that demo's Book flights has no note, so the note under its day (frame 4's "Window seats, both ways.") was not seen on this page. Logcat's lines are the phone maker's libraries and Android's feature flags, not the app.
 ³⁷ Details pages 23 (phone): the tasks demo's Change water filter (2 months after it's done, done Mon 12 Oct) stands for Figma's Replace the water filter; a note was added to its day to see the note row. Figma's note row is 104 with a one-line note, its History twin's height for two lines; the app's grows with its text (88 with one line), as the Rulebook says.
 ³⁸ Create new 2 (phone): ← on an empty form, and Discard, go back one screen, to How do you want to track it?, as Android's back does; Figma's captions say "back on Today", with frame 2 itself skipping the two choice screens (Today → New habit), read as the same shortcut. Another ← there and ✕ reach Today, nothing asked.
+³⁹ Create new 7 (phone): Figma's two New time of day flows disagree on Your day before a start is picked (Today 52's frame 3 leaves the new one out, Create new 7's frame 3 lists it); each page follows its own frames until the user decides (Decisions needed D-61).
 
 ## Open questions for the user
 
@@ -657,7 +660,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | passed ↻ (phone: “3 times a day”, “3 times a week”, “3 times a month”, and the form says “3 times a month”) |
 | 5 | 401:536 | How often: days of the week, or every few | certain days → Every Friday → Mon, Wed → Every few days → weeks → set days → months → ← | passed ↻ (phone: today is Sunday, so “Every Sunday”, then “Every Sunday, Monday and Wednesday”, “Every other day”, “Every other week on Sunday”, “On the 1st of every month”; the form says it) |
 | 6 | 401:1116 | How often: on a date each month or year | date each month → 1 and 15 → a weekday → Year → ← | passed ↻ (phone: today is the 1st, so “On the 1st of every month”, then “On the 1st and 15th of every month”, “On the first Sunday of every month”, “Every year on November 1”; the form says it) |
-| 7 | 402:488 | Time of day: more than one, and a new one | Morning + Evening → New time of day → “Before work” → Add → ← | not started |
+| 7 | 402:488 | Time of day: more than one, and a new one | Morning + Evening → New time of day → “Before work” → Add → ← | passed ↻ ³⁹ |
 | 8 | 403:361 | Reminders: turned on | Reminders → Remind me → Android asks → Allow → Add a time → 2:00 PM → ← | not started |
 | 9 | 403:501 | Reminders: notifications not allowed | Remind me → Don’t allow → back off, says why → Open settings after second no | not started |
 | 10 | 403:640 | Reminders: on time, on some phones | after Allow → Open settings: Alarms & reminders → Back | not started |
