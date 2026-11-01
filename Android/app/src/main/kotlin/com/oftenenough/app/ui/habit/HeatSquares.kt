@@ -78,15 +78,19 @@ fun HabitKeyCard(open: Boolean, onToggle: () -> Unit, color: HabitColor, modifie
     val c = appColors
     Column(modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface).animateContentSize()) {
         Row(
-            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(start = 20.dp, end = 16.dp, top = 12.dp, bottom = 12.dp)
+            Modifier.fillMaxWidth().clickable(onClick = onToggle).heightIn(min = 56.dp).padding(horizontal = 16.dp, vertical = 8.dp)
                 .semantics(mergeDescendants = true) {
                     stateDescription = if (open) "Shown" else "Hidden"
                     testTag = "heat-key-toggle"
                 },
             verticalAlignment = Alignment.CenterVertically,
         ) {
+            // The same row as the Progress page's key: help in its 40 dp circle, 16, the title, the fold arrow (QA, 1 Nov
+            // 2026: Habit details had no help circle and an ink arrow).
+            ListAvatar(Symbols.Help)
+            Spacer(Modifier.width(16.dp))
             Text("What the squares mean", Modifier.weight(1f).padding(vertical = 4.dp), style = AppType.titleMedium, color = c.ink)
-            Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = c.ink)
+            Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (open) {
             Column(

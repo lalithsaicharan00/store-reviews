@@ -26,7 +26,7 @@ import com.oftenenough.app.ui.theme.appColors
  * The [label] ("This week") in Body Medium, On surface variant, taking the room left, and the [value] ("44 glasses")
  * in Label Large, On surface, 12 apart on one baseline. 6 under them, the bar: 8 tall, corners 4, in the habit's
  * Colour for both periods, on no track. The larger value fills the width; the other is its share of it ([fraction]),
- * so the two stay in proportion. A share too small to see keeps 2 % of the width.
+ * so the two stay in proportion. A share too small to see keeps 2 % of the width; nothing draws no bar.
  */
 @Composable
 fun ComparisonRow(label: String, value: String, fraction: Float, color: HabitColor, modifier: Modifier = Modifier) {
@@ -38,6 +38,8 @@ fun ComparisonRow(label: String, value: String, fraction: Float, color: HabitCol
             Text(value, Modifier.alignByBaseline(), style = AppType.labelLarge, color = s.onSurface, maxLines = 1)
         }
         Spacer(Modifier.height(6.dp))
-        Spacer(Modifier.fillMaxWidth(fraction.coerceIn(0.02f, 1f)).height(8.dp).clip(RoundedCornerShape(4.dp)).background(appColors.habit(color)))
+        // Nothing is no bar at all (QA, 1 Nov 2026: "0 of 30 days" drew a dot), its 8 kept so the rows stay in step.
+        if (fraction > 0f) Spacer(Modifier.fillMaxWidth(fraction.coerceIn(0.02f, 1f)).height(8.dp).clip(RoundedCornerShape(4.dp)).background(appColors.habit(color)))
+        else Spacer(Modifier.height(8.dp))
     }
 }

@@ -28,6 +28,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.semantics.semantics
@@ -135,6 +136,17 @@ fun AppButton(
             border = BorderStroke(if (size == ButtonSize.Large) 2.dp else 1.dp, if (enabled) s.outlineVariant else s.onSurface.copy(alpha = 0.12f)),
             contentPadding = padding, content = content)
     }
+}
+
+/**
+ * Lays a button out at the height it's drawn ([height], Figma's 40 for Small), its 48 touch target spreading past
+ * above and below: for a text button sitting in a card's header or foot, where Figma counts 40 (QA, 1 Nov 2026: See all
+ * in Overall record and Milestones made both cards 8 dp taller and put the title 4 dp low).
+ */
+fun Modifier.drawnHeight(height: Dp = ButtonDefaults.MinHeight): Modifier = layout { m, c ->
+    val p = m.measure(c.copy(minHeight = 0))
+    val h = height.roundToPx().coerceAtMost(p.height)
+    layout(p.width, h) { p.place(0, -(p.height - h) / 2) }
 }
 
 /**

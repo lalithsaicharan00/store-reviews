@@ -23,6 +23,7 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitMilestones
+import com.oftenenough.app.data.Milestone
 import com.oftenenough.app.data.MilestoneNext
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.appColors
@@ -36,7 +37,8 @@ import com.oftenenough.app.ui.theme.appColors
  * on the habit's Fill (20 corners, 16 in): the Medium [Medal] (72), 16, "Latest" in Label Medium On surface variant
  * (from two reached), the milestone in Title Medium and its day in Body Medium On surface variant, 2 apart;
  * **Earlier** (Label Medium) over up to three [MilestoneBadge]s (4.11), each a third of the row, 4 apart, newest first
- * (the rest are in All milestones); **Next** (Label Medium) over each track's [NextMilestone] (4.10), 12 apart. A part
+ * (the rest are in All milestones); **Next** (Label Medium) over each track's [NextMilestone] (4.10), 12 apart, but
+ * the anniversary's (All milestones has it). A part
  * with nothing yet isn't shown, as Figma's Show earlier and Show next say.
  */
 @Composable
@@ -52,7 +54,7 @@ fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSeeAll: () 
         Row(Modifier.fillMaxWidth().heightIn(min = 40.dp), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
             Text("Milestones", Modifier.weight(1f).semantics { heading() }, style = AppType.titleMedium, color = s.onSurface)
             if (reached.size >= 2) {
-                AppButton("See all ${reached.size}", onSeeAll, Modifier.semantics { contentDescription = "See all ${reached.size} milestones" },
+                AppButton("See all ${reached.size}", onSeeAll, Modifier.drawnHeight().semantics { contentDescription = "See all ${reached.size} milestones" },
                     style = ButtonStyle.Text, size = ButtonSize.Small, tag = "habit-milestones-see-all")
             } else if (reached.size == 1) {
                 Text("1 reached", style = AppType.bodyMedium, color = s.onSurfaceVariant)
@@ -84,9 +86,11 @@ fun MilestonesCard(milestones: HabitMilestones, color: HabitColor, onSeeAll: () 
                 repeat(3 - earlier.size) { Spacer(Modifier.weight(1f)) }
             }
         }
-        if (milestones.next.isNotEmpty()) {
+        // Anniversaries are counted on All milestones only: every Figma card's Next is in a row and in total (QA, 1 Nov 2026).
+        val next = milestones.next.filter { it.track != Milestone.Track.ANNIVERSARY }
+        if (next.isNotEmpty()) {
             Text("Next", style = AppType.labelMedium, color = s.onSurfaceVariant)
-            for (next in milestones.next) NextMilestone(next, color)
+            for (n in next) NextMilestone(n, color)
         }
     }
 }

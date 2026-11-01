@@ -49,7 +49,7 @@ private val EndRoom = 8.dp
  * then the grid, then "Tap a square to see its day." in Body Small On surface variant. The grid fills the card's width
  * and never scrolls sideways: a square is (the width − 8 at the end − the 18 dp day column − 12 gaps of 3) ÷ 12, 19.5
  * on a 360 dp phone, about 23.8 on a 412 dp one; rows 3 apart. Over each month its letter, centred; down the side the
- * 1st, 6th, 11th … 31st; all Body Small On surface variant. Each square is the Day cell (3.6, Size Year, scaled);
+ * 1st, 6th, 11th … 31st; all Body Small On surface variant, but today's month in Label Medium On surface. Each square is the Day cell (3.6, Size Year, scaled);
  * days before the habit started and dates that don't exist are left empty, and no square has a note's dot (A60). One
  * Canvas (S12). A tap on a square gives [onTap] its index in the year.
  *
@@ -97,7 +97,10 @@ private fun YearGrid(cells: List<HeatCell>, monthStarts: List<Int>, monthLengths
     val colors = dayCellColors(color)
     val measurer = rememberTextMeasurer()
     val style = AppType.bodySmall
-    val months = remember(measurer, style) { "JFMAMJJASOND".map { measurer.measure(it.toString(), style) } }
+    // Today's month is Label Medium in On surface, as Figma marks it (QA, 1 Nov 2026), the rest Body Small.
+    val thisMonth = todayIndex?.let { t -> (0 until minOf(12, monthStarts.size)).firstOrNull { t >= monthStarts[it] && t < monthStarts[it] + monthLengths[it] } }
+    val strong = AppType.labelMedium
+    val months = remember(measurer, style, strong, thisMonth) { "JFMAMJJASOND".mapIndexed { i, c -> measurer.measure(c.toString(), if (i == thisMonth) strong else style) } }
     val days = remember(measurer, style) { (1..31 step 5).map { it to measurer.measure("$it", style) } }
     val label = s.onSurfaceVariant
     val tap by rememberUpdatedState(onTap)
@@ -127,7 +130,7 @@ private fun YearGrid(cells: List<HeatCell>, monthStarts: List<Int>, monthLengths
         val g = YearGeometry(size.width, density)
         for (m in 0 until 12) {
             val t = months[m]
-            drawText(t, color = label, topLeft = Offset(g.left + m * g.pitch + g.square / 2 - t.size.width / 2f, 0f))
+            drawText(t, color = if (m == thisMonth) s.onSurface else label, topLeft = Offset(g.left + m * g.pitch + g.square / 2 - t.size.width / 2f, 0f))
         }
         for ((day, t) in days) drawText(t, color = label, topLeft = Offset(0f, g.top + (day - 1) * g.pitch + g.square / 2 - t.size.height / 2f))
         val draw = DayCellDraw(g.square, 1.dp.toPx())

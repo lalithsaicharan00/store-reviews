@@ -74,7 +74,7 @@ fun OverallRecordCard(
         }
         more()
         if (seeAll != null) Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            AppButton(seeAll, onSeeAll, style = ButtonStyle.Text, size = ButtonSize.Small, tag = seeAllTag)
+            AppButton(seeAll, onSeeAll, Modifier.drawnHeight(), style = ButtonStyle.Text, size = ButtonSize.Small, tag = seeAllTag)
         }
     }
 }

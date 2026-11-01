@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 0 |
+| details pages | 298:2 | 24 | 1 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **192** |
+| **All** | | **290** | **193** |
 
 ## Bug log
 
@@ -276,6 +276,11 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 234. Habits & tasks 25 (Task details too) · Skip this time said "Water plants skipped this time"; Figma: "Skipped on Sun 25 Oct" · Undo, the day it skipped. TasksPageTest asks for Figma's words.
 235. Habits & tasks 26 · Do today's Show went to the Today screen; Figma: it stays on Tasks and brings the task into view at the end of Today's open tasks (and doesn't scroll when it's already in view). The navigation it used (`TasksNav.showToday`) is gone.
 236. Habits & tasks 30 · deleting an archived task said "Its history and notes are deleted too."; Figma has no frame for it, so it now says what an archived habit's question and the task's say: "It goes for good, with its notes. To keep it, leave it archived."
+237. Details pages 1 · See all streaks and See all 4 laid out 48 dp tall (their touch target) where Figma's Button is 40, so Overall record and Milestones were 8 dp taller and Milestones' title sat 4 dp low; they're laid out at their drawn 40 now, the 48 target spreading past (`Modifier.drawnHeight`, `OverallRecordCard`, `MilestonesCard`).
+238. Details pages 1 · the Milestones card's Next listed the anniversary track too ("1 year · 10 Oct 2027 · 343 days to go"); every Figma card's Next is in a row and in total, the anniversary only on All milestones. HabitDetailsTest asks that the card has none.
+239. Details pages 1 · What the squares mean on Habit details had no help circle and an ink fold arrow; Figma's row (and the Progress page's) is help in its 40 dp circle, 16, the title, the arrow in On surface variant, 56 tall.
+240. Details pages 1 · the Month card's comparison weighed amounts over the same days ("176 glasses" against "0 glasses", "This month"); Figma's, for every kind of habit, is the month so far against the whole month before, in days the goal was met as the Month card counts them ("October 22 of 22 days · September 22 of 29 days"; clean days, days within the limit), the months named. A month before the habit began says "No earlier month to compare". A zero now draws no bar (it drew a dot).
+241. Details pages 1 · Year in pixels drew every month's letter alike; Figma draws today's month in Label Medium, On surface.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -302,6 +307,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ²³ Habits & tasks 17: Figma's frames are a Friday; the run was on Sunday 1 Nov, the week's first day, so the kinds were compared on this week (planned, quit, limits) and on last week, 25–31 Oct, against Figma's earlier-week frames (flow 3). The demo has no 3-a-day check or monthly goal; their words come from the same code as Water's and Journal's.
 ²⁴ Habits & tasks 18: no habits from an empty test launch; every habit archived by archiving all 16 demo habits; a month paused all through by restoring Water plants (archived 15 Sep), whose October then reads "Paused all of October". The first week (every habit started Wed) can't be made from the demos: its parts (‹ off before the earliest start, blank days before a start, "so far") were seen on Floss, flow 16, and on the Habits page's first week in flows 2 and 3.
 ²⁵ Habits & tasks 27: ✓ on Today's Pay electricity bill puts it at the end of Tasks' Today, "Done 10:30 AM", faded as flow 20's done rows (Figma's frame caption says struck through; its frame isn't). The next day can't be reached on a test launch, whose clock sets the hour, not the date: the move to Completed at the day's end was seen on this demo's 32 tasks done before today.
+²⁶ Details pages 1: the design demo's Water began 27 Sep 2025 and was logged from 10 Oct 2026 (Figma's began 2 Sep 2026), so its record reads "23 of 401 days" and its year is mostly ✕; and today is Sun 1 Nov, the week's and month's first day, so Week and Month were compared on last week and October. Year in pixels is Plus: checked with Plus on, as Figma's frame draws it.
 
 ## Open questions for the user
 
@@ -537,7 +543,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
-| 1 | 321:2 | Open Habit details: Progress, scrolling | Water card → Progress, large title → scrolled: small bar → whole tab | not started |
+| 1 | 321:2 | Open Habit details: Progress, scrolling | Water card → Progress, large title → scrolled: small bar → whole tab | passed ↻ ²⁶ |
 | 2 | 322:2 | A habit's description: two lines, More, Less | two lines, More → More → Less | not started |
 | 3 | 322:2597 | Habit details' ⋮: Pause…, and Delete | ⋮ → Pause sheet → Paused card, Resume → Delete Water? → Delete; Undo | not started |
 | 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | not started |

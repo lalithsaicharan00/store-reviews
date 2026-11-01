@@ -1098,6 +1098,7 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
     val monthName = { d: Int -> HabitCopy.monthNames[pageMonth(d) - 1] }
     val thisLabel = if (running) "This $noun" else if (week) "That week" else monthName(span.first)
     val previousLabel = if (week) (if (running) "Last week" else "The week before") else monthName(previousFull.first)
+    if (!week) return monthComparison(habit, span, previousFull, start, today, monthName)
     if (previousFull.first < start) {
         val note = if (start <= previousFull.last) "Started on ${DayWords.dayMonth(start)}, partway through ${if (week) previousLabel.lowercase() else previousLabel}"
         else "No earlier $noun to compare"
@@ -1138,6 +1139,37 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
             PeriodComparison(title, thisLabel, previousLabel, text(a), text(b), a, b, null)
         }
     }
+}
+
+/**
+ * Figma's month comparison (details pages, every habit): the month so far against the whole month before, each as its
+ * Month card counts it: days the goal was met (clean days, days within the limit) of the days judged, "22 of 22 days",
+ * named by month even while it runs. The month before counts from the habit's first day ("4 of 4 days"); only a habit
+ * that began this month has nothing to compare (QA, 1 Nov 2026: the app compared amounts over the same days).
+ */
+private fun HabitStore.monthComparison(habit: Habit, span: IntRange, previous: IntRange, start: Int, today: Int,
+                                       monthName: (Int) -> String): PeriodComparison {
+    val title = "Compared with the month before"
+    val thisLabel = monthName(span.first)
+    val previousLabel = monthName(previous.first)
+    if (previous.last < start) return PeriodComparison(title, thisLabel, previousLabel, "", "", null, null, "No earlier month to compare")
+    val quit = habit.kind == HabitKind.Quit
+    val judgedAtEnd = quit || rule(habit, min(span.last, today)).atMost
+    fun tally(range: IntRange): Pair<Int, Int> {
+        val card = if (quit) quitPeriodCard(habit, range, ProgressRange.MONTH, today) else periodCard(habit, range, ProgressRange.MONTH, today)
+        val days = card?.days.orEmpty().filter { d ->
+            !d.extra && d.day >= start && when {
+                judgedAtEnd -> d.day < today && (d.mark == DayMark.DONE || d.mark == DayMark.SOME || d.mark == DayMark.MISSED)
+                else -> d.mark == DayMark.DONE || (d.day < today && (d.mark == DayMark.SOME || d.mark == DayMark.MISSED))
+            }
+        }
+        return days.count { it.mark == DayMark.DONE } to days.size
+    }
+    val a = tally(span)
+    if (a.second == 0) return PeriodComparison(title, thisLabel, previousLabel, "", "", null, null, "Compared once today is over")
+    val b = tally(previous)
+    fun text(x: Pair<Int, Int>) = "${x.first} of ${if (x.second == 1) "1 day" else "${x.second} days"}"
+    return PeriodComparison(title, thisLabel, previousLabel, text(a), text(b), a.first.toDouble(), b.first.toDouble(), null)
 }
 
 /** The amount recorded each day of a month (amounts, time, counts), for "Recorded each day"; 0 on days before the

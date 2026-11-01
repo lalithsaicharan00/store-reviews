@@ -108,7 +108,7 @@ class HabitDetailsTest {
 
     /**
      * Milestones (Figma 2475:75, 1735:4; the rule of 17 Oct 2026): Floss in the days demo has 29 in a row and 30 times in
-     * total. The card shows the latest and the earlier ones, Next for each track; All milestones lists the tracks.
+     * total. The card shows the latest and the earlier ones, Next in a row and in total; All milestones lists every track.
      */
     @Test fun milestonesShowTheLatestEarlierAndNext_andAllMilestonesListsEachTrack() {
         launch("days")
@@ -117,7 +117,8 @@ class HabitDetailsTest {
         waitFor(hasTestTag("habit-milestone-shelf"), "the earlier ones")
         waitFor(hasTestTag("habit-milestone-next-inARow"), "Next in a row")
         waitFor(hasTestTag("habit-milestone-next-inTotal"), "Next in total")
-        waitFor(hasTestTag("habit-milestone-next-anniversary"), "the next anniversary")
+        // Figma's card counts anniversaries on All milestones only (QA, 1 Nov 2026).
+        waitGone(hasTestTag("habit-milestone-next-anniversary"), "the next anniversary on the card")
         waitFor(hasContentDescription("Next: 30 days in a row, 1 to go. Now 29.", substring = true), "the next in a row, spoken")
         tapTag("habit-milestones-see-all")
         waitFor(hasTestTag("all-milestones"), "All milestones")
