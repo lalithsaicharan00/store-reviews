@@ -106,6 +106,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.4.0")
     // Material 3 Expressive's loading indicator, drawn with the library Material's own uses (LoadingIndicator.kt).
     implementation("androidx.graphics:graphics-shapes:1.1.0")
+    // The privacy policy opens in a browser tab over the app (Custom Tabs, Figma 1183:375133).
+    implementation("androidx.browser:browser:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     debugImplementation("androidx.compose.ui:ui-tooling")

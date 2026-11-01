@@ -137,7 +137,11 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
             }
             Section("About") {
                 Row("Privacy policy", "Opens in your browser", Symbols.Policy, 0, 3, "settings-privacy-policy", trailing = { Icon(Symbols.OpenInNew, null) }) {
-                    runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY))) }
+                    // A browser tab over the app, ✕ back to Settings (Figma's "The policy in a browser tab"); a phone
+                    // with no browser that does tabs gets its plain browser.
+                    runCatching {
+                        androidx.browser.customtabs.CustomTabsIntent.Builder().setShowTitle(true).build().launchUrl(context, Uri.parse(PRIVACY_POLICY))
+                    }.onFailure { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(PRIVACY_POLICY))) } }
                 }
                 Row("Open-source licences", "The libraries we use", Symbols.Code, 1, 3, "settings-licences") { onOpen(SettingsPage.LICENCES) }
                 Row("Version", Support.appVersion, Symbols.Info, 2, 3, "settings-version", trailing = null, onClick = null)
