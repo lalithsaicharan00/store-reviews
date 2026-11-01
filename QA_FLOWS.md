@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 19 |
+| settings | 781:34017 | 23 | 20 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **263** |
+| **All** | | **290** | **264** |
 
 ## Bug log
 
@@ -767,7 +767,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | passed (phone, after flow 16’s fix: Week starts on → its line, Sunday to Saturday at Figma’s places (words at 80) → Monday → ← Settings “Week starts on · Monday”) |
 | 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | passed ↻ ⁴³ (phone: notifications allowed, Alarms & reminders and battery at Android’s defaults → “2 things to fix” → Allow alarms & reminders’ Open settings → Android’s own Alarms & reminders switch for Often Enough → on → back: the row done at once → battery’s Open settings → App info › App battery usage › Unrestricted → back: “All set. Reminders will come on time.” → Settings “Keep reminders coming · All set” with the ringing bell) |
 | 19 | 1199:16989 | Reminders, before anything is set up | No reminders yet → nothing allowed → 3 things to fix | passed ↻ (phone: no habits and nothing allowed → Settings “No reminders yet” → the page: “No habit has a reminder yet. …”, Allow notifications with Allow, Alarms & reminders and battery with Open settings, every row at Figma’s places, the footer 24 under them → with the design demo’s reminders, Settings “3 things to fix” with the alert bell; the app’s permissions put back as they were before flow 18) |
-| 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | not started |
+| 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | passed (phone, after flow 16’s fix: Theme → its line, System default · Light · Dark at Figma’s places (words at 80) → Light → ← Settings “Theme · Light”; Dark turns the whole app dark at once, the tint under the buttons too; back to System default) |
 | 21 | 1183:374861 | Vibration and sound | Sound when done → on | not started |
 | 22 | 1183:375417 | Privacy policy | Privacy policy → browser tab → back | not started |
 | 23 | 1183:375992 | Open-source licences | licences → Google's licences screen → back | not started |
