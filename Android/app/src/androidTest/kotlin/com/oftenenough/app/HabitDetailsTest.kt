@@ -274,7 +274,7 @@ class HabitDetailsTest {
     @Test fun aQuitHabitShowsItsRunsAndSeeAllRuns() {
         launch()
         openPage("Smoking")
-        waitFor(hasText("Quit since", substring = true), "Quit since …")
+        waitFor(hasText("Quitting since", substring = true), "Quitting since …")
         waitFor(hasTestTag("habit-streak-best").and(hasContentDescription("Longest run", substring = true)), "the longest run")
         waitFor(hasTestTag("habit-quit-clean").and(hasContentDescription("Days with no slip", substring = true)), "the days with no slip")
         tapTag("habit-see-all-runs")

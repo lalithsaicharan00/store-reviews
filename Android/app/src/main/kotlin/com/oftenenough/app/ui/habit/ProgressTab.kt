@@ -261,7 +261,7 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
                 val reached = milestones.reached.filter { it.track == track }
                 val count = reached.size + (if (next != null) 1 else 0)
                 item(key = "track-" + track.key) {
-                    Text(trackTitle(track, milestones.totalLabel), Modifier.padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 12.dp).semantics { heading() },
+                    Text(trackTitle(track, milestones), Modifier.padding(start = 16.dp, end = 16.dp, top = 20.dp, bottom = 12.dp).semantics { heading() },
                         style = AppType.labelLarge, color = s.primary)
                 }
                 if (next != null) item(key = "next-" + track.key) {
@@ -302,9 +302,9 @@ internal fun AllMilestonesPage(habitName: String, milestones: HabitMilestones, c
     }
 }
 
-private fun trackTitle(track: Milestone.Track, totalLabel: String): String = when (track) {
-    Milestone.Track.IN_A_ROW -> "In a row"
-    Milestone.Track.IN_TOTAL -> totalLabel
+private fun trackTitle(track: Milestone.Track, milestones: HabitMilestones): String = when (track) {
+    Milestone.Track.IN_A_ROW -> milestones.rowLabel
+    Milestone.Track.IN_TOTAL -> milestones.totalLabel
     Milestone.Track.ANNIVERSARY -> "Anniversaries"
     Milestone.Track.SINCE_SLIP -> "Since a slip"
 }
@@ -322,7 +322,7 @@ private fun periodView(store: HabitStore, habit: Habit, week: Boolean, anchor: I
     val span = store.rules.period(if (week) PeriodKind.WEEK else PeriodKind.MONTH, day)
     val range = if (week) ProgressRange.WEEK else ProgressRange.MONTH
     val quit = habit.kind == HabitKind.Quit
-    val card = if (quit) store.quitPeriodCard(habit, span, range, today) else store.periodCard(habit, span, range, today)
+    val card = if (quit) store.quitPeriodCard(habit, span, range, today, counted = true) else store.periodCard(habit, span, range, today)
     val title = if (week) pageWeekTitle(span.first, span.last, today) else pageMonthTitle(span.first, today)
     val caption = if (week) pageWeekCaption(span, today) else pageMonthCaption(span, today)
     val first = if (quit) store.rules.quitStartDay(habit) else store.rules.startDay(habit)
@@ -412,7 +412,7 @@ private class YearView(
 private fun yearView(store: HabitStore, habit: Habit, year: Int, today: Int): YearView {
     val span = store.rules.period(PeriodKind.YEAR, pageDay(year, 6, 1))
     val quit = habit.kind == HabitKind.Quit
-    val card = if (quit) store.quitPeriodCard(habit, span, ProgressRange.YEAR, today) else store.periodCard(habit, span, ProgressRange.YEAR, today)
+    val card = if (quit) store.quitPeriodCard(habit, span, ProgressRange.YEAR, today, counted = true) else store.periodCard(habit, span, ProgressRange.YEAR, today)
     val count = span.last - span.first + 1
     val cells = card?.days?.takeIf { it.size == count }?.map { it.heat } ?: List(count) { HeatCell.Blank }
     val starts = (1..12).map { pageDay(year, it, 1) - span.first }

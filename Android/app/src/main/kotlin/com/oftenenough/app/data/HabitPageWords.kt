@@ -269,11 +269,12 @@ fun pageSentenceOf(habit: Habit, weekStart: Int, partNames: List<String>, quitSi
 
 /**
  * Habit details' line under the name (Figma 1020:4052): the goal, then its times of day by name, "8 glasses a day |
- * Anytime"; a quit habit's "Quit since 2 Sep". Paused or archived is said by the card at the top, not here. The name is
+ * Anytime"; a quit habit's "Quitting since 2 Sep". Paused or archived is said by the card at the top, not here. The name is
  * just above it, so it isn't said again.
  */
 fun HabitStore.pageGoalLine(habit: Habit): String =
-    if (habit.kind == HabitKind.Quit) "Quit since " + DayWords.dayMonth(rules.quitStartDay(habit))
+    // Figma's quit habit's Progress: "Quitting since 27 Sep", as Day details says it (QA, 1 Nov 2026: "Quit since").
+    if (habit.kind == HabitKind.Quit) "Quitting since " + DayWords.dayMonth(rules.quitStartDay(habit))
     else HabitCopy.capitalized(HabitCopy.plan(habit, weekStart)) + " | " + habit.parts.joinToString(", ") { section(it).name }
 
 fun HabitStore.pageSentence(habit: Habit): String {
@@ -751,7 +752,7 @@ fun HabitStore.quitStats(habit: Habit, range: IntRange, now: Long = clock()): Qu
 }
 
 /** A quit habit's card: the run going on now, and the period's slips. */
-fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange, today: Int, now: Long = clock()): PeriodCard {
+fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange, today: Int, now: Long = clock(), counted: Boolean = false): PeriodCard {
     val stats = quitStats(habit, span, now)
     val running = today in span
     val perDay = HashMap<Int, Int>()
@@ -774,6 +775,14 @@ fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange
     val whenText = periodWhen(range, span, today)
     val slips = if (count == 0) "No slips $whenText" else if (count == 1) "1 slip $whenText" else "$count slips $whenText"
     val paused = running && isPaused(habit, today)
+    // Habit details' Week, Month and Year count the days (Figma, a quit habit's Progress; A23's word): "Clean on 6 of 6
+    // days so far" over "No slips this week", or "1 slip this month, on Sat 3 Oct" (QA, 1 Nov 2026: they showed the
+    // run, as Habits & Tasks' card does).
+    if (counted && !paused && stats.days > 0) {
+        val days = if (stats.days == 1) "1 day" else "${stats.days} days"
+        val one = stats.slips.singleOrNull()?.takeIf { range != ProgressRange.YEAR }?.let { ", on " + pageDayDate(this.today(it)) } ?: ""
+        return PeriodCard("Clean on ${stats.cleanDays} of $days" + (if (running) " so far" else ""), slips + one, strip)
+    }
     if (running && !paused) {
         // Figma's quit card (Habits & Tasks, the details pages; A23, A56): "19 days clean" over "Since 3 Oct · no slips
         // this week", the day the current run began.
@@ -793,20 +802,6 @@ fun HabitStore.moneySaved(habit: Habit, now: Long = clock()): String? {
     if (cost.amount <= 0) return null
     val clean = quitStats(habit, rules.quitStartDay(habit)..today(now), now).cleanDays
     return "Saved so far: " + HabitCopy.amount(Math.rint(clean * cost.amount), cost.currency)
-}
-
-/** Milestones for a quit run: 1, 3, 7 … 730 days, then every year after two, up to at least a year past [days]. */
-fun quitMilestoneLadder(days: Int): List<Int> {
-    val ladder = mutableListOf(1, 3, 7, 10, 14, 30, 45, 60, 90, 120, 180, 270, 365, 500, 730)
-    var year = 1095
-    while (year <= max(days, 730) + 365) { ladder.add(year); year += 365 }
-    return ladder
-}
-
-/** "1 day", "30 days", "1 year", "3 years". */
-fun quitMilestoneName(days: Int): String {
-    if (days >= 365 && days % 365 == 0) return if (days == 365) "1 year" else "${days / 365} years"
-    return if (days == 1) "1 day" else "$days days"
 }
 
 // ---------------------------------------------------------------------------------------------------------- History
@@ -1273,7 +1268,8 @@ data class MilestoneNext(
     val spoken: String,
 )
 
-data class HabitMilestones(val reached: List<Milestone>, val next: List<MilestoneNext>, val totalLabel: String = "In total") {
+data class HabitMilestones(val reached: List<Milestone>, val next: List<MilestoneNext>, val totalLabel: String = "In total",
+                           val rowLabel: String = "In a row") {
     /** Show Streaks off: no in-a-row medals or Next row, and no days since a slip; totals and anniversaries stay. */
     fun shown(streaks: Boolean): HabitMilestones = if (streaks) this
     else copy(reached = reached.filter { it.track.keepsWithoutStreaks }, next = next.filter { it.track.keepsWithoutStreaks })
@@ -1435,28 +1431,72 @@ private fun HabitStore.countedDays(habit: Habit, run: Run, values: List<Int>, to
     return found
 }
 
-/** A quit habit's one track, days since a slip: each value reached in the first run long enough, at its start plus that
- *  many days. */
+/**
+ * A quit habit's milestones on the decided rule (Milestones doc; Figma, a quit habit's Progress 1-4; the pop-ups' own):
+ * days clean in a row (3, 7, 14, 30 …, each dated its run's start plus that many days), clean days in total (10, 25,
+ * 50 …, the days with no slip, as the record's Days with no slip counts them) and anniversaries since quitting began,
+ * when the 30 days before were clean. Was one track, "N days since a slip" (QA, 1 Nov 2026).
+ */
 private fun HabitStore.quitMilestones(habit: Habit, today: Int): HabitMilestones {
     val now = clock()
     val history = rules.quitHistory(habit, now)
-    val current = history.lastOrNull()?.let { if (it.ending == QuitRun.Ending.ONGOING) (it.seconds(now) / 86400).toInt() else 0 } ?: 0
-    val best = ((history.maxOfOrNull { it.seconds(now) } ?: 0.0) / 86400).toInt()
-    val ladder = quitMilestoneLadder(best)
-    fun number(n: Int) = if (n >= 365 && n % 365 == 0) "${n / 365}" else "$n"
+    fun whole(r: QuitRun) = (r.seconds(now) / 86400).toInt()
+    val current = history.lastOrNull()?.takeIf { it.ending == QuitRun.Ending.ONGOING }?.let(::whole) ?: 0
+    val best = history.maxOfOrNull(::whole) ?: 0
+    val bucket = MilestoneBucket.DAYS
+    fun row(n: Int) = "$n ${if (n == 1) "day" else "days"} clean"
     val reached = ArrayList<Milestone>()
-    for (n in ladder) {
-        if (n > best) continue
-        val run = history.firstOrNull { (it.seconds(now) / 86400).toInt() >= n } ?: continue
-        val day = this.today(run.start + n * 86_400_000L)
-        val name = quitMilestoneName(n)
-        reached.add(pageMilestone(Milestone.Track.SINCE_SLIP, n, "days", number(n), "$name since a slip", name, "since a slip", name, day, today))
+    val next = ArrayList<MilestoneNext>()
+    var longest = 0
+    for (run in history) {
+        val length = whole(run)
+        if (length <= longest) continue
+        for (n in (longest + 1..length).filter { bucket.isRowMilestone(it) }) {
+            reached.add(pageMilestone(Milestone.Track.IN_A_ROW, n, "clean", "$n", row(n), row(n), null, row(n), this.today(run.start + n * 86_400_000L), today))
+        }
+        longest = length
     }
+    bucket.nextRow(best)?.let { t -> next.add(milestoneNextRow(Milestone.Track.IN_A_ROW, t, "$t", row(t), current, best)) }
+    val start = rules.quitStartDay(habit)
+    val marks = if (start <= today) quitStats(habit, start..today, now).marks else emptyList()
+    var total = 0
+    var target = bucket.nextTotal(1.0, 0.0)
+    for ((day, mark) in marks) {
+        if (mark != DayMark.DONE) continue
+        total++
+        while (target != null && total >= target) {
+            val words = "${Format.amount(target)} clean days in total"
+            reached.add(pageMilestone(Milestone.Track.IN_TOTAL, target.toInt(), "clean-total", medalNumber(target), words,
+                words.removeSuffix(" in total"), null, words, day, today))
+            target = bucket.nextTotal(1.0, target)
+        }
+    }
+    target?.let { v ->
+        val words = "${Format.amount(v)} clean days in total"
+        val toGo = Format.amount(max(0.0, v - total))
+        next.add(MilestoneNext(Milestone.Track.IN_TOTAL, v.toInt(), medalNumber(v), words, words,
+            "$toGo to go" + (if (total > 0) " · $total so far" else ""), min(1.0, total / v), "Next: $words, $toGo to go."))
+    }
+    val slipDays = rules.slips(habit, now).map { this.today(it) }.toHashSet()
+    var years = 0
+    while (start <= today) {
+        val day = pageDate(start).plusYears((years + 1).toLong()).toEpochDay().toInt()
+        if (day > today) break
+        years++
+        if ((day - 29..day).none { it in slipDays }) {
+            val name = if (years == 1) "1 year" else "$years years"
+            reached.add(pageMilestone(Milestone.Track.ANNIVERSARY, years, "years", "${years}y", name, name, null, name, day, today))
+        }
+    }
+    val lastYear = pageDate(start).plusYears(years.toLong()).toEpochDay().toInt()
+    val nextYear = pageDate(start).plusYears((years + 1).toLong()).toEpochDay().toInt()
+    val name = if (years + 1 == 1) "1 year" else "${years + 1} years"
+    val left = nextYear - today
+    next.add(MilestoneNext(Milestone.Track.ANNIVERSARY, years + 1, "${years + 1}y", name, name,
+        DayWords.long(nextYear) + " · " + (if (left == 1) "1 day to go" else "$left days to go"),
+        ((today - lastYear).toDouble() / max(1, nextYear - lastYear)).coerceIn(0.0, 1.0), "Next: $name, on ${DayWords.long(nextYear)}."))
     reached.sortWith(newestFirst)
-    val target = ladder.firstOrNull { it > best }
-    val next = milestoneNextRow(Milestone.Track.SINCE_SLIP, target, target?.let { number(it) } ?: "",
-        target?.let { quitMilestoneName(it) + " since a slip" } ?: "", current, best)
-    return HabitMilestones(reached, listOf(next))
+    return HabitMilestones(reached, next, "Clean days in total", "Days clean in a row")
 }
 
 // ---------------------------------------------------------------------------------------------------------- Habit details, 19 Oct 2026
@@ -1518,7 +1558,7 @@ fun HabitStore.quitRecord(habit: Habit, today: Int): QuitRecord {
         best?.let { pageRunSpan(today(it.start), it.end?.let { e -> today(e) } ?: today, today) }, "Longest run, $bestDays ${days(bestDays)}")
     val n = stats.slips.size
     val slips = RecordFact("Slips", HabitCopy.number(n.toDouble()), "since " + DayWords.dayMonth(start),
-        lastSlip?.let { "Last on " + pageShortDate(it, today) }, "$n ${if (n == 1) "slip" else "slips"} since " + DayWords.dayMonth(start))
+        lastSlip?.let { (if (n == 1) "On " else "Last on ") + pageShortDate(it, today) }, "$n ${if (n == 1) "slip" else "slips"} since " + DayWords.dayMonth(start))
     val total = stats.days
     val clean = RecordFact("Days with no slip", HabitCopy.number(stats.cleanDays.toDouble()), "of $total ${days(total)}",
         if (total > 0) "${Math.round(stats.cleanDays * 100.0 / total)}% of days" else null, "Days with no slip, ${stats.cleanDays} of $total")
