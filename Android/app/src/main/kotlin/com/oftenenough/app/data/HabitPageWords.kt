@@ -164,6 +164,18 @@ enum class ProgressRange(val noun: String, val goalPeriod: GoalPeriod, val kind:
     YEAR("year", GoalPeriod.YEAR, PeriodKind.YEAR),
 }
 
+/**
+ * When a period's total was, after its number: "this week" while it runs; then "that week", "in September" (with its
+ * year when it isn't this one), "in 2025", as Figma's cards write them ("212 glasses in September"; QA, 1 Nov 2026).
+ */
+fun periodWhen(range: ProgressRange, span: IntRange, today: Int): String = when {
+    today in span -> "this ${range.noun}"
+    range == ProgressRange.MONTH -> "in " + HabitCopy.monthNames[pageMonth(span.first) - 1] +
+        (if (pageYear(span.first) == pageYear(today)) "" else " ${pageYear(span.first)}")
+    range == ProgressRange.YEAR -> "in ${pageYear(span.first)}"
+    else -> "that ${range.noun}"
+}
+
 /** How a habit's numbers are shown: ten shapes cover every type and rule (the iPhone's `ProgressShape`). */
 enum class ProgressShape { ONCE, TIMES, AMOUNT, TIME, CHECKLIST, PERIOD_TIMES, PERIOD_TOTAL, PERIOD_DAYS, LIMIT_DAY, LIMIT_PERIOD }
 
@@ -342,7 +354,7 @@ fun HabitStore.periodCard(habit: Habit, span: IntRange, range: ProgressRange, to
     val doneDays = counted.count { it.mark == DayMark.DONE }
     val extraDays = strip.count { it.extra && it.mark == DayMark.DONE }
     val soFar = if (running) " so far" else ""
-    val whenText = if (running) "this $noun" else "that $noun"
+    val whenText = periodWhen(range, span, today)
     val total = strip.sumOf { amounts[it.day] ?: 0.0 }
     fun dayCount(n: Int) = if (n == 1) "1 day" else "$n days"
     fun of(done: Int, all: Int) = "$done of ${dayCount(all)}$soFar"
@@ -544,7 +556,7 @@ private fun HabitStore.periodText(
     val kind = pagePeriodKind(rule)
     val noun = range.noun
     val thisText = if (running) " this $noun" else ""
-    val thisOrThat = if (running) " this $noun" else " that $noun"
+    val thisOrThat = " " + periodWhen(range, span, today)
     val loggedDays = strip.count { (amounts[it.day] ?: 0.0) > 0 }
     fun count(v: Double) = HabitCopy.number(v)
     fun pv(v: Double) = progressValue(v, rule)
@@ -749,7 +761,7 @@ fun HabitStore.quitPeriodCard(habit: Habit, span: IntRange, range: ProgressRange
         WeekCardDay(day, shown, if (mark == DayMark.DONE) 1.0 else 0.0, false, false, n > 0, false, heat)
     }
     val count = stats.slips.size
-    val whenText = if (running) "this ${range.noun}" else "that ${range.noun}"
+    val whenText = periodWhen(range, span, today)
     val slips = if (count == 0) "No slips $whenText" else if (count == 1) "1 slip $whenText" else "$count slips $whenText"
     val paused = running && isPaused(habit, today)
     if (running && !paused) {

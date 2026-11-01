@@ -161,7 +161,7 @@ private fun shortDays(habit: Habit, weekStart: Int): String {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, onDismiss: () -> Unit) {
+fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, sayPastAdds: Boolean = false, onDismiss: () -> Unit) {
     val habit = store.habit(habitId) ?: run { onDismiss(); return }
     // While it's open, milestones logged here are this sheet's, not Today's underneath.
     DisposableEffect(habitId) {
@@ -177,16 +177,19 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, o
         val snackbar = com.oftenenough.app.ui.components.LocalAppSnackbar.current ?: remember { SnackbarHostState() }
         val scope = rememberCoroutineScope()
         Box(Modifier.fillMaxHeight().semantics { testTagsAsResourceId = true }) {
-            DayDetailsContent(habit, day, store, nav, onDismiss) { words ->
-                // A log added to a past day says what it added and where, with Undo (Habit details, Figma 1373:2, 4.3).
+            // Over a page that shows a habit's past (Habit details, Habits & Tasks), a log added to an earlier day says what it
+            // added and where, with Undo (Figma's details pages, flow 7: "1 glass added to Sat 19 Sep"); over Today, whose
+            // own day is on screen, it says nothing (Day details' Yesterday flow).
+            DayDetailsContent(habit, day, store, nav, onDismiss, if (!sayPastAdds) null else { words ->
                 scope.launch {
                     snackbar.currentSnackbarData?.dismiss()
                     if (snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) {
                         store.entries(habit.id, day).filter { it.stepId == null }.maxByOrNull { it.createdAt }?.let { store.undoEntry(it.id) }
                     }
                 }
-            }
-            AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(16.dp))
+            })
+            // 4 here and the snackbar's own 12: 16 from the edges, as on the pages (QA, 1 Nov 2026: it sat 28 in).
+            AppSnackbarHost(snackbar, Modifier.align(Alignment.BottomCenter).navigationBarsPadding().padding(4.dp))
         }
     }
 }
@@ -528,8 +531,10 @@ internal fun LogTrailing(entry: Entry, habit: Habit, opens: Boolean, time: andro
         else AppButton("Undo", onUndo, Modifier.semantics { contentDescription = entry.undoLabel(habit) + " at " + clockText(entry) }, style = ButtonStyle.Text)
     }
 
+/** An earlier day in a snackbar: "yesterday", else "Sat 19 Sep" (Figma's details pages, flow 7). */
+private fun pastDay(day: Int, today: Int): String = if (day == today - 1) "yesterday" else DayWords.short(day).replace(",", "")
+
 fun logsTitle(habit: Habit, day: Int, today: Int, period: IntRange? = null): String {
-    val short = DayWords.short(day).replace(",", "")
     // "This week’s checks", "This month’s logs" (Figma's week and month goals); an earlier one by when it began.
     if (period != null) {
         val what = when (habit.kind) { HabitKind.Check -> "checks"; HabitKind.Quit -> "slips"; else -> "logs" }
@@ -537,9 +542,10 @@ fun logsTitle(habit: Habit, day: Int, today: Int, period: IntRange? = null): Str
         return if (today in period) "This $noun’s $what" else "${what.replaceFirstChar { it.uppercase() }}, $noun of ${DayWords.short(period.first)}"
     }
     return when (habit.kind) {
-        HabitKind.Quit -> if (day == today) "Slips today" else if (day == today - 1) "Slips yesterday" else "Slips on $short"
-        // "Yesterday’s logs" (Figma 930:42775); an older day by its date.
-        else -> if (day == today) "Today’s logs" else if (day == today - 1) "Yesterday’s logs" else "Logs for $short"
+        HabitKind.Quit -> if (day == today) "Slips today" else if (day == today - 1) "Slips yesterday" else "Slips that day"
+        // "Yesterday’s logs" (Figma 930:42775); an older day "Logs that day", its date being the sheet's title (Figma's
+        // details pages, flows 7 and 10; QA, 1 Nov 2026: "Logs for Fri 9 Oct").
+        else -> if (day == today) "Today’s logs" else if (day == today - 1) "Yesterday’s logs" else "Logs that day"
     }
 }
 
@@ -597,7 +603,10 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
                 if (done) store.undoLast(habit, day) else store.addProgress(habit, 1.0, day, source = src)
             })
         } else if (store.rules.countsUp(habit, day)) {
-            listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") { store.addProgress(habit, 1.0, day, source = src) })
+            listOf(DayAction("Add a check", ask, !skipped, tag = "day-add-one") {
+                store.addProgress(habit, 1.0, day, source = src)
+                if (day < today) onAdded?.invoke(HabitCopy.amount(1.0, ruled.checkUnit ?: "times") + " added to " + pastDay(day, today))
+            })
         } else {
             val done = store.rules.isDayMet(ruled, day)
             listOf(DayAction(if (done) "Undo done" else "Mark done", !done && ask, !skipped, tag = "day-done") { store.setDayDone(!done, habit, day) })
@@ -609,8 +618,9 @@ private fun dayActions(habit: Habit, ruled: Habit, day: Int, editable: Boolean, 
             if (step == null) listOf(DayAction("Log", ask, !skipped, tag = "day-add-entry", run = manual))
             else listOf(
                 DayAction("+" + Format.amount(step), ask, !skipped, "Add " + HabitCopy.amount(step, k.unit), "day-add-step") {
-                    // A past day's log says nothing: history added later isn't celebrated (Figma 930:43143).
+                    // A past day's log isn't celebrated (Figma 930:43143); over Habit details it says where it went.
                     store.increment(habit, day, src)
+                    if (day < today) onAdded?.invoke(HabitCopy.amount(step, k.unit) + " added to " + pastDay(day, today))
                 },
                 DayAction("Log", enabled = !skipped, tag = "day-add-entry", run = manual),
             )

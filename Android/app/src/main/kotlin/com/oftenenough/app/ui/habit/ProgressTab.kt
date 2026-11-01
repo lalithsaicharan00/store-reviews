@@ -376,7 +376,8 @@ private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today
                 HistorySection("Recorded each day") {
                     val ruled = remember(habit, revision, view.span) { store.rule(habit, minOf(view.span.last, today)) }
                     HistoryDailyChart(bars.first, bars.second, view.todayIndex, habit.color, { progressValue(it, ruled) },
-                        "Recorded each day in " + pageMonthTitle(view.span.first, today) + (card.detail?.let { ": $it" } ?: ""),
+                        "Recorded each day in " + pageMonthTitle(view.span.first, today) +
+                            (card.detail?.let { ": " + it.removeSuffix(" in " + pageMonthTitle(view.span.first, today)) } ?: ""),
                         Modifier.semantics { testTag = "habit-month-chart" })
                 }
             }

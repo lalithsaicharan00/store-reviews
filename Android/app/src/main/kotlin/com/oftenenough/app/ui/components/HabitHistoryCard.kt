@@ -336,7 +336,8 @@ private fun Squares(
  * corners 2, two thirds of its slot, from the baseline; a bar's height is the day's value ÷ the [goal] × 96 (at most
  * 120). Lines in Outline variant at the goal, at half of it and at the baseline; the goal's and the half's amounts in
  * the habit's own words ([label]: "8 glasses", "5 min") in Label Small On surface variant at the end, 6 from the
- * bars; under them the 1st and today's day ([todayIndex]). With no daily goal the most in a day takes its place. One
+ * bars; under them the 1st and today's day ([todayIndex]). Today's bar, still under the goal, is the habit's Pale, as
+ * Figma's (QA, 1 Nov 2026). With no daily goal the most in a day takes its place. One
  * Canvas, worked out when the values change (S12); TalkBack reads [description].
  */
 @Composable
@@ -344,6 +345,7 @@ fun HistoryDailyChart(values: List<Double>, goal: Double?, todayIndex: Int?, col
     val s = MaterialTheme.colorScheme
     val c = appColors
     val bar = c.habit(color)
+    val pale = c.habitPale(color)
     val line = s.outlineVariant
     val measurer = rememberTextMeasurer()
     val style = AppType.labelSmall.copy(color = s.onSurfaceVariant)
@@ -365,11 +367,13 @@ fun HistoryDailyChart(values: List<Double>, goal: Double?, todayIndex: Int?, col
                 val unit = 96.dp.toPx() / reference.toFloat()
                 val radius = CornerRadius(2.dp.toPx())
                 val bars = Path()
+                val open = Path()
                 values.forEachIndexed { i, v ->
                     if (v <= 0 || !v.isFinite()) return@forEachIndexed
                     val h = minOf(plot, v.toFloat() * unit)
                     val left = i * slot + (slot - thick) / 2
-                    bars.addRoundRect(RoundRect(left, plot - h, left + thick, plot, radius, radius,
+                    val under = i == todayIndex && goal != null && goal > 0 && v < goal
+                    (if (under) open else bars).addRoundRect(RoundRect(left, plot - h, left + thick, plot, radius, radius,
                         CornerRadius.Zero, CornerRadius.Zero))
                 }
                 val stroke = 1.dp.toPx()
@@ -378,6 +382,7 @@ fun HistoryDailyChart(values: List<Double>, goal: Double?, todayIndex: Int?, col
                 onDrawBehind {
                     for (y in listOf(goalY, halfY, plot)) drawRect(line, Offset(0f, y - stroke / 2), Size(width, stroke))
                     drawPath(bars, bar)
+                    drawPath(open, pale)
                     drawText(top, topLeft = Offset(width + 6.dp.toPx(), goalY - top.size.height / 2f))
                     drawText(half, topLeft = Offset(width + 6.dp.toPx(), halfY - half.size.height / 2f))
                     for ((i, t) in days) {

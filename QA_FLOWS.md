@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 6 |
+| details pages | 298:2 | 24 | 7 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **198** |
+| **All** | | **290** | **199** |
 
 ## Bug log
 
@@ -289,6 +289,10 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 247. Details pages 4 · ← from Streaks put Progress back at the tabs, not where it was: the effect that starts a new tab at its top ran again when the list came back from under Streaks (or All milestones, or History's search). It acts only on a real change of tab now.
 248. Details pages 5 · All milestones' 40 dp rings wrote a three-digit number ("200") in Label Large, filling the ring to its band; Figma's is Label Medium there (Label Large stays in the 52 dp ring) (`CircularProgressLabel`).
 249. Details pages 6 · the open key was one white card; Figma's is two parts 2 apart, the page showing between them as a line under the header (corners 24 over 4, then 4 over 24), so every row also sat 2 dp high.
+250. Details pages 7 · a past month's total said "176 glasses that month"; Figma: "212 glasses in September" (a past week keeps "that week"; a past year "in 2025"); the chart's TalkBack line no longer names the month twice (`periodWhen`).
+251. Details pages 7 · Day details on a past day said "For Fri, 9 Oct" where Figma (and the Day details page's Yesterday) says what's left, "4 glasses to go"; only a day to come says "For …" (`DayStatus`).
+252. Details pages 7 · +1 on an earlier day over Habit details said nothing; Figma: "1 glass added to Sat 19 Sep" · Undo (over Today's own yesterday it stays quiet, as the Day details page's frames have it). Its logs' heading said "Logs for Fri 9 Oct"; Figma: "Logs that day". The sheet's snackbar sat 28 dp in, the pages' 16.
+253. Details pages 7 · the chart drew today's bar, under its goal, in the full colour; Figma draws it in the habit's Pale.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -316,6 +320,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ²⁴ Habits & tasks 18: no habits from an empty test launch; every habit archived by archiving all 16 demo habits; a month paused all through by restoring Water plants (archived 15 Sep), whose October then reads "Paused all of October". The first week (every habit started Wed) can't be made from the demos: its parts (‹ off before the earliest start, blank days before a start, "so far") were seen on Floss, flow 16, and on the Habits page's first week in flows 2 and 3.
 ²⁵ Habits & tasks 27: ✓ on Today's Pay electricity bill puts it at the end of Tasks' Today, "Done 10:30 AM", faded as flow 20's done rows (Figma's frame caption says struck through; its frame isn't). The next day can't be reached on a test launch, whose clock sets the hour, not the date: the move to Completed at the day's end was seen on this demo's 32 tasks done before today.
 ²⁶ Details pages 1: the design demo's Water began 27 Sep 2025 and was logged from 10 Oct 2026 (Figma's began 2 Sep 2026), so its record reads "23 of 401 days" and its year is mostly ✕; and today is Sun 1 Nov, the week's and month's first day, so Week and Month were compared on last week and October. Year in pixels is Plus: checked with Plus on, as Figma's frame draws it.
+²⁷ Details pages 7: done on October's Fri 9 Oct (the demo's Water has nothing in September). Figma's Day details frames here are older copies (titled "Today", "Fri, …" aside, D-56); the app follows the Day details page where they differ. Its September frame bolds Friday's letter on a past month, where Habits & Tasks' past week bolds none: the app bolds today's letter only on the period holding today.
 
 ## Open questions for the user
 
@@ -557,7 +562,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 4 | 324:2 | See all streaks | See all streaks → Streaks → ← | passed ↻ (several runs seen on the year demo's Skincare: the design demo's Water has one) |
 | 5 | 325:2 | Milestones: All milestones, and how they work | See all 4 → All milestones → How milestones work → reached one: pop-up → Close | passed ↻ |
 | 6 | 326:2 | What the squares mean | folded → open → folded | passed ↻ |
-| 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | not started |
+| 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | passed ↻ ²⁷ |
 | 8 | 329:2 | Month for other kinds of goal | Gym 3×/week → Read 20 min | not started |
 | 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | not started |
 | 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | not started |

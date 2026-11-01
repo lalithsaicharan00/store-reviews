@@ -184,6 +184,9 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
 
         fun make(habit: Habit, day: Int, store: HabitStore): DayStatus {
             val isToday = day == store.today()
+            // What's left is said for today and every day before it ("2 glasses to go" on yesterday's, Figma's Day
+            // details); only a day still to come says "For Thu, 22 Oct" (QA, 1 Nov 2026: a past day said "For Fri, 9 Oct").
+            val leftToSay = day <= store.today()
             val dayWord = if (isToday) "today" else "this day"
             val shortDay = DayWords.short(day)
             val r = store.rule(habit, day)
@@ -267,7 +270,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                         val goal = rules.dayGoal(r)
                         val left = goal - progress
                         // "1 to go" (Figma 910:24344), as an amount says what's left.
-                        val detail = if (left <= 0) "Goal reached" else if (isToday) "${HabitCopy.number(left)} to go" else "For $shortDay"
+                        val detail = if (left <= 0) "Goal reached" else if (leftToSay) "${HabitCopy.number(left)} to go" else "For $shortDay"
                         return DayStatus("${HabitCopy.number(progress)} of ${HabitCopy.amount(goal, unit)}", detail)
                     }
                     val done = rules.isDayMet(r, day)
@@ -319,7 +322,7 @@ data class DayStatus(val title: String, val detail: String? = null, val running:
                     } else if (unit.trim() in HabitCopy.currencies) "${HabitCopy.amount(saved, unit)} of ${HabitCopy.amount(goal, unit)}"
                     else "${HabitCopy.number(saved)} of ${HabitCopy.amount(goal, unit)}"
                     // What's left to the nearest minute, never under 1 while any is left (6:42 of 10: "3 min to go"; Figma).
-                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (isToday) "${text(if (timed) maxOf(1.0, Math.rint(goal - saved)) else goal - saved)} to go" else "For $shortDay"
+                    var detail: String? = if (running != null) null else if (saved >= goal) "Goal reached" else if (leftToSay) "${text(if (timed) maxOf(1.0, Math.rint(goal - saved)) else goal - saved)} to go" else "For $shortDay"
                     val f = r.frequency
                     if (f is Frequency.Flexible) {
                         val count = rules.flexibleProgress(habit, day)

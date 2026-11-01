@@ -620,7 +620,7 @@ private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composa
     var target by rememberSaveable { mutableStateOf<String?>(null) }
     content { h, d -> target = h.id + "|" + d }
     target?.split("|")?.let { (id, d) ->
-        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current, LocalDeleteWithUndo.current) { target = null }) { target = null }
+        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current, LocalDeleteWithUndo.current) { target = null }, sayPastAdds = true) { target = null }
     }
 }
 
