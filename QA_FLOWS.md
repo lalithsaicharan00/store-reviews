@@ -18,14 +18,14 @@ no screen with a keyboard could be compared with Figma.
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
-| habits & tasks | 269:148 | 35 | 34 |
+| habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 0 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **191** |
+| **All** | | **290** | **192** |
 
 ## Bug log
 
@@ -248,6 +248,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 210. Habits & tasks 13 · deleting an archived habit said "Its history and notes are deleted too."; Figma: "Its 22 days of logs, notes and streaks go too. To keep them, leave it archived." (the days it has logs); with no logs, "It goes for good, with its notes. To keep it, leave it archived."
 237. Habits & tasks 33 (Create new's task form) · a task's Date row opened a menu (Today, Tomorrow · Mon, 2 Nov, Pick a date…, No date); Figma (1169:32560, Create new's notes): "Tapping Date opens Android's date picker at once, no menu. Days before today can't be picked; No date is on the picker's left." `AppDatePicker` takes a left button; TasksPageTest taps No date there.
 238. Habits & tasks 33 (every date picker) · Cancel and OK sat 6 from the dialog's edge; Figma's Actions are 12 in from each side.
+239. Habits & tasks 35 (every connected button group) · at Font size 200 % "One-time" and "Repeating" broke mid-word ("One-tim / e"): the ✓ gave way but the 24 dp side padding didn't. The padding now gives way next, to 8, so the word fits whole.
+240. Habits & tasks 35 · at 200 % a task's name and line wrapped to two or three lines; Figma keeps each to one line ending in … ("Pay electricit…", "Planned for We…") and lets the row grow.
 211. Habits & tasks 13 (Habit details) · an archived habit's card said "Archived 15 Sep"; Figma's (here and on the details pages): "Archived on 3 Sep" ("Archived today" the same day).
 212. Habits & tasks 13 (every empty state) · the body ran the width of its title; every Figma empty state's body is 24 further in (280 on a 360 phone), so "When you archive a habit, it waits / here with its history." `EmptyState` does it for all (Today's Nothing planned had its own 280).
 213. Habits & tasks 14 · a habit's line in search was its Today line ("Afternoon · 30 min · Every day"); Figma: its time of day and its card's goal, "Afternoon · 30 min a day".
@@ -529,7 +531,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 32 | 314:466 | Search: no match (from Tasks) | “plumber” → Add → Add a task → New task → Add · Show | passed (What kind of task? comes between, as Create new's own flows have it; these frames skip it) |
 | 33 | 315:2 | +: a new task | + → New task Buy groceries, Tomorrow → Add · Show → Show | passed ↻ |
 | 34 | 315:542 | Tap a task: its details, and back | Car service → Task details → ← | passed (this frame's "One time · Tue 4 Nov" is older than the details page's own "One-time · …", 1136:9271, which the app follows) |
-| 35 | 316:2 | Tasks: empty states and Font size 200% | No tasks → Repeating none → 200 % | not started |
+| 35 | 316:2 | Tasks: empty states and Font size 200% | No tasks → Repeating none → 200 % | passed ↻ (Repeating's own empty state needs one-time tasks and none repeating, which no demo has: its words are Figma's; Font size put back to 100 %) |
 
 ## Details pages (298:2)
 

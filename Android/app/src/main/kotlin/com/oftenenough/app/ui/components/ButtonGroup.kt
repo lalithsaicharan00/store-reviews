@@ -45,11 +45,16 @@ fun <T> AppConnectedButtons(options: List<Pair<T, String>>, selected: T, modifie
     val s = MaterialTheme.colorScheme
     val colors = ToggleButtonDefaults.colors(containerColor = s.secondaryContainer, contentColor = s.onSecondaryContainer)
     BoxWithConstraints(modifier.fillMaxWidth()) {
-    // Each button's room for its label: its share of the row, less its padding at the sides.
-    val side = if (options.size >= 3) 12.dp else ButtonDefaults.ContentPadding.calculateLeftPadding(LayoutDirection.Ltr)
-    val room = (maxWidth - ButtonGroupDefaults.ConnectedSpaceBetween * (options.size - 1)) / options.size - side * 2
+    // Each button's room for its label: its share of the row, less its padding at the sides. With large text the
+    // padding gives way next (to 8), after the ✓, so a word ("One-time" at 200 %) never breaks in two (QA, Habits &
+    // tasks 35: "One-tim / e").
     val measure = rememberTextMeasurer()
     val density = LocalDensity.current
+    val share = (maxWidth - ButtonGroupDefaults.ConnectedSpaceBetween * (options.size - 1)) / options.size
+    val usual = if (options.size >= 3) 12.dp else ButtonDefaults.ContentPadding.calculateLeftPadding(LayoutDirection.Ltr)
+    val widest = with(density) { options.maxOf { measure.measure(it.second, MaterialTheme.typography.labelLarge, maxLines = 1).size.width }.toDp() }
+    val side = if (widest <= share - usual * 2) usual else 8.dp
+    val room = share - side * 2
     Row(Modifier.fillMaxWidth().semantics { tag?.let { testTag = it } }, horizontalArrangement = Arrangement.spacedBy(ButtonGroupDefaults.ConnectedSpaceBetween)) {
         options.forEachIndexed { i, (value, label) ->
             val on = value == selected
@@ -67,7 +72,7 @@ fun <T> AppConnectedButtons(options: List<Pair<T, String>>, selected: T, modifie
                     else -> ButtonGroupDefaults.connectedMiddleButtonShapes()
                 },
                 colors = colors,
-                contentPadding = if (options.size >= 3) PaddingValues(horizontal = 12.dp, vertical = 8.dp) else ButtonDefaults.ContentPadding,
+                contentPadding = if (side == usual && options.size < 3) ButtonDefaults.ContentPadding else PaddingValues(horizontal = side, vertical = 8.dp),
             ) {
                 if (check) { Icon(Symbols.Check, null, Modifier.size(ToggleButtonDefaults.IconSize)); Spacer(Modifier.size(ToggleButtonDefaults.IconSpacing)) }
                 Text(label, maxLines = 2, textAlign = TextAlign.Center)

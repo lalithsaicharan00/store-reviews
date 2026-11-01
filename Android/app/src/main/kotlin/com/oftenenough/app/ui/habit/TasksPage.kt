@@ -49,6 +49,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextOverflow
 import com.oftenenough.app.ui.components.ListAvatar
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
@@ -349,8 +350,9 @@ internal fun TaskRow(
             HabitIcon(task.symbol, task.color, modifier = if (done) Modifier.alpha(0.38f) else Modifier)
             Spacer(Modifier.width(16.dp))
             Column(Modifier.weight(1f).padding(end = if (menu == null) 12.dp else 0.dp).padding(vertical = 6.dp)) {
-                Text(task.name, style = AppType.titleMedium, color = if (done) c.secondary else c.ink)
-                for (l in lines) Text(l, style = AppType.bodyMedium, color = c.secondary)
+                // One line each, ending in … (Figma 1134:231375: names stay one line at 200 %; the row grows taller).
+                Text(task.name, style = AppType.titleMedium, color = if (done) c.secondary else c.ink, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                for (l in lines) Text(l, style = AppType.bodyMedium, color = c.secondary, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
             if (menu != null) Box {
                 StandardIconButton(Symbols.MoreVert, "More for ${task.name}", { open = true }, Modifier.semantics { testTag = "tasks-row-more-" + task.name })
