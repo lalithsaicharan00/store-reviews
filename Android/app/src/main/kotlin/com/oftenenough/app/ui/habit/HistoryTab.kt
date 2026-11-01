@@ -12,6 +12,7 @@ import com.oftenenough.app.ui.components.ListChevron
 import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppAssistChip
+import com.oftenenough.app.ui.components.drawnHeight
 import com.oftenenough.app.ui.components.AppFilterChip
 import com.oftenenough.app.ui.components.SearchBarButton
 import com.oftenenough.app.ui.components.SearchHeader
@@ -178,9 +179,12 @@ internal fun LazyListScope.historyItems(
 @Composable
 private fun HistoryChips(filter: HistoryFilter, onFilter: (HistoryFilter) -> Unit, onGoToDate: () -> Unit) {
     FlowRow(Modifier.pageItem().fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        AppFilterChip("All", filter == HistoryFilter.ALL, { onFilter(HistoryFilter.ALL) }, tag = "history-all")
-        AppFilterChip("With notes", filter == HistoryFilter.NOTES, { onFilter(HistoryFilter.NOTES) }, tag = "history-with-notes")
-        AppAssistChip("Go to date", onGoToDate, tag = "history-go-to-date")
+        // Laid out at the chips' drawn 32, their 48 touch targets spreading past: Figma's row is 32 tall, the month 16 under
+        // it (QA, 1 Nov 2026: the chips sat 8 low and the months 16).
+        val chip = Modifier.drawnHeight(32.dp)
+        AppFilterChip("All", filter == HistoryFilter.ALL, { onFilter(HistoryFilter.ALL) }, chip, tag = "history-all")
+        AppFilterChip("With notes", filter == HistoryFilter.NOTES, { onFilter(HistoryFilter.NOTES) }, chip, tag = "history-with-notes")
+        AppAssistChip("Go to date", onGoToDate, chip, tag = "history-go-to-date")
     }
 }
 

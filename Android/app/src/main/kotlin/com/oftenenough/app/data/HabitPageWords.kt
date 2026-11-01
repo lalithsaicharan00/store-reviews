@@ -866,7 +866,10 @@ fun HabitStore.history(habit: Habit, today: Int): List<HistoryMonth> {
             }
             day--
         }
-        if (rows.isNotEmpty()) months.add(HistoryMonth(first, historyMonthTitle(first), card?.headline ?: "", rows))
+        // History counts a month's days as "Goal met on 22 of 29 days" (Figma's History) where the Month card says
+        // "Reached on", "Done on" or "Every step on"; quit, limit and week goals keep their card's words (QA, 1 Nov 2026).
+        val summary = card?.headline?.let { h -> listOf("Reached on ", "Done on ", "Every step on ").firstOrNull { h.startsWith(it) }?.let { "Goal met on " + h.removePrefix(it) } ?: h } ?: ""
+        if (rows.isNotEmpty()) months.add(HistoryMonth(first, historyMonthTitle(first), summary, rows))
         first = pageFirstOfMonth(span.first - 1)
     }
     return months
@@ -878,7 +881,8 @@ private fun HabitStore.historyDetail(habit: Habit, day: Int, logs: List<Entry>, 
     if (skipped) return "Skipped"
     if (logs.isEmpty()) {
         if (habit.kind == HabitKind.Quit) return "Note only"
-        return if (day == today) "Nothing logged yet" else "Not done"
+        // Figma's History: "Nothing logged" for an empty day (flows 15, 24; QA, 1 Nov 2026: "Not done", the key's word).
+        return if (day == today) "Nothing logged yet" else "Nothing logged"
     }
     if (habit.kind == HabitKind.Quit) return if (logs.size == 1) "1 slip" else "${logs.size} slips"
     val result = dayResult(habit, day)

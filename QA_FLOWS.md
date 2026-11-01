@@ -19,13 +19,13 @@ no screen with a keyboard could be compared with Figma.
 | day details | 169:1270 | 44 | 39 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
-| details pages | 298:2 | 24 | 9 |
+| details pages | 298:2 | 24 | 10 |
 | create new | 381:2 | 28 | 0 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **201** |
+| **All** | | **290** | **202** |
 
 ## Bug log
 
@@ -295,6 +295,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 253. Details pages 7 · the chart drew today's bar, under its goal, in the full colour; Figma draws it in the habit's Pale.
 254. Details pages 8 · a week goal's Month added a "Week" column ("Met", "1 of 3") that shrank the squares to 32; no Figma frame has it now (Gym's month is seven full columns), so it's gone with its code (Rulebook: Figma is the final word). Its month comparison ("12 of 12 days") is gone too: Figma's Gym has none.
 255. Details pages 8 · a week goal's month said "N times" whatever the habit's word, and nothing of the week still open; Figma: "9 sessions this month · this week 2 of 3" (the week's part shows once a week of the month has ended).
+256. Details pages 10 · History's month lines said "Reached on 22 of 31 days" (the Month card's words); Figma's History says "Goal met on 22 of 29 days" for day goals (quit, limit and week goals keep their card's words).
+257. Details pages 10 · History's chips were laid out at their 48 touch height: the chips sat 8 dp low and every month 16; laid out at their drawn 32 now.
+258. Details pages 10 · an empty past day in History said "Not done"; Figma's History: "Nothing logged".
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -568,7 +571,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 7 | 328:2 | Month: an earlier month, a day, and logging it | ‹ → September → Sat 19 → Day details → +1; Undo → ✕ | passed ↻ ²⁷ |
 | 8 | 329:2 | Month for other kinds of goal | Gym 3×/week → Read 20 min | passed ↻ ²⁸ |
 | 9 | 331:2 | Year in Pixels: a square, its day | Year → 14 Sep → Day details → ✕ | passed (on 14 Oct: the demo's Water has nothing in September and no note; ✕ returns to the same place; a square to come opens nothing, as Week's and Month's) |
-| 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | not started |
+| 10 | 335:2 | History: every day, newest first, and one day opened | History → September → Sat 26 → Day details → ✕ | passed ↻ (on October's Fri 9: the demo's Water starts logging on 10 Oct) |
 | 11 | 337:1861 | History: With notes, and searching notes | With notes → Search notes → “run” → “swim” none → ← | not started |
 | 12 | 339:3638 | History: Go to date | Go to date → picker → September → 14 → OK → lit row → fades | not started |
 | 13 | 345:4263 | History: Add, for any day | Add → Add to which day? → ‹ 8 → Open Tue 8 Sep → Day details → +1; Undo → ✕ | not started |
