@@ -662,3 +662,15 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   else changes).
 
 ## Cleanup
+
+### D-59. "Add to which day?": open with no day chosen, or on today?
+
+- **Where:** History's Add, [Figma 1150:82354](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1150-82354) and [1150:311885](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=1150-311885); `ui/habit/HistoryTab.kt` (`AddToWhichDay`).
+- **What Figma shows:** both. Details pages flow 13, frame 2: "No day chosen yet (today only ringed); Open stays off
+  until one is picked", headline "Selected date". Its frame 3, and flow 14's frames 2–3: today chosen, headline "Fri,
+  23 Oct", the button "Open today".
+- **What I did for now:** kept the app as flow 13's caption says: no day chosen, Open off until one is picked, then
+  "Open Fri 9 Oct".
+- **Question:** (a) no day chosen until the person picks one; (b) today chosen, "Open today" at once.
+- **My recommendation:** (b): adding to today is the most common case, so one tap (Open today) does it, and any other
+  day is still one tap away; the button always names the day it opens.
