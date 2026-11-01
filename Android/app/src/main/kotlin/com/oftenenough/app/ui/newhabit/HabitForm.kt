@@ -334,7 +334,7 @@ private fun FormBody(
                                 ?.let { "It comes back ${it.n} ${if (it.n == 1) it.unit.key else it.unit.plural} after it’s ticked." }
                                 ?: "It comes back on the days you pick."
                             form.taskHasNoDate -> "With no date, it stays on Tasks, under No date, and doesn’t show on Today."
-                            else -> "If it isn’t done, it moves to today until it is."
+                            else -> "If it isn’t done on its day, it carries over to the next day until it’s done."
                         })
                     }
                     PlaceRows(form, store, open, withTime = true)

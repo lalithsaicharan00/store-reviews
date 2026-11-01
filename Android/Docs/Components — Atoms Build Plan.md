@@ -2263,7 +2263,7 @@ What each atom changed, newest last.
   keyboard up) and Description (optional), then Icon | Colour (one-line halves, the icon or the colour at 40, ›); the
   type's rows (How much, How long, Steps or Limit, "Not set yet" or "None yet" until set, then How often; a quit
   habit's Started | At with "The run counts up from here. A slip starts it again."; a task's Date ("Today · Fri, 23
-  Oct") and Time, "If it isn’t done, it moves to today until it is.", or How often and Time, "It comes back on the days
+  Oct") and Time, "If it isn’t done on its day, it carries over to the next day until it’s done.", or How often and Time, "It comes back on the days
   you pick."); Time of day and Reminders (a limit: Reminders only); Starts and Ends (Ends a menu, ▾). In Edit a changed
   goal says "The new goal starts today. Days before keep 8 glasses a day." under its rows (Body Medium). It is
   `HabitForm` (`newhabit/HabitForm.kt`). The app, the unit tests (55), lint and the instrumented tests' code build in
