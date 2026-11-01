@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 27 |
+| create new | 381:2 | 28 | 28 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **243** |
+| **All** | | **290** | **244** |
 
 ## Bug log
 
@@ -384,6 +384,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 342. Create new 25 · a task repeating a while after it's done still said “It comes back on the days you pick.”; Figma: “It comes back 2 weeks after it’s ticked.”
 343. Create new 27 (every habit and task name) · a name of 19 or more letters showed "5 characters left" … "That's the most: 24 characters." under the field, pushing every row down 22; Figma has nothing there and A65 says a name past 24 shows a snackbar. The line is gone; typing past 24 now says "A name is at most 24 characters." in a snackbar and the field keeps the 24.
 344. Create new 27 · the app's snackbar sat behind the keyboard on pages with it up, and 96 above the bottom on the habit and task forms, which pin nothing there; it now rides above the keyboard, and on the forms sits 4 above the bottom, as on pages with nothing pinned.
+345. Create new 28 (every list row) · at 200 % text a row's › and leading icon went to the top once its words took three lines' height (How often, Time of day, Reminders…); Figma's List item keeps them on the row's middle at any height (CENTER). `AppListItem` now centres them always, except rows whose buttons sit under the words, which Figma draws at the top (Keep reminders coming's Open settings, `topWithBelow`).
+346. Create new 22 and 25 (every choice card) · What do you want to do? and What kind of task? pinned each card's icon and › to the top (about 18 above Figma's); Figma centres them on the card (Once: 96 tall, the icon on its middle). Fixed by 345.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -717,7 +719,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 25 | 474:282 | A repeating task | Add a task → On repeat → form → How often → A while after → ← | passed ↻ (phone: “Water plants” on repeat; the form’s How often, Time, Time of day, Reminders, Starts and Ends at Figma’s places; A while after it’s done → “2 weeks after it’s done”, Weeks, Again after 2; ← “2 weeks after it’s done” and “It comes back 2 weeks after it’s ticked.”) |
 | 26 | 475:2 | A new task: leaving it | + → Add a task → Once → empty ← → typed: Discard this task? → Discard | passed ³⁸ (phone: the empty form with Add quiet; ← with nothing typed asks nothing; “Pick up parcel” typed, ← → Discard this task? “What you’ve typed won’t be saved.” Keep editing · Discard (its 4 dp taller buttons are D-47); Discard → back, Today has only the demo’s own Pick up parcel) |
 | 27 | 475:835 | Edit task | ⋮ Edit task → form → Date → Tomorrow → Save → name cleared → discard | passed ↻ (phone: Pay electricity bill’s form at Figma’s places with A95’s two-line line; Date opens the picker at once, 2 Nov → “Tomorrow · Mon, 2 Nov”; Save → first under Tomorrow, “Pay electricity bill saved · Undo”; the name cleared: Save quiet, nothing red; typed past 24: the field keeps 24 and says so in a snackbar over the keyboard; ← with changes → Discard your changes? “Pay electricity bill stays as it was.” → Discard keeps it) |
-| 28 | 407:2927 | The habit form at 200% text | form 200 % → How often 200 % | not started |
+| 28 | 407:2927 | The habit form at 200% text | form 200 % → How often 200 % | passed ↻ (phone, Font size 200 %: Journal’s rows grow with their words and keep their padding, nothing clips, each › on its row’s middle; Icon | Colour stay side by side where “Colour” fits whole (432 dp; at 360 they stack, as Figma); How often’s three long choices take two lines, the rest one. Rechecked after the shared row change: the choice cards, Tasks and Day details at 200 %) |
 
 ## Settings (781:34017)
 

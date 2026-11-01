@@ -79,10 +79,12 @@ fun AppListItem(
     beside: (@Composable () -> Unit)? = null,
     below: (@Composable ColumnScope.() -> Unit)? = null,
     /**
-     * Figma's Day row (History): the leading square and the › centred on the row, and 8 above and below even with a
-     * note under the words; Material's tall row pins them to the top and keeps its 10 (QA, 1 Nov 2026).
+     * Figma's Day row (History): 8 above and below even with a note under the words, where Material keeps its 10
+     * (QA, 1 Nov 2026).
      */
     centred: Boolean = false,
+    /** Buttons under the words ([below]) keep the leading and trailing parts at the top, as Figma draws those rows. */
+    topWithBelow: Boolean = false,
     /** Above and below the row's words when something sits under them: Figma's 12 for a choice with its example. */
     belowPadding: androidx.compose.ui.unit.Dp? = null,
     tag: String? = null,
@@ -116,7 +118,10 @@ fun AppListItem(
     // Figma's List item is 8 above and below (56 for one line with its 40 avatar); Material's 10 made it 60.
     val padding = if (below == null || centred) PaddingValues(horizontal = 16.dp, vertical = 8.dp)
         else belowPadding?.let { PaddingValues(horizontal = 16.dp, vertical = it) } ?: ListItemDefaults.ContentPadding
-    val align = if (centred) Alignment.CenterVertically else ListItemDefaults.verticalAlignment()
+    // Figma's List item keeps its leading and trailing parts on the row's middle however tall it grows (200 % text, a
+    // choice with its example); Material pins them to the top from three lines (QA, 1 Nov 2026). Only a row whose
+    // buttons sit under its words keeps the top, as Figma draws it (Keep reminders coming's Open settings).
+    val align = if (topWithBelow && below != null) ListItemDefaults.verticalAlignment() else Alignment.CenterVertically
     if (onClick != null) SegmentedListItem(onClick, shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align,
         onLongClick = onLongClick, colors = colors, contentPadding = padding, content = headlineText)
     else SegmentedListItem(shapes, m, enabled, lead, trail, supportingContent = support, verticalAlignment = align, colors = colors,
