@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 25 |
+| create new | 381:2 | 28 | 26 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **241** |
+| **All** | | **290** | **242** |
 
 ## Bug log
 
@@ -713,7 +713,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | passed ↻ (phone: Select date opens at once on today, the days before greyed, 8 Nov → “Sun, 8 Nov”; No date on the picker → the Time row goes and the line says why) |
 | 24 | 474:2 | A task’s time | Time on → picker 2:00 PM → OK | passed (phone: Android’s time input, 2:00 PM → Time on, “2:00 PM” under it, the rows below at Figma’s places) |
 | 25 | 474:282 | A repeating task | Add a task → On repeat → form → How often → A while after → ← | passed ↻ (phone: “Water plants” on repeat; the form’s How often, Time, Time of day, Reminders, Starts and Ends at Figma’s places; A while after it’s done → “2 weeks after it’s done”, Weeks, Again after 2; ← “2 weeks after it’s done” and “It comes back 2 weeks after it’s ticked.”) |
-| 26 | 475:2 | A new task: leaving it | + → Add a task → Once → empty ← → typed: Discard this task? → Discard | not started |
+| 26 | 475:2 | A new task: leaving it | + → Add a task → Once → empty ← → typed: Discard this task? → Discard | passed ³⁸ (phone: the empty form with Add quiet; ← with nothing typed asks nothing; “Pick up parcel” typed, ← → Discard this task? “What you’ve typed won’t be saved.” Keep editing · Discard (its 4 dp taller buttons are D-47); Discard → back, Today has only the demo’s own Pick up parcel) |
 | 27 | 475:835 | Edit task | ⋮ Edit task → form → Date → Tomorrow → Save → name cleared → discard | not started |
 | 28 | 407:2927 | The habit form at 200% text | form 200 % → How often 200 % | not started |
 
