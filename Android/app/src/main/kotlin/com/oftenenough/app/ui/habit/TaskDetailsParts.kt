@@ -287,7 +287,9 @@ private fun LazyListScope.taskDays(
                     "Done at " + DayWords.clock(e.createdAt),
                     leading = { Box(Modifier.size(40.dp), contentAlignment = Alignment.Center) { DayCell(HeatCell.level(4), task.color, size = DayCellSize.small) } },
                     below = note?.let { { ListNote(AnnotatedString(it)) } }, trailing = { ListChevron() },
-                    onClick = { onOpenDay(e.day) }, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = "task-event")
+                    onClick = { onOpenDay(e.day) }, containerColor = MaterialTheme.colorScheme.surfaceContainerLowest, tag = "task-event",
+                    // Square and › on the row's middle, with a note too, as History's day rows (Figma 1158:340387).
+                    centred = true)
             }
         }
     }
