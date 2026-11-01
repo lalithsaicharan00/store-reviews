@@ -618,11 +618,17 @@ private fun HabitStore.periodText(
             ProgressShape.PERIOD_DAYS -> if (isAmount && total > 0) pv(total) + thisOrThat
                 else if (loggedDays == 0) null else (if (loggedDays == 1) "1 day" else "$loggedDays days") + thisOrThat
             else -> {
+                // In the habit's own word: "9 sessions this month" (Figma's Gym).
                 val times = rules.periodCount(rule, span)
-                if (times == 0.0) null else (if (times == 1.0) "1 time" else "${count(times)} times") + thisOrThat
+                if (times == 0.0) null else HabitCopy.amount(times, rule.checkUnit?.takeIf { it.isNotBlank() } ?: "times") + thisOrThat
             }
         }
-        return (if (results.isEmpty()) (if (running) "Nothing yet this $noun" else "Nothing that $noun") else head) to done
+        // The week still open, when the headline counts the ones behind it: "· this week 2 of 3" (Figma's Gym, details
+        // pages flow 8; QA, 1 Nov 2026).
+        val openTail = if (open == null || judged == 0 || shape == ProgressShape.LIMIT_PERIOD) null else "this ${periods(1)} " +
+            (if (shape == ProgressShape.PERIOD_TOTAL) "${pv(open.value)} of ${pv(open.goal)}" else "${count(min(open.value, open.goal))} of ${count(open.goal)}")
+        val detail = listOfNotNull(done, openTail).joinToString(" · ").ifEmpty { null }
+        return (if (results.isEmpty()) (if (running) "Nothing yet this $noun" else "Nothing that $noun") else head) to detail
     }
 
     // A longer goal (a month or year goal on Week, a year goal on Month): the period that holds today, named.
@@ -1122,7 +1128,9 @@ fun HabitStore.periodComparison(habit: Habit, span: IntRange, week: Boolean, tod
     val monthName = { d: Int -> HabitCopy.monthNames[pageMonth(d) - 1] }
     val thisLabel = if (running) "This $noun" else if (week) "That week" else monthName(span.first)
     val previousLabel = if (week) (if (running) "Last week" else "The week before") else monthName(previousFull.first)
-    if (!week) return monthComparison(habit, span, previousFull, start, today, monthName)
+    // A week or month goal compares no days on Month: Figma's Gym has no comparison (QA, 1 Nov 2026: "12 of 12 days").
+    if (!week) return if (rule(habit, today).let { pagePeriodKind(it) != GoalPeriod.DAY }) null
+        else monthComparison(habit, span, previousFull, start, today, monthName)
     if (previousFull.first < start) {
         val note = if (start <= previousFull.last) "Started on ${DayWords.dayMonth(start)}, partway through ${if (week) previousLabel.lowercase() else previousLabel}"
         else "No earlier $noun to compare"
@@ -1438,30 +1446,6 @@ private fun HabitStore.quitMilestones(habit: Habit, today: Int): HabitMilestones
 }
 
 // ---------------------------------------------------------------------------------------------------------- Habit details, 19 Oct 2026
-
-/**
- * A week goal's Week column on the month (Figma 3.4: "Met", "1 of 3"), one label per row of the grid; each row is a week
- * on the person's week start. Null for a goal that isn't counted by the week. Weeks to come say nothing.
- */
-fun HabitStore.weekLabels(habit: Habit, span: IntRange, lead: Int, today: Int): List<String>? {
-    val rule = rule(habit, today)
-    if (pagePeriodKind(rule) != GoalPeriod.WEEK) return null
-    val start = rules.startDay(habit)
-    val rows = (lead + (span.last - span.first + 1) + 6) / 7
-    return (0 until rows).map { r ->
-        val day = span.first - lead + r * 7
-        val week = rules.period(PeriodKind.WEEK, day)
-        if (week.first > today || week.last < start) return@map ""
-        val r0 = rule(habit, minOf(week.last, today))
-        val f = r0.frequency
-        when {
-            rules.isPeriodMet(habit, minOf(week.last, today)) -> "Met"
-            f is Frequency.Flexible -> "${rules.flexibleProgress(habit, minOf(week.last, today)) ?: 0} of ${f.n}"
-            pageIsTotal(r0) -> progressValue(rules.periodTotal(habit, week), r0) + " of " + progressValue(r0.goal, r0)
-            else -> HabitCopy.number(rules.periodCount(r0, week)) + " of " + HabitCopy.number(pageGoal(r0))
-        }
-    }
-}
 
 /** One run on the Streaks page (Figma 3.2): its length in words, its dates, and how long it is beside the longest. */
 data class StreakRow(val length: String, val dates: String, val fraction: Float, val isCurrent: Boolean, val spoken: String)

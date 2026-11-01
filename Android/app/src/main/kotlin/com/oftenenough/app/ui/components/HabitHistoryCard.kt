@@ -157,24 +157,23 @@ fun HistorySummary(detail: String?, summary: @Composable () -> Unit) {
 fun HistoryWeek(names: List<String>, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, modifier: Modifier = Modifier, onTap: ((Int?) -> Unit)? = null) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         DayNames(names, todayIndex)
-        Squares(0, cells, todayIndex, color, null, modifier, onTap)
+        Squares(0, cells, todayIndex, color, modifier, onTap)
     }
 }
 
 /**
  * Month: the weekday letters ("S M T W T F S"), today's as Week's; 6; the month in rows of seven, 36 and 6 apart, its
- * first row starting after [lead] empty places (Figma's Empty), five rows or six. A week goal adds a column of its own
- * ([weekLabels]: "Met", "1 of 3" for each row), the squares then 32.
+ * first row starting after [lead] empty places (Figma's Empty), five rows or six. A week goal has no column of its own
+ * (QA, 1 Nov 2026: the "Met" / "1 of 3" column narrowed the squares; Figma's Gym has none).
  */
 @Composable
 fun HistoryMonth(
     letters: List<String>, lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, modifier: Modifier = Modifier,
-    weekLabels: List<String>? = null, onTap: ((Int?) -> Unit)? = null,
+    onTap: ((Int?) -> Unit)? = null,
 ) {
-    val size = if (weekLabels != null) 32.dp else DayCellSize.week
     Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        DayNames(letters + listOfNotNull(weekLabels?.let { "Week" }), todayIndex?.let { (lead + it) % 7 }, size)
-        Squares(lead, cells, todayIndex, color, weekLabels, modifier, onTap, size)
+        DayNames(letters, todayIndex?.let { (lead + it) % 7 })
+        Squares(lead, cells, todayIndex, color, modifier, onTap)
     }
 }
 
@@ -284,23 +283,20 @@ private fun DayNames(namesIn: List<String>, todayColumn: Int?, column: Dp = DayC
     }
 }
 
-/** Rows of seven squares ([size], 6 apart both ways) after [lead] empty places, and a week's column; one Canvas. */
+/** Rows of seven squares ([size], 6 apart both ways) after [lead] empty places; one Canvas. */
 @Composable
 private fun Squares(
-    lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, weekLabels: List<String>?, modifier: Modifier,
+    lead: Int, cells: List<HeatCell>, todayIndex: Int?, color: HabitColor, modifier: Modifier,
     onTap: ((Int?) -> Unit)?, size: Dp = DayCellSize.week,
 ) {
     val s = MaterialTheme.colorScheme
     val colors = dayCellColors(color)
-    val measurer = rememberTextMeasurer()
-    val weekTexts = remember(measurer, weekLabels) { weekLabels?.map { measurer.measure(it, AppType.labelMedium) } }
     val rows = (lead + cells.size + 6) / 7
     val ring = DayCellSize.ring
     val pitch = size + CellGap
-    val width = ring * 2 + pitch * 7 - CellGap + (if (weekLabels != null) CellGap + 40.dp else 0.dp)
+    val width = ring * 2 + pitch * 7 - CellGap
     val height = ring * 2 + pitch * rows - CellGap
     val tap by rememberUpdatedState(onTap)
-    val ink = s.onSurface
     Canvas(
         modifier.size(width, height)
             .let { m ->
@@ -324,10 +320,6 @@ private fun Squares(
             draw.add(cell, pad + (place % 7) * step, pad + (place / 7) * step, i == todayIndex)
         }
         draw.draw(this, colors)
-        weekTexts?.forEachIndexed { r, t ->
-            val x = pad + 7 * step + 20.dp.toPx() - t.size.width / 2f
-            drawText(t, color = ink, topLeft = Offset(x, pad + r * step + sq / 2 - t.size.height / 2f))
-        }
     }
 }
 

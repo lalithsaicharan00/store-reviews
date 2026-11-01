@@ -93,7 +93,6 @@ import com.oftenenough.app.data.quitPeriodCard
 import com.oftenenough.app.data.recordedEachDay
 import com.oftenenough.app.data.quitRecord
 import com.oftenenough.app.data.progressValue
-import com.oftenenough.app.data.weekLabels
 import com.oftenenough.app.ui.theme.appColors
 import java.time.format.DateTimeFormatter
 import java.util.Locale
@@ -316,7 +315,6 @@ private fun trackTitle(track: Milestone.Track, totalLabel: String): String = whe
 private class PeriodView(
     val span: IntRange, val subtitle: String, val card: PeriodCard?, val comparison: PeriodComparison?, val lead: Int,
     val bars: Pair<List<Double>, Double?>?, val canGoBack: Boolean, val canGoForward: Boolean, val todayIndex: Int?,
-    val weekLabels: List<String>?,
 )
 
 private fun periodView(store: HabitStore, habit: Habit, week: Boolean, anchor: Int?, today: Int): PeriodView {
@@ -338,7 +336,6 @@ private fun periodView(store: HabitStore, habit: Habit, week: Boolean, anchor: I
         canGoBack = span.first > first,
         canGoForward = span.last < today,
         todayIndex = if (today in span) today - span.first else null,
-        weekLabels = if (week || quit) null else store.weekLabels(habit, span, pageMonthLead(span.first, store.weekStart), today),
     )
 }
 
@@ -369,7 +366,7 @@ private fun PeriodCardView(habit: Habit, store: HabitStore, week: Boolean, today
                 }
                 if (week) HistoryWeek(pageWeekdayNames(store.weekStart), cells, view.todayIndex, habit.color, Modifier.semantics { testTag = "week-strip" }, open)
                 else HistoryMonth(pageWeekdayLetters(store.weekStart), view.lead, cells, view.todayIndex, habit.color,
-                    Modifier.semantics { testTag = "month-grid" }, view.weekLabels, open)
+                    Modifier.semantics { testTag = "month-grid" }, open)
             }
             val bars = view.bars
             if (bars != null) {
