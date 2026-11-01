@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 7 |
+| settings | 781:34017 | 23 | 8 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **251** |
+| **All** | | **290** | **252** |
 
 ## Bug log
 
@@ -743,7 +743,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | passed ↻ ⁴² (phone: the app alone cut off with Android’s test firewall, `cmd connectivity set-package-networking-enabled` and `set-chain3-enabled`, both put back after; Wi-Fi stays on for adb. Back up now → Backing up… until the connection gives up (about 13 s) → Waiting for the internet “Last backed up today at 8:31 PM. Nothing is lost: …” and one snackbar “No internet. It backs up once you’re online.”, 16 above the bar as Figma; online again, it carries on by itself within the minute → Backed up “Just now, to …”) |
 | 6 | 1183:5575 | Restore from Google Drive | Restore from a backup → Google Drive → chooser → Allow → Restore this backup? → Restoring → Today + Undo | passed ↻ ⁴² (phone: a 3-habit phone, the test Drive holding one 17-habit demo set; Backup & Sync “Not backed up” → Restore from a backup → Google Drive → Google’s chooser → Restore this backup? “The 3 habits on this phone are replaced by the 17 in lalithsaicharan9@gmail.com’s Google Drive, backed up 1 Nov. You can undo this for 30 days.” → Cancel (after a minute’s wait): the phone as it was, Not backed up; again → Restore → Restoring your habits “From lalithsaicharan9@gmail.com’s Google Drive” → Today “17 habits restored · Undo”; Undo → the 3 habits back, still so a minute later) |
 | 7 | 1183:6412 | Restore from a backup file | Restore → A backup file → file picker → Restore this backup? → Restoring → Today + Undo | passed ↻ (phone: a 17-habit backup saved to Downloads first; a 3-habit phone → Restore from a backup → A backup file → Android’s file picker → “Often Enough backup 2026-11-01 2101.zip” → Restore this backup? “The 3 habits on this phone are replaced by the 17 in this file, saved 1 Nov. You can undo this for 30 days.” → Cancel: nothing changed; again → Restore → Restoring your habits “From your backup file, saved 1 Nov” → Today “17 habits restored · Undo” → Undo: the 3 habits and the task back) |
-| 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | not started |
+| 8 | 1183:8042 | Save a backup file | Save a backup file → save picker → saved to Downloads | passed (phone, no changes: Save a backup file → Android’s save picker in Downloads, “Often Enough backup 2026-11-01 2106.zip” → Save → “Backup file saved to Downloads”, 16 above the bar) |
 | 9 | 1183:8483 | Export a spreadsheet | Export CSV → save picker → saved | not started |
 | 10 | 1183:9112 | Delete the Google Drive backup | Delete Google Drive backup… → dialog → Not backed up + snackbar | not started |
 | 11 | 1183:9556 | Erase all my data | Erase all my data… → dialog → Today, no habits yet | not started |
