@@ -331,7 +331,7 @@ private fun FormBody(
                         TaskRows(form, store, open)
                         Footer(when {
                             form.taskRepeats -> "It comes back on the days you pick."
-                            form.taskHasNoDate -> "Saved without a date, it stays on the Tasks page, under No date. It won’t show on Today until you give it a day."
+                            form.taskHasNoDate -> "With no date, it stays on Tasks, under No date, and doesn’t show on Today."
                             else -> "If it isn’t done, it moves to today until it is."
                         })
                     }

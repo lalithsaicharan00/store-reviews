@@ -297,7 +297,7 @@ class TasksPageTest {
         tapTag("task-date")
         here("picker-left") // No date, on the date picker's left (Figma 1169:32560)
         waitGone(hasTestTag("task-time"), "the Time row")
-        waitFor(hasText("Saved without a date, it stays on the Tasks page, under No date. It won’t show on Today until you give it a day."), "the form's footer")
+        waitFor(hasText("With no date, it stays on Tasks, under No date, and doesn’t show on Today."), "the form's footer")
         tapTag("form-add")
         waitHere(hasTestTag("tasks-list"), "back on Tasks")
         waitUntil("saved") { store.habits.any { it.name == "Mend the fence" } }

@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 22 |
+| create new | 381:2 | 28 | 23 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **238** |
+| **All** | | **290** | **239** |
 
 ## Bug log
 
@@ -377,6 +377,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 335. Create new 20 · paying on Remind me again with Plus came back on the habit form, not Reminders, and anything typed in the form was lost: Plus was a screen of its own, and the form (kept with `remember`) started again on return. Remind me again's Plus opens inside the form now, as the 6th habit's does: ← or bought, it's Reminders again, "Plus is on", nothing lost (Edit habit gets the snackbar too).
 336. Create new 21 · after a goal change, "The new goal starts today. Days before keep 8 glasses a day." sat 8 under How often, so it and every row under it were 8 higher than Figma's (16 under, as the groups are apart).
 337. Create new 21 (and every empty name field) · an emptied name said an example for its kind ("Name, e.g. Drink water" for Water); Figma's empty forms say "Name, e.g. Make bed" for every habit and "Name, e.g. Pick up parcel" for a task (`ItemType.namePlaceholder`; Decisions needed D-63).
+338. Create new 23 · a task with No date said "Saved without a date, it stays on the Tasks page, under No date. It won’t show on Today until you give it a day."; Figma: "With no date, it stays on Tasks, under No date, and doesn’t show on Today." (TasksPageTest reads the new words).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -705,7 +706,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 20 | 1227:392721 | Remind again on the free plan | If not done, remind again → Plus → scrolled → Paid: Plus is on | passed ↻ (phone, free plan: the tag, the Plus page and its end, ← back on Reminders, Get Plus → Reminders without the tag, “Plus is on”, the typed name kept) |
 | 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | passed ↻ (phone: Water 8 → 10 glasses, “The new goal starts today …”, Save → “10 glasses a day”, “Changes saved”; ← with changes → Discard your changes? → Discard leaves 8; the name cleared turns Save off, typed again on) |
 | 22 | 469:2 | A new task: for today | + → Add a task → Once → New task → “Pick up parcel” → form → Add | passed (phone: “Name, e.g. Pick up parcel” (337), Today · Sun, 1 Nov, the form at Figma’s places; Add puts it at the end of Anytime, “Task · Once”; the design demo has a Pick up parcel of its own) |
-| 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | not started |
+| 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | passed ↻ (phone: Select date opens at once on today, the days before greyed, 8 Nov → “Sun, 8 Nov”; No date on the picker → the Time row goes and the line says why) |
 | 24 | 474:2 | A task’s time | Time on → picker 2:00 PM → OK | not started |
 | 25 | 474:282 | A repeating task | Add a task → On repeat → form → How often → A while after → ← | not started |
 | 26 | 475:2 | A new task: leaving it | + → Add a task → Once → empty ← → typed: Discard this task? → Discard | not started |
