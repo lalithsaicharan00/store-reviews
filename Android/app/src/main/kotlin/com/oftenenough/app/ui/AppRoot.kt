@@ -432,7 +432,10 @@ private fun AppMain(
             val existing = e.arguments!!.getString("id")!!.takeIf { it != "new" }
             // Back on Times of day (5.8.4, Figma's flows): "Changes saved" after an edit (a new one just appears in its
             // place, in time order); "Morning deleted" with Undo, which brings it back with its habits.
-            SectionEditorScreen(store, existing, onDeleted = { name, undo ->
+            // From Times of day a new one is in Your day at once, at its first free start (Figma 1183:366914, as the
+            // habit form's); from Today it joins once its start is picked (Today flow 52, D-61).
+            val fromSettings = nav.previousBackStackEntry?.arguments?.getString("title") == SettingsPage.TIMES_OF_DAY
+            SectionEditorScreen(store, existing, listedAtOnce = fromSettings, onDeleted = { name, undo ->
                 nav.previousBackStackEntry?.savedStateHandle?.set("reveal", com.oftenenough.app.data.DaySection.ANYTIME)
                 nav.popBackStack()
                 rootScope.launch {
