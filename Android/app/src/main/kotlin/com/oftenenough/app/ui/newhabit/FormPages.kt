@@ -18,6 +18,7 @@ import com.oftenenough.app.ui.components.AppBottomSheet
 import com.oftenenough.app.ui.components.AppFilterChip
 import com.oftenenough.app.ui.components.AppFilledIconButton
 import com.oftenenough.app.ui.components.AppConnectedButtons
+import com.oftenenough.app.ui.components.drawnHeight
 import com.oftenenough.app.ui.components.IconButtonSize
 import com.oftenenough.app.ui.components.DropdownField
 import com.oftenenough.app.ui.components.SearchBarField
@@ -521,11 +522,12 @@ fun HowOftenPage(form: FormState, onBack: () -> Unit) {
         }
     }
     val countChoice = if (hasAmount) HowOften.Days(d.countPeriod, d.count) else HowOften.Times(d.countPeriod, d.count)
-    // Week · Month · Year over the count (Figma's Period: 4 above, 8 under, 16 at the sides).
+    // Week · Month · Year over the count (Figma's Period: 4 above, 8 under, 16 at the sides). The group is laid out at
+    // its drawn 40, its touch spreading past, so its words sit where Figma's do and the count comes 16 under it.
     @Composable
     fun countControls(days: Boolean) {
-        Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp)) {
-            AppConnectedButtons(listOf(GoalPeriod.WEEK to "Week", GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), d.countPeriod, tag = "often-count-period") { p ->
+        Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 8.dp)) {
+            AppConnectedButtons(listOf(GoalPeriod.WEEK to "Week", GoalPeriod.MONTH to "Month", GoalPeriod.YEAR to "Year"), d.countPeriod, Modifier.drawnHeight(40.dp), tag = "often-count-period") { p ->
                 val next = d.copy(countPeriod = p)
                 set(next.copy(count = minOf(next.count, next.countMaximum(days))))
             }

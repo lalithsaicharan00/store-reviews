@@ -152,6 +152,14 @@ fun Modifier.drawnHeight(height: Dp = ButtonDefaults.MinHeight): Modifier = layo
     layout(p.width, h) { p.place(0, -(p.height - h) / 2) }
 }
 
+/** [drawnHeight] in both directions: an icon button laid out at its drawn [size], its 48 touch target spreading past. */
+fun Modifier.drawnSize(size: Dp): Modifier = layout { m, c ->
+    val p = m.measure(c.copy(minWidth = 0, minHeight = 0))
+    val w = size.roundToPx().coerceAtMost(p.width)
+    val h = size.roundToPx().coerceAtMost(p.height)
+    layout(w, h) { p.place(-(p.width - w) / 2, -(p.height - h) / 2) }
+}
+
 /**
  * Material's padding for the size (more at the start before an icon's gap is counted), with three settings of ours:
  * Small is Figma's Button (500:26), ButtonDefaults' 24/24, 16/24 with an icon, not Expressive's 16/16 (QA, 31 Oct

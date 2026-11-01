@@ -1,5 +1,8 @@
 package com.oftenenough.app.ui.newhabit
 
+import com.oftenenough.app.ui.components.drawnSize
+import androidx.compose.foundation.layout.IntrinsicSize
+
 import com.oftenenough.app.ui.components.AppDatePicker
 import com.oftenenough.app.ui.components.AppTimePicker
 import com.oftenenough.app.ui.components.DayToggle
@@ -131,7 +134,8 @@ fun Stepper(label: String, value: Int, range: IntRange, tag: String, unit: (Int)
         StepButton(Symbols.Remove, "Fewer", value > range.first) { onChange(maxOf(range.first, value - 1)) }
         BasicTextField(
             value.toString(), { text -> text.filter { it.isDigit() }.take(5).toIntOrNull()?.let { onChange(it.coerceIn(range)) } },
-            Modifier.widthIn(min = 28.dp, max = 56.dp).semantics { contentDescription = label },
+            // As wide as its number (Figma's count: 28 for "2"), up to 56.
+            Modifier.width(IntrinsicSize.Min).widthIn(min = 28.dp, max = 56.dp).semantics { contentDescription = label },
             textStyle = AppType.titleMedium.copy(color = s.onSurface, textAlign = TextAlign.Center),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number), singleLine = true, cursorBrush = SolidColor(s.primary),
         )
@@ -185,7 +189,10 @@ fun SwitchRow(title: String, checked: Boolean, index: Int, count: Int, tag: Stri
 
 /** A number's − or +: the neutral filled icon button (2.2), switched off at the end of its range. */
 @Composable
-fun StepButton(icon: ImageVector, label: String, enabled: Boolean, onClick: () -> Unit) = AppFilledIconButton(icon, label, onClick, enabled = enabled)
+fun StepButton(icon: ImageVector, label: String, enabled: Boolean, onClick: () -> Unit) =
+    // Laid out at its drawn 40, the 48 touch target spreading past: the Stepper is Figma's 56 (8, 40, 8) and its − [n] +
+    // sit where Figma's do, + 16 from the edge (QA, 1 Nov 2026: 64 tall, and each button 4 wider at each side).
+    AppFilledIconButton(icon, label, onClick, Modifier.drawnSize(40.dp), enabled = enabled)
 
 /** S M T W T F S, in the person's week order, spread across the row: tap to choose any number (Day toggle, 2.7). */
 @Composable

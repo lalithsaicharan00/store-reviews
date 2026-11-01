@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 3 |
+| create new | 381:2 | 28 | 4 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **219** |
+| **All** | | **290** | **220** |
 
 ## Bug log
 
@@ -339,6 +339,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 297. Create new 1 · Time of day's New time of day sat in a 40 box after the indent, its + at 92 and its words at 128; Figma puts them in the checkboxes' column, the + at 72 and the words at 112 with the times of day (`AddRow`).
 298. Create new 2 (and 26) · Discard this habit? said "This habit won’t be added." (a task's "This task won’t be added."); Figma: "What you’ve typed won’t be saved." for both (`HabitForm`).
 299. Create new 3 · the icon picker drew its icons outlined (`HabitIcons.outlined`), so the one picked turned filled only on the form; Figma's picker is Material Symbols with FILL 1, and habit icons are filled (the user, 31 Oct 2026). The picker draws the filled glyphs now.
+300. Create new 4 · the count stepper (Times a day, Times) was 64 tall with its − and + at 48 each, so − [n] + sat away from Figma's (Figma: the row 56, its buttons 40 drawn at 188 and 288, the count between them as wide as its number). The buttons lay out at their drawn 40 with their 48 touch spreading past (`drawnSize`, `StepButton`), and the count field takes its number's width (28–56).
+301. Create new 4 · Week · Month · Year under Times a week, month or year laid out at its 48 touch height, so its words sat 4 lower than Figma's (the group 40 tall at 314, its words at 324, Times 16 under it at 370). The group is laid out at its drawn 40 with its touch spreading past (`drawnHeight`), and 8 under its box keeps the count where it was.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -645,7 +647,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 1 | 396:2 | A new habit: check it off | + → What do you want to do? → How track? → New habit (keyboard) → “Journal” → form → Time of day → ← → Add: end of Morning | passed ↻ (phone; every row 10.8 lower than Figma's, the phone's taller status bar. The app picks Journal's icon from its name, Figma's frames keep the star: Figma's habit glyphs are examples, the only rule is filled) |
 | 2 | 397:589 | A new habit: leaving it | + → New habit empty → ← nothing asked → typed, ← → Discard this habit? → Discard | passed ↻ ³⁸ |
 | 3 | 399:442 | A new habit: its icon and colour | Icon → icon page → book → Done → Colour → sheet of 14 → orange | passed ↻ (phone; the sheet holds 13, as Figma's own swatches do: the frame's name says 14. The picker fits seven to a row on this 432 dp phone, Figma's five at 360, the same 56 dp buttons spread across) |
-| 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | not started |
+| 4 | 400:439 | How often: several a day, or a number of times | How often → Every day → Several times a day → + → Times a week… → Month → ← | passed ↻ (phone: “3 times a day”, “3 times a week”, “3 times a month”, and the form says “3 times a month”) |
 | 5 | 401:536 | How often: days of the week, or every few | certain days → Every Friday → Mon, Wed → Every few days → weeks → set days → months → ← | not started |
 | 6 | 401:1116 | How often: on a date each month or year | date each month → 1 and 15 → a weekday → Year → ← | not started |
 | 7 | 402:488 | Time of day: more than one, and a new one | Morning + Evening → New time of day → “Before work” → Add → ← | not started |
