@@ -705,6 +705,8 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 
 ### D-62. Tell me at milestones on the quit and cut-down forms: draw it in Create new?
 
+- **Decided 1 Nov 2026 (A93): removed.** The user: "Let's remove it. It feels unnecessary."
+
 - **Where:** the quit and cut-down forms, [Figma Create new 406:523](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=406-523) (Create new flows 15-17); `ui/newhabit/HabitForm.kt` (`milestone-alerts`).
 - **What Figma shows / the decisions say:** A21 (18 Oct) puts a switch, *Tell me at milestones*, on a quit or cut-down
   habit's form, off by default. Figma's How milestones work (details pages) says it's "on the habit’s form", and

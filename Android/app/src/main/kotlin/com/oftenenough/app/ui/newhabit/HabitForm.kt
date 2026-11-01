@@ -184,16 +184,11 @@ fun EditHabitScreen(habitId: String, store: HabitStore, onPlus: (PlusReason) -> 
     val habit = store.habit(habitId) ?: run { LaunchedEffect(Unit) { onClose() }; return }
     // As it was when the form opened: the habit read again after Save is the edited one.
     val original = remember { habit }
-    val before = remember {
-        val alerts = com.oftenenough.app.app.reminders.MilestoneAlerts.key(habit.id)
-        Triple(store.goalRules[habit.id] ?: emptyList(), store.descriptions[habit.id] ?: "", alerts to store.setting(alerts))
-    }
+    val before = remember { (store.goalRules[habit.id] ?: emptyList()) to (store.descriptions[habit.id] ?: "") }
     HabitForm(ItemType.of(habit), habit, store, onClose, { saved ->
         onSaved(saved) {
             store.undoEdit(original, before.first)
             store.setDescription(before.second, habit.id)
-            val (key, value) = before.third
-            if (store.setting(key) != value) store.saveAppSetting(key, value)
         }
     }, onPlus)
 }
@@ -244,12 +239,6 @@ fun HabitForm(
         form.description = describing.text
         if (form.hasChanges) discard = true else onClose()
     }
-    /** Tell me at milestones: kept with the habit's settings, only for quit and cut down. */
-    fun saveAlerts(habit: Habit) {
-        val on = form.milestoneAlerts && (form.type == ItemType.QUIT || form.type == ItemType.CUT_DOWN)
-        val key = com.oftenenough.app.app.reminders.MilestoneAlerts.key(habit.id)
-        if (on != (store.setting(key) == "true")) store.saveAppSetting(key, if (on) "true" else null)
-    }
     /** What's still needed before Add: its page opens. */
     fun missingPage(): Page? = when {
         form.hasAmount && form.amountValue == null -> Page.HOW_MUCH
@@ -261,7 +250,6 @@ fun HabitForm(
         val habit = form.makeHabit(form.trimmedName)
         store.add(habit)
         store.setDescription(TextLimit.clean(describing.text, TextLimit.DESCRIPTION), habit.id)
-        saveAlerts(habit)
         onSaved(habit)
     }
     fun save() {
@@ -273,7 +261,6 @@ fun HabitForm(
             val habit = form.edited(form.trimmedName) ?: return
             store.update(habit)
             store.setDescription(TextLimit.clean(describing.text, TextLimit.DESCRIPTION), habit.id)
-            saveAlerts(habit)
             onSaved(habit)
             return
         }
@@ -335,7 +322,6 @@ private fun FormBody(
                         QuitStarted(form, store)
                         Footer("The run counts up from here. A slip starts it again.")
                     }
-                    MilestoneSwitch(form, store)
                 }
                 ItemType.TASK -> {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -356,7 +342,6 @@ private fun FormBody(
                     }
                     PlaceRows(form, store, open, withTime = type != ItemType.CUT_DOWN)
                     StartEndRows(form, store)
-                    if (type == ItemType.CUT_DOWN) MilestoneSwitch(form, store)
                 }
             }
         }
@@ -368,41 +353,6 @@ private fun FormBody(
 @Composable
 private fun Footer(text: String) =
     Text(text, Modifier.padding(horizontal = 16.dp).semantics { testTag = "form-footer" }, style = AppType.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-
-/**
- * Tell me at milestones (Figma N.1–N.4): off until it's turned on. The first time, Android's own dialog asks for
- * notifications (as for reminders); allowed, it stays on and says when the next one is; not allowed, it goes back off,
- * with Open settings once Android won't ask again.
- */
-@Composable
-private fun MilestoneSwitch(form: FormState, store: HabitStore) {
-    val context = androidx.compose.ui.platform.LocalContext.current
-    var refused by remember { mutableStateOf(false) }
-    val ask = androidx.activity.compose.rememberLauncherForActivityResult(
-        androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
-        if (granted) form.milestoneAlerts = true else { form.milestoneAlerts = false; refused = true }
-    }
-    Column {
-        SegmentedList {
-            SwitchRow("Tell me at milestones", form.milestoneAlerts, 0, 1, "milestone-alerts") { on ->
-                when {
-                    !on -> form.milestoneAlerts = false
-                    com.oftenenough.app.app.reminders.Reminders.canPost(context) -> { form.milestoneAlerts = true; refused = false }
-                    android.os.Build.VERSION.SDK_INT >= 33 && !refused -> runCatching { ask.launch(android.Manifest.permission.POST_NOTIFICATIONS) }
-                    else -> refused = true
-                }
-            }
-        }
-        if (refused && !form.milestoneAlerts) {
-            Note("Notifications are off for the app, so milestone notifications can't come. To get them, allow notifications in Android's settings.")
-            OpenSettingsButton(context)
-        } else {
-            val next = if (form.milestoneAlerts) form.original?.let { com.oftenenough.app.app.reminders.MilestoneAlerts.nextText(store, it) } else null
-            Note("A notification when you reach 30 days, 180 days, a year and each year after. " +
-                (next ?: if (form.milestoneAlerts) "" else "Off unless you turn it on."))
-        }
-    }
-}
 
 /** "⚙ Open settings": Android's notification settings for the app (Figma N.4, 2.1.6.4). */
 @Composable

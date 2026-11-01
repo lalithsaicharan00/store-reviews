@@ -69,7 +69,6 @@ private val quittingParts = listOf(
     HowPart("Anniversaries", listOf("Each year since you started, if the 30 days before were clean or within the limit.")),
     HowPart("Which ones get a pop-up", listOf(
         "30 and 180 days, each year, and every anniversary. The rest show as a bar on Today.",
-        "Tell me at milestones, on the habit’s form, also sends a notification at 30 days, 180 days, a year and each year after.",
     )),
 )
 

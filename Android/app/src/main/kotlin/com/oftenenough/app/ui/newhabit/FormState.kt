@@ -37,9 +37,6 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     var nameFilled by mutableStateOf(name.isNotBlank())
     var description by mutableStateOf(from?.let { store.descriptions[it.id] } ?: "")
     var reminderWords by mutableStateOf(from?.reminderText ?: "")
-    /** Tell me at milestones (quit and cut down; Figma N.1): off until the person turns it on. */
-    var milestoneAlerts by mutableStateOf(from?.let { store.setting(com.oftenenough.app.app.reminders.MilestoneAlerts.key(it.id)) == "true" } ?: false)
-    private val originalAlerts = milestoneAlerts
     var symbol by mutableStateOf(from?.symbol ?: when (initialType) { ItemType.QUIT -> "nosign"; ItemType.TASK -> "calendar"; else -> "star.fill" })
     var pickedSymbol by mutableStateOf(from != null)
     var color by mutableStateOf(from?.color ?: store.suggestedColor())
@@ -139,8 +136,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     val editChanged: Boolean get() {
         val o = original ?: return false
         return edited(o.name) != o || trimmedName != o.name || TextLimit.clean(reminderWords, TextLimit.REMINDER_TEXT) != (o.reminderText ?: "") ||
-            TextLimit.clean(description, TextLimit.DESCRIPTION) != originalDescription ||
-            milestoneAlerts != originalAlerts
+            TextLimit.clean(description, TextLimit.DESCRIPTION) != originalDescription
     }
 
     fun edited(name: String): Habit? {
