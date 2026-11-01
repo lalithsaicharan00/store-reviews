@@ -409,9 +409,11 @@ private fun AppMain(
             // last screen); from Settings it says what came back (Settings' Restore flows end "Today, habits restored").
             val fromSettings = e.arguments?.getString("from") == "settings"
             com.oftenenough.app.ui.restore.RestoreFlow(AppGraph.backup, store, AppGraph.plus, { AppGraph.hasPlus },
-                onBack = { nav.popBackStack() }) { message, done ->
+                onBack = { nav.popBackStack() }, fromSettings = fromSettings) { message, done, undoable ->
                 nav.popBackStack(Routes.TODAY, inclusive = false)
-                if (fromSettings || !done) rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
+                // Settings' restore over the phone's own habits: "12 habits restored · Undo" (Figma 1183:5080).
+                if (undoable) sayUndo(message) { rootScope.launch { AppGraph.backup.undoRestore() } }
+                else if (fromSettings || !done) rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
             }
         }
         composable(Routes.NEW_TASK) {

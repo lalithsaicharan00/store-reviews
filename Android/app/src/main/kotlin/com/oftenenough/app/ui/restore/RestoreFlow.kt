@@ -1,5 +1,9 @@
 package com.oftenenough.app.ui.restore
 
+import androidx.compose.ui.semantics.testTag
+import androidx.compose.ui.semantics.semantics
+import com.oftenenough.app.ui.components.AppDialog
+import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.ui.components.CentredMessage
 import com.oftenenough.app.ui.components.MessageIcon
 import com.oftenenough.app.ui.components.ListChevron
@@ -73,8 +77,16 @@ fun RestoreFlow(
     plus: PlusStore,
     hasPlus: () -> Boolean,
     onBack: () -> Unit,
-    /** Back on Today with what to say: [done] is true when habits came back, false when nothing changed. */
-    onRestored: (message: String, done: Boolean) -> Unit,
+    /**
+     * Opened from Settings (Backup & Sync): a phone that has habits is asked before they're replaced (Restore this
+     * backup?), and Today says "N habits restored" with Undo (Figma 1183:5575, 1183:6412).
+     */
+    fromSettings: Boolean = false,
+    /**
+     * Back on Today with what to say: [done] is true when habits came back, false when nothing changed; [undoable]
+     * when the phone's own habits were replaced, so Today offers Undo.
+     */
+    onRestored: (message: String, done: Boolean, undoable: Boolean) -> Unit,
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -96,6 +108,11 @@ fun RestoreFlow(
     /** Google Drive's restore while it runs: Cancel stops it and puts this phone back as it was (Figma 582:7893). */
     var bringing by remember { mutableStateOf<Job?>(null) }
     var driveFromEmpty by remember { mutableStateOf(false) }
+    /** Google Drive's copy, read aside, waiting on Restore this backup? (Settings, a phone with habits). */
+    var asking by remember { mutableStateOf<BackupCenter.Pending?>(null) }
+    var askingBackedUp by remember { mutableStateOf<Long?>(null) }
+    /** Drive was connected before this restore chose it; if not, Cancel lets go of it again. */
+    var wasConnected by remember { mutableStateOf(true) }
 
     val email = driveEmail(center)
 
@@ -118,17 +135,19 @@ fun RestoreFlow(
         RestoreResult.COULD_NOT_CONNECT -> null
     }
 
-    fun finish() = onRestored("Your habits are back: " + countText(store.habits.count { !it.archived }, store.entryCount), true)
+    fun finish(replaced: Boolean = false) = if (replaced)
+        onRestored(store.activeHabitCount.let { "$it ${if (it == 1) "habit" else "habits"} restored" }, true, true)
+        else onRestored("Your habits are back: " + countText(store.habits.count { !it.archived }, store.entryCount), true, false)
 
     /** A file that has been read and checked: the Plus gate first, then the restore. Nothing is written before. */
-    fun restoreFile(p: BackupCenter.Pending) {
+    fun restoreFile(p: BackupCenter.Pending, drive: Boolean = false, replacing: Boolean = false) {
         val preview = p.check.preview ?: return
         madeOn = preview.platform
         madeWithPlus = preview.plus
-        fromDrive = false
+        fromDrive = drive
         pending.value = p
         if (preview.fileHabits == 0 && preview.fileEntries == 0) {
-            onRestored("That backup has no habits in it, so nothing changed.", false)
+            onRestored("That backup has no habits in it, so nothing changed.", false, false)
             return
         }
         step = RESTORING
@@ -148,7 +167,7 @@ fun RestoreFlow(
             center.restore(p, RestoreMode.REPLACE)
             fileWritten = true
             // `checking` stays set: Restoring keeps its Cancel while it fades out to Today.
-            finish()
+            finish(replacing)
         }
         fileWritten = false
         checking = job
@@ -168,13 +187,25 @@ fun RestoreFlow(
     /** Google Drive: the copy comes down (nothing goes up), then the same gate; without Plus it is put back. */
     fun restoreFromDrive() {
         fromDrive = true
-        step = RESTORING
         val emptyBefore = store.habits.isEmpty()
+        // From Settings, a phone with habits keeps them until the person chooses: Drive's copy is read aside and
+        // Restore this backup? asks over the list (Figma 1183:4963); Restore replaces, with the 30-day undo.
+        if (fromSettings && !emptyBefore) {
+            scope.launch {
+                when (val look = center.lookInDriveAside()) {
+                    is DriveLook.Offline -> { center.holding = false; step = NO_INTERNET_DRIVE }
+                    is DriveLook.Aside -> { askingBackedUp = look.backedUp; asking = look.pending }
+                    else -> { center.holding = false; step = NO_BACKUP }
+                }
+            }
+            return
+        }
+        step = RESTORING
         driveFromEmpty = emptyBefore
         bringing = scope.launch {
             when (val look = center.lookInDrive()) {
                 is DriveLook.Offline -> step = NO_INTERNET_DRIVE
-                is DriveLook.NotConnected, is DriveLook.Problem, is DriveLook.Nothing -> step = NO_BACKUP
+                is DriveLook.NotConnected, is DriveLook.Problem, is DriveLook.Nothing, is DriveLook.Aside -> step = NO_BACKUP
                 is DriveLook.Found -> {
                     madeOn = "android"
                     madeWithPlus = needsPlus(look.activeHabits)
@@ -224,7 +255,14 @@ fun RestoreFlow(
         // A phone with no Google Play services can't reach Drive at all: say so, and a file still brings them back.
         if (!center.link.available) { step = NO_DRIVE; return }
         if (!online(context)) { fromDrive = true; step = NO_INTERNET_DRIVE; return }
-        scope.launch { if (center.link.connect(context, pick = pick)) restoreFromDrive() }
+        val asks = fromSettings && store.habits.isNotEmpty()
+        wasConnected = center.link.accountKey != null
+        // Held from before it connects: nothing merges into this phone while the person decides.
+        if (asks) center.holding = true
+        scope.launch {
+            if (center.link.connect(context, pick = pick)) restoreFromDrive()
+            else if (asks) center.holding = false
+        }
     }
 
     /**
@@ -327,12 +365,31 @@ fun RestoreFlow(
         }
 
         // 39:1590 · Where is it? Google Drive, or a file you saved.
-        else -> FlowScreen(onBack = onBack, tag = "restore-where", top = true) {
-            StepHeading("Restore from a backup.", "Choose where your backup is.")
-            SegmentedList {
-                AppListItem("Google Drive", 0, 2, supporting = "Backed up automatically", onClick = { chooseDrive() }, tag = "restore-drive",
-                    leading = { ListAvatar { Image(painterResource(R.drawable.ic_drive_logo), null, Modifier.size(24.dp)) } }, trailing = { ListChevron() })
-                FileChoice(1, 2) { pickFile() }
+        else -> {
+            FlowScreen(onBack = onBack, tag = "restore-where", top = true) {
+                StepHeading("Restore from a backup.", "Choose where your backup is.")
+                SegmentedList {
+                    AppListItem("Google Drive", 0, 2, supporting = "Backed up automatically", onClick = { chooseDrive() }, tag = "restore-drive",
+                        leading = { ListAvatar { Image(painterResource(R.drawable.ic_drive_logo), null, Modifier.size(24.dp)) } }, trailing = { ListChevron() })
+                    FileChoice(1, 2) { pickFile() }
+                }
+            }
+            // 1183:4963 · Restore this backup? Cancel and Restore only (D9); Cancel leaves this phone as it is.
+            asking?.let { p ->
+                val preview = p.check.preview
+                // Habits as people count them, the free plan's way: not archived, not tasks (fileActiveHabits).
+                val on = store.activeHabitCount
+                val made = askingBackedUp?.let { ", backed up " + DayWords.dayMonth(java.time.Instant.ofEpochMilli(it).atZone(java.time.ZoneId.systemDefault()).toLocalDate().toEpochDay().toInt()) } ?: ""
+                AppDialog("Restore this backup?",
+                    "The $on ${if (on == 1) "habit" else "habits"} on this phone ${if (on == 1) "is" else "are"} replaced by the ${preview?.fileActiveHabits ?: 0} in " +
+                        (email?.plus("’s") ?: "your") + " Google Drive$made. You can undo this for 30 days.",
+                    "Restore", { asking = null; center.holding = false; restoreFile(p, drive = true, replacing = true) },
+                    {
+                        asking = null
+                        center.holding = false
+                        if (!wasConnected) scope.launch { center.disconnectDrive() }
+                    },
+                    Modifier.semantics { testTag = "restore-ask" }, confirmTag = "restore-ask-confirm")
             }
         }
     }

@@ -78,6 +78,11 @@ sealed class DriveLook {
     object NotConnected : DriveLook()
     /** Drive had trouble or is full. Nothing changed. */
     object Problem : DriveLook()
+    /**
+     * Drive's copy read aside, this phone untouched ([BackupCenter.lookInDriveAside]): it restores like a file
+     * ([pending], with its counts and the 30-day undo), last backed up at [backedUp] (epoch ms) when Drive says.
+     */
+    class Aside(val pending: BackupCenter.Pending, val backedUp: Long?) : DriveLook()
 }
 
 /**
@@ -101,6 +106,11 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     var status by mutableStateOf<DriveStatus?>(null); private set
     var working by mutableStateOf(false); private set
+    /**
+     * A restore is asking before it replaces this phone (Restore this backup?): no Drive round runs until it's
+     * answered, so Cancel leaves the phone exactly as it was rather than merged with the Drive it just connected.
+     */
+    var holding by mutableStateOf(false)
     /** The last restore's undo file, kept 30 days (D5). */
     var undoAvailable by mutableStateOf(latestUndo() != null); private set
 
@@ -162,6 +172,41 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
         // Nothing new came down: that Google account has no Often Enough backup in it (10.7).
         if (store.habits.size == habitsBefore && store.entryCount == logsBefore) return DriveLook.Nothing
         return DriveLook.Found(store.habits.count { !it.archived }, store.entryCount, store.activeHabitCount)
+    }
+
+    /**
+     * Google Drive's copy, read into a scratch database so **nothing on this phone changes** (Settings' Restore from
+     * Google Drive, Figma 1183:5575): the person sees what it would replace and chooses (Restore this backup?), and
+     * Restore then replaces this phone with it as a file restore does, keeping the undo file (D5). Nothing goes up.
+     */
+    suspend fun lookInDriveAside(): DriveLook {
+        val key = link.accountKey ?: return DriveLook.NotConnected
+        val api = link.api() ?: return DriveLook.NotConnected
+        val scratch = app.habits.core.HabitRepository.openInMemory()
+        try {
+            val result = mutex.withLock {
+                working = true
+                try {
+                    val s = DriveSync(scratch, api, info.deviceName, "android")
+                    s.connect(key)
+                    s.syncNow(allowUpload = false)
+                } finally {
+                    working = false
+                }
+            }
+            when (result.state) {
+                DriveState.OFFLINE -> return DriveLook.Offline
+                DriveState.NOT_CONNECTED -> return DriveLook.NotConnected
+                DriveState.PROBLEM, DriveState.BUSY, DriveState.FULL -> return DriveLook.Problem
+                else -> Unit
+            }
+            val pending = check(Base64.getDecoder().decode(scratch.backupFile(info).base64))
+            val preview = pending.check.preview ?: return DriveLook.Nothing
+            if (preview.fileHabits == 0 && preview.fileEntries == 0) return DriveLook.Nothing
+            return DriveLook.Aside(pending, result.devices.mapNotNull { it.lastSent }.maxOrNull())
+        } finally {
+            scratch.close()
+        }
     }
 
     // ------------------------------------------------------------------ Restore
@@ -242,6 +287,7 @@ class BackupCenter(private val context: Context, private val store: HabitStore, 
 
     /** One round: download, merge, upload (never replace). The phone's own data stays the truth (D1). */
     suspend fun syncNow(): DriveStatus? {
+        if (holding) return status
         return mutex.withLock {
             val s = sync() ?: return null
             working = true
