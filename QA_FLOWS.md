@@ -20,12 +20,12 @@ no screen with a keyboard could be compared with Figma.
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
-| create new | 381:2 | 28 | 23 |
+| create new | 381:2 | 28 | 24 |
 | settings | 781:34017 | 23 | 0 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **239** |
+| **All** | | **290** | **240** |
 
 ## Bug log
 
@@ -707,7 +707,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 21 | 407:2156 | Edit habit | ⋮ Edit habit → form → How much 10 → Save: Changes saved → discard → name cleared | passed ↻ (phone: Water 8 → 10 glasses, “The new goal starts today …”, Save → “10 glasses a day”, “Changes saved”; ← with changes → Discard your changes? → Discard leaves 8; the name cleared turns Save off, typed again on) |
 | 22 | 469:2 | A new task: for today | + → Add a task → Once → New task → “Pick up parcel” → form → Add | passed (phone: “Name, e.g. Pick up parcel” (337), Today · Sun, 1 Nov, the form at Figma’s places; Add puts it at the end of Anytime, “Task · Once”; the design demo has a Pick up parcel of its own) |
 | 23 | 471:2 | A task’s date | Date → picker → 30 → OK → No date | passed ↻ (phone: Select date opens at once on today, the days before greyed, 8 Nov → “Sun, 8 Nov”; No date on the picker → the Time row goes and the line says why) |
-| 24 | 474:2 | A task’s time | Time on → picker 2:00 PM → OK | not started |
+| 24 | 474:2 | A task’s time | Time on → picker 2:00 PM → OK | passed (phone: Android’s time input, 2:00 PM → Time on, “2:00 PM” under it, the rows below at Figma’s places) |
 | 25 | 474:282 | A repeating task | Add a task → On repeat → form → How often → A while after → ← | not started |
 | 26 | 475:2 | A new task: leaving it | + → Add a task → Once → empty ← → typed: Discard this task? → Discard | not started |
 | 27 | 475:835 | Edit task | ⋮ Edit task → form → Date → Tomorrow → Save → name cleared → discard | not started |
