@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 18 |
+| settings | 781:34017 | 23 | 19 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **262** |
+| **All** | | **290** | **263** |
 
 ## Bug log
 
@@ -406,6 +406,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 364. Settings 16, 17 and 20 (New day starts at, Week starts on, Theme) · the choices' words started 8 too close to their radio (72); Figma's Choice is a List item with the radio in its 40 dp lead, so the words start at 80 (`RadioRow(choice = true)`; Create new's Option rows keep 72, as their Figma does).
 365. Settings 18 (every step row: Keep reminders coming) · a step's Open settings sat 16 under its line and the row ended 14 under it, the words 10 from the top: Figma's step is 12 · 12 · 12 (`ListAction` laid out at its drawn 40, the row's padding 12).
 366. Settings 18 (every list row that loses what's under it) · a step that turned done while the page was open kept Material's three-line 88 dp; it's 72 now, as when the page opens (`AppListItem` keyed on whether something sits under its words).
+367. Settings 18 and 19 · "These change only Often Enough. Other apps keep saving battery." sat 8 under the list; Figma's is its own group, 24 under it.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -765,7 +766,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 16 | 1186:373799 | New day starts at | Settings → page → 3:00 AM → ← | passed ↻ (phone: New day starts at → its line, the hours from 12:00 AM (to 12:00 PM: D-24) → 3:00 AM chosen → ← Settings “New day starts at · 3:00 AM”) |
 | 17 | 1186:374469 | Week starts on | Settings → page → Monday → ← | passed (phone, after flow 16’s fix: Week starts on → its line, Sunday to Saturday at Figma’s places (words at 80) → Monday → ← Settings “Week starts on · Monday”) |
 | 18 | 1183:373672 | Keep reminders coming | 1 thing to fix → Open settings → Alarms & reminders on → All set → Settings · All set | passed ↻ ⁴³ (phone: notifications allowed, Alarms & reminders and battery at Android’s defaults → “2 things to fix” → Allow alarms & reminders’ Open settings → Android’s own Alarms & reminders switch for Often Enough → on → back: the row done at once → battery’s Open settings → App info › App battery usage › Unrestricted → back: “All set. Reminders will come on time.” → Settings “Keep reminders coming · All set” with the ringing bell) |
-| 19 | 1199:16989 | Reminders, before anything is set up | No reminders yet → nothing allowed → 3 things to fix | not started |
+| 19 | 1199:16989 | Reminders, before anything is set up | No reminders yet → nothing allowed → 3 things to fix | passed ↻ (phone: no habits and nothing allowed → Settings “No reminders yet” → the page: “No habit has a reminder yet. …”, Allow notifications with Allow, Alarms & reminders and battery with Open settings, every row at Figma’s places, the footer 24 under them → with the design demo’s reminders, Settings “3 things to fix” with the alert bell; the app’s permissions put back as they were before flow 18) |
 | 20 | 1188:377756 | Theme | Theme → Light → ← → Settings Light | not started |
 | 21 | 1183:374861 | Vibration and sound | Sound when done → on | not started |
 | 22 | 1183:375417 | Privacy policy | Privacy policy → browser tab → back | not started |

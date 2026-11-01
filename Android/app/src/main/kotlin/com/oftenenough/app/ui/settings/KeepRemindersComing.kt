@@ -161,9 +161,10 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
                         }
                     }
                 }
-                Text("These change only Often Enough. Other apps keep saving battery.", Modifier.padding(horizontal = 16.dp),
-                    style = AppType.bodyMedium, color = s.onSurfaceVariant)
             }
+            // Its own group, 24 under the list (Figma's flows 18 and 19).
+            Text("These change only Often Enough. Other apps keep saving battery.", Modifier.padding(horizontal = 16.dp),
+                style = AppType.bodyMedium, color = s.onSurfaceVariant)
         }
     }
 }
