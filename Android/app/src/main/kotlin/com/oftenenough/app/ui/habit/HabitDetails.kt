@@ -58,6 +58,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import kotlin.math.roundToInt
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -208,6 +210,7 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     // Go to date's day, lit in the habit's colour for a moment (Figma 2.7, "History · gone to a date").
     var lit by remember(habitId) { mutableStateOf<Int?>(null) }
     val listState = rememberLazyListState()
+    val density = LocalDensity.current
     val scope = rememberCoroutineScope()
     val snackbar = remember { SnackbarHostState() }
     fun archive() {
@@ -329,8 +332,14 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             if (index != null) {
                 // The header, the tabs and the gap come first; then the earlier habit's card, if any.
                 val lead = 3 + (if (earlier != null) 1 else 0)
-                scope.launch { listState.animateScrollToItem(lead + index) }
-                lit = day
+                // Figma 2.7: the day mid-screen, then lit; scrolled to the top it sat under the pinned tabs, and its light
+                // had mostly faded on the way (QA, 1 Nov 2026).
+                lit = null
+                scope.launch {
+                    val middle = (listState.layoutInfo.viewportSize.height - with(density) { 74.dp.toPx() }) / 2
+                    listState.animateScrollToItem(lead + index, -middle.roundToInt().coerceAtLeast(0))
+                    lit = day
+                }
             }
         }
     }
