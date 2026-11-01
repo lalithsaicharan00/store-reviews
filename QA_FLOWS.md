@@ -21,11 +21,11 @@ no screen with a keyboard could be compared with Figma.
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
 | create new | 381:2 | 28 | 28 |
-| settings | 781:34017 | 23 | 2 |
+| settings | 781:34017 | 23 | 3 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 0 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **246** |
+| **All** | | **290** | **247** |
 
 ## Bug log
 
@@ -730,7 +730,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 |---|---|---|---|---|
 | 1 | 1179:357753 | Opening Settings | Today → ≡ → Settings | passed (phone: ≡ → Settings; the five sections and every row at Figma’s places; a test launch has no Drive and nothing allowed, so “Not backed up yet” (flow 3) and “3 things to fix” (flow 19) where Figma shows Backed up and All set; Version is the build’s own, 1.0 (4)) |
 | 2 | 1181:2810 | Back up now | Settings → Backup & Sync → Back up now → Backing up… → Backed up | passed ↻ ⁴² (phone, the test account’s real Google Drive: Back up now → Backing up… with its wave filling (seen in a screen recording; it takes about a second) → Backed up; Settings says “Backed up · Today, 7:54 PM”. Every row 20 above Figma’s: “… It backs up by itself as you go.” is one line at 432 dp, two at 360) |
-| 3 | 1181:4132 | Backing up for the first time | Not backed up yet → Back up to Google Drive → chooser → Allow → Backing up… → Backed up | not started |
+| 3 | 1181:4132 | Backing up for the first time | Not backed up yet → Back up to Google Drive → chooser → Allow → Backing up… → Backed up | passed ↻ ⁴² (phone: Settings “Not backed up yet” → Not backed up and its words at Figma’s places (347) → Back up to Google Drive → Google’s own chooser → lalithsaicharan9@gmail.com → Google’s permission screen (the first time for the account) → Continue → Backing up…, Change account “Backing up to lalithsaicharan9@gmail.com” → Backed up · Just now. Once allowed, Google skips its chooser and permission on the next connect, as its own API does) |
 | 4 | 1182:4382 | Change account | Change account → chooser → Back up to another Drive? → Backing up… → Backed up | not started |
 | 5 | 1182:360295 | Back up now with no internet | Back up now offline → Waiting + snackbar → online: Backing up… → Backed up | not started |
 | 6 | 1183:5575 | Restore from Google Drive | Restore from a backup → Google Drive → chooser → Allow → Restore this backup? → Restoring → Today + Undo | not started |
