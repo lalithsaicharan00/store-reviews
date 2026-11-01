@@ -926,7 +926,7 @@ data class HabitOverall(
     val current: RecordFact?,
     val best: RecordFact?,
     val goalMet: RecordFact?,
-    /** "of planned days", "of days", "of weeks". */
+    /** "of planned days", "of days", "of weeks"; empty where the tile takes no percentage (a limit's Over the limit). */
     val percentNoun: String,
     val bestPeriod: RecordFact?,
     /** `metDates[k]` is the day the goals met reached k + 1. */
@@ -1154,7 +1154,7 @@ private fun HabitStore.limitRecord(habit: Habit, now: Habit, since: String, kind
     // Only days that have ended count, as the Year card's "Within the limit on 36 of 39 days" (today waits).
     val met = judged.filter { rules.isDayMet(habit, it) }
     return HabitOverall("", HabitCopy.number(met.size.toDouble()), "of ${judged.size} ${days(judged.size)} within the limit",
-        met.size, judged.size, since, currentFact, bestFact, overFact, "of days", averageFact, met, kinds, seeAll = "See all runs")
+        met.size, judged.size, since, currentFact, bestFact, overFact, "", averageFact, met, kinds, seeAll = "See all runs")
 }
 
 // ---------------------------------------------------------------------------------------------------------- Comparisons

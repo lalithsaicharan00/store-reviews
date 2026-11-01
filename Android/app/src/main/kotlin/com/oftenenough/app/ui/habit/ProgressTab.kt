@@ -156,8 +156,8 @@ private fun RecordCard(record: HabitOverall, color: HabitColor, showStreaks: Boo
     }
     record.goalMet?.let { goal ->
         // The percentage follows Progress's "Show percentages".
-        // A limit's third tile is Over the limit, with its own line ("Last on 15 Oct"), never a percentage.
-        val percent = if (showPercentages && record.eligible > 0 && goal.detail == null) Math.round(record.met.toDouble() / record.eligible * 100).toInt() else null
+        // A limit's third tile is Over the limit, with its own line ("Last on 15 Oct") or none, never a percentage.
+        val percent = if (showPercentages && record.eligible > 0 && record.percentNoun.isNotEmpty()) Math.round(record.met.toDouble() / record.eligible * 100).toInt() else null
         boxes.add(RecordBoxData("habit-record-goal-met", goal, percent?.let { "$it% ${record.percentNoun}" } ?: goal.detail,
             goal.spoken + (percent?.let { ", $it percent ${record.percentNoun}" } ?: ""), false))
     }
