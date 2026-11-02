@@ -53,6 +53,8 @@ object Reminders {
     const val ACTION_TICK = "com.oftenenough.app.REMINDER_TICK"
     /** Takes back exactly the log the notification made, by its ID. */
     const val ACTION_UNDO = "com.oftenenough.app.REMINDER_UNDO"
+    /** A ringing alarm's Not now: the ring stops, the reminder stays. */
+    const val ACTION_QUIET = "com.oftenenough.app.REMINDER_QUIET"
     const val EXTRA_STEP = "step"
     private const val EXTRA_ENTRY = "entry"
     private const val EXTRA_SECTION = "section"
@@ -87,6 +89,7 @@ object Reminders {
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
     private var pending: Job? = null
+    private var askedInTest = false
 
     fun channel(context: Context) {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
@@ -343,7 +346,7 @@ object Reminders {
      * hidden outside the app (no step names, no units). Null when the habit has gone.
      */
     private fun notice(context: Context, store: HabitStore, shown: Shown, undo: String?, update: Boolean, hidden: Pair<String, String>? = null,
-                       goesAfter: Long? = null, sortKey: String? = null): android.app.Notification? {
+                       goesAfter: Long? = null, sortKey: String? = null, silent: Boolean = false): android.app.Notification? {
         val habit = store.habit(shown.habit)?.takeIf { !it.archived } ?: return null
         val day = shown.day
         val hide = hidden != null || AppGraph.hidesNames
@@ -364,12 +367,14 @@ object Reminders {
         val builder = base(context, title, body, habit.id, day, shown.section, shown.alarm)
             .setColor(AppColors.light.habit(habit.color).toArgb())
             .setOnlyAlertOnce(update)
+            .setSilent(silent)
         // In a same-minute group (5.11.3) only the summary rings.
         shown.group?.let { builder.setGroup(it).setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY) }
         sortKey?.let { builder.setSortKey(it) }
         goesAfter?.let { builder.setTimeoutAfter(it) }
-        // An alarm fills the screen (5.11.4) when Android lets it; otherwise it rings as this notification (5.11.5).
-        if (shown.alarm && !update && shown.group == null && canFillScreen(context)) builder.setFullScreenIntent(alarmScreen(context, shown), true)
+        // An alarm fills the screen (5.11.4) when Android lets it; otherwise Android rings it as this notification, held at
+        // the top with its buttons for a minute (5.11.5, Figma 1282:407236), so it asks either way.
+        if (shown.alarm && !update && shown.group == null) builder.setFullScreenIntent(alarmScreen(context, shown), true)
         // Progress: how far toward the goal, as Today's row fills (none where Today's row has no fill).
         val fraction = (item.cardFraction ?: item.fraction)?.coerceIn(0.0, 1.0)
         if (!once && !rule.atMost && rule.kind != HabitKind.Checklist && fraction != null) builder.setProgress(100, (fraction * 100).toInt(), false)
@@ -401,6 +406,8 @@ object Reminders {
             HabitKind.Quit -> {}
         }
         if (undo != null) button(undoLabel, ACTION_UNDO) { putExtra(EXTRA_ENTRY, undo) }
+        // A ringing alarm: Not now stops the ring and leaves an ordinary reminder (Figma 1282:407339), as the alarm screen's does.
+        if (shown.alarm && !update) button("Not now", ACTION_QUIET)
         // What it's about, so it can keep up with the app ([keepUp]).
         builder.addExtras(shown.bundle().apply { putString(EXTRA_ENTRY, undo); putBoolean(EXTRA_TEST, AppGraph.isTest) })
         return builder.build()
@@ -545,6 +552,8 @@ object Reminders {
      */
     fun shouldAskFullScreen(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < 34 || canFillScreen(context)) return false
+        // A test launch remembers it for that launch only, never in the person's settings (D8).
+        if (AppGraph.isTest) return !askedInTest.also { askedInTest = true }
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         if (prefs.getBoolean(ASKED_FULL_SCREEN, false)) return false
         prefs.edit().putBoolean(ASKED_FULL_SCREEN, true).apply()
@@ -566,7 +575,10 @@ object Reminders {
         val shown = shown(intent, store) ?: return
         val manager = NotificationManagerCompat.from(context)
         val notification = notice(context, store, Shown(shown.habit, shown.day, shown.slot, shown.section, shown.id, alarm = false, shown.followUp,
-            shown.place, shown.group, shown.minute), undo = null, update = true) ?: return manager.cancel(shown.id)
+            shown.place, shown.group, shown.minute), undo = null, update = true, silent = true) ?: return manager.cancel(shown.id)
+        // Showing it again quietly doesn't end a ring already playing (Android keeps it as the sounding one): it goes, which
+        // stops the ring, and comes back silent, without a heads-up.
+        manager.cancel(shown.id)
         try { manager.notify(shown.id, notification) } catch (_: SecurityException) {}
     }
 
@@ -637,6 +649,7 @@ class ReminderReceiver : BroadcastReceiver() {
                         store.flush()
                         Reminders.replan(context, store)
                     }
+                    Reminders.ACTION_QUIET -> Reminders.quiet(context, store, intent)
                     else -> when {
                         Reminders.isAlarm(intent) -> Reminders.fire(context, store)
                         else -> Reminders.replan(context, store)

@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 9 |
-| **All** | | **290** | **280** |
+| notifications & alarms | 1265:24553 | 12 | 10 |
+| **All** | | **290** | **281** |
 
 ## Bug log
 
@@ -442,6 +442,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 400. Notifications 10 · a same-minute group listed its reminders newest first (Skincare, Stretch, Meds) — posted last to first, with sort keys, so they read in Today's order (Meds, Stretch, Skincare).
 401. Notifications 10 · Android draws a group's header from its summary's header, so "7:00 AM · 3 reminders" showed nowhere, and the summary never changed — it's the summary's header text too now, and the group counts down as its reminders go ("2 reminders", "1 reminder"; after a "Goal met" that leaves by itself as well) and goes with the last (`Reminders.summary`, `keepUp`).
 402. Notifications 7, 10 · a checklist reminder said "1 of 4 steps" twice collapsed (Android puts an inbox summary in the header too) — it's the first line over the steps now, as Figma writes it under the name.
+403. Notifications 12 · an alarm Android won't let fill the screen rang with Done only, held like any reminder — it asks for the full screen either way, so Android rings it held at the top with its buttons as pills for a minute (Figma 1282:407236), and it has **Not now** beside Done.
+404. Notifications 11, 12 · Not now (the notification's, and the alarm screen's) left the alarm ringing: showing it again quietly doesn't end a ring Android is already playing (it stayed the sounding notification) — it's taken away, which stops the ring, and put back silent with Done (`Reminders.quiet`).
+405. Notifications 11 · "Let alarms fill the screen" is asked once, but a test launch wrote that into the app's own settings, so the person's app would never have asked — a test launch remembers it for that launch only (D8); the mark it had left on the phone was removed.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -499,6 +502,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁵³ Notifications 8 (phone): 2 of 4 from the reminder → Open → Skincare's Day details (2 of 4) → Sunscreen → Home: the reminder read "3 of 4 steps", Sunscreen ✓, Tick Moisturiser · Open · Undo, as Figma's frame 4; Moisturiser ticked in the app took it away. Rechecked after the change: flow 6's "Goal met" still stays its few seconds, flow 3's +1 keeps "Undo +1 glass". Figma's "Tick steps" under Day details' steps is D-52's, not this flow's.
 ⁵⁴ Notifications 9 (phone): Pick up parcel's reminder read "Task · for today" with Done; Done took it away and Today's row became done ("Undo Pick up parcel"). A name with spaces goes to the phone's shell quoted (`rem 17 "'Pick up parcel@17:00'"`).
 ⁵⁵ Notifications 10 (phone): Meds, Stretch and Skincare at 7:00 came as one group, "Often Enough · 7:00 AM · 3 reminders" over a line each in Today's order; opened, each kept its own buttons; Meds' Done left "2 reminders"; Stretch opened to Start and Log time; 6 minutes logged left "1 reminder" once its "Goal met" went; Skincare's last tick took the group away. Android decides which member opens expanded (Figma: the first) and shows the summary's lines only collapsed.
+⁵⁶ Notifications 11, 12 (phone, unlocked): the app's Full screen notifications switch was turned off with `appops set … USE_FULL_SCREEN_INTENT deny` and put back to `default` (granted, as before) afterwards; Android's own Settings page was only looked at. Choosing An alarm asked "Let alarms fill the screen"; Open settings opened Often Enough's own Full-screen notifications switch (U40); coming back the page said An alarm and asked no more. Without full screen the alarm rang (alarm sound, again and again) as a held heads-up with Done and Not now; Not now stopped the ring (no sounding notification left) and left a quiet Meds reminder with Done; Done saved Meds (Today: Undo Meds). With full screen allowed, an unlocked phone got the same ringing heads-up, and Done stopped it. The alarm filling the locked screen (flow 11's frames 6–7) is checked with flow 2's lock-screen part.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -842,5 +846,5 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 8 | 1279:4534 | A checklist out of order: Open | 2 of 4 → Day details → Sunscreen → reminder keeps up | passed ⁴⁸ ⁵³ |
 | 9 | 1280:4045 | A task, from its reminder | task reminder → Done | passed ⁴⁸ ⁵⁴ |
 | 10 | 1281:4896 | Several reminders at the same minute | group for Morning → opened → Meds done leaves → Stretch: Start or Log time | passed ⁴⁸ ⁵⁵ |
-| 11 | 1282:4986 | An alarm: turn it on, then answer it | Remind me with → Let alarms fill the screen → Full screen notifications → Allowed → An alarm → rings → Done | not started |
-| 12 | 1282:407448 | An alarm without full screen | Let alarms fill the screen → without full screen → rings as notification → Not now → Done | not started |
+| 11 | 1282:4986 | An alarm: turn it on, then answer it | Remind me with → Let alarms fill the screen → Full screen notifications → Allowed → An alarm → rings → Done | steps 1–5 passed ⁵⁶; 6–7 (the locked screen) with flow 2 |
+| 12 | 1282:407448 | An alarm without full screen | Let alarms fill the screen → without full screen → rings as notification → Not now → Done | passed ⁴⁸ ⁵⁶ |
