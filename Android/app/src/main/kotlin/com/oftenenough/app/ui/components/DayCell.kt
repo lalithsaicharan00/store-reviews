@@ -84,18 +84,10 @@ fun dayCellColors(habit: HabitColor, c: AppColors, s: ColorScheme): DayCellColor
     val done = c.habit(habit)
     return DayCellColors(
         done = done, part = done.copy(alpha = 0.5f), more = medalColors(c, habit).bottom,
-        check = if (c.dark) Color(darkChecks.getValue(habit)) else Color.White, checkOnMore = Color.White,
+        check = Color.White, checkOnMore = Color.White,
         grey = s.surfaceContainerHigh, sign = s.outline, dash = s.outlineVariant, ring = s.onSurface,
     )
 }
-
-/** Dark mode's ✓ on Done: a deep shade of each habit's dark colour (its colours are too light for white). */
-private val darkChecks = mapOf(
-    HabitColor.RED to 0xFF331511, HabitColor.ORANGE to 0xFF301903, HabitColor.YELLOW to 0xFF281E00, HabitColor.GREEN to 0xFF0C2611,
-    HabitColor.MINT to 0xFF002523, HabitColor.TEAL to 0xFF00242B, HabitColor.CYAN to 0xFF002333, HabitColor.BLUE to 0xFF0F1F37,
-    HabitColor.INDIGO to 0xFF1A1C36, HabitColor.PURPLE to 0xFF271830, HabitColor.PINK to 0xFF331416, HabitColor.BROWN to 0xFF2D1B01,
-    HabitColor.GRAY to 0xFF131E37,
-)
 
 /** A glyph's outline in its 960 box (Symbols draws them a box higher). */
 private fun glyph(icon: ImageVector): Path =

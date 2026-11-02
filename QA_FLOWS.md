@@ -428,6 +428,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 386. Widgets 1 · a 4×2 list with more than two rows had no way to reach the rest (Figma's component too): chevrons and the page after the count chip (A100; the user). Checked on the phone: Today 1/3 → 2/3 → 3/3 and back, Morning 1/2, Today 4×4 1/2 with a sixth habit, › on the last page takes no tap.
 387. Widgets 1 · a page turned stayed turned the next day, hiding the first rows — a page lasts the day (A100; not checked across a real midnight on the phone).
 388. Widgets (the user) · a widget Android hadn't got a drawing for showed Glance's spinner, which looks stuck — a plain card, its own colour and size (A100). Seen because my test runs force-stop the app: see ⁴⁷.
+389. Day cells, dark mode (the user) · a done cell's ✓ was a near-black shade per habit, on Habits & Tasks, the details pages and the This week widget — white (A101). Today's round ✓ was never part of this: it stays the grey of the ▶.
+390. Routine player and alarm (the user) · the main button's ▶ and ⏸ were outlined, because entry 167 of this log copied Figma over the user's word — filled, and Figma corrected (26 glyphs on the player's page, 16 on the details pages, 1 on notifications) so it can't flip back (A101).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.

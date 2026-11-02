@@ -39,6 +39,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.theme.appColors
 
 /** How loud a button is (Figma Button 500:26, Style). */
 enum class ButtonStyle {
@@ -126,7 +128,8 @@ fun AppButton(
     val offText = s.onSurface.copy(alpha = 0.38f)
     val quiet = if (destructive) s.error else s.onSurfaceVariant
     val content: @Composable RowScope.() -> Unit = {
-        if (icon != null) { Icon(icon, null, Modifier.size(ButtonDefaults.iconSizeFor(size.height))); Spacer(Modifier.width(ButtonDefaults.iconSpacingFor(size.height))) }
+        // Dark mode: a Filled button is white, where a ✓ could only be black (the user, 2 Nov 2026); its word says it.
+        if (icon != null && !(icon == Symbols.Check && style == ButtonStyle.Filled && appColors.dark)) { Icon(icon, null, Modifier.size(ButtonDefaults.iconSizeFor(size.height))); Spacer(Modifier.width(ButtonDefaults.iconSpacingFor(size.height))) }
         Text(text, style = size.label, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
     when (style) {

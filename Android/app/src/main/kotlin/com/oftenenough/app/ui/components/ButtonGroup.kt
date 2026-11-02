@@ -27,6 +27,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import com.oftenenough.app.ui.theme.appColors
 
 /**
  * Atom 1.3, **Connected button group** (Figma 967:611, 967:612; Components — Atoms Build Plan): Material 3 Expressive's
@@ -61,7 +62,8 @@ fun <T> AppConnectedButtons(options: List<Pair<T, String>>, selected: T, modifie
             // The ✓ only while the label still fits beside it on one line: with larger text it gives way, and the chosen
             // one shows by its fill, rather than a word ("One-time") breaking in two.
             val width = with(density) { measure.measure(label, MaterialTheme.typography.labelLarge, maxLines = 1).size.width.toDp() }
-            val check = on && width + ToggleButtonDefaults.IconSize + ToggleButtonDefaults.IconSpacing <= room
+            // Dark mode: the chosen button is white, where a ✓ could only be black (the user, 2 Nov 2026); its fill says it.
+            val check = on && !appColors.dark && width + ToggleButtonDefaults.IconSize + ToggleButtonDefaults.IconSpacing <= room
             ToggleButton(
                 checked = on,
                 onCheckedChange = { onPick(value) },

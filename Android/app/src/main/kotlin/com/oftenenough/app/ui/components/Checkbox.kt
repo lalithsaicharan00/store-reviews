@@ -2,9 +2,11 @@ package com.oftenenough.app.ui.components
 
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.oftenenough.app.ui.theme.appColors
 
 /**
  * Atom 1.11, **Checkbox** (Figma 1096:1974; Components — Atoms Build Plan): Material's own `Checkbox` as it is, an 18 dp
@@ -26,6 +28,11 @@ fun AppCheckbox(
 ) {
     Checkbox(
         checked, onCheckedChange, modifier, enabled,
-        colors = if (habitColor == null) CheckboxDefaults.colors() else CheckboxDefaults.colors(checkedColor = habitColor, checkmarkColor = Color.White),
+        colors = when {
+            habitColor != null -> CheckboxDefaults.colors(checkedColor = habitColor, checkmarkColor = Color.White)
+            // A ✓ is white in dark mode, so its box is a grey it shows on (the user, 2 Nov 2026).
+            appColors.dark -> CheckboxDefaults.colors(checkedColor = MaterialTheme.colorScheme.outlineVariant, checkmarkColor = Color.White)
+            else -> CheckboxDefaults.colors()
+        },
     )
 }

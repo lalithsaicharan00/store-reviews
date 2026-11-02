@@ -167,7 +167,7 @@ class AlarmActivity : ComponentActivity() {
             HabitKind.Check, HabitKind.Task -> big("Done", Symbols.Check) { answer(store, Reminders.ACTION_DONE) }
             is HabitKind.Amount -> habit.quickIncrement?.let { step -> big("+" + HabitCopy.amount(step, k.unit), Symbols.Add) { answer(store, Reminders.ACTION_ADD) } }
                 ?: big("Log", Symbols.Edit) { openApp(store, "log/${habit.id}", day) }
-            HabitKind.Duration -> big("Start", Symbols.PlayArrow) { answer(store, Reminders.ACTION_START) }
+            HabitKind.Duration -> big("Start", Symbols.Filled.PlayArrow) { answer(store, Reminders.ACTION_START) }
             HabitKind.Checklist -> habit.steps.firstOrNull { !store.isStepDone(it, habit, day) }?.let { next ->
                 big("Tick ${next.name}", Symbols.Check) { answer(store, Reminders.ACTION_TICK, next.id) }
             }

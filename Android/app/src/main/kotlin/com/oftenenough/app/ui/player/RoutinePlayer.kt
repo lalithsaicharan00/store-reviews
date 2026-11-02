@@ -1177,14 +1177,14 @@ private fun HabitButtons(session: PlayerSession, habit: Habit?, nav: PlayerNav) 
     }
 }
 
-// The main button's glyphs are outlined (Figma's player, Main button: FILL 0), as a Button's icon; Finish goes on →.
+// ▶ and ⏸ are always filled, in every screen (the user, A69, 2 Nov 2026); the others are outlined, as a Button's icon. Finish goes on →.
 private fun actionIcon(a: PlayerAction): ImageVector? = when (a) {
     PlayerAction.NEXT, PlayerAction.FINISH -> Symbols.ArrowForward
     PlayerAction.MARK_DONE, PlayerAction.NONE -> Symbols.Check
     PlayerAction.LOG_ONE -> Symbols.Add
     PlayerAction.LOG_STEP, PlayerAction.LOG_AMOUNT -> null
-    PlayerAction.START, PlayerAction.RESUME -> Symbols.PlayArrow
-    PlayerAction.PAUSE -> Symbols.Pause
+    PlayerAction.START, PlayerAction.RESUME -> Symbols.Filled.PlayArrow
+    PlayerAction.PAUSE -> Symbols.Filled.Pause
 }
 
 /**
