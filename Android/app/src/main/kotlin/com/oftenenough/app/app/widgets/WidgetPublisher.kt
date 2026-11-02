@@ -10,23 +10,20 @@ import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.drawscope.CanvasDrawScope
+import androidx.compose.ui.graphics.asAndroidPath
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.PathParser
 import androidx.compose.ui.graphics.vector.VectorGroup
 import androidx.compose.ui.graphics.vector.VectorNode
 import androidx.compose.ui.graphics.vector.VectorPath
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.data.HabitStore
-import com.oftenenough.app.data.HeatCell
-import com.oftenenough.app.data.widgets.WidgetCell
-import com.oftenenough.app.ui.components.DayCellDraw
-import com.oftenenough.app.ui.components.dayCellColors
 import com.oftenenough.app.data.widgets.WidgetItems
+import com.oftenenough.app.ui.components.medalColors
+import com.oftenenough.app.ui.components.starPath
 import com.oftenenough.app.ui.theme.AppColors
 import com.oftenenough.app.ui.theme.HabitIcons
 import com.oftenenough.app.data.HabitColor
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.LayoutDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -48,6 +45,7 @@ object WidgetPublisher {
         pending?.cancel()
         pending = scope.launch {
             delay(500)
+            pending = null // publish cancels what's pending, which is no longer this job
             publish(context.applicationContext, store)
         }
     }
@@ -62,7 +60,8 @@ object WidgetPublisher {
         val prefs = AppGraph.prefs
         val now = store.clock()
         val previous = if (hold) withContext(Dispatchers.IO) { WidgetDisk.read(context) } else null
-        var snapshot = WidgetItems.snapshot(store, now, sinkDone = prefs.doneOrder != "stay", timerOpensScreen = prefs.timerScreen,
+        // A widget's lists always put what's done after what's still to do (A99).
+        var snapshot = WidgetItems.snapshot(store, now, sinkDone = true, timerOpensScreen = prefs.timerScreen,
             previous = previous, hold = if (hold) now + 1_500 else null)
         if (AppGraph.hidesNames) snapshot = snapshot.withoutNames()
         withContext(Dispatchers.IO) { WidgetDisk.write(context, snapshot) }
@@ -84,6 +83,15 @@ object WidgetPublisher {
             }
         }
         WidgetDayReceiver.plan(context, store = if (AppGraph.isOpen) AppGraph.store else null)
+    }
+
+    /**
+     * The phone's mode changed while the app was running: every widget draws again, so its pictures (the habit's medal)
+     * follow the colours that switch by themselves (A98). A test launch never redraws the person's widgets (D8).
+     */
+    fun phoneModeChanged(context: Context) {
+        if (AppGraph.isTest) return
+        scope.launch { updateAll(context.applicationContext) }
     }
 
     /** One widget redraws (a page turned). */
@@ -153,41 +161,48 @@ object HabitIconBitmaps {
 }
 
 /**
- * This week's seven days as the app draws them (Figma's Day cell, Size Year; [DayCellDraw], so a widget's week never looks
- * different from Progress's), in one picture: Glance can't draw a dashed line, a ring or a glyph inside a square. The
- * cells are [cellDp] square, [pitchDp] apart from the start of one to the next, with room for today's ring all round.
+ * A habit's medal (Medal.kt, Figma's Medal): the nine-point star in the habit's Medal gradient, its inner ring a white
+ * line at 60 %, a soft shadow; the number is the widget's own text over it. Drawn once per colour, mode and size and
+ * kept: a widget can't draw a gradient star, and the medal's colours differ in dark ([medalColors]).
  */
-object WeekCellBitmaps {
-    /** Room around the cells for today's ring (DayCellSize.ring). */
-    const val RING_DP = 3f
-    private val cache = LinkedHashMap<String, Bitmap>()
+object MedalBitmaps {
+    private val cache = HashMap<String, Bitmap>()
 
-    fun get(cells: List<Int>, today: Int, color: String, dark: Boolean, cellDp: Float, pitchDp: Float, density: Float): Bitmap = synchronized(cache) {
-        val key = "${cells.joinToString(",")}|$today|$color|$dark|$cellDp|$pitchDp|$density"
-        cache[key]?.let { return it }
-        if (cache.size > 16) cache.remove(cache.keys.first())
-        draw(cells, today, HabitColor.of(color) ?: HabitColor.BLUE, dark, cellDp, pitchDp, density).also { cache[key] = it }
+    fun get(color: String, dark: Boolean, sizePx: Int): Bitmap = synchronized(cache) {
+        cache.getOrPut("$color|$dark|$sizePx") { draw(HabitColor.of(color) ?: HabitColor.BLUE, dark, sizePx) }
     }
 
-    private fun draw(cells: List<Int>, today: Int, habit: HabitColor, dark: Boolean, cellDp: Float, pitchDp: Float, density: Float): Bitmap {
-        val ring = RING_DP * density
-        val width = (pitchDp * 7 - (pitchDp - cellDp) + RING_DP * 2) * density
-        val height = (cellDp + RING_DP * 2) * density
-        val image = ImageBitmap(width.toInt().coerceAtLeast(1), height.toInt().coerceAtLeast(1))
-        val drawer = DayCellDraw(cellDp * density, density)
-        cells.take(7).forEachIndexed { i, cell -> drawer.add(heat(cell), ring + i * pitchDp * density, ring, i == today) }
-        val colors = dayCellColors(habit, if (dark) AppColors.dark else AppColors.light, if (dark) AppColors.darkRoles else AppColors.lightRoles)
-        CanvasDrawScope().draw(Density(density), LayoutDirection.Ltr, Canvas(image), Size(width, height)) { drawer.draw(this, colors) }
-        return image.asAndroidBitmap()
-    }
-
-    /** The snapshot's day ([WidgetCell]: 0 not done, 1–3 part, 4 met, 5 more) as the app's [HeatCell]. */
-    private fun heat(cell: Int): HeatCell = when (cell) {
-        WidgetCell.BLANK -> HeatCell.Blank
-        WidgetCell.UPCOMING -> HeatCell.Upcoming
-        WidgetCell.NOT_SCHEDULED -> HeatCell.notScheduled
-        WidgetCell.SKIPPED -> HeatCell.skipped
-        WidgetCell.PAUSED -> HeatCell.paused
-        else -> HeatCell.level(cell)
+    private fun draw(habit: HabitColor, dark: Boolean, sizePx: Int): Bitmap {
+        val colors = medalColors(if (dark) AppColors.dark else AppColors.light, habit)
+        // Room under the star for its shadow (2 down, a 6 blur at 72), as Medal draws past its box.
+        val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
+        val canvas = android.graphics.Canvas(bitmap)
+        val inset = sizePx * 0.06f
+        val k = (sizePx - 2 * inset) / 72f
+        val shape = androidx.compose.ui.graphics.Path().apply {
+            addPath(starPath)
+            transform(androidx.compose.ui.graphics.Matrix().apply { translate(inset, inset); scale(k, k) })
+        }.asAndroidPath()
+        val fill = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+            color = colors.bottom.toArgb()
+            setShadowLayer(6f * k, 0f, 2f * k, colors.shadow.toArgb())
+        }
+        canvas.drawPath(shape, fill)
+        fill.clearShadowLayer()
+        fill.shader = android.graphics.LinearGradient(0f, inset, 0f, sizePx - inset, colors.top.toArgb(), colors.bottom.toArgb(), android.graphics.Shader.TileMode.CLAMP)
+        canvas.drawPath(shape, fill)
+        // The inner ring: the same star at 82 % about the centre, 1.2 at the 40 size (the Small medal), white at 60 %.
+        val ring = android.graphics.Paint(android.graphics.Paint.ANTI_ALIAS_FLAG).apply {
+            style = android.graphics.Paint.Style.STROKE
+            strokeWidth = 1.2f * sizePx / 40f / 0.82f
+            strokeCap = android.graphics.Paint.Cap.ROUND
+            color = Color.White.copy(alpha = 0.6f).toArgb()
+        }
+        canvas.save()
+        canvas.scale(0.82f, 0.82f, sizePx / 2f, sizePx / 2f)
+        canvas.drawPath(shape, ring)
+        canvas.restore()
+        return bitmap
     }
 }
+

@@ -8,8 +8,8 @@
     android:resizeMode="none"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/glance_default_loading_layout"
-    android:previewLayout="@layout/glance_default_loading_layout"
+    android:previewImage="@drawable/widget_preview_tasks_large"
     android:description="@string/widget_tasks_large_description"
     android:configure="com.oftenenough.app.app.widgets.WidgetSetupActivity"
-    android:widgetFeatures="reconfigurable|configuration_optional"
+    android:widgetFeatures="reconfigurable"
     android:widgetCategory="home_screen" />

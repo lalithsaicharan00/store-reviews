@@ -58,6 +58,7 @@ import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.newhabit.FormPage
 import com.oftenenough.app.ui.newhabit.RadioRow
 import com.oftenenough.app.ui.newhabit.MinuteDialog
+import kotlinx.coroutines.launch
 
 // ------------------------------------------------------------------ Settings' choice pages
 
@@ -109,8 +110,14 @@ fun WeekStartsOnPage(store: HabitStore, onBack: () -> Unit) =
 @Composable
 fun ThemePage(prefs: Prefs, onBack: () -> Unit) {
     val keys = listOf("system", "light", "dark")
+    val context = androidx.compose.ui.platform.LocalContext.current.applicationContext
+    val scope = androidx.compose.runtime.rememberCoroutineScope()
     ChoicePage("Theme", "System default turns dark when your phone’s dark theme is on.", keys.map(::themeName),
-        keys.indexOf(prefs.theme).coerceAtLeast(0), "theme", onBack) { prefs.theme = keys[it] }
+        keys.indexOf(prefs.theme).coerceAtLeast(0), "theme", onBack) {
+        prefs.theme = keys[it]
+        // The widgets follow the app's Theme too (A98), at once; a test launch never redraws the person's widgets (D8).
+        if (!com.oftenenough.app.app.AppGraph.isTest) scope.launch { com.oftenenough.app.app.widgets.WidgetPublisher.updateAll(context) }
+    }
 }
 
 // ------------------------------------------------------------------ Times of Day

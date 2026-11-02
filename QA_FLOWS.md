@@ -23,9 +23,9 @@ no screen with a keyboard could be compared with Figma.
 | create new | 381:2 | 28 | 28 |
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
-| widgets | 1232:173760 | 4 | 0 |
+| widgets | 1232:173760 | 4 | 1 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **267** |
+| **All** | | **290** | **268** |
 
 ## Bug log
 
@@ -409,6 +409,22 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 367. Settings 18 and 19 · "These change only Often Enough. Other apps keep saving battery." sat 8 under the list; Figma's is its own group, 24 under it.
 368. Settings 22 · Privacy policy opened a full Chrome tab (address bar, tabs), leaving the app; Figma's is a browser tab over the app (✕, the page's title, the site, share, ⋮). It's a Custom Tab now (`androidx.browser` 1.8.0), with the plain browser as the fallback.
 369. Settings 23 · Open-source licences opened the app's own page of 6 libraries (no Play Billing, Play services, Glance, WorkManager or Browser among others); Figma's is Google's own licences screen. It's Google's OSS Licenses now (plugin 0.13.0, `play-services-oss-licenses` 17.5.3), its list made from the app's dependencies at build time, on an AppCompat DayNight theme (it needs one); the app's page and its route are deleted (A77).
+370. Widgets 1 · the picker showed no real preview: Android 15's drawn previews took the widget's whole span, a large empty box round a small card — each widget is now an image of the widget alone, light and dark, at 3× (A98).
+371. Widgets 1 · the card ran past the launcher's padding and was cut at the sides (a launcher pads its cells 8 and still reports their whole size) — as wide as the space it's really given.
+372. Widgets 1 · on tall cells (a 2×2 is 208 × 368 on a moto g54) the card stretched and pulled its parts apart — Figma's height, centred in the cells.
+373. Widgets 1 · setup didn't open on placing a widget (`configuration_optional`), and had no ✕; ✕ now leaves nothing behind, and a new widget starts on the first habit, or All of today.
+374. Widgets 1 · the setup preview was a fixed size whatever the phone's width — scaled to the room it has.
+375. Widgets 1 · progress bars were 4 tall with a stop dot — 8 tall, fully round, no dot (A98; the user; Figma's component too).
+376. Widgets 1 · This week's days were squeezed together — square, 6 apart, filling the panel's width (the user; Figma too).
+377. Widgets 1 · This week's days were a picture drawn in the app's mode: black cells on a light widget after switching modes — drawn from the widget's own parts, each colour a light and dark pair.
+378. Widgets 1 · today, not yet done, showed ✕ in This week; an open day is a plain grey cell, and a period goal's a dashed one.
+379. Widgets 1 · widgets followed the phone's mode and ignored the app's Theme — Light or Dark overrides everything, System follows the phone, and changing either redraws them (A98).
+380. Widgets 1 · light mode's empty days had too little contrast — Surface dim (the user).
+381. Widgets 1 · Figma's task rows were all yellow and today's ring sat off centre — Figma's sample tasks have their own colours, the ring is centred, and the images were exported again (the user).
+382. Widgets 1 · a milestone never showed on a widget: Figma's medal, band and words are built for every size (Skincare's 14 days in a row, checked on the phone's home screen).
+383. Widgets 2 · a done row stayed in place and hid what was still to do — done goes last in Today's and Tasks' lists (A99; `theWholeDayPutsDoneLast`).
+384. Widgets 1 · This week stayed on "Choose a habit" after a habit was chosen and added: setup redrew the widget from the screen's own coroutines, which `finish()` cancelled — the publisher's own scope.
+385. All widgets · a change in the app never reached a widget until the app was left (S16 says 0.5 s): `publish` cancels what's pending, and from `schedule` that was its own job — it now clears `pending` first (on the phone: the snapshot 0.52 s after a step was unticked with the app open).
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -453,6 +469,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ³⁹ Create new 7 (phone): Figma's two New time of day flows disagree on Your day before a start is picked (Today 52's frame 3 leaves the new one out, Create new 7's frame 3 lists it); each page follows its own frames until the user decides (Decisions needed D-61).
 ⁴⁰ Create new 15-17 (phone): the quit and cut-down forms had Tell me at milestones and its line under them, which Create new's frames don't draw (A21's milestone notification). Asked, the user removed it (1 Nov 2026, Android A93; D-62): no switch, no notification; milestones show in the app as for every habit. How milestones work lost its line; Today's "Reached away: the milestone notification" flows (passed on the emulator) describe something no longer in the app.
 ⁴¹ Create new 19 (phone): frame 4's form, opened after paying, shows the name field as "Name" with no keyboard and Add filled; every other empty form on the page (New habit and New task, nothing typed, and a name cleared) says "Name, e.g. …" with the keyboard up and Add waiting for a name, which the app does here too. Paying was the test launch's stand-in; an ordinary launch buys through Google Play's own sheet.
+⁴⁴ Widgets 1–4 (phone, moto g54, Moto launcher, dark): Plus comes from the debug build's stand-in billing (without `-PrealBilling`), as Play's test purchase says "The item that you were attempting to purchase could not be found"; the free plan is the `-PrealBilling` build. A widget's tap showed 1.27 s after touch when idle and 0.65 s warm, on a 4×4 while recording the screen, with 3 widgets left bound by the launcher (T22's 373–466 ms was on an emulator): in the final report, not changed here (U28).
+⁴⁵ Widgets 1 (phone): on a home screen with no items at all, the Moto launcher's own Add button runs setup, gets its OK and then keeps nothing (its model has no widget; the bound id is left orphaned). Dragging from the picker works, and Add works once the page has anything on it. The launcher's, not the app's: setup returns RESULT_OK either way.
+⁴⁶ Widgets 3 (phone): the Moto launcher has no ✎ on a hold; its way is dragging the widget onto *Widget settings* at the top, which opens the same setup, with Save.
 
 ## Open questions for the user
 
@@ -778,7 +797,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
-| 1 | 1256:3355 | Add a widget | hold home → Widgets → search, One habit → + Add → choose habit, Add widget → on home | not started |
+| 1 | 1256:3355 | Add a widget | hold home → Widgets → search, One habit → + Add → choose habit, Add widget → on home | passed ⁴⁴ ⁴⁵ |
 | 2 | 1264:8718 | Add the Today widget from the app’s icon | hold icon → Widgets → Today 4×2 → Add → All of today → Morning → Add widget → on home | not started |
 | 3 | 1257:4344 | Change a widget | hold widget → edit frame ✎ → One habit: Read → Save → shows Read | not started |
 | 4 | 1258:5608 | Today widget on the free plan | hold home → Widgets → Today 4×2 → Add → without Plus → tap → app opens Today | not started |

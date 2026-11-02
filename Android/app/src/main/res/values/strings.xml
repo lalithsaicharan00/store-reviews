@@ -1,12 +1,12 @@
 <resources>
     <string name="app_name">Often Enough</string>
-    <!-- The widget picker's lines (design §24). -->
-    <string name="widget_one_habit_description">One habit: tick it off or add to it here</string>
-    <string name="widget_today_description">Today: your habits for the day, or one time of day</string>
-    <string name="widget_today_large_description">Today: your habits for the day, five at a time</string>
-    <string name="widget_week_description">This week: one habit\'s week, day by day</string>
-    <string name="widget_tasks_description">Tasks: today\'s tasks, or one time of day</string>
-    <string name="widget_tasks_large_description">Tasks: today\'s tasks, five at a time</string>
+    <!-- The widget picker's lines (Figma 1263:6544, Widget picker). -->
+    <string name="widget_one_habit_description">One habit’s progress today. Tap its button to log.</string>
+    <string name="widget_today_description">Today’s habits, or one part of your day. With Plus.</string>
+    <string name="widget_today_large_description">Today’s habits, five at a time. With Plus.</string>
+    <string name="widget_week_description">One habit: today and the week so far. With Plus.</string>
+    <string name="widget_tasks_description">Today’s tasks. Tap to tick them off.</string>
+    <string name="widget_tasks_large_description">Today’s tasks, five at a time.</string>
     <!-- Long-press the app icon (A11 D8). -->
     <string name="shortcut_today">Today</string>
     <string name="shortcut_routine">Start routine</string>

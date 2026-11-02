@@ -83,6 +83,10 @@ data class WidgetItem(
     /** The week's seven squares in the person's week order ([WidgetCell]), and which is this day (-1: none). */
     val week: List<Int> = emptyList(),
     val weekToday: Int = -1,
+    /** Today's milestone, as Today's row shows it for the rest of the day (MilestoneCenter): the medal's number and the
+     *  band's words ("30", "30 days in a row"); null on any other day. */
+    val medal: String? = null,
+    val milestone: String? = null,
 ) {
     val routeOrDay: String get() = route ?: "item/$id"
 }
@@ -152,6 +156,8 @@ data class WidgetSnapshot(
     companion object {
         const val VERSION = 1
         private fun nameless(item: WidgetItem): WidgetItem =
-            item.copy(name = "", place = "", todayLine = item.line, after = item.after?.map(::nameless))
+            item.copy(name = "", place = "", todayLine = item.line, after = item.after?.map(::nameless),
+                // An anniversary's words name the habit ("2 years of Read").
+                milestone = item.milestone?.takeIf { item.name.isEmpty() || !it.contains(item.name) })
     }
 }

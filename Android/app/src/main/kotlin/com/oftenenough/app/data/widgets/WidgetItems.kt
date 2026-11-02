@@ -69,7 +69,10 @@ object WidgetItems {
         )
     }
 
-    /** Each list in Today's order: the cards as arranged, and in each card the person's order, done ones last when they sink. */
+    /**
+     * Each list in Today's order: the cards as arranged, and in each card the person's order, done ones last (A99: a
+     * widget's list always puts what's done after what's still to do; the whole day's lists across all its cards).
+     */
     fun lists(items: List<WidgetItem>, cards: List<String>, sinkDone: Boolean): Map<String, List<String>> {
         val lists = LinkedHashMap<String, List<String>>()
         val habitsToday = ArrayList<String>(); val tasksToday = ArrayList<String>()
@@ -84,8 +87,12 @@ object WidgetItems {
             for (id in habits) if (seenHabits.add(id)) habitsToday += id
             for (id in tasks) if (seenTasks.add(id)) tasksToday += id
         }
-        lists["habits"] = habitsToday
-        lists["tasks"] = tasksToday
+        // The whole day is one list: done ones go after everything still to do, whichever time of day they're in, so
+        // what's next always comes first (A99; joined card by card, a done Morning habit sat ahead of the Afternoon).
+        val byId = items.associateBy { it.id }
+        fun sunk(ids: List<String>) = if (sinkDone) ids.filter { byId[it]?.sinks != true } + ids.filter { byId[it]?.sinks == true } else ids
+        lists["habits"] = sunk(habitsToday)
+        lists["tasks"] = sunk(tasksToday)
         return lists
     }
 
@@ -186,6 +193,11 @@ object WidgetItems {
             w.week = span.map { cell(store, habit, it, day) }
             w.weekToday = day - span.first
         }
+        // Today's milestone, as Today's row shows it until the day ends (never on a card worked out ahead of a tap).
+        if (isToday && adjust == null) store.milestones.visible(habit)?.let { shown ->
+            val words = store.milestones.words(shown, habit)
+            w.medal = words.number; w.milestone = words.band
+        }
         return w.build()
     }
 
@@ -199,7 +211,12 @@ object WidgetItems {
             DayMark.SKIPPED -> WidgetCell.SKIPPED
             DayMark.PAUSED -> WidgetCell.PAUSED
             DayMark.MISSED -> 0
-            DayMark.DONE, DayMark.SOME, DayMark.OPEN -> level(store, habit, d)
+            // Today, still open: grey, never ✕, until the day is over; a week or month goal asks nothing of one day
+            // (Progress's own rule, heatCell).
+            DayMark.OPEN -> store.rule(habit, d).let { rule ->
+                if ((!rule.frequency.isDayBased || rule.frequency.isFlexible) && !rule.atMost) WidgetCell.NOT_SCHEDULED else WidgetCell.UPCOMING
+            }
+            DayMark.DONE, DayMark.SOME -> level(store, habit, d)
         }
     }
 
@@ -319,7 +336,8 @@ object WidgetItems {
                     val ticked = tickedOverride ?: store.isTicked(habit, day)
                     w.line = if (ticked) "Done" else "Not yet"
                     w.value = if (ticked) "Done" else "Not done yet"
-                    w.big = w.value
+                    // This week's headline (28 sp) has room for the short words only.
+                    w.big = w.line
                 } else if (period != GoalPeriod.DAY) {
                     w.value = "${Format.amount(progress)} of ${Format.amount(goal)} $unit"
                     // The Android widget design: the period's count, as Today's row says it ("1 of 3 this week").
@@ -417,9 +435,10 @@ object WidgetItems {
         var route: String? = null; var streak: String? = null; var quitStart: Long? = null; var quitUntil: Long? = null
         var quitBest: Double? = null; var quitBestText: String? = null; var since: String? = null; var timerClock: Long? = null
         var timerGoalAt: Long? = null; var timerGoal: String? = null; var week: List<Int> = emptyList(); var weekToday = -1
+        var medal: String? = null; var milestone: String? = null
         fun build() = WidgetItem(id, name, symbol, color, type, isTask, limit, state, cards, line, todayLine, place, value, big, goal,
             caption, fraction, cardFraction, limitFill, done, completesNext, null, todayAmount, todayLevel, counts, countsDone, sinks,
             action, actionText, route, newId(), streak, quitStart, quitUntil, quitBest, quitBestText, since, timerClock, timerGoalAt,
-            timerGoal, week, weekToday)
+            timerGoal, week, weekToday, medal, milestone)
     }
 }

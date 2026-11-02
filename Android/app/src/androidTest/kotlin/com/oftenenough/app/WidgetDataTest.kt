@@ -68,6 +68,19 @@ class WidgetDataTest {
         assertEquals("2 of 3 this week", item("Call family", s).line)
     }
 
+    /** A99: the whole day's lists put every done row after every row still to do, whichever time of day it's in. */
+    @Test fun theWholeDayPutsDoneLast() {
+        val s = snapshot()
+        val now = onMain { store.clock() }
+        for (key in listOf("habits", "tasks")) {
+            val rows = s.frames[0].list(key, now)
+            val firstDone = rows.indexOfFirst { it.sinks }
+            if (firstDone < 0) continue
+            assertTrue("$key: ${rows.map { it.name to it.sinks }}", rows.drop(firstDone).all { it.sinks })
+        }
+        assertTrue("the demo has a done habit", s.frames[0].list("habits", now).any { it.sinks })
+    }
+
     @Test fun aPlusCardCarriesFiveTapsAhead() {
         var card: WidgetItem? = item("Water")
         val lines = ArrayList<String>()
