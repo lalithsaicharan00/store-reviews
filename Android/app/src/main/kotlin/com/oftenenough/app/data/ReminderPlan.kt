@@ -87,18 +87,6 @@ object ReminderPlan {
         return habit.name to body
     }
 
-    /**
-     * Same-minute reminders' summary (Figma 1273:903): "8:00 AM · 3 reminders" over "Meds, Stretch +2"; with names
-     * hidden, the title alone.
-     */
-    fun groupWords(alerts: List<Alert>, hideNames: Boolean): Pair<String, String> {
-        val first = alerts.first()
-        val title = "${DayWords.clockMinute(first.time.minuteOfDay)} · ${alerts.size} reminders"
-        if (hideNames) return title to ""
-        val names = alerts.map { it.habit.name }
-        return title to (names.take(3).joinToString(", ") + if (names.size > 3) " +${names.size - 3}" else "")
-    }
-
     fun body(habit: Habit, store: HabitStore): String {
         val ws = store.weekStart
         return when (val k = habit.kind) {

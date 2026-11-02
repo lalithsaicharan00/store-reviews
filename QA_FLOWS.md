@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 7 |
-| **All** | | **290** | **278** |
+| notifications & alarms | 1265:24553 | 12 | 9 |
+| **All** | | **290** | **280** |
 
 ## Bug log
 
@@ -439,6 +439,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 397. Notifications 4 · a reminder's amount was the widget's short form, "5.2k of 8k steps"; Figma's reminders write it in full, "2,500 of 8,000 steps" — whole grouped numbers, the unit after, $ before (`Reminders.amountLine`). Widgets keep their short form.
 398. Notifications 5 · a timer started from a reminder's Start had no time of day in its header ("Often Enough · 12:02"); Figma's reads "Often Enough · Anytime" — the reminder's time of day is kept with the timer (`TimerNotice.startedFromReminder`) and named as a routine's is, until the timer stops.
 399. Notifications 8 · a reminder in the shade never caught up with the app: Sunscreen ticked in Day details left it at "2 of 4 steps" with Sunscreen ○ — every reminder now carries what it's about in its own extras, and 300 ms after a change (with the re-plan, S16) each one still showing is drawn again quietly as it stands, its Undo kept while that log is there, or goes once its row is done (`Reminders.keepUp`). Left alone: an alarm still ringing, one counting down after its own tap ("Goal met", then gone), names hidden. A test launch keeps up only its own (D8).
+400. Notifications 10 · a same-minute group listed its reminders newest first (Skincare, Stretch, Meds) — posted last to first, with sort keys, so they read in Today's order (Meds, Stretch, Skincare).
+401. Notifications 10 · Android draws a group's header from its summary's header, so "7:00 AM · 3 reminders" showed nowhere, and the summary never changed — it's the summary's header text too now, and the group counts down as its reminders go ("2 reminders", "1 reminder"; after a "Goal met" that leaves by itself as well) and goes with the last (`Reminders.summary`, `keepUp`).
+402. Notifications 7, 10 · a checklist reminder said "1 of 4 steps" twice collapsed (Android puts an inbox summary in the header too) — it's the first line over the steps now, as Figma writes it under the name.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -494,6 +497,8 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁵¹ Notifications 6 (phone): Log time opened "How many minutes?" in the reminder; 8 and ➤ gave "20 of 20 min · Goal met" with Undo, and the reminder was gone within 5 s. Letters ("abc") saved nothing and put the reminder back as it was, Start and Log time: Android can't reopen a reply field by itself, so asking again is one tap on Log time.
 ⁵² Notifications 7 (phone, unlocked: the lock-screen part waits for flow 2's): the design demo has Cleanser ticked already, so the reminder came at "1 of 4 steps" with "Tick Vitamin C serum, 2 drops" and Open; each tick moved the button on and added Undo, Undo took back only the last tick, and Sunscreen finished Skincare (Today: 4/4 steps) and took the reminder away. Android's inbox style puts "N of 4 steps" in the header line ("Often Enough · 2 of 4 steps · now") where Figma writes it under the name. The test launch now waits 4 s before Home: the demo loads after the activity stops otherwise, and nothing is posted.
 ⁵³ Notifications 8 (phone): 2 of 4 from the reminder → Open → Skincare's Day details (2 of 4) → Sunscreen → Home: the reminder read "3 of 4 steps", Sunscreen ✓, Tick Moisturiser · Open · Undo, as Figma's frame 4; Moisturiser ticked in the app took it away. Rechecked after the change: flow 6's "Goal met" still stays its few seconds, flow 3's +1 keeps "Undo +1 glass". Figma's "Tick steps" under Day details' steps is D-52's, not this flow's.
+⁵⁴ Notifications 9 (phone): Pick up parcel's reminder read "Task · for today" with Done; Done took it away and Today's row became done ("Undo Pick up parcel"). A name with spaces goes to the phone's shell quoted (`rem 17 "'Pick up parcel@17:00'"`).
+⁵⁵ Notifications 10 (phone): Meds, Stretch and Skincare at 7:00 came as one group, "Often Enough · 7:00 AM · 3 reminders" over a line each in Today's order; opened, each kept its own buttons; Meds' Done left "2 reminders"; Stretch opened to Start and Log time; 6 minutes logged left "1 reminder" once its "Goal met" went; Skincare's last tick took the group away. Android decides which member opens expanded (Figma: the first) and shows the summary's lines only collapsed.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -835,7 +840,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 6 | 1278:3210 | A time habit: Log time already spent | Read reminder → field → 8 → Goal met → goes away | passed ⁴⁸ ⁵¹ |
 | 7 | 1278:405794 | A checklist, one step at a time | Tick Cleanser → Serum → Moisturiser → all four: done | passed ⁴⁸ ⁵² |
 | 8 | 1279:4534 | A checklist out of order: Open | 2 of 4 → Day details → Sunscreen → reminder keeps up | passed ⁴⁸ ⁵³ |
-| 9 | 1280:4045 | A task, from its reminder | task reminder → Done | not started |
-| 10 | 1281:4896 | Several reminders at the same minute | group for Morning → opened → Meds done leaves → Stretch: Start or Log time | not started |
+| 9 | 1280:4045 | A task, from its reminder | task reminder → Done | passed ⁴⁸ ⁵⁴ |
+| 10 | 1281:4896 | Several reminders at the same minute | group for Morning → opened → Meds done leaves → Stretch: Start or Log time | passed ⁴⁸ ⁵⁵ |
 | 11 | 1282:4986 | An alarm: turn it on, then answer it | Remind me with → Let alarms fill the screen → Full screen notifications → Allowed → An alarm → rings → Done | not started |
 | 12 | 1282:407448 | An alarm without full screen | Let alarms fill the screen → without full screen → rings as notification → Not now → Done | not started |

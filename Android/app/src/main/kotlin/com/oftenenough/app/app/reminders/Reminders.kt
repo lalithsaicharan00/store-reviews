@@ -62,6 +62,8 @@ object Reminders {
     private const val EXTRA_GROUP = "group"
     /** On a reminder: posted by a test launch, so only a test launch keeps it up (D8). */
     private const val EXTRA_TEST = "test"
+    /** On a same-minute group's own card (5.11.3). */
+    private const val EXTRA_SUMMARY = "summary"
     const val EXTRA_MINUTE = "minute"
     private const val ACTION_ALARM_SCREEN = "com.oftenenough.app.REMINDER_ALARM_SCREEN"
     /** The direct reply's text. */
@@ -141,6 +143,18 @@ object Reminders {
             val undo = extras.getString(EXTRA_ENTRY)?.takeIf { id -> store.entries(habit.id).any { it.id == id } }
             val again = notice(context, store, shown, undo, update = true) ?: continue
             try { compat.notify(shown.id, again) } catch (_: SecurityException) {}
+        }
+        // A same-minute group counts down as its reminders go (Figma 1281:4536: "2 reminders"), and goes with the last.
+        val showing = manager.activeNotifications
+        for (posted in showing) {
+            val extras = posted.notification.extras ?: continue
+            if (!extras.getBoolean(EXTRA_SUMMARY) || extras.getBoolean(EXTRA_TEST) != AppGraph.isTest) continue
+            val key = posted.notification.group ?: continue
+            val members = showing.filter { it.id != posted.id && it.notification.group == key }
+                .mapNotNull { m -> m.notification.extras?.let { shown(it, store) } }
+            val again = summary(context, store, key, members, extras.getInt(EXTRA_MINUTE, -1), extras.getBoolean(EXTRA_ALARM), AppGraph.hidesNames, update = true)
+            if (again == null) compat.cancel(posted.id)
+            else try { compat.notify(posted.id, again) } catch (_: SecurityException) {}
         }
     }
 
@@ -243,21 +257,45 @@ object Reminders {
         val first = bucket[0]
         val key = "group." + first.fire
         val alarm = bucket.any { it.habit.alert == "alarm" }
-        for (alert in bucket) {
-            val id = alert.id.hashCode()
-            val words = if (hide) ReminderPlan.words(alert, store, true) else null
-            val notification = notice(context, store, Shown(alert.habit.id, alert.day, alert.placement.slot, alert.section.id, id, alert.habit.alert == "alarm",
-                alert.followUp, alert.placement.section.takeIf { alert.placement.slot != null }, group = key), undo = null, update = false, hidden = words) ?: continue
-            try { manager.notify(id, notification) } catch (_: SecurityException) {}
+        val members = bucket.map { alert ->
+            Shown(alert.habit.id, alert.day, alert.placement.slot, alert.section.id, alert.id.hashCode(), alert.habit.alert == "alarm",
+                alert.followUp, alert.placement.section.takeIf { alert.placement.slot != null }, group = key, minute = alert.time.minuteOfDay)
         }
-        val (title, body) = ReminderPlan.groupWords(bucket, hide)
-        val summary = base(context, title, body, null, first.day, first.section.id, alarm).setGroup(key).setGroupSummary(true)
-        if (!hide) summary.setStyle(NotificationCompat.InboxStyle().also { style ->
-            bucket.forEach { alert -> style.addLine(alert.habit.name + " · " + standing(store, alert.habit, alert.day)) }
-        }.setBigContentTitle(title))
+        // Android lists a group's newest first: posted last to first, so they read in Today's order (Meds, Stretch, Skincare).
+        for ((i, shown) in members.withIndex().reversed()) {
+            val words = if (hide) ReminderPlan.words(bucket[i], store, true) else null
+            val notification = notice(context, store, shown, undo = null, update = false, hidden = words, sortKey = "%03d".format(i)) ?: continue
+            try { manager.notify(shown.id, notification) } catch (_: SecurityException) {}
+        }
         // It rings once, on the alarm sound if any is an alarm; not again and again: answering one reminder in the group
         // couldn't stop the summary's ring.
-        try { manager.notify(key.hashCode(), summary.build()) } catch (_: SecurityException) {}
+        val summary = summary(context, store, key, members, first.time.minuteOfDay, alarm, hide, update = false) ?: return
+        try { manager.notify(key.hashCode(), summary) } catch (_: SecurityException) {}
+    }
+
+    /**
+     * A group's own card: "7:00 AM · 3 reminders" over a line per reminder still showing ("Meds · Not done yet"), in
+     * Today's order. Android draws a group's header from it, so the minute and the count are said there too. Null once
+     * none is left.
+     */
+    private fun summary(context: Context, store: HabitStore, key: String, members: List<Shown>, minute: Int, alarm: Boolean, hide: Boolean,
+                        update: Boolean): android.app.Notification? {
+        val order = store.habits.withIndex().associate { it.value.id to it.index }
+        val habits = members.mapNotNull { m -> store.habit(m.habit)?.let { it to m.day } }.sortedBy { order[it.first.id] ?: 0 }
+        if (habits.isEmpty()) return null
+        val title = com.oftenenough.app.data.DayWords.clockMinute(minute) + " · " + habits.size + if (habits.size == 1) " reminder" else " reminders"
+        val names = habits.map { it.first.name }
+        val body = if (hide) "" else names.take(3).joinToString(", ") + if (names.size > 3) " +${names.size - 3}" else ""
+        val first = members.first()
+        val builder = base(context, title, body, null, first.day, first.section, alarm).setGroup(key).setGroupSummary(true)
+            .setSubText(title).setOnlyAlertOnce(update)
+            .addExtras(android.os.Bundle().apply {
+                putBoolean(EXTRA_SUMMARY, true); putBoolean(EXTRA_TEST, AppGraph.isTest); putInt(EXTRA_MINUTE, minute); putBoolean(EXTRA_ALARM, alarm)
+            })
+        if (!hide) builder.setStyle(NotificationCompat.InboxStyle().also { style ->
+            habits.forEach { (habit, day) -> style.addLine(habit.name + " · " + standing(store, habit, day)) }
+        }.setBigContentTitle(title))
+        return builder.build()
     }
 
     /** Which reminder a notification is: its habit, day and time of day, its ID, and how it rang. */
@@ -305,7 +343,7 @@ object Reminders {
      * hidden outside the app (no step names, no units). Null when the habit has gone.
      */
     private fun notice(context: Context, store: HabitStore, shown: Shown, undo: String?, update: Boolean, hidden: Pair<String, String>? = null,
-                       goesAfter: Long? = null): android.app.Notification? {
+                       goesAfter: Long? = null, sortKey: String? = null): android.app.Notification? {
         val habit = store.habit(shown.habit)?.takeIf { !it.archived } ?: return null
         val day = shown.day
         val hide = hidden != null || AppGraph.hidesNames
@@ -328,6 +366,7 @@ object Reminders {
             .setOnlyAlertOnce(update)
         // In a same-minute group (5.11.3) only the summary rings.
         shown.group?.let { builder.setGroup(it).setGroupAlertBehavior(NotificationCompat.GROUP_ALERT_SUMMARY) }
+        sortKey?.let { builder.setSortKey(it) }
         goesAfter?.let { builder.setTimeoutAfter(it) }
         // An alarm fills the screen (5.11.4) when Android lets it; otherwise it rings as this notification (5.11.5).
         if (shown.alarm && !update && shown.group == null && canFillScreen(context)) builder.setFullScreenIntent(alarmScreen(context, shown), true)
@@ -351,9 +390,11 @@ object Reminders {
             }
             HabitKind.Checklist -> {
                 val next = habit.steps.firstOrNull { !store.isStepDone(it, habit, day) }
+                // "1 of 4 steps" first, then the steps (Figma 1278:405359); as a summary Android said it twice, in the header too.
                 if (!hide) builder.setStyle(NotificationCompat.InboxStyle().also { style ->
+                    style.addLine(text)
                     habit.steps.forEach { st -> style.addLine((if (store.isStepDone(st, habit, day)) "✓  " else "○  ") + st.name) }
-                }.setSummaryText(text))
+                })
                 if (next != null) button(if (hide) "Tick next step" else "Tick ${next.name}", ACTION_TICK) { putExtra(EXTRA_STEP, next.id) }
                 builder.addAction(0, "Open", openIntent(context, habit.id, day, shown.section))
             }
@@ -477,6 +518,8 @@ object Reminders {
         val undo = if (rule.kind == HabitKind.Check && !dayBased) null else added
         val notification = notice(context, store, shown, undo, update = true, goesAfter = goes) ?: return manager.cancel(shown.id)
         try { manager.notify(shown.id, notification) } catch (_: SecurityException) {}
+        // Once it has gone by itself, its group counts again.
+        if (goes != null && shown.group != null) scope.launch { delay(goes + 500); keepUp(context.applicationContext, store) }
     }
 
     /** The reminder an intent (a button's, the alarm screen's) is about. */
