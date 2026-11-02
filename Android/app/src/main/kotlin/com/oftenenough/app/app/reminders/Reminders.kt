@@ -60,6 +60,8 @@ object Reminders {
     private const val EXTRA_FOLLOW_UP = "followUp"
     private const val EXTRA_PLACE = "place"
     private const val EXTRA_GROUP = "group"
+    /** On a reminder: posted by a test launch, so only a test launch keeps it up (D8). */
+    private const val EXTRA_TEST = "test"
     const val EXTRA_MINUTE = "minute"
     private const val ACTION_ALARM_SCREEN = "com.oftenenough.app.REMINDER_ALARM_SCREEN"
     /** The direct reply's text. */
@@ -104,12 +106,41 @@ object Reminders {
     fun canBeExact(context: Context): Boolean =
         Build.VERSION.SDK_INT < 31 || context.getSystemService(AlarmManager::class.java)?.canScheduleExactAlarms() == true
 
-    /** Plans again once the changes stop (300 ms, S16). */
+    /** Plans again once the changes stop (300 ms, S16), and the reminders in the shade catch up. */
     fun replanSoon(context: Context, store: HabitStore) {
         pending?.cancel()
         pending = scope.launch {
             delay(300)
+            keepUp(context.applicationContext, store)
             replan(context.applicationContext, store)
+        }
+    }
+
+    /**
+     * A reminder still in the shade keeps up with what's saved (Figma 1279:4534: a step ticked in Day details shows ✓,
+     * and the button names the step still to do): it's shown again, quietly, as it now stands, with its own Undo while
+     * that log is there, or it goes once its row is done. Left alone: an alarm still ringing (showing it again would stop
+     * the ring), one going after its own button's tap ("Goal met", then gone), and one with the names hidden.
+     */
+    private fun keepUp(context: Context, store: HabitStore) {
+        if (!store.isLoaded) return
+        val manager = context.getSystemService(NotificationManager::class.java) ?: return
+        val compat = NotificationManagerCompat.from(context)
+        for (posted in manager.activeNotifications) {
+            val notification = posted.notification
+            val extras = notification.extras ?: continue
+            if (extras.getBoolean(EXTRA_TEST) != AppGraph.isTest || notification.timeoutAfter > 0) continue
+            val shown = shown(extras, store)?.takeIf { it.id == posted.id } ?: continue
+            val habit = store.habit(shown.habit)
+            if (habit == null || habit.archived) { compat.cancel(shown.id); continue }
+            if (shown.day != store.today()) continue
+            val rule = store.rule(habit, shown.day)
+            val done = shown.slot?.let { store.isSlotDone(habit, it, shown.day) } ?: (!rule.atMost && store.rules.isComplete(habit, shown.day))
+            if (done) { compat.cancel(shown.id); continue }
+            if (shown.alarm || AppGraph.hidesNames) continue
+            val undo = extras.getString(EXTRA_ENTRY)?.takeIf { id -> store.entries(habit.id).any { it.id == id } }
+            val again = notice(context, store, shown, undo, update = true) ?: continue
+            try { compat.notify(shown.id, again) } catch (_: SecurityException) {}
         }
     }
 
@@ -170,6 +201,9 @@ object Reminders {
                 kind = (habit.kind as? com.oftenenough.app.data.HabitKind.Amount)?.takeIf { typed }?.copy(increment = 0.0) ?: habit.kind))
             habit.id to time.minuteOfDay
         }
+        // A test launch's store tells nothing of its changes (D8); these reminders keep up with it as the app's do.
+        val before = store.onChange
+        store.onChange = { before?.invoke(); replanSoon(context.applicationContext, store) }
         scope.launch {
             store.flush()
             delay(3_000) // time to go to the home screen, where Figma shows it arriving
@@ -326,6 +360,8 @@ object Reminders {
             HabitKind.Quit -> {}
         }
         if (undo != null) button(undoLabel, ACTION_UNDO) { putExtra(EXTRA_ENTRY, undo) }
+        // What it's about, so it can keep up with the app ([keepUp]).
+        builder.addExtras(shown.bundle().apply { putString(EXTRA_ENTRY, undo); putBoolean(EXTRA_TEST, AppGraph.isTest) })
         return builder.build()
     }
 
@@ -374,10 +410,13 @@ object Reminders {
     }
 
     private fun extras(context: Context, action: String, shown: Shown): Intent =
-        Intent(context, ReminderReceiver::class.java).setAction(action).putExtra(EXTRA_HABIT, shown.habit).putExtra(EXTRA_DAY, shown.day)
-            .putExtra(EXTRA_SLOT, shown.slot).putExtra(EXTRA_NOTIFICATION, shown.id).putExtra(EXTRA_SECTION, shown.section)
-            .putExtra(EXTRA_ALARM, shown.alarm).putExtra(EXTRA_FOLLOW_UP, shown.followUp).putExtra(EXTRA_PLACE, shown.place)
-            .putExtra(EXTRA_GROUP, shown.group).putExtra(EXTRA_MINUTE, shown.minute)
+        Intent(context, ReminderReceiver::class.java).setAction(action).putExtras(shown.bundle())
+
+    private fun Shown.bundle() = android.os.Bundle().apply {
+        putString(EXTRA_HABIT, habit); putInt(EXTRA_DAY, day); putString(EXTRA_SLOT, slot); putInt(EXTRA_NOTIFICATION, id)
+        putString(EXTRA_SECTION, section); putBoolean(EXTRA_ALARM, alarm); putInt(EXTRA_FOLLOW_UP, followUp); putString(EXTRA_PLACE, place)
+        putString(EXTRA_GROUP, group); putInt(EXTRA_MINUTE, minute)
+    }
 
     private fun actionIntent(context: Context, action: String, shown: Shown, more: Intent.() -> Unit): PendingIntent =
         PendingIntent.getBroadcast(context, shown.id + action.hashCode(), extras(context, action, shown).apply(more),
@@ -441,11 +480,14 @@ object Reminders {
     }
 
     /** The reminder an intent (a button's, the alarm screen's) is about. */
-    private fun shown(intent: Intent, store: HabitStore): Shown? = Shown(
-        intent.getStringExtra(EXTRA_HABIT) ?: return null, intent.getIntExtra(EXTRA_DAY, store.today()), intent.getStringExtra(EXTRA_SLOT),
-        intent.getStringExtra(EXTRA_SECTION) ?: "", intent.getIntExtra(EXTRA_NOTIFICATION, 0), intent.getBooleanExtra(EXTRA_ALARM, false),
-        intent.getIntExtra(EXTRA_FOLLOW_UP, 0), intent.getStringExtra(EXTRA_PLACE), intent.getStringExtra(EXTRA_GROUP), intent.getIntExtra(EXTRA_MINUTE, -1),
-    )
+    private fun shown(intent: Intent, store: HabitStore): Shown? = shown(intent.extras, store)
+
+    /** The reminder a button's or a notification's extras are about. */
+    private fun shown(extras: android.os.Bundle?, store: HabitStore): Shown? = extras?.let { x -> Shown(
+        x.getString(EXTRA_HABIT) ?: return null, x.getInt(EXTRA_DAY, store.today()), x.getString(EXTRA_SLOT),
+        x.getString(EXTRA_SECTION) ?: "", x.getInt(EXTRA_NOTIFICATION, 0), x.getBoolean(EXTRA_ALARM, false),
+        x.getInt(EXTRA_FOLLOW_UP, 0), x.getString(EXTRA_PLACE), x.getString(EXTRA_GROUP), x.getInt(EXTRA_MINUTE, -1),
+    ) }
 
     /**
      * Whether an alarm may fill the screen: Android 14 and later ask the person (Full screen notifications, special app
