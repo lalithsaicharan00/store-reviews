@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 1 |
-| **All** | | **290** | **272** |
+| notifications & alarms | 1265:24553 | 12 | 2 |
+| **All** | | **290** | **273** |
 
 ## Bug log
 
@@ -821,7 +821,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 |---|---|---|---|---|
 | 1 | 1274:404399 | Tick a habit from its reminder | reminder over home → Done → Today: Meds done | passed ⁴⁸ |
 | 2 | 1275:2054 | A week goal, from the lock screen | lock-screen reminder → saved without unlocking → goes away | not started |
-| 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | not started |
+| 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | passed ⁴⁸ |
 | 4 | 1277:2639 | An amount typed in the notification | Walk reminder → field → 3000 → saved 5,500 of 8,000 | not started |
 | 5 | 1277:405022 | A time habit: Start from the reminder | Read reminder → timer runs as Live Update → shade → Goal met | not started |
 | 6 | 1278:3210 | A time habit: Log time already spent | Read reminder → field → 8 → Goal met → goes away | not started |
