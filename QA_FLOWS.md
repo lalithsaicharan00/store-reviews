@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 10 |
-| **All** | | **290** | **286** |
+| notifications & alarms | 1265:24553 | 12 | 12 |
+| **All** | | **290** | **288** |
 
 ## Bug log
 
@@ -448,6 +448,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 406. Notifications 11 (the user) · "An alarm" could be chosen and saved without Alarms & reminders, so it came up to an hour late and never as a real alarm; and nothing on Today said so — choosing An alarm without it asks (*Allow alarms*, Open settings on Often Enough's own switch) and An alarm is chosen only once it's allowed; one already set without it says so on its Reminders page, and Today shows *Alarms can't ring* · Turn on (A106). Checked on the phone with the switch off and back on (`appops set --uid … SCHEDULE_EXACT_ALARM`, put back to allow as the user had it): the sheet, Settings on the switch, An alarm chosen on return; Today's card, Turn on, the card gone on return; tomorrow's 8:00 then set exact (window 0).
 407. Phone (my testing) · every test launch force-stops the app, which drops its alarms, and test launches never set them back, so the person's reminders weren't going to fire until the app was opened — opened afterwards each time; the alarm list checked (`dumpsys alarm`).
 408. Day details 8, 10, 15, 24, 26 (the user, D-51, D-52) · Figma said "Changed at …" and "Moved from …" under changed logs and slips, and drew a Tick steps button under a checklist's steps — neither kept (A107, A108); Figma corrected to the app.
+409. Notifications 2 · a week goal's reminder had no Undo after Done, and kept Done once the week's goal was met — Done adds one check and Undo takes back that one (Figma 1275:1944), and at the goal only Undo stays.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -506,6 +507,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁵⁴ Notifications 9 (phone): Pick up parcel's reminder read "Task · for today" with Done; Done took it away and Today's row became done ("Undo Pick up parcel"). A name with spaces goes to the phone's shell quoted (`rem 17 "'Pick up parcel@17:00'"`).
 ⁵⁵ Notifications 10 (phone): Meds, Stretch and Skincare at 7:00 came as one group, "Often Enough · 7:00 AM · 3 reminders" over a line each in Today's order; opened, each kept its own buttons; Meds' Done left "2 reminders"; Stretch opened to Start and Log time; 6 minutes logged left "1 reminder" once its "Goal met" went; Skincare's last tick took the group away. Android decides which member opens expanded (Figma: the first) and shows the summary's lines only collapsed.
 ⁵⁶ Notifications 11, 12 (phone, unlocked): the app's Full screen notifications switch was turned off with `appops set … USE_FULL_SCREEN_INTENT deny` and put back to `default` (granted, as before) afterwards; Android's own Settings page was only looked at. Choosing An alarm asked "Let alarms fill the screen"; Open settings opened Often Enough's own Full-screen notifications switch (U40); coming back the page said An alarm and asked no more. Without full screen the alarm rang (alarm sound, again and again) as a held heads-up with Done and Not now; Not now stopped the ring (no sounding notification left) and left a quiet Meds reminder with Done; Done saved Meds (Today: Undo Meds). With full screen allowed, an unlocked phone got the same ringing heads-up, and Done stopped it. The alarm filling the locked screen (flow 11's frames 6–7) is checked with flow 2's lock-screen part.
+⁵⁷ Notifications 2 and 11's last steps (phone, locked with its PIN all through: `deviceLocked=1` before and after every tap; the user kept the phone face down so face unlock couldn't open it): a debug test launch may show over the lock screen (`setShowWhenLocked`, only with `remind`), posts its reminder there, and Back leaves the lock screen. The design demo puts this week's two calls on today (the week starts today), and a week goal logged today counts as done for today (G-7), so today's calls were cleared (`today Call family=0`): the lock-screen shade showed "0 of 3 this week" · Done; Done saved "1 of 3 this week" with Undo, and the reminder went a few seconds later. Meds as an alarm with the screen off filled the locked screen and rang (`AlarmActivity` over the lock screen); Done stopped it and it went; again, Not now stopped the ring and left the quiet reminder, whose Done in the locked shade took it away. Moto's lock screen shows notifications as icons and goes dark in a few seconds, so each check woke it and acted in one go.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -840,7 +842,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 1274:404399 | Tick a habit from its reminder | reminder over home → Done → Today: Meds done | passed ⁴⁸ |
-| 2 | 1275:2054 | A week goal, from the lock screen | lock-screen reminder → saved without unlocking → goes away | not started |
+| 2 | 1275:2054 | A week goal, from the lock screen | lock-screen reminder → saved without unlocking → goes away | passed ⁴⁸ ⁵⁷ |
 | 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | passed ⁴⁸ |
 | 4 | 1277:2639 | An amount typed in the notification | Walk reminder → field → 3000 → saved 5,500 of 8,000 | passed ⁴⁸ ⁴⁹ |
 | 5 | 1277:405022 | A time habit: Start from the reminder | Read reminder → timer runs as Live Update → shade → Goal met | passed ⁴⁸ ⁵⁰ |
@@ -849,5 +851,5 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 8 | 1279:4534 | A checklist out of order: Open | 2 of 4 → Day details → Sunscreen → reminder keeps up | passed ⁴⁸ ⁵³ |
 | 9 | 1280:4045 | A task, from its reminder | task reminder → Done | passed ⁴⁸ ⁵⁴ |
 | 10 | 1281:4896 | Several reminders at the same minute | group for Morning → opened → Meds done leaves → Stretch: Start or Log time | passed ⁴⁸ ⁵⁵ |
-| 11 | 1282:4986 | An alarm: turn it on, then answer it | Remind me with → Let alarms fill the screen → Full screen notifications → Allowed → An alarm → rings → Done | steps 1–5 passed ⁵⁶; 6–7 (the locked screen) with flow 2 |
+| 11 | 1282:4986 | An alarm: turn it on, then answer it | Remind me with → Let alarms fill the screen → Full screen notifications → Allowed → An alarm → rings → Done | passed ⁵⁶ ⁵⁷ |
 | 12 | 1282:407448 | An alarm without full screen | Let alarms fill the screen → without full screen → rings as notification → Not now → Done | passed ⁴⁸ ⁵⁶ |

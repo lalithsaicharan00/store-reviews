@@ -383,7 +383,8 @@ object Reminders {
         val undoLabel = if (rule.kind is HabitKind.Amount && habit.quickIncrement != null && !hide)
             "Undo +" + HabitCopy.amount(habit.quickIncrement!!, (rule.kind as HabitKind.Amount).unit) else "Undo"
         when (val k = rule.kind) {
-            HabitKind.Check, HabitKind.Task -> if (!complete || !dayBased) button("Done", ACTION_DONE)
+            // A week or month goal counts each Done until it's met; then only its Undo (Figma 1275:1944).
+            HabitKind.Check, HabitKind.Task -> if (!complete) button("Done", ACTION_DONE)
             is HabitKind.Amount -> if (!complete) {
                 val step = habit.quickIncrement
                 if (step != null) button("+" + if (hide) Format.amount(step) else HabitCopy.amount(step, k.unit), ACTION_ADD)
@@ -522,7 +523,8 @@ object Reminders {
             complete -> GOES_AFTER_MS
             else -> null
         }
-        val undo = if (rule.kind == HabitKind.Check && !dayBased) null else added
+        // Undo takes back this one check, a week goal's too (Figma 1275:1944).
+        val undo = added
         val notification = notice(context, store, shown, undo, update = true, goesAfter = goes) ?: return manager.cancel(shown.id)
         try { manager.notify(shown.id, notification) } catch (_: SecurityException) {}
         // Once it has gone by itself, its group counts again.
