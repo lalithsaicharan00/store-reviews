@@ -30,6 +30,8 @@ object TapKeys {
 
 /** A Large widget's page, kept per placed widget. */
 val PAGE_KEY = intPreferencesKey("page")
+/** The day that page was turned on: the next day starts on the first page again. */
+val PAGE_DAY_KEY = intPreferencesKey("page-day")
 
 /**
  * LOCKED (widget taps, 8 Oct 2026; Android): a ✓, + or ▶/⏸ on a widget. On Android a widget's action runs in the app's
@@ -66,7 +68,12 @@ class WidgetTapAction : ActionCallback {
 class WidgetPageAction : ActionCallback {
     override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
         val delta = parameters[TapKeys.DELTA] ?: return
-        updateAppWidgetState(context, glanceId) { it[PAGE_KEY] = maxOf(0, (it[PAGE_KEY] ?: 0) + delta) }
+        val day = parameters[TapKeys.DAY] ?: return
+        updateAppWidgetState(context, glanceId) {
+            val page = if (it[PAGE_DAY_KEY] == day) it[PAGE_KEY] ?: 0 else 0
+            it[PAGE_KEY] = maxOf(0, page + delta)
+            it[PAGE_DAY_KEY] = day
+        }
         WidgetPublisher.updateOne(context, glanceId)
     }
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What Android shows until the app has drawn a widget (an update on a stopped app, say): the empty card, as tall as
+     the widget's own and centred in the cells as it is. Never a spinner: this can stay until the app next runs (A100). -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="176dp"
+        android:layout_gravity="center"
+        android:background="@drawable/widget_placeholder_card" />
+</FrameLayout>

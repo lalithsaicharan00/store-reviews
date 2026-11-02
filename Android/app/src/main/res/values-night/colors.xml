@@ -1,3 +1,4 @@
 <resources>
     <color name="screen">#0F0F10</color>
+    <color name="widget_card">#1E1E20</color>
 </resources>

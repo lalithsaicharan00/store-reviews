@@ -7,7 +7,7 @@
     android:targetCellHeight="2"
     android:resizeMode="none"
     android:updatePeriodMillis="0"
-    android:initialLayout="@layout/glance_default_loading_layout"
+    android:initialLayout="@layout/widget_placeholder"
     android:previewImage="@drawable/widget_preview_today"
     android:description="@string/widget_today_description"
     android:configure="com.oftenenough.app.app.widgets.WidgetSetupActivity"

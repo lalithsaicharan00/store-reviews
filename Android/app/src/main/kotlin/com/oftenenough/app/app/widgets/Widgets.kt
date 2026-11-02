@@ -94,14 +94,16 @@ abstract class OftenEnoughWidget(private val kind: WidgetKind) : GlanceAppWidget
         provideContent {
             val state = currentState<Preferences>()
             state[VERSION_KEY] // read, so a publish redraws
-            val page = state[PAGE_KEY] ?: 0
-            val snapshot = WidgetDisk.read(context)
+            // A page lasts the day: the next morning starts on the first, with what's still to do.
+            val page = if (state[PAGE_DAY_KEY] == snapshot(context)?.frame(System.currentTimeMillis())?.day) state[PAGE_KEY] ?: 0 else 0
             CompositionLocalProvider(LocalNight provides widgetNight(context)) {
-                WidgetBody(kind, snapshot, WidgetDisk.choice(context, widgetId), page, widgetId)
+                WidgetBody(kind, snapshot(context), WidgetDisk.choice(context, widgetId), page, widgetId)
             }
         }
     }
 }
+
+private fun snapshot(context: Context) = WidgetDisk.read(context)
 
 class OneHabitWidget : OftenEnoughWidget(WidgetKind.ONE_HABIT)
 class TodayWidget : OftenEnoughWidget(WidgetKind.TODAY)
@@ -242,7 +244,7 @@ private fun Message(
 }
 
 /**
- * A list widget with no rows (Figma 1240:488, Size 4×2 · Message): the header (its title, 6 under it), then one message
+ * A list widget with no rows (Figma 1240:488, Size 4×2 · Message): the header (its title, and the 6 it keeps under it), then one message
  * in the middle of the rest, 16 in at the sides, 4 between: an optional glyph (24, On surface variant) or the Plus label,
  * the headline (Title Medium, 16 sp, On surface) and its line (Body Small, 12 sp, On surface variant). The whole widget
  * is the tap.
@@ -250,7 +252,7 @@ private fun Message(
 @Composable
 private fun ListMessage(header: String?, title: String, line: String, glyph: Int?, click: androidx.glance.action.Action, plus: Boolean = false) {
     Column(GlanceModifier.fillMaxSize().clickable(click).semantics { contentDescription = listOfNotNull(header, title, line).joinToString(", ") }) {
-        if (header != null) { Header(false, header, null, 0, 1); Spacer(GlanceModifier.height(6.dp)) }
+        if (header != null) Header(false, header, null, 0, 1)
         Column(GlanceModifier.fillMaxWidth().defaultWeight().padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally, verticalAlignment = Alignment.CenterVertically) {
             if (plus) { PlusLabel(); Spacer(GlanceModifier.height(4.dp)) }
@@ -534,8 +536,8 @@ private fun ListWidget(kind: WidgetKind, snapshot: WidgetSnapshot, frame: Widget
     val pages = (rows.size + perPage - 1) / perPage
     val shown = page.coerceIn(0, pages - 1)
     Column(GlanceModifier.fillMaxSize()) {
-        Header(kind.large, title, doneText, shown, pages)
-        Spacer(GlanceModifier.height(if (kind.large) 8.dp else 6.dp))
+        Header(kind.large, title, doneText, shown, pages, frame.day)
+        if (kind.large) Spacer(GlanceModifier.height(8.dp))
         // 4 between the rows on a 4×2, 2 on a 4×4 (Figma).
         // The rows in a column of their own: a Glance container holds at most 10 children (five rows and their gaps
         // beside the header and its gap were 11, and the fifth row was dropped).
@@ -551,10 +553,12 @@ private fun ListWidget(kind: WidgetKind, snapshot: WidgetSnapshot, frame: Widget
  * A list widget's header (Figma 1240:488), 8 in. On a 4×2, 28 tall: the title (the day, a time of day or Tasks; Title
  * Medium, 16 sp) and, at the end, its count chip ("2 of 5 done": Label Medium, On surface variant, on Surface container
  * high, 10 corners, 8 at the sides and 2 above and under). On a 4×4 ([large]), 48 tall: the title in Title Large (22 sp)
- * over the count, and, with more than one page, the pager: ‹ (48), "1/2" (Label Medium, On surface variant), ›.
+ * over the count, and, with more than one page, the pager: ‹ (48), "1/2" (Label Medium, On surface variant), ›. On a
+ * 4×2 the pager follows the chip in the same row, its arrows 40 wide; they take the 6 under the row too, which a 4×2's
+ * header and rows keep between them, for a larger touch.
  */
 @Composable
-private fun Header(large: Boolean, title: String, done: String?, page: Int, pages: Int) {
+private fun Header(large: Boolean, title: String, done: String?, page: Int, pages: Int, day: Int = 0) {
     if (large) {
         Row(GlanceModifier.fillMaxWidth().height(48.dp).padding(start = 8.dp), verticalAlignment = Alignment.CenterVertically) {
             Column(GlanceModifier.defaultWeight()) {
@@ -562,26 +566,37 @@ private fun Header(large: Boolean, title: String, done: String?, page: Int, page
                 done?.let { Text(it, style = style(12.sp, Secondary, FontWeight.Medium)) }
             }
             if (pages > 1) {
-                PageArrow(R.drawable.ic_w_left, -1, page > 0, "Previous page")
+                PageArrow(R.drawable.ic_w_left, -1, page > 0, "Previous page", day)
                 Text("${page + 1}/$pages", style = style(12.sp, Secondary, FontWeight.Medium))
-                PageArrow(R.drawable.ic_w_right, 1, page < pages - 1, "Next page")
+                PageArrow(R.drawable.ic_w_right, 1, page < pages - 1, "Next page", day)
             }
         }
     } else {
-        Row(GlanceModifier.fillMaxWidth().height(28.dp).padding(start = 8.dp), verticalAlignment = Alignment.CenterVertically) {
-            Text(title, GlanceModifier.defaultWeight(), style = style(16.sp, weight = FontWeight.Medium), maxLines = 1)
-            done?.let { Text(it, GlanceModifier.cornerRadius(10.dp).background(Tonal2).padding(horizontal = 8.dp, vertical = 2.dp), style = style(12.sp, Secondary, FontWeight.Medium)) }
+        Row(GlanceModifier.fillMaxWidth().height(34.dp).padding(start = 8.dp)) {
+            Row(GlanceModifier.defaultWeight().height(28.dp), verticalAlignment = Alignment.CenterVertically) {
+                Text(title, GlanceModifier.defaultWeight(), style = style(16.sp, weight = FontWeight.Medium), maxLines = 1)
+                done?.let { Text(it, GlanceModifier.cornerRadius(10.dp).background(Tonal2).padding(horizontal = 8.dp, vertical = 2.dp), style = style(12.sp, Secondary, FontWeight.Medium)) }
+            }
+            if (pages > 1) {
+                PageArrow(R.drawable.ic_w_left, -1, page > 0, "Previous page", day, compact = true)
+                Box(GlanceModifier.height(28.dp), contentAlignment = Alignment.Center) {
+                    Text("${page + 1}/$pages", style = style(12.sp, Secondary, FontWeight.Medium))
+                }
+                PageArrow(R.drawable.ic_w_right, 1, page < pages - 1, "Next page", day, compact = true)
+            }
         }
     }
 }
 
 /**
- * A pager arrow: Figma's Standard icon button (48, its chevron 24 in On surface variant). Figma draws both arrows alike on
- * the first and last page; the one with nowhere to go takes no tap (Decisions needed D-31).
+ * A pager arrow: Figma's Standard icon button (48, its chevron 24 in On surface variant); [compact], a 4×2's, 40 wide
+ * and 34 tall with its chevron in the top 28. Figma draws both arrows alike on the first and last page; the one with
+ * nowhere to go takes no tap (Decisions needed D-31).
  */
 @Composable
-private fun PageArrow(glyph: Int, delta: Int, enabled: Boolean, label: String) {
-    Box(GlanceModifier.size(48.dp).let { if (enabled) it.clickable(actionRunCallback<WidgetPageAction>(actionParametersOf(TapKeys.DELTA to delta))) else it }
+private fun PageArrow(glyph: Int, delta: Int, enabled: Boolean, label: String, day: Int, compact: Boolean = false) {
+    val size = if (compact) GlanceModifier.width(40.dp).height(34.dp).padding(bottom = 6.dp) else GlanceModifier.size(48.dp)
+    Box(size.let { if (enabled) it.clickable(actionRunCallback<WidgetPageAction>(actionParametersOf(TapKeys.DELTA to delta, TapKeys.DAY to day))) else it }
         .semantics { contentDescription = label }, contentAlignment = Alignment.Center) {
         Image(ImageProvider(glyph), null, GlanceModifier.size(24.dp), colorFilter = ColorFilter.tint(Secondary))
     }

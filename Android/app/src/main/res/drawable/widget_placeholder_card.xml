@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A widget's card before the app has drawn it: its colour and corners (28), so nothing moves when it's drawn. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
+    <solid android:color="@color/widget_card" />
+    <corners android:radius="28dp" />
+</shape>
