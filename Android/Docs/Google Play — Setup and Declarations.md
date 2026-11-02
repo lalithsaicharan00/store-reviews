@@ -17,12 +17,43 @@ Everything that was configured, every answer given to Google, and what is still 
 **Building a signed release** (the user's own PowerShell, so the password never leaves it): `Android/README.md` has the
 Gradle commands; `build.gradle.kts` signs with `ANDROID_UPLOAD_KEYSTORE` / `ANDROID_UPLOAD_KEYSTORE_PASSWORD` when set.
 Windows PowerShell 5.1 has no `PtrToStringAuth`: read the hidden password through `PSCredential` instead. Every upload
-needs a higher `versionCode` (1 was the first internal upload, 2 the first closed test; 5 built 31 Oct 2026).
+needs a higher `versionCode` (1 was the first internal upload, 2 the first closed test; 5 built 31 Oct 2026; 6 for the internal test of 2 Nov 2026).
 
 **On the MacBook** (31 Oct 2026): the password can sit in the login Keychain as the item `often-enough-upload-key`, and
 the build reads it with `security find-generic-password -w`; use Android Studio's own Java (`JAVA_HOME` = its `jbr`), as
 the system Java may be newer than Gradle supports. A wrong password fails only at `signReleaseBundle` ("keystore password
 was incorrect"); check it first with `keytool -list -keystore ~/Keys/often-enough-upload.jks -alias upload`.
+
+**On this PC (Windows PowerShell 5.1)**, from `Android\`: the password is typed into Windows' own credential box and
+only lives in that PowerShell session.
+
+```powershell
+$env:JAVA_HOME = "C:\Program Files\Java\jdk-26.0.1"
+$env:JAVA_TOOL_OPTIONS = "-Djava.net.preferIPv4Stack=true"
+$env:ANDROID_UPLOAD_KEYSTORE = "C:\Users\lalit\Keys\often-enough-upload.jks"
+$cred = Get-Credential -UserName upload -Message "Often Enough upload key password"
+$env:ANDROID_UPLOAD_KEYSTORE_PASSWORD = $cred.GetNetworkCredential().Password
+.\gradlew.bat :app:bundleRelease
+Remove-Item Env:ANDROID_UPLOAD_KEYSTORE_PASSWORD
+& "$env:JAVA_HOME\bin\keytool.exe" -printcert -jarfile app\build\outputs\bundle\release\app-release.aab
+```
+
+The last line must show the upload key's SHA1 (`6F:EE:0F:BE:…`); an unsigned bundle shows none.
+
+### Internal test before production (2 Nov 2026, versionCode 6)
+
+The user: release it to internal testing, download it from the Play Store and test it. Everything a production copy
+needs is set up; this checks it end to end in the copy Play installs (signed with Play's app-signing key):
+
+1. Upload `app-release.aab` to **Internal testing**; the test account (`lalithsaicharan9@gmail.com`) is a tester and
+   a license tester.
+2. On the phone, take out the debug copy first (Play won't install over a copy signed with another key), then install
+   Often Enough from the Play Store (the testers' link).
+3. **Plus:** buy it; the sheet shows the test card ("This is a test order"). Plus turns on, and comes back after a
+   reinstall.
+4. **Google Drive:** Back up to Google Drive, choose the account, Allow; then a backup and a restore. No "Google hasn't
+   verified this app" screen (`drive.appdata` must be under Google Auth Platform › Data access).
+5. Before production: deactivate **Plus Family** and **Plus Family upgrade** (the app no longer sells them, D16).
 
 ## Google Cloud (project "Often Enough", Google Auth Platform)
 
