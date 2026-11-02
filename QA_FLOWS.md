@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 4 |
-| **All** | | **290** | **275** |
+| notifications & alarms | 1265:24553 | 12 | 5 |
+| **All** | | **290** | **276** |
 
 ## Bug log
 
@@ -490,6 +490,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁴⁸ Notifications 1–12 (phone, moto g54, Android 15, dark): a reminder is posted by a debug build's test launch, `--es remind 'Meds@8:00'` ("Water@10:00", "+" between habits for one group, "!" an alarm, "?" an amount typed each time), through the same `post` an alarm runs, 3 s after the demo is in so the home screen is in front (`rem` in qa.sh); its buttons act on the test launch's own data (D8). Android draws what's its own: the header's time is "now" for a reminder just come (Figma writes its clock time, 8:00 AM), the progress bar and the buttons are the phone's accent colour, and Moto's heads-up puts the app's name in the status bar over a card of the title and words.
 ⁴⁹ Notifications 4 (phone): the design demo's Walk counts toward 10,000 steps where Figma's counts toward 8,000, so 2,500 + 3,000 read "5,500 of 10,000 steps".
 ⁵⁰ Notifications 5 (phone, Android 15): Start turned the reminder into the timer's card at once (12:02, "of 20 min", Pause); at 19 of 20 min it read "✓ Goal met · of 20 min" past 20:00 with a full bar; Pause gave "Paused · 20:41 of 20 min" and Resume; the card opened Read's timer. Android 15 has no Live Update chip in the status bar (Figma's frame 2 is Android 16's), so the card sits under Silent; the design demo's Read is in Evening, so the header says Evening where Figma's says Anytime.
+⁵¹ Notifications 6 (phone): Log time opened "How many minutes?" in the reminder; 8 and ➤ gave "20 of 20 min · Goal met" with Undo, and the reminder was gone within 5 s. Letters ("abc") saved nothing and put the reminder back as it was, Start and Log time: Android can't reopen a reply field by itself, so asking again is one tap on Log time.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -828,7 +829,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | passed ⁴⁸ |
 | 4 | 1277:2639 | An amount typed in the notification | Walk reminder → field → 3000 → saved 5,500 of 8,000 | passed ⁴⁸ ⁴⁹ |
 | 5 | 1277:405022 | A time habit: Start from the reminder | Read reminder → timer runs as Live Update → shade → Goal met | passed ⁴⁸ ⁵⁰ |
-| 6 | 1278:3210 | A time habit: Log time already spent | Read reminder → field → 8 → Goal met → goes away | not started |
+| 6 | 1278:3210 | A time habit: Log time already spent | Read reminder → field → 8 → Goal met → goes away | passed ⁴⁸ ⁵¹ |
 | 7 | 1278:405794 | A checklist, one step at a time | Tick Cleanser → Serum → Moisturiser → all four: done | not started |
 | 8 | 1279:4534 | A checklist out of order: Open | 2 of 4 → Day details → Sunscreen → reminder keeps up | not started |
 | 9 | 1280:4045 | A task, from its reminder | task reminder → Done | not started |
