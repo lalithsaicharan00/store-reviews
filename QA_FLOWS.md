@@ -23,9 +23,9 @@ no screen with a keyboard could be compared with Figma.
 | create new | 381:2 | 28 | 28 |
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
-| widgets | 1232:173760 | 4 | 1 |
+| widgets | 1232:173760 | 4 | 2 |
 | notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **268** |
+| **All** | | **290** | **269** |
 
 ## Bug log
 
@@ -798,7 +798,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
 | 1 | 1256:3355 | Add a widget | hold home → Widgets → search, One habit → + Add → choose habit, Add widget → on home | passed ⁴⁴ ⁴⁵ |
-| 2 | 1264:8718 | Add the Today widget from the app’s icon | hold icon → Widgets → Today 4×2 → Add → All of today → Morning → Add widget → on home | not started |
+| 2 | 1264:8718 | Add the Today widget from the app’s icon | hold icon → Widgets → Today 4×2 → Add → All of today → Morning → Add widget → on home | passed ⁴⁴ |
 | 3 | 1257:4344 | Change a widget | hold widget → edit frame ✎ → One habit: Read → Save → shows Read | not started |
 | 4 | 1258:5608 | Today widget on the free plan | hold home → Widgets → Today 4×2 → Add → without Plus → tap → app opens Today | not started |
 
