@@ -26,8 +26,9 @@ fun HabitStore.rowLine(habit: Habit, day: Int, slot: String?, time: ReminderTime
         }
     }
     if (habit.kind == HabitKind.Check && f.isDayBased && (slot != null || goal <= 1)) return (if (done) "Done" else "Not done") + t
-    // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3): "0 of 2 cups · 2 left",
-    // "Limit reached · 2 of 2 cups", "Over the limit · 3 of 2 cups"; a running timer "12:40 · 17 min left".
+    // A limit says where it stands in words, never in red (Figma 1.12, 1.12.1; U3): "0 of 2 cups",
+    // "Limit reached · 2 of 2 cups", "Over the limit · 3 of 2 cups"; a running timer "12:40 of 30 min". Never "· 2 left"
+    // beside "0 of 2": it says the same twice (the user, 2 Nov 2026; A105). Day details' card keeps "Limit 2 · 2 left".
     if (habit.atMost && goal > 0 && day <= today()) return limitLine(habit, progress, goal, running) + t
     return goalLine(habit, progress, goal, running) + t
 }
@@ -47,8 +48,8 @@ private fun limitLine(habit: Habit, progress: Double, goal: Double, running: Boo
     return when {
         done > goal -> "Over the limit · " + if (running) Format.clock(progress) else counted
         done >= goal -> "Limit reached · " + if (running) Format.clock(progress) else counted
-        running -> Format.clock(progress) + " · " + Format.minutes(maxOf(1.0, floor(goal - progress))) + " left"
-        else -> "$counted · ${Format.amount(goal - done)} left"
+        running -> Format.clock(progress) + " of " + Format.minutes(goal)
+        else -> counted
     }
 }
 

@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
  * (Primary on Secondary container, as in the notice card: work under way). A habit's line is [HabitProgress], wavy
  * only while its timer runs (A90).
  *
- * The flat style (Style=Flat: where a routine is, a count) is Material's own `LinearProgressIndicator` as it is,
- * with no wrapper: 4 dp, Primary on Secondary container, the same 4 dp gap and stop dot.
+ * The flat style (Style=Flat: where a routine is, a count) is [FlatProgress]. **Neither has Material's stop dot at the
+ * end** (the user, 2 Nov 2026: "it was confusing the users … remove it from everywhere"; A102).
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
@@ -41,7 +41,14 @@ fun WavyProgress(
 ) = LinearWavyProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = modifier.fillMaxWidth(), color = color, trackColor = trackColor,
     // The wave runs the whole way while a clock runs, past the goal too (Figma 923:110889); Material's own flattens it
     // at the ends.
-    amplitude = { p -> if (p <= 0f) 0f else 1f })
+    amplitude = { p -> if (p <= 0f) 0f else 1f }, stopSize = 0.dp)
+
+/** Material's flat `LinearProgressIndicator`: 4 dp, Primary on Secondary container, its 4 dp gap, and no stop dot (A102). */
+@Composable
+fun FlatProgress(progress: Float, modifier: Modifier = Modifier, color: Color = MaterialTheme.colorScheme.primary,
+                 trackColor: Color = MaterialTheme.colorScheme.secondaryContainer) =
+    LinearProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = modifier, color = color, trackColor = trackColor,
+        drawStopIndicator = {})
 
 /**
  * A habit's progress line (Figma's Linear progress, 902:14527; A90): **wavy only while its timer is [running]**, the
@@ -54,7 +61,7 @@ fun HabitProgress(progress: Float, running: Boolean, modifier: Modifier = Modifi
                   trackColor: Color = MaterialTheme.colorScheme.secondaryContainer) {
     if (running) WavyProgress(progress, modifier, color, trackColor)
     else Box(modifier.fillMaxWidth().height(10.dp), contentAlignment = Alignment.Center) {
-        LinearProgressIndicator(progress = { progress.coerceIn(0f, 1f) }, modifier = Modifier.fillMaxWidth(), color = color, trackColor = trackColor)
+        FlatProgress(progress, Modifier.fillMaxWidth(), color, trackColor)
     }
 }
 

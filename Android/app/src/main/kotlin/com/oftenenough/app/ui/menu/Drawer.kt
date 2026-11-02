@@ -106,7 +106,10 @@ private fun MenuItems(store: HabitStore, current: MenuItem?, onPick: (MenuItem) 
                 // Atom 1.8 (Figma Drawer item 625:46): Material's own colours (selected Secondary container with On
                 // secondary container, unselected transparent with On surface variant); only the count stays On surface
                 // variant on the selected row too, as the design draws it.
-                colors = NavigationDrawerItemDefaults.colors(selectedBadgeColor = MaterialTheme.colorScheme.onSurfaceVariant),
+                // Dark mode: Secondary container is one step off the sheet, too faint to tell where you are; Secondary
+                // fixed dim is clear without shouting (the user, 2 Nov 2026; A103).
+                colors = NavigationDrawerItemDefaults.colors(selectedBadgeColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    selectedContainerColor = if (appColors.dark) MaterialTheme.colorScheme.secondaryFixedDim else MaterialTheme.colorScheme.secondaryContainer),
             )
         }
         Spacer(Modifier.height(16.dp))

@@ -64,8 +64,10 @@ data class SectionHabit(val name: String, val symbol: String, val color: HabitCo
  *   discs show when the name and time would otherwise be cut short, down to one and "+N".
  * - The [count] ("2 left", "Done", "3 planned"): a neutral pill, 24 tall, corners 12, 10 at the sides, Label Medium On
  *   surface on Surface container highest. Not Material's `Badge` (that's the red error dot).
- * - Open: Start ([onStart]), Material's extra-small button: 32 tall, round, Primary with On primary, the filled play
- *   arrow (20), 8, "Start" in Label Large.
+ * - Open: Start ([onStart]), Material's extra-small button: 32 tall, round, the filled play arrow (20), 8, "Start" in
+ *   Label Large. **Primary with On primary only for the time of day it is now ([now]); every other section's Start is
+ *   Tonal, grey** (the user, 2 Nov 2026: "only the current active thing should have the primary CTA color"; A104).
+ *   Quitting has none, open or folded.
  * - ⌃ / ⌄: Material's small standard icon button (40, a 24 glyph, On surface variant). Its 48 dp touch target reaches 4
  *   past the 40, so the room around it is 4 less and the glyph sits where Figma draws it.
  *
@@ -85,6 +87,7 @@ fun SectionHeader(
     count: String? = null,
     habits: List<SectionHabit> = emptyList(),
     onStart: (() -> Unit)? = null,
+    now: Boolean = false,
     tag: String? = null,
 ) {
     val s = MaterialTheme.colorScheme
@@ -121,7 +124,7 @@ fun SectionHeader(
                 }
             }
             if (count != null) { Spacer(Modifier.width(12.dp)); SectionCount(count) }
-            if (start) { Spacer(Modifier.width(12.dp)); StartButton(name, onStart) }
+            if (start) { Spacer(Modifier.width(12.dp)); StartButton(name, onStart, now) }
             Spacer(Modifier.width(8.dp))
             chevron()
         }
@@ -138,7 +141,7 @@ fun SectionHeader(
                     if (time != null) Text(time, Modifier.align(Alignment.CenterVertically), style = AppType.bodySmall, color = s.onSurfaceVariant)
                     if (discs) SectionDiscs(habits, Modifier.align(Alignment.CenterVertically))
                     if (count != null) SectionCount(count, Modifier.align(Alignment.CenterVertically))
-                    if (start) StartButton(name, onStart, Modifier.align(Alignment.CenterVertically))
+                    if (start) StartButton(name, onStart, now, Modifier.align(Alignment.CenterVertically))
                 }
             }
         }
@@ -170,11 +173,13 @@ private fun SectionCount(text: String, modifier: Modifier = Modifier) {
  */
 @OptIn(ExperimentalMaterial3ExpressiveApi::class)
 @Composable
-private fun StartButton(name: String, onStart: () -> Unit, modifier: Modifier = Modifier) {
+private fun StartButton(name: String, onStart: () -> Unit, now: Boolean, modifier: Modifier = Modifier) {
     val height = ButtonDefaults.ExtraSmallContainerHeight
+    val colors = if (now) ButtonDefaults.buttonColors() else ButtonDefaults.filledTonalButtonColors()
     Button(
         onStart, ButtonDefaults.shapesFor(height),
         modifier.heightIn(min = height).semantics { contentDescription = "Start $name"; testTag = "start-$name" },
+        colors = colors,
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
     ) {
         Icon(Symbols.Filled.PlayArrow, null, Modifier.size(ButtonDefaults.iconSizeFor(height)))

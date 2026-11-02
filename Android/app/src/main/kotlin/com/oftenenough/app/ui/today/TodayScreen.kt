@@ -386,7 +386,8 @@ internal fun BackToButton(label: String, tag: String, onClick: () -> Unit) {
     val s = MaterialTheme.colorScheme
     val h = ButtonDefaults.MinHeight
     FilledTonalButton(onClick, ButtonDefaults.shapesFor(h), Modifier.padding(bottom = 16.dp).heightIn(min = h).semantics { testTag = tag },
-        colors = ButtonDefaults.filledTonalButtonColors(containerColor = s.surfaceContainerLowest, contentColor = s.onSurface),
+        // Dark mode: the day bar's Surface container highest, as cards are Surface container lowest there (A103).
+        colors = ButtonDefaults.filledTonalButtonColors(containerColor = if (appColors.dark) s.surfaceContainerHighest else s.surfaceContainerLowest, contentColor = s.onSurface),
         elevation = ButtonDefaults.filledTonalButtonElevation(defaultElevation = 6.dp, pressedElevation = 6.dp),
         contentPadding = ButtonDefaults.contentPaddingFor(h, hasStartIcon = true)) {
         Icon(Symbols.CalendarToday, null, Modifier.size(ButtonDefaults.iconSizeFor(h)))
@@ -509,7 +510,8 @@ private fun LazyListScope.section(
     indexed(ix, "header-$card") {
         SectionHeader(section.name, startsText(section), open, if (open) segmentShape(0, count) else RoundedCornerShape(24.dp),
             onToggle = { layout.setOpen(card, !open) }, count = badge, habits = items.map { it.habit.inSection() }, onStart = start,
-            tag = "header-${section.name}")
+            // Filled only for the time of day it is now, and only on today itself (A104).
+            now = isNow && day == content.today, tag = "header-${section.name}")
     }
     if (open) pieces.forEachIndexed { i, (item, steps) ->
         val habit = item.habit

@@ -105,7 +105,8 @@ class TodayTest {
      */
     @Test fun milestonesTakeThePopUpThenTheBarThenTheRow() {
         launch(demo = "days")
-        // Judged at the day's end: the band, never a pop-up when the app opens (R.9).
+        // Judged at the day's end: the band, never a pop-up when the app opens (R.9). Quitting is below the fold.
+        showRow("Smoking")
         waitFor(hasText("30 days clean"), "Smoking's band")
         // A landmark, the day's first: its pop-up at once; closed, its band stays in the row (P.2, R.1).
         tapLabel("Mark Floss done")
@@ -187,16 +188,17 @@ class TodayTest {
         launch(demo = "today")
         showRow("Skincare")
         tapLabel("Show Skincare steps")
-        // The demo has Cleanser ticked today; Serum isn't.
+        // The demo has Cleanser ticked today; its serum isn't (named "Vitamin C serum, 2 drops" since 229be953).
         // Each step is a checkbox named by the step, Done or Not done.
-        fun serum(state: String) = hasTestTag("step-Serum") and SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, state)
+        val step = "step-Vitamin C serum, 2 drops"
+        fun serum(state: String) = hasTestTag(step) and SemanticsMatcher.expectValue(SemanticsProperties.StateDescription, state)
         waitFor(serum("Not done"), "Serum not done")
-        tapTag("step-Serum")
+        tapTag(step)
         waitFor(serum("Done"), "Serum ticked")
-        tapTag("step-Serum")
+        tapTag(step)
         waitFor(serum("Not done"), "Serum unticked")
         tapLabel("Hide Skincare steps")
-        waitGone(hasTestTag("step-Serum"), "the steps")
+        waitGone(hasTestTag(step), "the steps")
     }
 
     @Test fun aTimerStartsAndStops() {

@@ -17,7 +17,6 @@ import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
-import androidx.compose.material3.LinearProgressIndicator
 import com.oftenenough.app.ui.components.AppAssistChip
 import com.oftenenough.app.ui.components.MilestoneRibbon
 import com.oftenenough.app.ui.components.MilestoneRibbonArrival
@@ -126,6 +125,7 @@ import com.oftenenough.app.ui.components.Card
 import com.oftenenough.app.ui.components.CookieIcon
 import com.oftenenough.app.ui.components.CookieShape
 import com.oftenenough.app.ui.components.HabitIcon
+import com.oftenenough.app.ui.components.FlatProgress
 import com.oftenenough.app.ui.components.HabitProgress
 import com.oftenenough.app.ui.components.segmentShape
 import com.oftenenough.app.ui.theme.appColors
@@ -699,7 +699,7 @@ private fun RoutineProgress(position: Int, count: Int, spoken: String) {
             .semantics(mergeDescendants = true) { contentDescription = spoken; testTag = "routine-segments" },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        LinearProgressIndicator({ fraction }, Modifier.weight(1f))
+        FlatProgress(fraction, Modifier.weight(1f))
         Spacer(Modifier.width(12.dp))
         Text(PlayerWords.position(position - 1, count), style = AppType.labelMedium, color = c.secondary, maxLines = 1,
             modifier = Modifier.semantics { testTag = "routine-position" })

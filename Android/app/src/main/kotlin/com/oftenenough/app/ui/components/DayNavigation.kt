@@ -34,6 +34,7 @@ import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.foundation.shape.CircleShape
 import com.oftenenough.app.ui.theme.Symbols
+import com.oftenenough.app.ui.theme.appColors
 
 /**
  * Molecule 4.18, **Day navigation** in the **Floating toolbar** (Figma 581:145; Components — Atoms Build Plan): the
@@ -58,7 +59,9 @@ fun DayNavigation(
         expanded = true,
         modifier = modifier.padding(horizontal = 16.dp).fillMaxWidth()
             .dropShadow(CircleShape, DayBarShadow).dropShadow(CircleShape, DayBarShadowNear).semantics { testTag = "day-bar" },
-        colors = FloatingToolbarDefaults.standardFloatingToolbarColors(toolbarContainerColor = s.surfaceBright),
+        // Dark mode: Surface container highest, a step above the cards it floats over, where a shadow hardly shows
+        // (the user, 2 Nov 2026: "just good enough contrast"; A103). Figma's shadow stays.
+        colors = FloatingToolbarDefaults.standardFloatingToolbarColors(toolbarContainerColor = if (appColors.dark) s.surfaceContainerHighest else s.surfaceBright),
         // Figma's own shadow, drawn below: none of Material's elevation levels comes close enough (Level 4 was darker
         // and longer, Level 3 barely showed; the user, 31 Oct 2026: then use exactly what the design has).
         expandedShadowElevation = 0.dp,

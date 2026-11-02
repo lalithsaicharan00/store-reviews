@@ -37,7 +37,6 @@ import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.unit.dp
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.Symbols
-import com.oftenenough.app.ui.theme.appColors
 
 /**
  * Atom 2.4, **List item** (Figma 528:85; Components — Atoms Build Plan): Material 1.5's own `SegmentedListItem`, the
@@ -160,8 +159,8 @@ fun ListAvatar(icon: ImageVector, done: Boolean = false, tint: Color? = null) = 
 @Composable
 fun ListAvatar(done: Boolean = false, content: @Composable () -> Unit) {
     val s = MaterialTheme.colorScheme
-    Box(Modifier.size(40.dp).clip(CircleShape).background(if (done) (if (appColors.dark) s.outlineVariant else s.primary) else s.surfaceContainerHighest), contentAlignment = Alignment.Center) {
-        CompositionLocalProvider(LocalContentColor provides if (done) (if (appColors.dark) Color.White else s.onPrimary) else s.onSurfaceVariant, content = content)
+    Box(Modifier.size(40.dp).clip(CircleShape).background(if (done) s.primary else s.surfaceContainerHighest), contentAlignment = Alignment.Center) {
+        CompositionLocalProvider(LocalContentColor provides if (done) s.onPrimary else s.onSurfaceVariant, content = content)
     }
 }
 
