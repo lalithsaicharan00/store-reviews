@@ -361,14 +361,16 @@ private fun FormBody(
 private fun Footer(text: String) =
     Text(text, Modifier.padding(horizontal = 16.dp).semantics { testTag = "form-footer" }, style = AppType.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
 
-/** "⚙ Open settings": Android's notification settings for the app (Figma N.4, 2.1.6.4). */
+/**
+ * "⚙ Open settings": Android's notification settings for the app (Figma N.4, 2.1.6.4), or the page [intent] names;
+ * a phone without that page opens App info (U40).
+ */
 @Composable
-fun OpenSettingsButton(context: android.content.Context) {
+fun OpenSettingsButton(context: android.content.Context, intent: android.content.Intent? = null, onOpen: () -> Unit = {}) {
     AppButton("Open settings", {
-        runCatching {
-            context.startActivity(android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
-                .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
-        }
+        onOpen()
+        com.oftenenough.app.ui.settings.openSettingsPage(context, intent ?: android.content.Intent(android.provider.Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+            .putExtra(android.provider.Settings.EXTRA_APP_PACKAGE, context.packageName))
         // At its drawn 40, its touch spreading past, 8 under the line above it (Figma's Open settings, Create new 9).
     }, Modifier.padding(start = 16.dp).drawnHeight(), style = ButtonStyle.Tonal, icon = Symbols.Settings, tag = "open-settings")
 }

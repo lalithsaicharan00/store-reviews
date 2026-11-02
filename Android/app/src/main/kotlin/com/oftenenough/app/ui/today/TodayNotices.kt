@@ -63,7 +63,7 @@ object TodayNotices {
     private val PREFS: String get() = if (AppGraph.isTest) "uitest-today-notices" else "today-notices"
     private const val HIDDEN_MS = 7 * 24 * 3_600_000L
 
-    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "pending"). */
+    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "alarms", "pending"). */
     var forced: String? = null
 
     /** A notice doing its own work stays on Today until its card folds away, even once the state it reported is gone. */
@@ -129,6 +129,13 @@ object TodayNotices {
         if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Symbols.NotificationsOff,
             // Android's own question, or its notification settings once it won't ask again (Today flows 41, 42).
             "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings.", "Not now", "Turn on") { turnOn() }
+        // A106: an alarm can't ring without Alarms & reminders, however it came to be set (turned off later, a restore).
+        val wantsAlarms = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() && it.alert == "alarm" }
+        if ((wantsAlarms && Reminders.canPost(context) && !Reminders.canBeExact(context)) || forced == "alarms") list += TodayNotice("alarms", Symbols.Alarm,
+            "Alarms can’t ring", "Alarms & reminders is off for Often Enough in your phone’s settings, so alarms can’t ring at their time.", "Not now", "Turn on") {
+            if (forced == "alarms") TodayNotices.forced = null
+            open(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
+        }
         val missed = Reminders.missed(context, now)
         // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about
         // with it (Figma's Today, flows 38 and 39, the last frame; notices end when the problem is fixed elsewhere).
@@ -187,7 +194,8 @@ fun rememberTodayNotice(store: HabitStore, nav: NoticeNav, say: (String) -> Unit
     // Whether any habit wants reminders, read once per change of the habits (S5): the first reminder, or a restore that
     // brings some, shows Reminders can't come at once rather than on the next return to the app (Today flow 41).
     val wantsReminders by remember { derivedStateOf { store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() } } }
-    val notice = remember(refresh, status, pending, store.dataVersion / 50, wantsReminders, TodayNotices.forced, TodayNotices.holding) {
+    val wantsAlarms by remember { derivedStateOf { store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() && it.alert == "alarm" } } }
+    val notice = remember(refresh, status, pending, store.dataVersion / 50, wantsReminders, wantsAlarms, TodayNotices.forced, TodayNotices.holding) {
         TodayNotices.current(context, store, nav, store.clock(), say, turnOn)
     }
     return notice to { notice?.let { TodayNotices.dismiss(context, it, store.clock()) }; refresh++ }

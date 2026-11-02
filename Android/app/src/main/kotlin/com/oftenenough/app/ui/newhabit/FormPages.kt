@@ -777,6 +777,21 @@ fun ExactTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) = SettingsSheet(
 )
 
 /**
+ * **Alarms need Alarms & reminders** (A106, the user, 2 Nov 2026: "if they select the alarm, we should ask for it … if
+ * there is no permission … we shouldn't even let the user set an alarm"): choosing Remind me with: An alarm on a phone
+ * where Often Enough may not set exact alarms (Android 12 and later; 14 and later leave it off for a new app) asks first.
+ * The same sheet as Get reminders on time; **Open settings** goes straight to Often Enough's own Alarms & reminders switch
+ * (U40), and coming back allowed chooses An alarm; **Not now**, or coming back without it, keeps A notification.
+ */
+@Composable
+fun AlarmTimesSheet(onAllow: () -> Unit, onDismiss: () -> Unit) = SettingsSheet(
+    Symbols.Alarm, "Allow alarms",
+    "An alarm rings at the minute you set, so Android asks you to allow Alarms & reminders for Often Enough. Without it, an alarm can’t be set.",
+    "Settings opens on Alarms & reminders. Turn on Allow setting alarms and reminders, then come back.",
+    "alarm-times", onAllow, onDismiss,
+)
+
+/**
  * 5.11.5, **Let alarms fill the screen** (Figma 1274:16200; the flows "An alarm: turn it on, then answer it" and "An
  * alarm without full screen"): asked once, the first time someone chooses Remind me with: An alarm on Android 14 or
  * later, where Android asks for Full screen notifications app by app (13 and lower allow it already). The same sheet as
@@ -851,6 +866,20 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
     // launch: a system question stays over every later launch on that emulator (T18).
     var askExact by remember { mutableStateOf(false) }
     var askFull by remember { mutableStateOf(false) }
+    // An alarm needs exact times (A106): asked when it's chosen, chosen only once it's allowed.
+    var askAlarm by remember { mutableStateOf(false) }
+    var wantsAlarm by remember { mutableStateOf(false) }
+    var exact by remember { mutableStateOf(com.oftenenough.app.app.reminders.Reminders.canBeExact(context)) }
+    fun chooseAlarm() {
+        form.alert = "alarm"
+        if (com.oftenenough.app.app.reminders.Reminders.shouldAskFullScreen(context)) askFull = true
+    }
+    // Back from Settings: allowed, An alarm is chosen; not, it stays A notification and the footer says why.
+    androidx.lifecycle.compose.LifecycleEventEffect(androidx.lifecycle.Lifecycle.Event.ON_RESUME) {
+        exact = com.oftenenough.app.app.reminders.Reminders.canBeExact(context)
+        if (wantsAlarm && exact) { wantsAlarm = false; chooseAlarm() }
+    }
+    val exactPage = android.content.Intent(android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, android.net.Uri.parse("package:" + context.packageName))
     val askNotifications = androidx.activity.compose.rememberLauncherForActivityResult(
         androidx.activity.result.contract.ActivityResultContracts.RequestPermission()) { granted ->
         if (!granted) {
@@ -916,8 +945,11 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
                             val styles = listOf("notification" to "A notification", "alarm" to "An alarm")
                             MenuRow("Remind me with", styles.first { it.first == form.alert }.second, styles.map { it.second }, 0, rows, "remind-with",
                                 listOf(Symbols.Notifications, Symbols.Alarm), listOf("In your notifications", "Rings until you stop it")) {
-                                form.alert = styles[it].first
-                                if (form.alert == "alarm" && com.oftenenough.app.app.reminders.Reminders.shouldAskFullScreen(context)) askFull = true
+                                when {
+                                    styles[it].first != "alarm" -> { form.alert = styles[it].first; wantsAlarm = false }
+                                    exact -> chooseAlarm()
+                                    else -> askAlarm = true
+                                }
                             }
                             if (form.type != ItemType.CUT_DOWN) {
                                 val options = listOf(null, 15, 30, 60)
@@ -926,7 +958,18 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
                                     plus = !store.isPlus, onPlus = onPlus) { form.followUp = options[it] }
                             }
                         }
-                        Footer("Not sent on a day it’s already done.")
+                        when {
+                            // An alarm saved before Alarms & reminders was turned off (or restored onto this phone) can't ring.
+                            form.alert == "alarm" && !exact -> {
+                                Footer("Alarms & reminders is off for Often Enough, so this alarm can’t ring. Allow it in Settings.")
+                                OpenSettingsButton(context, exactPage)
+                            }
+                            wantsAlarm -> {
+                                Footer("An alarm needs Alarms & reminders allowed for Often Enough. Until then, reminders come as notifications.")
+                                OpenSettingsButton(context, exactPage)
+                            }
+                            else -> Footer("Not sent on a day it’s already done.")
+                        }
                     }
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         SegmentedList {
@@ -951,6 +994,11 @@ fun RemindersPage(form: FormState, store: HabitStore, onBack: () -> Unit, onPlus
         if (android.os.Build.VERSION.SDK_INT >= 34) com.oftenenough.app.ui.settings.openSettingsPage(context,
             android.content.Intent(android.provider.Settings.ACTION_MANAGE_APP_USE_FULL_SCREEN_INTENT, android.net.Uri.parse("package:" + context.packageName)))
     }) { askFull = false }
+    if (askAlarm) AlarmTimesSheet(onAllow = {
+        askAlarm = false
+        wantsAlarm = true
+        com.oftenenough.app.ui.settings.openSettingsPage(context, exactPage)
+    }) { askAlarm = false; wantsAlarm = true }
     if (askExact) ExactTimesSheet(onAllow = {
         askExact = false
         // Often Enough's own Alarms & reminders switch; a phone without that page opens App info (U40).

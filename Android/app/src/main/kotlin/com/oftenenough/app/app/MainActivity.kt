@@ -129,6 +129,9 @@ class MainActivity : ComponentActivity() {
                 plus = intent.getBooleanExtra(TestLaunch.PLUS, false), playBilling = intent.getBooleanExtra(TestLaunch.PLAY_BILLING, false),
                 forgetPlus = intent.getBooleanExtra(TestLaunch.FORGET_PLUS, false), realDrive = intent.getBooleanExtra(TestLaunch.REAL_DRIVE, false))
         } else AppGraph.open(this)
+        // A debug test launch that posts a reminder shows over a locked phone (never unlocking it), so a QA pass can post
+        // one to the lock screen and answer it there (Figma's notifications flow 2); Back goes back to the lock screen.
+        if (test && BuildConfig.DEBUG && intent.hasExtra(TestLaunch.REMIND) && android.os.Build.VERSION.SDK_INT >= 27) setShowWhenLocked(true)
         val store = AppGraph.store
         if (test) store.failNextTap = intent.getBooleanExtra(TestLaunch.FAIL_TAP, false)
         if (test && intent.getBooleanExtra(TestLaunch.LIVE_UPDATE, false)) {
