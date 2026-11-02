@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 0 |
-| **All** | | **290** | **271** |
+| notifications & alarms | 1265:24553 | 12 | 1 |
+| **All** | | **290** | **272** |
 
 ## Bug log
 
@@ -485,6 +485,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁴⁶ Widgets 3 (phone): the Moto launcher has no ✎ on a hold; its way is dragging the widget onto *Widget settings* at the top, which opens the same setup, with Save.
 ⁴⁷ Widgets (phone, Android 15): a force-stop makes Android cover the app's widgets with a grey card and its icon until the app runs again (a tap on the card starts it), which no app can change. An update wipes a widget's drawing for a moment; on a stopped app it restarts the app and every widget is back within about 8 s, without opening it. Each instrumented run ends in a force-stop (`finished inst`), as does the QA helpers' `demo`: open the app afterwards (`wake` in qa.sh).
 
+⁴⁸ Notifications 1–12 (phone, moto g54, Android 15, dark): a reminder is posted by a debug build's test launch, `--es remind 'Meds@8:00'` ("Water@10:00", "+" between habits for one group, "!" an alarm, "?" an amount typed each time), through the same `post` an alarm runs, 3 s after the demo is in so the home screen is in front (`rem` in qa.sh); its buttons act on the test launch's own data (D8). Android draws what's its own: the header's time is "now" for a reminder just come (Figma writes its clock time, 8:00 AM), the progress bar and the buttons are the phone's accent colour, and Moto's heads-up puts the app's name in the status bar over a card of the title and words.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -818,7 +819,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 
 | # | Node | Flow | Screens | Status |
 |---|---|---|---|---|
-| 1 | 1274:404399 | Tick a habit from its reminder | reminder over home → Done → Today: Meds done | not started |
+| 1 | 1274:404399 | Tick a habit from its reminder | reminder over home → Done → Today: Meds done | passed ⁴⁸ |
 | 2 | 1275:2054 | A week goal, from the lock screen | lock-screen reminder → saved without unlocking → goes away | not started |
 | 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | not started |
 | 4 | 1277:2639 | An amount typed in the notification | Walk reminder → field → 3000 → saved 5,500 of 8,000 | not started |

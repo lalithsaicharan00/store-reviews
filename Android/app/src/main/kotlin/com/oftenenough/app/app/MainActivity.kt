@@ -166,6 +166,7 @@ class MainActivity : ComponentActivity() {
                         store.saveWidgetTap(h.id, store.today(), kind, java.util.UUID.randomUUID().toString(), store.clock())
                     }
                 }
+                intent.getStringExtra(TestLaunch.REMIND)?.let { com.oftenenough.app.app.reminders.Reminders.postForTest(this@MainActivity, store, it) }
             }
             // Test tags as resource IDs, so UI Automator (Macrobenchmark, the widget tests) finds what Compose tests find.
             OftenEnoughTheme(AppGraph.prefs.theme) {
@@ -211,4 +212,8 @@ object TestLaunch {
     const val KEEP = "keep"
     /** Shows running timers' Live Update in a test launch too (the player's flow 21, Figma 260:2). */
     const val LIVE_UPDATE = "liveUpdate"
+    /** Debug builds: reminders posted at once as the alarm posts them, "Water@10:00" or, for one group, "Meds@7:00+Stretch@7:00";
+     *  a habit without that reminder time is given it first; "!" after the time rings it as an alarm, "?" makes an amount typed
+     *  each time (the notifications flows). */
+    const val REMIND = "remind"
 }
