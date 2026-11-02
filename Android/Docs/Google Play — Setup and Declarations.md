@@ -10,14 +10,19 @@ Everything that was configured, every answer given to Google, and what is still 
 |---|---|
 | App | **Often Enough**, `com.oftenenough.app`, Play Console app created 15 Oct 2026 (Free, English (US), App) |
 | Store name | `Often Enough: Habit Tracker` |
-| Upload key | `C:\Users\lalit\Keys\often-enough-upload.jks` on the user's PC (alias `upload`, RSA 4096, PKCS12, valid to 2054), password only in the user's password manager. Upload key SHA-1 `6F:EE:0F:BE:E0:A9:53:51:3A:76:9B:54:02:45:1A:97:AD:8E:33:46` |
+| Upload key | `C:\Users\lalit\Keys\often-enough-upload.jks` on the user's PC, and the same file (SHA-256 `9e4cee20…355e7b`) at `~/Keys/often-enough-upload.jks` on the user's MacBook since 31 Oct 2026 (alias `upload`, RSA 4096, PKCS12, valid to 2054), password only in the user's password manager. Upload key SHA-1 `6F:EE:0F:BE:E0:A9:53:51:3A:76:9B:54:02:45:1A:97:AD:8E:33:46` |
 | Play app signing key | Google-generated. SHA-1 `92:20:69:D3:CA:B6:41:B1:F2:1B:A2:1A:04:E8:3C:E0:B5:B2:B6:FB`; SHA-256 `18:52:5B:FA:DB:66:C9:E6:7A:3B:74:B3:36:25:1B:89:FC:4D:54:E3:B0:B0:B3:DB:66:F3:9F:B7:D3:25:48:9E` (for `/.well-known/assetlinks.json`, so `oftenenough.com/join/…` opens the app) |
 | This PC's debug key | SHA-1 `DA:6D:3F:E8:4C:8C:DB:90:BA:4A:91:81:91:F2:65:BF:50:4F:AC:41` |
 
 **Building a signed release** (the user's own PowerShell, so the password never leaves it): `Android/README.md` has the
 Gradle commands; `build.gradle.kts` signs with `ANDROID_UPLOAD_KEYSTORE` / `ANDROID_UPLOAD_KEYSTORE_PASSWORD` when set.
 Windows PowerShell 5.1 has no `PtrToStringAuth`: read the hidden password through `PSCredential` instead. Every upload
-needs a higher `versionCode` (1 was the first internal upload, 2 the first closed test).
+needs a higher `versionCode` (1 was the first internal upload, 2 the first closed test; 5 built 31 Oct 2026).
+
+**On the MacBook** (31 Oct 2026): the password can sit in the login Keychain as the item `often-enough-upload-key`, and
+the build reads it with `security find-generic-password -w`; use Android Studio's own Java (`JAVA_HOME` = its `jbr`), as
+the system Java may be newer than Gradle supports. A wrong password fails only at `signReleaseBundle` ("keystore password
+was incorrect"); check it first with `keytool -list -keystore ~/Keys/often-enough-upload.jks -alias upload`.
 
 ## Google Cloud (project "Often Enough", Google Auth Platform)
 

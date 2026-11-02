@@ -14,7 +14,7 @@ android {
         // Android 8.0: adaptive icons and notification channels; about 98 % of active Android phones (Build Results).
         minSdk = 26
         targetSdk = 37
-        versionCode = 4
+        versionCode = 5
         versionName = "1.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // Debug builds use the stand-in Plus store unless built with -PrealBilling (to test real purchases as a license tester).
