@@ -425,6 +425,9 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 383. Widgets 2 · a done row stayed in place and hid what was still to do — done goes last in Today's and Tasks' lists (A99; `theWholeDayPutsDoneLast`).
 384. Widgets 1 · This week stayed on "Choose a habit" after a habit was chosen and added: setup redrew the widget from the screen's own coroutines, which `finish()` cancelled — the publisher's own scope.
 385. All widgets · a change in the app never reached a widget until the app was left (S16 says 0.5 s): `publish` cancels what's pending, and from `schedule` that was its own job — it now clears `pending` first (on the phone: the snapshot 0.52 s after a step was unticked with the app open).
+386. Widgets 1 · a 4×2 list with more than two rows had no way to reach the rest (Figma's component too): chevrons and the page after the count chip (A100; the user). Checked on the phone: Today 1/3 → 2/3 → 3/3 and back, Morning 1/2, Today 4×4 1/2 with a sixth habit, › on the last page takes no tap.
+387. Widgets 1 · a page turned stayed turned the next day, hiding the first rows — a page lasts the day (A100; not checked across a real midnight on the phone).
+388. Widgets (the user) · a widget Android hadn't got a drawing for showed Glance's spinner, which looks stuck — a plain card, its own colour and size (A100). Seen because my test runs force-stop the app: see ⁴⁷.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -472,6 +475,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁴⁴ Widgets 1–4 (phone, moto g54, Moto launcher, dark): Plus comes from the debug build's stand-in billing (without `-PrealBilling`), as Play's test purchase says "The item that you were attempting to purchase could not be found"; the free plan is the `-PrealBilling` build. A widget's tap showed 1.27 s after touch when idle and 0.65 s warm, on a 4×4 while recording the screen, with 3 widgets left bound by the launcher (T22's 373–466 ms was on an emulator): in the final report, not changed here (U28).
 ⁴⁵ Widgets 1 (phone): on a home screen with no items at all, the Moto launcher's own Add button runs setup, gets its OK and then keeps nothing (its model has no widget; the bound id is left orphaned). Dragging from the picker works, and Add works once the page has anything on it. The launcher's, not the app's: setup returns RESULT_OK either way.
 ⁴⁶ Widgets 3 (phone): the Moto launcher has no ✎ on a hold; its way is dragging the widget onto *Widget settings* at the top, which opens the same setup, with Save.
+⁴⁷ Widgets (phone, Android 15): a force-stop makes Android cover the app's widgets with a grey card and its icon until the app runs again (a tap on the card starts it), which no app can change. An update wipes a widget's drawing for a moment; on a stopped app it restarts the app and every widget is back within about 8 s, without opening it. Each instrumented run ends in a force-stop (`finished inst`), as does the QA helpers' `demo`: open the app afterwards (`wake` in qa.sh).
 
 ## Open questions for the user
 
