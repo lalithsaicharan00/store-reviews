@@ -16,7 +16,7 @@ no screen with a keyboard could be compared with Figma.
 |---|---|---|---|
 | onboarding | 1:5 | 12 | 10 |
 | today | 54:5580 | 84 | 84 |
-| day details | 169:1270 | 44 | 39 |
+| day details | 169:1270 | 44 | 44 |
 | routine player | 234:2 | 24 | 24 |
 | habits & tasks | 269:148 | 35 | 35 |
 | details pages | 298:2 | 24 | 24 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
 | notifications & alarms | 1265:24553 | 12 | 10 |
-| **All** | | **290** | **281** |
+| **All** | | **290** | **286** |
 
 ## Bug log
 
@@ -447,6 +447,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 405. Notifications 11 · "Let alarms fill the screen" is asked once, but a test launch wrote that into the app's own settings, so the person's app would never have asked — a test launch remembers it for that launch only (D8); the mark it had left on the phone was removed.
 406. Notifications 11 (the user) · "An alarm" could be chosen and saved without Alarms & reminders, so it came up to an hour late and never as a real alarm; and nothing on Today said so — choosing An alarm without it asks (*Allow alarms*, Open settings on Often Enough's own switch) and An alarm is chosen only once it's allowed; one already set without it says so on its Reminders page, and Today shows *Alarms can't ring* · Turn on (A106). Checked on the phone with the switch off and back on (`appops set --uid … SCHEDULE_EXACT_ALARM`, put back to allow as the user had it): the sheet, Settings on the switch, An alarm chosen on return; Today's card, Turn on, the card gone on return; tomorrow's 8:00 then set exact (window 0).
 407. Phone (my testing) · every test launch force-stops the app, which drops its alarms, and test launches never set them back, so the person's reminders weren't going to fire until the app was opened — opened afterwards each time; the alarm list checked (`dumpsys alarm`).
+408. Day details 8, 10, 15, 24, 26 (the user, D-51, D-52) · Figma said "Changed at …" and "Moved from …" under changed logs and slips, and drew a Tick steps button under a checklist's steps — neither kept (A107, A108); Figma corrected to the app.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -628,14 +629,14 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 5 | 179:2 | Add log: nothing typed, or a time later than now | → Add log empty → Add: error line → type 2 → Time 6:00 PM → OK: stays 2:05 PM, says why → Add → ✕ | passed |
 | 6 | 180:2 | Add log: ✕ after typing | → 2 typed → ✕: Discard this log? → Keep editing → ✕ → Discard → ✕ | passed |
 | 7 | 181:2 | Open a log | → Day details → tap log: Log view → ← → ✕ | passed ¹² |
-| 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | blocked: all but "Changed at 2:07 PM." under the log, which needs a saved field (D-51) |
+| 8 | 182:2 | Edit a log | → Log → Edit → type 3 → Save: snackbar → ← 6 of 8 → ✕ | passed (A107) |
 | 9 | 183:2 | Edit a log: ✕ with changes | → Edit log → 3 → ✕: Discard your changes? → Keep editing → ✕ → Discard → ← | passed |
-| 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | blocked: all but "Moved from today at 2:08 PM." under the log, which needs a saved field (D-51) |
+| 10 | 184:2 | Move a log to another day | → Edit log → Date picker → 20 → OK: footer says so → Save → ← 3 of 8 → ✕ | passed (A107) |
 | 11 | 185:2 | Delete a log | → Log → Delete this log? → Delete; Undo → Undo → ✕ → (Cancel) | passed |
 | 12 | 186:2 | All logs, and deleting there | Water 7 of 8 → 2 newest + All 4 logs → All logs → Log → Delete → Undo → ← → ✕ | passed |
 | 13 | 188:2 | Time a habit from Day details | → Start timer → ⌄ → Pause: saved → ✕ → (timer) Today › | passed |
 | 14 | 189:2 | Log time from Day details | → Log time: 5 min → 9 of 10 → ✕ | passed |
-| 15 | 190:2 | A timer's log: view and change it | → timer's log → Log with seconds → Edit H/M/S → 3 → Save → ← → ✕ | blocked: all but "Changed at 2:15 PM." under the log, and "Started" keeping the timer's own start after an edit (the app works it out from the finish and the length), which need a saved field (D-51) |
+| 15 | 190:2 | A timer's log: view and change it | → timer's log → Log with seconds → Edit H/M/S → 3 → Save → ← → ✕ | passed (A107) |
 | 16 | 191:2 | A check habit: Mark done, and Undo done | → Not done → Mark done → ✕ → Day details Done → Undo done → ✕ | passed |
 | 17 | 192:2 | Skip a day from Day details, and undo it | → Skip today → ✕ → Day details Skipped → Undo skip → ✕ | passed |
 | 18 | 193:2 | Several checks a day | Stretch breaks 2 of 3 → Add a check → tap check: Log → Delete this check? → Delete; Undo → ✓ past goal | passed |
@@ -644,9 +645,9 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 21 | 196:178 | An amount week goal: Push-ups, 300 a week | 140 of 300 → +20 \| Log → +20 → ✕ → Saturday goal | passed |
 | 22 | 197:2 | An amount typed each time: Savings | $250 of $500 → one Log → Add log $50 → Add → ✕ | passed |
 | 23 | 198:2 | A time week goal: Piano, 3 hours a week | 1 h 40 of 3 h → Start timer → ⌄ → Pause → ✕ | passed |
-| 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | blocked: all but Figma's filled "Tick steps" button under the steps, which nothing in the file defines (D-52) |
+| 24 | 199:2 | A checklist: tick steps in Day details | Skincare 1 of 4 → steps in This day → tick → all done → untick → ✕ | passed (A108) |
 | 25 | 200:2 | Log a slip from Day details | Smoking → Day details → Add slip → 1 slip recorded → ✕ | passed |
-| 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | blocked: all but "Changed at 2:10 PM." under the slip, which needs a saved field (D-51) ¹³ |
+| 26 | 201:2 | Open a slip: change its time, or delete it | → Slip view → Edit slip → time 8:15 → Save → Delete slip? → Delete; Undo → ✕ → travel time zone | passed (A107) ¹³ |
 | 27 | 202:2 | Cut down: an amount, from Day details | Coffee 1 of 2 → +1 Limit reached → +1 Over the limit → ✕ | passed |
 | 28 | 203:2 | Cut down: a time limit, from Day details | Social media → Start timer → ⌄ at 42 min → Pause → ✕ | passed |
 | 29 | 204:2 | A task in Day details: mark it done | Pick up parcel → Mark done; Reschedule → Done → ✕ | passed |

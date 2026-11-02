@@ -191,6 +191,8 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
 
 ### D-51. A changed log says when: "Changed at 2:07 PM."
 
+- **Answered 2 Nov 2026 (A107):** not built. The user: "a changed at a particular time, that also doesn't matter." Figma's four footers now leave it out.
+
 - **Where:** the Log view after Edit ([Figma 896:106555](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=896-106555)); `Core` `EntryRecord`, `data/Model.kt`, `data/StoreWords.kt` (`originLine`).
 - **What Figma shows / what the app did:** "Added by hand at 1:10 PM. Changed at 2:07 PM." The app has nowhere to keep
   when a log was changed: a record holds when it happened (`created_at`) and when it was deleted, nothing else.
@@ -208,6 +210,8 @@ Figma file: [Android app](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/An
   a number looks wrong). Until then the footer leaves it out.
 
 ### D-52. A checklist's Day details: what does "Tick steps" do?
+
+- **Answered 2 Nov 2026 (A108):** (a), no button; removed from Figma. The user: "that tick steps button, I think it should be removed from Figma."
 
 - **Where:** Day details for a checklist ([Figma 919:112323](https://www.figma.com/design/sJptV3HAKYauEIGUxYS3qs/Android-app?node-id=919-112323), flow 24, and the Day details sheet's Kind=Checklist); `ui/day/DayDetails.kt` (`dayActions`).
 - **What Figma shows / what the app did:** a filled **Tick steps** button under the steps, in every frame of the flow. The
