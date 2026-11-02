@@ -20,6 +20,7 @@ import com.oftenenough.app.data.HabitKind
 import com.oftenenough.app.data.HabitStore
 import com.oftenenough.app.data.EntrySource
 import com.oftenenough.app.data.ReminderPlan
+import com.oftenenough.app.data.ReminderTime
 import com.oftenenough.app.data.Format
 import com.oftenenough.app.data.HabitCopy
 import com.oftenenough.app.ui.theme.AppColors
@@ -146,6 +147,36 @@ object Reminders {
         }
         if (canPost(context)) post(context, store, due)
         replan(context, store)
+    }
+
+    /**
+     * Debug builds' test launches only ([com.oftenenough.app.app.TestLaunch.REMIND]): "Water@10:00+Walk@13:00" posts those
+     * habits' reminders for today now, through [post] as the alarm does, so a QA pass sees the real notification and its
+     * buttons on the test launch's own data (D8). A habit is given that reminder time first if it hasn't one.
+     */
+    fun postForTest(context: Context, store: HabitStore, spec: String) {
+        if (!com.oftenenough.app.BuildConfig.DEBUG) return
+        val today = store.today()
+        val wanted = spec.split("+").mapNotNull { part ->
+            val (name, rest) = part.split("@").takeIf { it.size == 2 } ?: return@mapNotNull null
+            val alarm = rest.endsWith("!")
+            // "?": an amount typed each time (no quick step), as the flow's Walk.
+            val typed = rest.endsWith("?")
+            val (h, m) = rest.removeSuffix("!").removeSuffix("?").split(":").map { it.trim().toInt() }
+            val habit = store.habits.firstOrNull { it.name == name.trim() } ?: return@mapNotNull null
+            val time = habit.reminders.firstOrNull { it.hour == h && it.minute == m } ?: ReminderTime(hour = h, minute = m)
+            store.update(habit.copy(remind = true, reminders = (habit.reminders.filter { it.id != time.id } + time).sortedBy { it.minuteOfDay },
+                alert = if (alarm) "alarm" else habit.alert,
+                kind = (habit.kind as? com.oftenenough.app.data.HabitKind.Amount)?.takeIf { typed }?.copy(increment = 0.0) ?: habit.kind))
+            habit.id to time.minuteOfDay
+        }
+        scope.launch {
+            store.flush()
+            delay(3_000) // time to go to the home screen, where Figma shows it arriving
+            val due = ReminderPlan.plan(store, store.rules.dayStartMoment(today) - 1, days = 2)
+                .filter { a -> a.day == today && wanted.any { (id, minute) -> a.habit.id == id && a.time.minuteOfDay == minute && a.followUp == 0 } }
+            post(context, store, due)
+        }
     }
 
     private fun post(context: Context, store: HabitStore, due: List<ReminderPlan.Alert>) {
@@ -310,8 +341,27 @@ object Reminders {
                 store.rules.countsUp(habit, day) -> "${Format.amount(store.rules.progress(habit, day))} of ${Format.amount(store.rules.goal(habit))} today"
                 else -> "Not done yet"
             }
+            // An amount in full, as Figma's reminders write it ("2,500 of 8,000 steps", "$250 of $500"); the widgets' own line
+            // is short for their room ("2.5k of 8k").
+            is HabitKind.Amount -> amountLine(store, habit, day, rule.kind as HabitKind.Amount) + if (complete) " · Goal met" else ""
             else -> line + if (complete && rule.kind != HabitKind.Checklist) " · Goal met" else ""
         }
+    }
+
+    /** The period's amount over its goal, in whole grouped numbers, as the widget's line counts it (WidgetItems.item). */
+    private fun amountLine(store: HabitStore, habit: com.oftenenough.app.data.Habit, day: Int, k: HabitKind.Amount): String {
+        val rules = store.rules
+        val rule = store.rule(habit, day)
+        val progress = rules.progress(habit, day, store.clock())
+        val goal = rules.goal(rule)
+        val period = if (!rule.frequency.isDayBased) rules.periodKind(rule) else com.oftenenough.app.data.GoalPeriod.DAY
+        val thisPeriod = if (rule.atMost) "" else when (period) {
+            com.oftenenough.app.data.GoalPeriod.WEEK -> " this week"; com.oftenenough.app.data.GoalPeriod.MONTH -> " this month"
+            com.oftenenough.app.data.GoalPeriod.YEAR -> " this year"; else -> ""
+        }
+        val unit = k.unit.trim()
+        return if (unit in HabitCopy.currencies) "${HabitCopy.amount(progress, unit)} of ${HabitCopy.amount(goal, unit)}$thisPeriod"
+            else "${HabitCopy.number(progress)} of ${HabitCopy.amount(goal, unit)}$thisPeriod"
     }
 
     /** A button that opens a field in the notification itself (Android's direct reply); ➤ sends what was typed. */
