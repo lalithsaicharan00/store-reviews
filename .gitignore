@@ -26,3 +26,5 @@ iOS/build-device/
 # Golden-case inputs made by Core/fixtures/tools/generate.py (large; only the hand-written ones are kept)
 Core/fixtures/inputs/*
 !Core/fixtures/inputs/hand.json
+# Editor settings (VS Code), personal to each machine
+.vscode/
