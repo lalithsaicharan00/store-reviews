@@ -41,6 +41,7 @@ object TimerNotice {
     private const val PREFS = "timer_notice"
     private const val KEY_PAUSED = "paused"
     private const val KEY_ROUTINE = "routine"
+    private const val KEY_REMINDER_PART = "reminderPart"
 
     /** A test that checks the Live Update itself turns this on; test launches otherwise never post (D8). */
     var showInTests = false
@@ -82,6 +83,18 @@ object TimerNotice {
         shown.remove(habitId)
     }
 
+    /** Timers started from a reminder's Start: "habitId" to its time of day, which the card names ("Often Enough · Anytime"). */
+    private fun reminderParts(context: Context): Map<String, String> =
+        prefs(context).getStringSet(KEY_REMINDER_PART, emptySet())!!.associate { it.substringBefore("=") to it.substringAfter("=") }
+
+    /** A reminder's Start started [habitId]'s timer, for its time of day [part] (Figma's notifications flow 5). */
+    fun startedFromReminder(habitId: String, part: String) {
+        val context = appContext ?: return
+        val now = reminderParts(context) + (habitId to part)
+        prefs(context).edit().putStringSet(KEY_REMINDER_PART, now.map { (k, v) -> "$k=$v" }.toSet()).apply()
+        shown.remove(habitId)
+    }
+
     // ------------------------------------------------------------------ Showing
 
     /** Shows a notification for each running or paused timer and removes the rest. Cheap: called after every change. */
@@ -97,6 +110,8 @@ object TimerNotice {
         // A routine is remembered only while its timer runs or waits paused.
         val routines = routines(context).filterKeys { it in running || it in paused }
         prefs(context).edit().putStringSet(KEY_ROUTINE, routines.map { (k, v) -> "$k=$v" }.toSet()).apply()
+        val parts = reminderParts(context).filterKeys { it in running || it in paused }
+        prefs(context).edit().putStringSet(KEY_REMINDER_PART, parts.map { (k, v) -> "$k=$v" }.toSet()).apply()
         for (id in shown.keys.toList()) if (id !in running && id !in paused) { manager.cancel(id.hashCode()); shown.remove(id) }
         val now = store.clock()
         for ((id, start) in running) {
@@ -109,14 +124,14 @@ object TimerNotice {
             val minute = ((now - start) / 60_000).toString()
             val sig = "$state|$minute"
             if (shown[id] == sig) continue
-            post(context, store, id, start, state, done, goal, ruled.atMost, routines[id])
+            post(context, store, id, start, state, done, goal, ruled.atMost, routines[id], parts[id])
             shown[id] = sig
         }
         for (id in paused.keys) {
             if (shown[id] == "paused") continue
             val habit = store.habit(id) ?: continue
             val ruled = store.rule(habit, store.today())
-            post(context, store, id, null, "paused", store.rules.dayProgress(habit, store.today(), now), store.rules.dayGoal(ruled), ruled.atMost, routines[id])
+            post(context, store, id, null, "paused", store.rules.dayProgress(habit, store.today(), now), store.rules.dayGoal(ruled), ruled.atMost, routines[id], parts[id])
             shown[id] = "paused"
         }
         // Once a minute while a timer runs and the app is alive: the bar and the goal's words catch up.
@@ -131,7 +146,7 @@ object TimerNotice {
     }
 
     private fun post(context: Context, store: HabitStore, id: String, start: Long?, state: String, done: Double, goal: Double,
-                     atMost: Boolean, routine: String?) {
+                     atMost: Boolean, routine: String?, reminderPart: String? = null) {
         val habit = store.habit(id) ?: return
         val hidden = AppGraph.hidesNames
         val name = if (hidden) "Timer" else habit.name
@@ -160,8 +175,8 @@ object TimerNotice {
         // The habit's own glyph, in its colour (the status bar's chip shows it too); a hidden name keeps the app's.
         val small = if (hidden) androidx.core.graphics.drawable.IconCompat.createWithResource(context, R.drawable.ic_notification)
             else androidx.core.graphics.drawable.IconCompat.createWithBitmap(com.oftenenough.app.app.widgets.HabitIconBitmaps.glyph(habit.symbol, px))
-        // "Often Enough · Morning": the routine it was started in, if any.
-        val section = routine?.substringBefore("|")?.let { store.section(it).name }
+        // "Often Enough · Morning": the routine it was started in, or the time of day of the reminder that started it.
+        val section = (routine?.substringBefore("|") ?: reminderPart)?.let { store.section(it).name }
         val builder = NotificationCompat.Builder(context, CHANNEL).setSmallIcon(small)
             .setSubText(section).setContentTitle(title).setContentText(text).setColor(color)
             .setOnlyAlertOnce(true).setCategory(NotificationCompat.CATEGORY_STOPWATCH)

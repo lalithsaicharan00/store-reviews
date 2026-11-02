@@ -410,7 +410,10 @@ object Reminders {
                 typed?.let(::number)?.let { store.addProgress(habit, it, day, source = EntrySource.REMINDER) }
             }
             ACTION_START -> {
-                if (!store.timers.containsKey(habit.id)) store.toggleTimer(habit, slot)
+                if (!store.timers.containsKey(habit.id)) {
+                    TimerNotice.startedFromReminder(habit.id, shown.section)
+                    store.toggleTimer(habit, slot)
+                }
                 return manager.cancel(shown.id)
             }
             ACTION_TICK -> habit.steps.firstOrNull { it.id == intent.getStringExtra(EXTRA_STEP) }?.let { step ->

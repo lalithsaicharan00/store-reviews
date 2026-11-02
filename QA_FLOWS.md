@@ -24,8 +24,8 @@ no screen with a keyboard could be compared with Figma.
 | settings | 781:34017 | 23 | 23 |
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
-| notifications & alarms | 1265:24553 | 12 | 3 |
-| **All** | | **290** | **274** |
+| notifications & alarms | 1265:24553 | 12 | 4 |
+| **All** | | **290** | **275** |
 
 ## Bug log
 
@@ -437,6 +437,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 395. Today (the user) · a cut-down row read "0 of 2 cups · 2 left" — "0 of 2 cups" (A105). Checked on the emulator.
 396. Tests, 2 Nov 2026 (emulator, Pixel 10 Pro AVD, Android 16) · TodayTest's checklist test still looked for a step named "Serum", renamed "Vitamin C serum, 2 drops" in 229be953 without its test (T3) — updated, passes. Still failing, and failing the same on the commit before this batch, so not caused by it: TodayTest `milestonesTakeThePopUpThenTheBarThenTheRow` (Smoking's 30-day band is never found, even scrolled to); 5 of 6 PlayerTest; ScreensTest `progressShowsTheWeek` (it opens a Progress menu item removed on 22 Oct, c318154f). Left for a stale-tests pass of their own. A comma list in `-Pandroid.testInstrumentationRunnerArguments.class` runs only the first class here: run classes one by one.
 397. Notifications 4 · a reminder's amount was the widget's short form, "5.2k of 8k steps"; Figma's reminders write it in full, "2,500 of 8,000 steps" — whole grouped numbers, the unit after, $ before (`Reminders.amountLine`). Widgets keep their short form.
+398. Notifications 5 · a timer started from a reminder's Start had no time of day in its header ("Often Enough · 12:02"); Figma's reads "Often Enough · Anytime" — the reminder's time of day is kept with the timer (`TimerNotice.startedFromReminder`) and named as a routine's is, until the timer stops.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -488,6 +489,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 
 ⁴⁸ Notifications 1–12 (phone, moto g54, Android 15, dark): a reminder is posted by a debug build's test launch, `--es remind 'Meds@8:00'` ("Water@10:00", "+" between habits for one group, "!" an alarm, "?" an amount typed each time), through the same `post` an alarm runs, 3 s after the demo is in so the home screen is in front (`rem` in qa.sh); its buttons act on the test launch's own data (D8). Android draws what's its own: the header's time is "now" for a reminder just come (Figma writes its clock time, 8:00 AM), the progress bar and the buttons are the phone's accent colour, and Moto's heads-up puts the app's name in the status bar over a card of the title and words.
 ⁴⁹ Notifications 4 (phone): the design demo's Walk counts toward 10,000 steps where Figma's counts toward 8,000, so 2,500 + 3,000 read "5,500 of 10,000 steps".
+⁵⁰ Notifications 5 (phone, Android 15): Start turned the reminder into the timer's card at once (12:02, "of 20 min", Pause); at 19 of 20 min it read "✓ Goal met · of 20 min" past 20:00 with a full bar; Pause gave "Paused · 20:41 of 20 min" and Resume; the card opened Read's timer. Android 15 has no Live Update chip in the status bar (Figma's frame 2 is Android 16's), so the card sits under Silent; the design demo's Read is in Evening, so the header says Evening where Figma's says Anytime.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -825,7 +827,7 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 | 2 | 1275:2054 | A week goal, from the lock screen | lock-screen reminder → saved without unlocking → goes away | not started |
 | 3 | 1276:2388 | An amount, +1 at a time, and Undo | Water reminder → +1: 4 of 8, Undo → Undone → shade +1 | passed ⁴⁸ |
 | 4 | 1277:2639 | An amount typed in the notification | Walk reminder → field → 3000 → saved 5,500 of 8,000 | passed ⁴⁸ ⁴⁹ |
-| 5 | 1277:405022 | A time habit: Start from the reminder | Read reminder → timer runs as Live Update → shade → Goal met | not started |
+| 5 | 1277:405022 | A time habit: Start from the reminder | Read reminder → timer runs as Live Update → shade → Goal met | passed ⁴⁸ ⁵⁰ |
 | 6 | 1278:3210 | A time habit: Log time already spent | Read reminder → field → 8 → Goal met → goes away | not started |
 | 7 | 1278:405794 | A checklist, one step at a time | Tick Cleanser → Serum → Moisturiser → all four: done | not started |
 | 8 | 1279:4534 | A checklist out of order: Open | 2 of 4 → Day details → Sunscreen → reminder keeps up | not started |
