@@ -116,6 +116,9 @@ fun RestoreFlow(
     var wasConnected by remember { mutableStateOf(true) }
 
     val email = driveEmail(center)
+    // The account Drive's copy came from: the Plus gate lets go of Drive, and Check again goes back to that same one
+    // without Google's chooser (Figma's flow 3: Check again → Restoring → Today).
+    var gateAccount by remember { mutableStateOf<String?>(null) }
 
     // ---------------------------------------------------------------- Doing the work
 
@@ -214,6 +217,7 @@ fun RestoreFlow(
                         // Checked before anything is kept: this phone goes back as it was (it was empty — the only
                         // place this flow starts), and Drive keeps everything, because nothing ever went up.
                         val offline = !online(context)
+                        gateAccount = driveEmail(center)
                         if (emptyBefore) center.eraseThisPhone()
                         step = if (offline) NO_INTERNET_PLUS else NEEDS_PLUS
                         return@launch
@@ -280,7 +284,7 @@ fun RestoreFlow(
             when {
                 owned == null || !online(context) -> step = NO_INTERNET_PLUS
                 !owned -> step = NEEDS_PLUS
-                center.link.accountKey != null || center.link.connect(context) -> restoreFromDrive()
+                center.link.accountKey != null || center.link.connect(context, account = gateAccount) -> restoreFromDrive()
                 else -> step = NEEDS_PLUS
             }
         }

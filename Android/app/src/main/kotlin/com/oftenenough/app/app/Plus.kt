@@ -62,6 +62,12 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
     override val canBuy = true
     var nextBuy: BuyResult = BuyResult.BOUGHT
     var nextRestore: RestoreResult? = null
+    /**
+     * Play's next answers, in order (a test launch's `plusAnswers`, "none,found"): Plus arriving between two checks, as
+     * when the person switches the Play Store's account or redeems a promo code (onboarding flows 3 and 9). A found
+     * answer owns Plus, as Play's would.
+     */
+    val answers = ArrayDeque<RestoreResult>()
     /** How long the stand-in "talks to Play" (ms), so the waiting screens show as they will; 0 in tests. */
     var latencyMs = 0L
 
@@ -89,8 +95,11 @@ class FakePlusStore(private val sp: SharedPreferences) : PlusStore {
         owned = PlusOwned.PLUS
     }
 
-    override suspend fun restore(): RestoreResult =
-        kotlinx.coroutines.delay(latencyMs).let { nextRestore }?.also { nextRestore = null } ?: if (owned == PlusOwned.NONE) RestoreResult.NONE else RestoreResult.FOUND
+    override suspend fun restore(): RestoreResult {
+        kotlinx.coroutines.delay(latencyMs)
+        answers.removeFirstOrNull()?.let { if (it == RestoreResult.FOUND) own(PlusProduct.PLUS); return it }
+        return nextRestore?.also { nextRestore = null } ?: if (owned == PlusOwned.NONE) RestoreResult.NONE else RestoreResult.FOUND
+    }
 
     /** Back to the free plan (tests). */
     fun reset() { sp.edit().remove(KEY).apply(); owned = PlusOwned.NONE; pending = null }

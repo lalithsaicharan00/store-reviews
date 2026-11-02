@@ -14,7 +14,7 @@ no screen with a keyboard could be compared with Figma.
 
 | Page | Node | Flows | Passed |
 |---|---|---|---|
-| onboarding | 1:5 | 12 | 10 |
+| onboarding | 1:5 | 12 | 12 |
 | today | 54:5580 | 84 | 84 |
 | day details | 169:1270 | 44 | 44 |
 | routine player | 234:2 | 24 | 24 |
@@ -25,7 +25,7 @@ no screen with a keyboard could be compared with Figma.
 | plus | 1166:15123 | 0 (the page holds only the Plus component set; its flows are on create new 18–20 and today 43) | — |
 | widgets | 1232:173760 | 4 | 4 |
 | notifications & alarms | 1265:24553 | 12 | 12 |
-| **All** | | **290** | **288** |
+| **All** | | **290** | **290** |
 
 ## Bug log
 
@@ -449,6 +449,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 407. Phone (my testing) · every test launch force-stops the app, which drops its alarms, and test launches never set them back, so the person's reminders weren't going to fire until the app was opened — opened afterwards each time; the alarm list checked (`dumpsys alarm`).
 408. Day details 8, 10, 15, 24, 26 (the user, D-51, D-52) · Figma said "Changed at …" and "Moved from …" under changed logs and slips, and drew a Tick steps button under a checklist's steps — neither kept (A107, A108); Figma corrected to the app.
 409. Notifications 2 · a week goal's reminder had no Undo after Done, and kept Done once the week's goal was met — Done adds one check and Undo takes back that one (Figma 1275:1944), and at the goal only Undo stays.
+410. Onboarding 3 · Check again on Plus isn’t on this phone opened Google’s account chooser again (the Plus gate lets go of Drive and forgets its address); Figma goes straight to Restoring — the restore keeps the account its copy came from and reconnects to it quietly (`RestoreFlow.gateAccount`); Try another Google account still chooses.
 
 ¹ Onboarding 10, 10.8–10.10: checked with the one Google account on the emulator (the chooser opens, Cancel keeps the account, picking goes to Restoring). A second account holding a backup can't be added here; its Restoring → Today is flow 2's, which passed.
 ² Today 38: checked on the Pixel emulator (one step, the battery). Samsung's steps (Never auto sleeping apps) need a real Samsung, as Figma's note says.
@@ -508,6 +509,7 @@ Each entry: page · flow — what differed — how it was fixed (commit).
 ⁵⁵ Notifications 10 (phone): Meds, Stretch and Skincare at 7:00 came as one group, "Often Enough · 7:00 AM · 3 reminders" over a line each in Today's order; opened, each kept its own buttons; Meds' Done left "2 reminders"; Stretch opened to Start and Log time; 6 minutes logged left "1 reminder" once its "Goal met" went; Skincare's last tick took the group away. Android decides which member opens expanded (Figma: the first) and shows the summary's lines only collapsed.
 ⁵⁶ Notifications 11, 12 (phone, unlocked): the app's Full screen notifications switch was turned off with `appops set … USE_FULL_SCREEN_INTENT deny` and put back to `default` (granted, as before) afterwards; Android's own Settings page was only looked at. Choosing An alarm asked "Let alarms fill the screen"; Open settings opened Often Enough's own Full-screen notifications switch (U40); coming back the page said An alarm and asked no more. Without full screen the alarm rang (alarm sound, again and again) as a held heads-up with Done and Not now; Not now stopped the ring (no sounding notification left) and left a quiet Meds reminder with Done; Done saved Meds (Today: Undo Meds). With full screen allowed, an unlocked phone got the same ringing heads-up, and Done stopped it. The alarm filling the locked screen (flow 11's frames 6–7) is checked with flow 2's lock-screen part.
 ⁵⁷ Notifications 2 and 11's last steps (phone, locked with its PIN all through: `deviceLocked=1` before and after every tap; the user kept the phone face down so face unlock couldn't open it): a debug test launch may show over the lock screen (`setShowWhenLocked`, only with `remind`), posts its reminder there, and Back leaves the lock screen. The design demo puts this week's two calls on today (the week starts today), and a week goal logged today counts as done for today (G-7), so today's calls were cleared (`today Call family=0`): the lock-screen shade showed "0 of 3 this week" · Done; Done saved "1 of 3 this week" with Undo, and the reminder went a few seconds later. Meds as an alarm with the screen off filled the locked screen and rang (`AlarmActivity` over the lock screen); Done stopped it and it went; again, Not now stopped the ring and left the quiet reminder, whose Done in the locked shade took it away. Moto's lock screen shows notifications as icons and goes dark in a few seconds, so each check woke it and acted in one go.
+⁵⁸ Onboarding 3 and 9 (phone, unlocked): what's left of them is the app's own part, Plus arriving between two checks, so a debug test launch gives the stand-in store's answers in order (`plusAnswers`: "none,found", "offline,found"; Google Play's own side is set up and shown elsewhere: the real price from Play, D-46). 3: Restore from a backup → Google Drive → Google's chooser → lalithsaicharan9@gmail.com (the user's test account) → Restoring → Plus isn't on this phone → Check again → Restoring "From lalithsaicharan9@gmail.com's Google Drive" → Today, habits back. 9: a 19-habit backup saved from the design demo to Downloads ("Often Enough backup 2026-11-02 2226.zip"; the files already there hold five habits or fewer, so no Plus check) → A backup file → Restoring → No internet "Connect to the internet to check your Plus." → Try again → Restoring (a moment: a file is quick) → Today, habits back.
 ## Open questions for the user
 
 Every question for the user is in [Decisions needed](<Android/Docs/Decisions needed.md>), one entry each, by Figma page (the QA pass's are D-37 to D-48, moved there 31 Oct 2026). The parcel's day is settled by A86: a task is on the day it's planned for, "Task · Once", never "due". Add log's date in Today flow 4 is settled by A82 (the date alone).
@@ -520,13 +522,13 @@ Every question for the user is in [Decisions needed](<Android/Docs/Decisions nee
 |---|---|---|---|---|
 | 1 | 31:5578 | New to the app | Splash → Today, no habits yet | passed |
 | 2 | 39:1532 | Back from Google Drive | Splash → Today, no habits yet → Restore from a backup → Choose a Google account (native) → Allow Google Drive (native) → Restoring → Today, habits restored | passed |
-| 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | blocked: 3.1–3.7 pass (the same screens as flow 4, checked there). 3.8–3.9 need Plus to arrive while the screen is open, which needs a real Google Play purchase — see Open questions |
+| 3 | 39:2021 | Plus didn’t come back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Restoring → Today, habits restored | passed ⁵⁸ |
 | 4 | 39:2697 | Plus still not back | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → Plus isn’t on this phone → Email | passed |
 | 5 | 39:3228 | From an iPhone, with Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file (native) → Restoring → Plus isn’t on this phone (iPhone) → Email | passed |
 | 6 | 39:3744 | From an iPhone, without Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 7 | 39:4212 | Back with a backup file | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 8 | 39:4635 | No internet: Google Drive | Splash → Today, no habits yet → Restore from a backup → No internet → Choose a Google account → Allow Google Drive → Restoring → Today, habits restored | passed |
-| 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | blocked: 9.1–9.6 pass (offline, the Plus check says No internet; Try again offline stays; back online it checks again). 9.7–9.8 need Plus to come back from Google Play, and Play won't sell Plus to this sideloaded build — see Open questions |
+| 9 | 39:5144 | No internet: checking Plus | Splash → Today, no habits yet → Restore from a backup → Choose a file → Restoring → No internet → Restoring → Today, habits restored | passed ⁵⁸ |
 | 10 | 39:5757 | Wrong Google account | Splash → Today, no habits yet → Restore from a backup → Choose a Google account → Allow Google Drive → Restoring → No backup found → Choose a Google account → Restoring → Today, habits restored | passed ¹ |
 | 11 | 39:6436 | Wrong file | Splash → Today, no habits yet → Restore from a backup → Choose a file → That isn’t a backup → Choose a file → Restoring → Today, habits restored | passed |
 | 12 | 39:6935 | Backup from a newer version | Splash → Today, no habits yet → Restore from a backup → Choose a file → From a newer version | passed |

@@ -140,6 +140,12 @@ class MainActivity : ComponentActivity() {
             val before = store.onChange
             store.onChange = { before?.invoke(); com.oftenenough.app.app.reminders.TimerNotice.sync(context, store) }
         }
+        // Debug test launches: the stand-in store's answers to the next Plus checks ("none,found", "offline,found").
+        if (test) intent.getStringExtra(TestLaunch.PLUS_ANSWERS)?.let { list ->
+            (AppGraph.plus as? FakePlusStore)?.answers?.addAll(list.split(",").mapNotNull { a ->
+                when (a.trim()) { "none" -> RestoreResult.NONE; "found" -> RestoreResult.FOUND; "offline" -> RestoreResult.COULD_NOT_CONNECT; else -> null }
+            })
+        }
         AppGraph.openTarget(intent)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         pinWidget(intent)
@@ -219,4 +225,6 @@ object TestLaunch {
      *  a habit without that reminder time is given it first; "!" after the time rings it as an alarm, "?" makes an amount typed
      *  each time (the notifications flows). */
     const val REMIND = "remind"
+    /** The stand-in Plus store's next answers to Plus checks, in order: "none", "found", "offline" (onboarding 3, 9). */
+    const val PLUS_ANSWERS = "plusAnswers"
 }
