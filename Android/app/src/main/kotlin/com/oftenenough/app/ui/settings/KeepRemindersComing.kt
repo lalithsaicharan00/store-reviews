@@ -71,11 +71,10 @@ private val batteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set batt
  * on a real phone before release). A page a phone doesn't have opens App info instead ([openSettingsPage], U40).
  */
 internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()) {
-    "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. Two steps keep Often Enough awake.", listOf(
-        MakerStep("samsung-battery", Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage),
-        MakerStep("samsung-sleeping", Symbols.Bedtime, "Keep it out of sleeping apps", "Battery › Background usage limits › Never auto sleeping apps") {
-            component("com.samsung.android.lool", "com.samsung.android.sm.battery.ui.BatteryActivity")
-        },
+    // Samsung leaves an Unrestricted app out of its sleeping apps (it isn't even offered for Never auto sleeping apps),
+    // so one step covers both (Galaxy A57, One UI 8, 3 Nov 2026).
+    "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(
+        batteryStep,
     ))
     "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
         batteryStep,
@@ -115,8 +114,8 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
 
 /**
  * A step is done only when the app can read that it is (battery Unrestricted); A109, the user, 3 Nov 2026: "the
- * permission should only showcase checkmark once it is actually done". A step no app can read (Samsung's sleeping apps,
- * Xiaomi's Autostart) never shows a check: its button stays.
+ * permission should only showcase checkmark once it is actually done". A step no app can read (Xiaomi's
+ * Autostart) never shows a check: its button stays.
  */
 private fun stepDone(context: Context, step: MakerStep): Boolean = step.checked?.invoke(context) ?: false
 
@@ -195,7 +194,8 @@ fun KeepRemindersComingPage(store: HabitStore, onBatteryHow: () -> Unit, onBack:
  */
 internal fun keepLead(phone: Maker, notifications: Boolean, exact: Boolean, stepsLeft: Int): String = when {
     notifications && exact && stepsLeft == 0 && phone.steps.any { it.checked == null } ->
-        "Battery is Unrestricted. Also do the step below, if you haven’t: your phone doesn’t let the app check it."
+        if (phone.steps.count { it.checked == null } == 1) "Battery is Unrestricted. Also do the step below, if you haven’t: your phone doesn’t let the app check it."
+        else "Battery is Unrestricted. Also do the steps below, if you haven’t: your phone doesn’t let the app check them."
     notifications && exact && stepsLeft == 0 -> "All set. Reminders will come on time."
     !exact -> "Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s."
     stepsLeft > 0 -> phone.lead
