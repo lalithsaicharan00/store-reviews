@@ -185,9 +185,12 @@ private val LocalCard = staticCompositionLocalOf { DpSize(328.dp, 176.dp) }
  * stretched to fill them, or kept in Figma's proportions, pulled its parts apart (99 between a 2×2's button and its
  * name, where Figma has 40).
  */
-internal fun cardSize(kind: WidgetKind, space: DpSize): DpSize {
+internal fun cardSize(kind: WidgetKind, space: DpSize, manufacturer: String = android.os.Build.MANUFACTURER ?: ""): DpSize {
     val design = kind.design
-    return DpSize(space.width, minOf(design.height, space.height))
+    // ColorOS (OPPO, realme, OnePlus) says a 2×2 is 152 × 176 but shows only its middle 150 × 146, cutting the card's
+    // padding off above and below (OPPO CPH2557, ColorOS 14, 3 Nov 2026): the card keeps to what's shown.
+    val shown = if (kind == WidgetKind.ONE_HABIT && manufacturer.lowercase() in setOf("oppo", "realme", "oneplus")) 144.dp else design.height
+    return DpSize(space.width, minOf(design.height, shown, space.height))
 }
 
 @Composable

@@ -89,6 +89,9 @@ fun KeepAwakePage(onBack: () -> Unit, onDone: () -> Unit) {
                         // One UI: the row's words open the three choices at once, with no switch between (Galaxy A57, One UI 8, 3 Nov 2026).
                         Step(2, "On Battery, tap the Allow background usage row: its words, not its switch.", R.drawable.keep_awake_samsung_step2)
                         Step(3, "Choose Unrestricted, then come back here.", R.drawable.keep_awake_samsung_step3)
+                    } else if (Build.VERSION.SDK_INT >= 34 && Build.MANUFACTURER.lowercase() in setOf("oppo", "realme", "oneplus")) {
+                        // ColorOS opens the three choices at once, no row or switch between (OPPO CPH2557, ColorOS 14, 3 Nov 2026).
+                        Step(2, "On App battery usage, choose Unrestricted, then come back here.", R.drawable.keep_awake_oppo_step2)
                     } else if (Build.VERSION.SDK_INT >= 34) {
                         // HyperOS has the Pixel's four steps and words on its own-looking screens (Xiaomi 14, HyperOS 2, 3 Nov 2026).
                         val xiaomi = Build.MANUFACTURER.lowercase() in setOf("xiaomi", "redmi", "poco")

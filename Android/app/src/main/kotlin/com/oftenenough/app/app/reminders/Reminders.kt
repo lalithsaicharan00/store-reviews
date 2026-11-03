@@ -636,21 +636,8 @@ object Reminders {
     fun notUnrestricted(context: Context): Boolean =
         context.getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName) != true
 
-    private const val ASKED = "battery.asked."
     private const val WAS_UNRESTRICTED = "battery.wasUnrestricted"
     private const val BATTERY_LOST_ID = 7_301
-
-    /**
-     * Whether to open Keep Often Enough awake now, at the moment battery starts to matter ([why]: "widget"), once for
-     * each why, and only while it isn't Unrestricted (A109: never on a fresh install; Today's card asks after that).
-     */
-    fun askOnce(context: Context, why: String): Boolean {
-        if (!notUnrestricted(context)) return false
-        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-        if (prefs.getBoolean(ASKED + why, false)) return false
-        prefs.edit().putBoolean(ASKED + why, true).apply()
-        return true
-    }
 
     /**
      * A109: battery was Unrestricted and isn't any more (changed in the phone's settings): said at once in a notification

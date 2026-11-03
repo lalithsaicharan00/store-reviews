@@ -70,7 +70,7 @@ private val batteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set batt
  * The steps for this phone, by `Build.MANUFACTURER` (menu names change with versions: A40 asks for each to be checked
  * on a real phone before release). A page a phone doesn't have opens App info instead ([openSettingsPage], U40).
  */
-internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()) {
+internal fun maker(manufacturer: String, sdk: Int = Build.VERSION.SDK_INT): Maker = when (manufacturer.lowercase()) {
     // Samsung leaves an Unrestricted app out of its sleeping apps (it isn't even offered for Never auto sleeping apps),
     // so one step covers both (Galaxy A57, One UI 8, 3 Nov 2026).
     "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(
@@ -86,7 +86,13 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
             component("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
         },
     ))
-    "oneplus", "oppo", "realme" -> Maker("Your phone stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+    // ColorOS 14 (Android 14): Unrestricted alone does it. With ColorOS's own Allow background activity at its default
+    // (off), Allow foreground activity on and the app closed from Recents, a reminder came on time, an alarm rang full
+    // screen and a widget tap worked; ColorOS's switch, turned on, only sets Android's Unrestricted; and there's no Auto
+    // launch page anyone can reach (OPPO CPH2557, 3 Nov 2026). Older ColorOS keeps its steps until checked on one.
+    "oneplus", "oppo", "realme" -> if (sdk >= 34) Maker("Your phone stops apps in the background to save battery, which can stop reminders. One step keeps Often Enough running.", listOf(
+        batteryStep,
+    )) else Maker("Your phone stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
         batteryStep,
         MakerStep("oppo-background", Symbols.Sync, "Allow background activity", "App info › Battery usage", intent = ::appInfo),
         MakerStep("oppo-auto-launch", Symbols.Autorenew, "Allow auto launch", "App info › Battery usage", intent = ::appInfo),
