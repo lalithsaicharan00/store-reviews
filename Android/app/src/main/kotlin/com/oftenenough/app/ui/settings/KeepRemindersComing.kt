@@ -80,7 +80,9 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
     // HyperOS 2, 3 Nov 2026).
     "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
         batteryStep,
-        MakerStep("xiaomi-autostart", Symbols.Autorenew, "Turn on Autostart", "App info › Autostart") {
+        // HyperOS 2 has no Autostart row in App info: this opens Background autostart, a list of every app (no page
+        // opens Often Enough's own switch), so the line names the list and the row to find (Xiaomi 14, 3 Nov 2026).
+        MakerStep("xiaomi-autostart", Symbols.Autorenew, "Turn on Autostart", "Background autostart › Often Enough") {
             component("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
         },
     ))

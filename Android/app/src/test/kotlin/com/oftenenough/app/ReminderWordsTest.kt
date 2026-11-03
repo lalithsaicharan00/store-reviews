@@ -39,6 +39,8 @@ class ReminderWordsTest {
     @Test fun stepsByMaker() {
         assertEquals(listOf("Set battery to Unrestricted"), maker("samsung").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Turn on Autostart"), maker("redmi").steps.map { it.title })
+        // HyperOS 2 has no Autostart in App info: the line names the list Open settings opens (Xiaomi 14, 3 Nov 2026).
+        assertEquals("Background autostart › Often Enough", maker("redmi").steps.last().path)
         assertEquals(listOf("Set battery to Unrestricted", "Allow background activity", "Allow auto launch"), maker("OnePlus").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Allow high background power use", "Turn on Autostart"), maker("iQOO").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Manage App launch yourself, all three on"), maker("HONOR").steps.map { it.title })
