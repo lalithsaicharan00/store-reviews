@@ -55,17 +55,27 @@ private fun component(pkg: String, cls: String) = Intent().setComponent(Componen
 private val unrestricted: (Context) -> Boolean = { !Reminders.batteryRestricted(it) }
 
 /**
+ * Often Enough's own Battery page, one tap from Unrestricted (Android 12+; on One UI 9 under Allow background usage,
+ * checked on a Galaxy A18, 3 Nov 2026). A phone without it opens App info ([openSettingsPage], U40).
+ */
+internal fun appBatteryPage(c: Context) = Intent("android.settings.VIEW_ADVANCED_POWER_USAGE_DETAIL", Uri.parse("package:" + c.packageName))
+
+/** The step every phone has, and the one the app can read (A109). */
+private val batteryStep = MakerStep("battery", Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage)
+
+/**
  * The steps for this phone, by `Build.MANUFACTURER` (menu names change with versions: A40 asks for each to be checked
  * on a real phone before release). A page a phone doesn't have opens App info instead ([openSettingsPage], U40).
  */
 internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()) {
     "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. Two steps keep Often Enough awake.", listOf(
-        MakerStep("samsung-battery", Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appInfo),
+        MakerStep("samsung-battery", Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage),
         MakerStep("samsung-sleeping", Symbols.Bedtime, "Keep it out of sleeping apps", "Battery › Background usage limits › Never auto sleeping apps") {
             component("com.samsung.android.lool", "com.samsung.android.sm.battery.ui.BatteryActivity")
         },
     ))
-    "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+    "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+        batteryStep,
         MakerStep("xiaomi-autostart", Symbols.Autorenew, "Turn on Autostart", "App info › Autostart") {
             component("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
         },
@@ -74,11 +84,13 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
                 .putExtra("package_name", c.packageName).putExtra("package_label", "Often Enough")
         },
     ))
-    "oneplus", "oppo", "realme" -> Maker("Your phone stops apps in the background to save battery, which can stop reminders. Two switches keep Often Enough running.", listOf(
+    "oneplus", "oppo", "realme" -> Maker("Your phone stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+        batteryStep,
         MakerStep("oppo-background", Symbols.Sync, "Allow background activity", "App info › Battery usage", intent = ::appInfo),
         MakerStep("oppo-auto-launch", Symbols.Autorenew, "Allow auto launch", "App info › Battery usage", intent = ::appInfo),
     ))
-    "vivo", "iqoo" -> Maker("vivo stops apps in the background to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+    "vivo", "iqoo" -> Maker("vivo stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+        batteryStep,
         MakerStep("vivo-background-power", Symbols.Bolt, "Allow high background power use", "Settings › Battery › Background power consumption management") {
             component("com.iqoo.powersaving", "com.iqoo.powersaving.PowerSavingManagerActivity")
         },
@@ -86,30 +98,33 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
             component("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.BgStartUpManagerActivity")
         },
     ))
-    "honor", "huawei" -> Maker("Your phone closes apps to save battery, which can stop reminders. One step keeps Often Enough running.", listOf(
+    "honor", "huawei" -> Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+        batteryStep,
         MakerStep("huawei-app-launch", Symbols.RocketLaunch, "Manage App launch yourself, all three on", "Settings › Battery › App launch › Often Enough") {
             if (manufacturer.equals("honor", ignoreCase = true)) component("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
             else component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
         },
     ))
     else -> Maker("Your phone can put apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(
-        MakerStep("battery", Symbols.BatteryFull, "Set battery to Unrestricted", "App info › App battery usage", unrestricted, ::appInfo),
+        batteryStep,
     ))
 }
 
-private const val PREFS = "keep_reminders"
-
-/** A step is done when the app can read that it's so (battery Unrestricted), or once it has been opened (A40). */
-private fun stepDone(context: Context, step: MakerStep): Boolean =
-    step.checked?.invoke(context) ?: context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getBoolean(step.key, false)
+/**
+ * A step is done only when the app can read that it is (battery Unrestricted); A109, the user, 3 Nov 2026: "the
+ * permission should only showcase checkmark once it is actually done". A step no app can read (Samsung's sleeping apps,
+ * Xiaomi's Autostart) never shows a check: its button stays.
+ */
+private fun stepDone(context: Context, step: MakerStep): Boolean = step.checked?.invoke(context) ?: false
 
 /**
- * How many of this page's rows are still to do: notifications, alarms & reminders, and this phone maker's steps.
- * Settings' row counts with it ("1 thing to fix", or All set at 0; Figma 1173:547, A40, A70).
+ * How many of this page's rows are still to do: notifications, alarms & reminders, and this phone maker's steps the app
+ * can read (a step it can't read can never be shown done, so it never counts). Settings' row counts with it ("1 thing
+ * to fix", or All set at 0; Figma 1173:547, A40, A70).
  */
 fun remindersLeftToFix(context: Context): Int =
     (if (Reminders.canPost(context)) 0 else 1) + (if (Reminders.canBeExact(context)) 0 else 1) +
-        maker(Build.MANUFACTURER ?: "").steps.count { !stepDone(context, it) }
+        maker(Build.MANUFACTURER ?: "").steps.count { it.checked != null && !stepDone(context, it) }
 
 /**
  * 5.8.1, **Keep reminders coming** (Figma 804:192; flows on the Today and Settings pages; A40, A66, A70; Components —
@@ -134,7 +149,6 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
         onDispose { lifecycle.removeObserver(observer) }
     }
     val turnOn = rememberTurnOnNotifications { refresh++ }
-    val prefs = remember { context.getSharedPreferences(PREFS, Context.MODE_PRIVATE) }
     val phone = remember { maker(Build.MANUFACTURER ?: "") }
     val notifications = remember(refresh) { Reminders.canPost(context) }
     val exact = remember(refresh) { Reminders.canBeExact(context) }
@@ -143,7 +157,7 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
 
     FormPage("Keep reminders coming", onBack = onBack) {
         Column(Modifier.padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-            Text(if (anyReminder) keepLead(phone, notifications, exact, phone.steps.count { done[it.key] != true }) else "No habit has a reminder yet. When one does, these steps make sure it comes on time. You can do them now or later.",
+            Text(if (anyReminder) keepLead(phone, notifications, exact, phone.steps.count { it.checked != null && done[it.key] != true }) else "No habit has a reminder yet. When one does, these steps make sure it comes on time. You can do them now or later.",
                 Modifier.padding(horizontal = 16.dp).semantics { testTag = "keep-reminders-lead" }, style = AppType.bodyLarge, color = s.onSurfaceVariant)
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Permissions", Modifier.padding(horizontal = 16.dp).semantics { heading() }, style = AppType.labelLarge, color = s.primary)
@@ -155,8 +169,6 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
                     }
                     phone.steps.forEachIndexed { i, st ->
                         PermissionRow(st.icon, st.title, st.path, done[st.key] == true, "Open settings", 2 + i, count, "check-${st.key}") {
-                            // A step the app can't read is ticked once it's been opened (A40).
-                            if (st.checked == null) prefs.edit().putBoolean(st.key, true).apply()
                             openSettingsPage(context, st.intent(context))
                         }
                     }
@@ -170,20 +182,18 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
 }
 
 /**
- * The lead says what's left, as Figma's flows do (Today flows 38, 39): this phone's words while none of its steps is
- * done ("Two steps keep Often Enough awake."), then how many are left ("One step left."), "All set." once everything is;
- * with Alarms & reminders off it leads with that, the one thing that makes reminders late.
+ * The lead says what's left, as Figma's flows do (Today flows 38, 39): this phone's words while battery isn't
+ * Unrestricted ([stepsLeft] counts only steps the app can read, A109), "All set." once everything is; with Alarms &
+ * reminders off it leads with that, the one thing that makes reminders late. A phone with steps the app can't read
+ * says so once the rest is done, since their buttons stay.
  */
-internal fun keepLead(phone: Maker, notifications: Boolean, exact: Boolean, stepsLeft: Int): String {
-    val why = phone.lead.substringBefore(". ") + "."
-    return when {
-        notifications && exact && stepsLeft == 0 -> "All set. Reminders will come on time."
-        !exact -> "Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s."
-        stepsLeft == phone.steps.size && stepsLeft > 0 -> phone.lead
-        stepsLeft == 1 -> "$why One step left."
-        stepsLeft > 1 -> "$why $stepsLeft steps left."
-        else -> "Reminders can’t come while notifications are off for Often Enough."
-    }
+internal fun keepLead(phone: Maker, notifications: Boolean, exact: Boolean, stepsLeft: Int): String = when {
+    notifications && exact && stepsLeft == 0 && phone.steps.any { it.checked == null } ->
+        "Battery is set. Also do the step below, if you haven’t: your phone doesn’t let the app check it."
+    notifications && exact && stepsLeft == 0 -> "All set. Reminders will come on time."
+    !exact -> "Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s."
+    stepsLeft > 0 -> phone.lead
+    else -> "Reminders can’t come while notifications are off for Often Enough."
 }
 
 /** One permission or step (A70): its icon turns into the check once it's done; until then its button sits under the words. */

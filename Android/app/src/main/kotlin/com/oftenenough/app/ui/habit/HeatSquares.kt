@@ -165,8 +165,12 @@ fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifi
             Icon(if (open) Symbols.ExpandLess else Symbols.ExpandMore, null, tint = MaterialTheme.colorScheme.onSurfaceVariant)
         }
         if (open) {
+            // The key on its own card under the header, as Habit details' (QA, 3 Nov 2026: it sat on the page with no
+            // background behind it).
+            Spacer(Modifier.height(2.dp))
             Column(
-                Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp).clearAndSetSemantics {
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp)).background(c.surface)
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 20.dp).clearAndSetSemantics {
                     // "%", not the word: the key names the steps; it isn't a progress percentage.
                     contentDescription = "Key. In the habit's colour: part of the goal, lighter; done, with a check; more than the goal, deeper, " +
                         "with a check. Planned that day, grey: not done with a cross, skipped, paused. Other days: plain grey " +

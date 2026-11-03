@@ -31,10 +31,11 @@ import kotlinx.coroutines.launch
  * One notice on Today (Figma 1.9–1.9.7): something the person should know about their data, their reminders or their
  * purchase, in plain words, with what to do about it. One at a time, the most important first; only on today, above the
  * first time of day; [dismiss] ("Not now", "Later", "Dismiss") hides it for 7 days (a missed reminder, until the next).
+ * A notice with no [dismiss] stays until what it asks for is done (battery, A109).
  */
 class TodayNotice(
     val key: String, val icon: ImageVector, val title: String, val body: String,
-    val dismiss: String, val action: String,
+    val dismiss: String?, val action: String,
     /** Work the card does itself (A39), instead of opening a page. */
     val work: NoticeWork? = null,
     val act: () -> Unit,
@@ -63,7 +64,7 @@ object TodayNotices {
     private val PREFS: String get() = if (AppGraph.isTest) "uitest-today-notices" else "today-notices"
     private const val HIDDEN_MS = 7 * 24 * 3_600_000L
 
-    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "alarms", "pending"). */
+    /** Test launches: the notice to show whatever the phone's state ("full", "off", "removed", "missed", "late", "notifications", "alarms", "battery", "pending"). */
     var forced: String? = null
 
     /** A notice doing its own work stays on Today until its card folds away, even once the state it reported is gone. */
@@ -135,6 +136,18 @@ object TodayNotices {
             "Alarms can’t ring", "Alarms & reminders is off for Often Enough in your phone’s settings, so alarms can’t ring at their time.", "Not now", "Turn on") {
             if (forced == "alarms") TodayNotices.forced = null
             open(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
+        }
+        // A109 (the user, 3 Nov 2026): while the phone may put the app to sleep, reminders and widgets can't be relied on,
+        // on any phone. So this card has no Not now: it stays until battery is Unrestricted, which Android lets the app
+        // read, and its button opens Often Enough's own Battery page.
+        if (((wantsReminders || Reminders.hasWidgets(context)) && Reminders.batteryRestricted(context)) || forced == "battery") list += TodayNotice(
+            "battery", Symbols.BatteryFull, "Let Often Enough run in the background",
+            "Your phone puts apps to sleep to save battery. While Often Enough is asleep, reminders can come late or not at all, " +
+                "and widgets can stop updating. Set battery to Unrestricted to keep it awake. It uses very little battery: " +
+                "the app only wakes for your reminders, widgets and backup.",
+            null, "Open settings") {
+            if (forced == "battery") TodayNotices.forced = null
+            open(context, com.oftenenough.app.ui.settings.appBatteryPage(context))
         }
         val missed = Reminders.missed(context, now)
         // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about

@@ -631,6 +631,14 @@ object Reminders {
     /** Whether the phone may stop the app in the background to save battery (Android's "optimised" battery use). */
     fun batteryRestricted(context: Context): Boolean =
         context.getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName) != true
+
+    /** Whether any of the app's widgets is on the home screen (they too stop updating while the app is asleep). */
+    fun hasWidgets(context: Context): Boolean {
+        val manager = android.appwidget.AppWidgetManager.getInstance(context) ?: return false
+        return listOf("OneHabit", "Today", "TodayLarge", "Week", "Tasks", "TasksLarge").any { name ->
+            runCatching { manager.getAppWidgetIds(android.content.ComponentName(context, "com.oftenenough.app.app.widgets.${name}WidgetReceiver")).isNotEmpty() }.getOrDefault(false)
+        }
+    }
 }
 
 /** The reminder alarm, a reminder's buttons, and the phone restarting or changing its clock. */
