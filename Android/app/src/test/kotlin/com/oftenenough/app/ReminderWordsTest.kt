@@ -8,6 +8,7 @@ import com.oftenenough.app.ui.settings.hasReminders
 import com.oftenenough.app.ui.settings.keepLead
 import com.oftenenough.app.ui.settings.maker
 import com.oftenenough.app.ui.settings.MissedFix
+import com.oftenenough.app.ui.settings.canDismiss
 import com.oftenenough.app.ui.settings.missedFix
 import java.util.Locale
 import org.junit.Assert.assertEquals
@@ -67,6 +68,18 @@ class ReminderWordsTest {
         assertEquals(null, missedFix(true, true, maker("POCO"), battery(true), setOf("xiaomi-autostart")))
         assertEquals("vivo-background-power", (missedFix(true, true, maker("vivo"), battery(true), none) as MissedFix.Step).step.key)
         assertEquals("vivo-autostart", (missedFix(true, true, maker("vivo"), battery(true), setOf("vivo-background-power")) as MissedFix.Step).step.key)
+    }
+
+    /** Dismiss only where the app can't read what's left: alarms, battery and notifications stay until Android says
+     *  they're done; Xiaomi's Autostart can be dismissed, and goes once its page was opened (the user, 3 Nov 2026). */
+    @Test fun missedNoticeDismissesOnlyWhatCantBeRead() {
+        val battery = { done: Boolean -> { _: com.oftenenough.app.ui.settings.MakerStep -> done } }
+        assertFalse(missedFix(false, true, maker("Xiaomi"), battery(true), emptySet())!!.canDismiss)
+        assertFalse(missedFix(true, false, maker("Xiaomi"), battery(true), emptySet())!!.canDismiss)
+        assertFalse(missedFix(true, true, maker("Xiaomi"), battery(false), emptySet())!!.canDismiss)
+        assertTrue(missedFix(true, true, maker("Xiaomi"), battery(true), emptySet())!!.canDismiss)
+        // Opened from the notice and back: nothing is left, so the notice goes.
+        assertEquals(null, missedFix(true, true, maker("Xiaomi"), battery(true), setOf("xiaomi-autostart")))
     }
 
     /** The lead says what's left (Figma's Today, flows 38 and 39; A109: only steps the app can read count). */

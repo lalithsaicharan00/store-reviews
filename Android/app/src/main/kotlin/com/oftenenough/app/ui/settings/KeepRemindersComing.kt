@@ -143,6 +143,13 @@ internal sealed interface MissedFix {
     class Step(val step: MakerStep) : MissedFix
 }
 
+/**
+ * Whether the notice can be dismissed (the user, 3 Nov 2026: "wherever we can't reliably detect … whether the
+ * permission is enabled … they should have dismissed … and … go away once they open it; where we can certainly tell
+ * … the card should stay until the phone reads the permission is gotten"): only for a step the app can't read.
+ */
+internal val MissedFix.canDismiss: Boolean get() = this is MissedFix.Step && step.checked == null
+
 internal fun missedFix(notifications: Boolean, exact: Boolean, phone: Maker, done: (MakerStep) -> Boolean, opened: Set<String>): MissedFix? = when {
     !notifications -> MissedFix.Notifications
     !exact -> MissedFix.Exact
