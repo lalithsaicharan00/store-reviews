@@ -43,7 +43,7 @@ class ReminderWordsTest {
         assertEquals(listOf("Set battery to Unrestricted", "Allow high background power use", "Turn on Autostart"), maker("iQOO").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Manage App launch yourself, all three on"), maker("HONOR").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted"), maker("Google").steps.map { it.title })
-        // A109: only battery can be read, so only battery can be shown done.
+        // A109: only Unrestricted can be read, so only it can be shown done.
         for (name in listOf("samsung", "redmi", "OnePlus", "iQOO", "HONOR", "Google"))
             assertEquals(listOf("Set battery to Unrestricted"), maker(name).steps.filter { it.checked != null }.map { it.title })
     }
@@ -52,7 +52,7 @@ class ReminderWordsTest {
     @Test fun leadFollowsWhatsLeft() {
         val samsung = maker("samsung")
         assertEquals(samsung.lead, keepLead(samsung, notifications = true, exact = true, stepsLeft = 1))
-        assertEquals("Battery is set. Also do the step below, if you haven’t: your phone doesn’t let the app check it.", keepLead(samsung, true, true, 0))
+        assertEquals("Battery is Unrestricted. Also do the step below, if you haven’t: your phone doesn’t let the app check it.", keepLead(samsung, true, true, 0))
         assertEquals("All set. Reminders will come on time.", keepLead(maker("Google"), true, true, 0))
         assertEquals("Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s.",
             keepLead(maker("Google"), true, exact = false, stepsLeft = 0))

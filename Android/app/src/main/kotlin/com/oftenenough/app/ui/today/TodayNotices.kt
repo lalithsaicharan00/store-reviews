@@ -137,17 +137,17 @@ object TodayNotices {
             if (forced == "alarms") TodayNotices.forced = null
             open(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
         }
-        // A109 (the user, 3 Nov 2026): while the phone may put the app to sleep, reminders and widgets can't be relied on,
-        // on any phone. So this card has no Not now: it stays until battery is Unrestricted, which Android lets the app
-        // read, and its button opens Often Enough's own Battery page.
-        if (((wantsReminders || Reminders.hasWidgets(context)) && Reminders.batteryRestricted(context)) || forced == "battery") list += TodayNotice(
+        // A109 (the user, 3 Nov 2026): until battery is Unrestricted, the phone may put the app to sleep, so reminders and
+        // widgets can't be relied on, on any phone. So this card has no Not now: it stays until Android says battery is
+        // Unrestricted, and its button asks Android's own one-tap question ("always run in the background?").
+        if (((wantsReminders || Reminders.hasWidgets(context)) && Reminders.notUnrestricted(context)) || forced == "battery") list += TodayNotice(
             "battery", Symbols.BatteryFull, "Let Often Enough run in the background",
-            "Your phone puts apps to sleep to save battery. While Often Enough is asleep, reminders can come late or not at all, " +
-                "and widgets can stop updating. Set battery to Unrestricted to keep it awake. It uses very little battery: " +
-                "the app only wakes for your reminders, widgets and backup.",
-            null, "Open settings") {
+            "Your phone puts apps to sleep to save battery. While Often Enough is asleep, reminders can come late or not at " +
+                "all, and widgets can stop updating. Set battery to Unrestricted: tap the button, then Allow. It uses very " +
+                "little battery: the app only wakes for your reminders, widgets and backup.",
+            null, "Set to Unrestricted") {
             if (forced == "battery") TodayNotices.forced = null
-            open(context, com.oftenenough.app.ui.settings.appBatteryPage(context))
+            open(context, com.oftenenough.app.ui.settings.unrestrictedQuestion(context))
         }
         val missed = Reminders.missed(context, now)
         // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about

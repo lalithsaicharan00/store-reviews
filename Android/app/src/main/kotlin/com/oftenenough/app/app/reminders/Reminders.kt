@@ -628,8 +628,11 @@ object Reminders {
 
     private fun Long.minuteOfDay(): Int = java.time.Instant.ofEpochMilli(this).atZone(java.time.ZoneId.systemDefault()).let { it.hour * 60 + it.minute }
 
-    /** Whether the phone may stop the app in the background to save battery (Android's "optimised" battery use). */
-    fun batteryRestricted(context: Context): Boolean =
+    /**
+     * Whether battery isn't Unrestricted for the app, so the phone may put it to sleep (A109, the user, 3 Nov 2026:
+     * Unrestricted is what's needed; Optimised still lets a phone maker stop the app).
+     */
+    fun notUnrestricted(context: Context): Boolean =
         context.getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName) != true
 
     /** Whether any of the app's widgets is on the home screen (they too stop updating while the app is asleep). */
