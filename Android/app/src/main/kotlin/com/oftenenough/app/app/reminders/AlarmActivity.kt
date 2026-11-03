@@ -82,6 +82,8 @@ class AlarmActivity : ComponentActivity() {
         // Over the lock screen, and the screen comes on (an alarm clock's own activity does the same).
         if (Build.VERSION.SDK_INT >= 27) { setShowWhenLocked(true); setTurnScreenOn(true) }
         else @Suppress("DEPRECATION") window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED or WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON)
+        // And stays on while it rings: a locked screen's own short timeout darkened it mid-ring (Galaxy A18, One UI 9).
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         AppGraph.open(applicationContext)
         val store = AppGraph.store
         setContent {
