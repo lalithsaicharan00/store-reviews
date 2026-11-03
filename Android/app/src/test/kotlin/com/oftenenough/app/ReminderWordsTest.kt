@@ -7,6 +7,7 @@ import com.oftenenough.app.data.ReminderTime
 import com.oftenenough.app.ui.settings.hasReminders
 import com.oftenenough.app.ui.settings.keepLead
 import com.oftenenough.app.ui.settings.maker
+import com.oftenenough.app.ui.settings.missedNoticeFixed
 import java.util.Locale
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -48,6 +49,17 @@ class ReminderWordsTest {
         // A109: only Unrestricted can be read, so only it can be shown done.
         for (name in listOf("samsung", "redmi", "OnePlus", "iQOO", "HONOR", "Google"))
             assertEquals(listOf("Set battery to Unrestricted"), maker(name).steps.filter { it.checked != null }.map { it.title })
+    }
+
+    /** A missed reminder's notice goes once nothing is left to fix, but never on a phone with a step no app can read:
+     *  there that step may be what held the reminder back (Xiaomi's Autostart, 3 Nov 2026). */
+    @Test fun missedNoticeStaysWhereAStepCantBeRead() {
+        assertTrue(missedNoticeFixed(0, maker("Google")))
+        assertTrue(missedNoticeFixed(0, maker("samsung")))
+        assertFalse(missedNoticeFixed(1, maker("Google")))
+        assertFalse(missedNoticeFixed(0, maker("Xiaomi")))
+        assertFalse(missedNoticeFixed(0, maker("POCO")))
+        assertFalse(missedNoticeFixed(0, maker("vivo")))
     }
 
     /** The lead says what's left (Figma's Today, flows 38 and 39; A109: only steps the app can read count). */

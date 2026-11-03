@@ -156,7 +156,9 @@ object TodayNotices {
         val missed = Reminders.missed(context, now)
         // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about
         // with it (Figma's Today, flows 38 and 39, the last frame; notices end when the problem is fixed elsewhere).
-        val fixed = (missed != null || forced == "missed" || forced == "late") && com.oftenenough.app.ui.settings.remindersLeftToFix(context) == 0
+        // A phone with a step the app can't read (Xiaomi's Autostart) keeps the notice: that step may be the cause.
+        val fixed = (missed != null || forced == "missed" || forced == "late") && com.oftenenough.app.ui.settings.missedNoticeFixed(
+            com.oftenenough.app.ui.settings.remindersLeftToFix(context), com.oftenenough.app.ui.settings.maker(android.os.Build.MANUFACTURER ?: ""))
         if (fixed) {
             if (missed != null) Reminders.dismissMissed(context)
             if (forced == "missed" || forced == "late") TodayNotices.forced = null
