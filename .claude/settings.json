@@ -9,7 +9,8 @@
   "enabledPlugins": {
     "figma@claude-plugins-official": true,
     "notion@claude-plugins-official": true,
-    "cloudflare@cloudflare": true
+    "cloudflare@cloudflare": true,
+    "notion@anthropic-plugin-directory": true
   },
   "extraKnownMarketplaces": {
     "cloudflare": {
