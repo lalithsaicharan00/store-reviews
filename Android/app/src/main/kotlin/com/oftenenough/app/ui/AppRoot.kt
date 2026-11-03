@@ -178,6 +178,8 @@ private fun AppMain(
                 }
             }
             "plus" -> nav.navigate(Routes.plus(PlusReason.MENU))
+            // A109: the first widget added, or battery stopping being Unrestricted (its notification).
+            "battery" -> nav.navigate(Routes.page(SettingsPage.BATTERY))
             // The app icon's long-press shortcuts (A11 D8).
             "new" -> nav.navigate(Routes.NEW)
             "routine" -> nextRoutine(store)?.let { (part, habits) -> nav.navigate(Routes.routine(part, store.today(), habits)) }
@@ -329,7 +331,12 @@ private fun AppMain(
                         })
                     }
                 }
-                SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store) { nav.popBackStack() }
+                SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store, { nav.navigate(Routes.page(SettingsPage.BATTERY)) }) { nav.popBackStack() }
+                // A109: set while open, it goes back and says so.
+                SettingsPage.BATTERY -> com.oftenenough.app.ui.settings.KeepAwakePage({ nav.popBackStack() }) {
+                    nav.popBackStack()
+                    rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Battery is Unrestricted") }
+                }
                 // The menu's Plus (Reason=Menu): bought here, it stays, saying Plus is yours.
                 MenuItem.PLUS.title -> PlusScreen(PlusReason.MENU, store, AppGraph.plus, { nav.popBackStack() }, plusOn)
                 MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
@@ -646,6 +653,7 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
     override fun backup() = nav.navigate(Routes.page(SettingsPage.BACKUP))
     override fun reminders() = nav.navigate(Routes.page(SettingsPage.REMINDERS))
+    override fun battery() = nav.navigate(Routes.page(SettingsPage.BATTERY))
 }
 
 private fun todayActions(nav: NavHostController, view: android.view.View, pause: (Habit) -> Unit, openDay: (Habit, Int) -> Unit) = object : TodayActions {

@@ -59,6 +59,8 @@ object SettingsPage {
     const val REMINDERS = "Reminders"
     const val THEME = "Theme"
     const val BACKUP = "Backup & Sync"
+    /** Keep Often Enough awake (A109). */
+    const val BATTERY = "Keep Often Enough awake"
 }
 
 /** The privacy policy on the website, always the current one (Figma's flow "Privacy policy"). */
@@ -96,7 +98,9 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
     }
     LaunchedEffect(backup) { backup.refreshStatus() }
     val anyReminder = store.habits.any(::hasReminders)
-    val toFix = remember(refresh, anyReminder) { if (anyReminder) remindersLeftToFix(context) else 0 }
+    // A109: from the first reminder, widget or Google Drive backup, what's left to fix shows here at once.
+    val inUse = remember(refresh, anyReminder) { anyReminder || com.oftenenough.app.app.reminders.Reminders.hasWidgets(context) || backup.link.email != null }
+    val toFix = remember(refresh, anyReminder, inUse) { if (inUse) remindersLeftToFix(context, reminders = anyReminder) else 0 }
 
     Column(Modifier.fillMaxSize().background(s.surfaceContainer).semantics { testTag = "settings-page" }) {
         AppTopBar("Settings", navigationIcon = {
@@ -123,7 +127,7 @@ fun SettingsHome(store: HabitStore, prefs: Prefs, backup: BackupCenter, openMenu
             }
             Section("Reminders") {
                 val (icon, line) = when {
-                    !anyReminder -> Symbols.Notifications to "No reminders yet"
+                    !inUse -> Symbols.Notifications to "No reminders yet"
                     toFix == 0 -> Symbols.NotificationsActive to "All set"
                     else -> Symbols.NotificationImportant to "$toFix ${if (toFix == 1) "thing" else "things"} to fix"
                 }

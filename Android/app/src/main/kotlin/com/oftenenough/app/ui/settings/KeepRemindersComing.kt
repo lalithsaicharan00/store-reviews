@@ -55,14 +55,16 @@ private fun component(pkg: String, cls: String) = Intent().setComponent(Componen
 private val unrestricted: (Context) -> Boolean = { !Reminders.notUnrestricted(it) }
 
 /**
- * Android's own one-tap question, "Let Often Enough always run in the background? Allow / Deny", which sets battery to
- * Unrestricted (A109, the user's choice, 3 Nov 2026): no app can open the inner Allow background usage page, only App
- * battery usage above it, where people were lost. A phone without the question opens App info ([openSettingsPage], U40).
+ * Often Enough's own App battery usage page (Android 12+), where Keep Often Enough awake's steps start (A109). No app can
+ * open the page under it (Allow background usage · Unrestricted), and Android's one-tap question isn't for a habit app
+ * (Google Play allows it only when Doze breaks an app's core function; reminders use alarms that fire in Doze). A phone
+ * without the page opens App info ([openSettingsPage], U40).
  */
-internal fun unrestrictedQuestion(c: Context) = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS, Uri.parse("package:" + c.packageName))
+internal fun appBatteryPage(c: Context) = Intent("android.settings.VIEW_ADVANCED_POWER_USAGE_DETAIL", Uri.parse("package:" + c.packageName))
 
-/** The step every phone has, and the one the app can read (A109). */
-private val batteryStep = MakerStep("battery", Symbols.BatteryFull, "Set battery to Unrestricted", "Your phone asks: tap Allow", unrestricted, ::unrestrictedQuestion)
+/** The step every phone has, and the one the app can read (A109); its button opens Keep Often Enough awake. */
+internal const val BATTERY_STEP = "battery"
+private val batteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage)
 
 /**
  * The steps for this phone, by `Build.MANUFACTURER` (menu names change with versions: A40 asks for each to be checked
@@ -70,7 +72,7 @@ private val batteryStep = MakerStep("battery", Symbols.BatteryFull, "Set battery
  */
 internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()) {
     "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. Two steps keep Often Enough awake.", listOf(
-        MakerStep("samsung-battery", Symbols.BatteryFull, "Set battery to Unrestricted", "Your phone asks: tap Allow", unrestricted, ::unrestrictedQuestion),
+        MakerStep("samsung-battery", Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage),
         MakerStep("samsung-sleeping", Symbols.Bedtime, "Keep it out of sleeping apps", "Battery › Background usage limits › Never auto sleeping apps") {
             component("com.samsung.android.lool", "com.samsung.android.sm.battery.ui.BatteryActivity")
         },
@@ -121,10 +123,11 @@ private fun stepDone(context: Context, step: MakerStep): Boolean = step.checked?
 /**
  * How many of this page's rows are still to do: notifications, alarms & reminders, and this phone maker's steps the app
  * can read (a step it can't read can never be shown done, so it never counts). Settings' row counts with it ("1 thing
- * to fix", or All set at 0; Figma 1173:547, A40, A70).
+ * to fix", or All set at 0; Figma 1173:547, A40, A70). Without a reminder ([reminders] false: a widget or Google Drive
+ * alone), only battery counts: notifications and exact times are a reminder's (A109).
  */
-fun remindersLeftToFix(context: Context): Int =
-    (if (Reminders.canPost(context)) 0 else 1) + (if (Reminders.canBeExact(context)) 0 else 1) +
+fun remindersLeftToFix(context: Context, reminders: Boolean = true): Int =
+    (if (!reminders || Reminders.canPost(context)) 0 else 1) + (if (!reminders || Reminders.canBeExact(context)) 0 else 1) +
         maker(Build.MANUFACTURER ?: "").steps.count { it.checked != null && !stepDone(context, it) }
 
 /**
@@ -139,7 +142,7 @@ fun remindersLeftToFix(context: Context): Int =
  * battery." in Body Medium On surface variant. Everything is read again when the page comes back from Settings.
  */
 @Composable
-fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
+fun KeepRemindersComingPage(store: HabitStore, onBatteryHow: () -> Unit, onBack: () -> Unit) {
     val context = LocalContext.current
     val s = MaterialTheme.colorScheme
     var refresh by remember { mutableIntStateOf(0) }
@@ -169,9 +172,10 @@ fun KeepRemindersComingPage(store: HabitStore, onBack: () -> Unit) {
                         if (Build.VERSION.SDK_INT >= 31) openSettingsPage(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
                     }
                     phone.steps.forEachIndexed { i, st ->
-                        // Unrestricted is Android's own one-tap question, so Allow, as notifications' (A109).
-                        PermissionRow(st.icon, st.title, st.path, done[st.key] == true, if (st.checked != null) "Allow" else "Open settings", 2 + i, count, "check-${st.key}") {
-                            openSettingsPage(context, st.intent(context))
+                        // Battery opens Keep Often Enough awake: why, and how, step by step (A109).
+                        val battery = st.checked != null
+                        PermissionRow(st.icon, st.title, st.path, done[st.key] == true, if (battery) "Show me how" else "Open settings", 2 + i, count, "check-${st.key}") {
+                            if (battery) onBatteryHow() else openSettingsPage(context, st.intent(context))
                         }
                     }
                 }

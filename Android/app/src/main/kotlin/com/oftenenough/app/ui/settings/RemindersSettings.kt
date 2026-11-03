@@ -51,7 +51,15 @@ fun rememberTurnOnNotifications(onAnswer: (Boolean) -> Unit): () -> Unit {
     val context = LocalContext.current
     val prefs = remember { context.getSharedPreferences(ASK_PREFS, Context.MODE_PRIVATE) }
     var inSettings by remember { mutableStateOf(false) }
-    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted -> onAnswer(granted) }
+    var askedAt by remember { mutableStateOf(0L) }
+    val ask = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        // Refused at once, without Android's question showing (notifications switched off in Settings): Settings is
+        // the way, straight to the app's own switch (A109).
+        if (!granted && android.os.SystemClock.elapsedRealtime() - askedAt < 500) {
+            inSettings = true
+            openSettingsPage(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))
+        } else onAnswer(granted)
+    }
     LifecycleEventEffect(Lifecycle.Event.ON_RESUME) { if (inSettings) { inSettings = false; onAnswer(Reminders.canPost(context)) } }
     return {
         // Android asks a first time, and again after one refusal; after a second it won't, and Settings is the way.
@@ -59,7 +67,7 @@ fun rememberTurnOnNotifications(onAnswer: (Boolean) -> Unit): () -> Unit {
             (context as? Activity)?.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS) == true)
         when {
             Reminders.canPost(context) -> onAnswer(true)
-            willAsk -> { prefs.edit().putBoolean(ASKED, true).apply(); ask.launch(Manifest.permission.POST_NOTIFICATIONS) }
+            willAsk -> { prefs.edit().putBoolean(ASKED, true).apply(); askedAt = android.os.SystemClock.elapsedRealtime(); ask.launch(Manifest.permission.POST_NOTIFICATIONS) }
             else -> {
                 inSettings = true
                 openSettingsPage(context, Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName))

@@ -68,6 +68,8 @@ class MainActivity : ComponentActivity() {
 
     override fun onStart() {
         super.onStart()
+        // A109: notes whether battery is Unrestricted, so losing it later is noticed; open, Today's card says so.
+        com.oftenenough.app.app.reminders.Reminders.checkBackground(applicationContext, post = false)
         if (AppGraph.isOpen) {
             // LOCKED (widget taps): waiting taps are saved on every return (W5).
             if (AppGraph.store.isLoaded) lifecycleScope.launch { WidgetTapSaver.saveWaiting(applicationContext) }
@@ -147,6 +149,8 @@ class MainActivity : ComponentActivity() {
             })
         }
         AppGraph.openTarget(intent)
+        if (BuildConfig.DEBUG && intent.getBooleanExtra(TestLaunch.CHECK_BACKGROUND, false))
+            com.oftenenough.app.app.reminders.Reminders.checkBackground(applicationContext, post = true)
         splash.setKeepOnScreenCondition { !store.isLoaded && store.problem == null }
         pinWidget(intent)
         val demo = intent.getStringExtra(TestLaunch.DEMO)
@@ -225,6 +229,8 @@ object TestLaunch {
      *  a habit without that reminder time is given it first; "!" after the time rings it as an alarm, "?" makes an amount typed
      *  each time (the notifications flows). */
     const val REMIND = "remind"
+    /** Debug builds: run the check a reminder runs when it comes (A109: battery stopped being Unrestricted → its notification). */
+    const val CHECK_BACKGROUND = "checkBackground"
     /** The stand-in Plus store's next answers to Plus checks, in order: "none", "found", "offline" (onboarding 3, 9). */
     const val PLUS_ANSWERS = "plusAnswers"
 }

@@ -57,6 +57,8 @@ class NoticeWork(
 interface NoticeNav {
     fun backup()
     fun reminders()
+    /** Keep Often Enough awake (A109). */
+    fun battery()
 }
 
 object TodayNotices {
@@ -129,25 +131,27 @@ object TodayNotices {
         val wantsReminders = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() }
         if ((wantsReminders && !Reminders.canPost(context)) || forced == "notifications") list += TodayNotice("notifications", Symbols.NotificationsOff,
             // Android's own question, or its notification settings once it won't ask again (Today flows 41, 42).
-            "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings.", "Not now", "Turn on") { turnOn() }
+            // A109: no Not now: while a reminder needs them, the card stays until notifications are on.
+            "Reminders can’t come", "Notifications for Often Enough are off in your phone’s settings, so your reminders can’t come.", null, "Turn on") { turnOn() }
         // A106: an alarm can't ring without Alarms & reminders, however it came to be set (turned off later, a restore).
         val wantsAlarms = store.habits.any { !it.archived && it.remind && it.reminders.isNotEmpty() && it.alert == "alarm" }
         if ((wantsAlarms && Reminders.canPost(context) && !Reminders.canBeExact(context)) || forced == "alarms") list += TodayNotice("alarms", Symbols.Alarm,
-            "Alarms can’t ring", "Alarms & reminders is off for Often Enough in your phone’s settings, so alarms can’t ring at their time.", "Not now", "Turn on") {
+            // A109: no Not now: while an alarm needs it, the card stays until it's allowed.
+            "Alarms can’t ring", "Alarms & reminders is off for Often Enough in your phone’s settings, so alarms can’t ring at their time.", null, "Turn on") {
             if (forced == "alarms") TodayNotices.forced = null
             open(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
         }
-        // A109 (the user, 3 Nov 2026): until battery is Unrestricted, the phone may put the app to sleep, so reminders and
-        // widgets can't be relied on, on any phone. So this card has no Not now: it stays until Android says battery is
-        // Unrestricted, and its button asks Android's own one-tap question ("always run in the background?").
-        if (((wantsReminders || Reminders.hasWidgets(context)) && Reminders.notUnrestricted(context)) || forced == "battery") list += TodayNotice(
+        // A109 (the user, 3 Nov 2026): once battery matters (a reminder, a widget on the home screen, or a Google Drive
+        // backup) and it isn't Unrestricted, the phone may put the app to sleep, on any phone. So this card has no Not
+        // now: it stays until Android says battery is Unrestricted. Show me how opens Keep Often Enough awake.
+        val needsAwake = wantsReminders || Reminders.hasWidgets(context) || AppGraph.backup.link.email != null
+        if ((needsAwake && Reminders.notUnrestricted(context)) || forced == "battery") list += TodayNotice(
             "battery", Symbols.BatteryFull, "Let Often Enough run in the background",
-            "Your phone puts apps to sleep to save battery. While Often Enough is asleep, reminders can come late or not at " +
-                "all, and widgets can stop updating. Set battery to Unrestricted: tap the button, then Allow. It uses very " +
-                "little battery: the app only wakes for your reminders, widgets and backup.",
-            null, "Set to Unrestricted") {
+            "Your phone can put Often Enough to sleep to save battery. Then reminders come late or not at all, widgets stop " +
+                "updating and backups wait. Set battery to Unrestricted to keep it awake.",
+            null, "Show me how") {
             if (forced == "battery") TodayNotices.forced = null
-            open(context, com.oftenenough.app.ui.settings.unrestrictedQuestion(context))
+            nav.battery()
         }
         val missed = Reminders.missed(context, now)
         // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about

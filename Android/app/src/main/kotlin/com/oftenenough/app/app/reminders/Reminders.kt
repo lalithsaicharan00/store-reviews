@@ -194,6 +194,7 @@ object Reminders {
             if (now - first.fire > LATE_MS) prefs.edit().putString(MISSED, "${first.fire}|${first.habit.id}|${first.fire.minuteOfDay()}|${(now - first.fire) / 60_000}").apply()
         }
         if (canPost(context)) post(context, store, due)
+        checkBackground(context, post = true)
         replan(context, store)
     }
 
@@ -634,6 +635,47 @@ object Reminders {
      */
     fun notUnrestricted(context: Context): Boolean =
         context.getSystemService(android.os.PowerManager::class.java)?.isIgnoringBatteryOptimizations(context.packageName) != true
+
+    private const val ASKED = "battery.asked."
+    private const val WAS_UNRESTRICTED = "battery.wasUnrestricted"
+    private const val BATTERY_LOST_ID = 7_301
+
+    /**
+     * Whether to open Keep Often Enough awake now, at the moment battery starts to matter ([why]: "widget"), once for
+     * each why, and only while it isn't Unrestricted (A109: never on a fresh install; Today's card asks after that).
+     */
+    fun askOnce(context: Context, why: String): Boolean {
+        if (!notUnrestricted(context)) return false
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        if (prefs.getBoolean(ASKED + why, false)) return false
+        prefs.edit().putBoolean(ASKED + why, true).apply()
+        return true
+    }
+
+    /**
+     * A109: battery was Unrestricted and isn't any more (changed in the phone's settings): said at once in a notification
+     * that opens Keep Often Enough awake, when a reminder comes ([post]); the app open, Today's card says it instead.
+     * Unrestricted again, the notification goes.
+     */
+    fun checkBackground(context: Context, post: Boolean) {
+        val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
+        val now = !notUnrestricted(context)
+        val was = prefs.getBoolean(WAS_UNRESTRICTED, false)
+        if (now != was) prefs.edit().putBoolean(WAS_UNRESTRICTED, now).apply()
+        val manager = NotificationManagerCompat.from(context)
+        if (now) { manager.cancel(BATTERY_LOST_ID); return }
+        if (!was || !post || !canPost(context)) return
+        val open = PendingIntent.getActivity(context, BATTERY_LOST_ID,
+            // Single top: with the app already open, Android hands it the link (otherwise it only brings the app forward).
+            Intent(context, MainActivity::class.java).putExtra(MainActivity.WIDGET_ROUTE, "battery").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        @Suppress("MissingPermission")
+        manager.notify(BATTERY_LOST_ID, NotificationCompat.Builder(context, CHANNEL).setSmallIcon(R.drawable.ic_notification)
+            .setContentTitle("Reminders may come late")
+            .setContentText("Battery is no longer Unrestricted for Often Enough, so your phone can put it to sleep. Tap to set it again.")
+            .setStyle(NotificationCompat.BigTextStyle().bigText("Battery is no longer Unrestricted for Often Enough, so your phone can put it to sleep. Tap to set it again."))
+            .setContentIntent(open).setAutoCancel(true).build())
+    }
 
     /** Whether any of the app's widgets is on the home screen (they too stop updating while the app is asleep). */
     fun hasWidgets(context: Context): Boolean {

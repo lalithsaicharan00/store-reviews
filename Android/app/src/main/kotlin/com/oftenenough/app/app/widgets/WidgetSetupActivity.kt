@@ -54,6 +54,7 @@ import androidx.glance.appwidget.ExperimentalGlanceRemoteViewsApi
 import androidx.glance.appwidget.GlanceRemoteViews
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.app.MainActivity
+import com.oftenenough.app.app.reminders.Reminders
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
@@ -114,6 +115,11 @@ class WidgetSetupActivity : ComponentActivity() {
                         choice?.let { WidgetDisk.setChoice(this@WidgetSetupActivity, widgetId, it) }
                         setResult(RESULT_OK, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId))
                         finish()
+                        // A109: battery matters from the first widget on, so the first one added while it isn't
+                        // Unrestricted opens Keep Often Enough awake (once; Today's card asks after that).
+                        if (Reminders.askOnce(this@WidgetSetupActivity, "widget"))
+                            startActivity(Intent(this@WidgetSetupActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                                .putExtra(MainActivity.WIDGET_ROUTE, "battery"))
                     }
                 }
             }
@@ -240,7 +246,8 @@ class WidgetSetupActivity : ComponentActivity() {
         Column(
             Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).background(c.surface)
                 .clickable(role = Role.Button) {
-                    startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra(MainActivity.WIDGET_ROUTE, "plus"))
+                    // As the widgets' own links: with the app already open, Android hands it the link.
+                    startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP).putExtra(MainActivity.WIDGET_ROUTE, "plus"))
                 }
                 .semantics { testTag = "setup-plus-card" }.padding(20.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
