@@ -90,9 +90,12 @@ fun KeepAwakePage(onBack: () -> Unit, onDone: () -> Unit) {
                         Step(2, "On Battery, tap the Allow background usage row: its words, not its switch.", R.drawable.keep_awake_samsung_step2)
                         Step(3, "Choose Unrestricted, then come back here.", R.drawable.keep_awake_samsung_step3)
                     } else if (Build.VERSION.SDK_INT >= 34) {
-                        Step(2, "On App battery usage, tap the Allow background usage row: its words, not its switch.", R.drawable.keep_awake_step2)
-                        Step(3, "Turn on Allow background usage.", R.drawable.keep_awake_step3)
-                        Step(4, "Choose Unrestricted, then come back here.", R.drawable.keep_awake_step4)
+                        // HyperOS has the Pixel's four steps and words on its own-looking screens (Xiaomi 14, HyperOS 2, 3 Nov 2026).
+                        val xiaomi = Build.MANUFACTURER.lowercase() in setOf("xiaomi", "redmi", "poco")
+                        Step(2, "On App battery usage, tap the Allow background usage row: its words, not its switch.",
+                            if (xiaomi) R.drawable.keep_awake_xiaomi_step2 else R.drawable.keep_awake_step2)
+                        Step(3, "Turn on Allow background usage.", if (xiaomi) R.drawable.keep_awake_xiaomi_step3 else R.drawable.keep_awake_step3)
+                        Step(4, "Choose Unrestricted, then come back here.", if (xiaomi) R.drawable.keep_awake_xiaomi_step4 else R.drawable.keep_awake_step4)
                     } else {
                         Step(2, "On App battery usage, choose Unrestricted, then come back here.")
                     }
