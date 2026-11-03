@@ -76,14 +76,12 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
     "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(
         batteryStep,
     ))
-    "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+    // Android's Unrestricted also sets Xiaomi's Battery saver to No restrictions, so one step covers both (Xiaomi 14,
+    // HyperOS 2, 3 Nov 2026).
+    "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
         batteryStep,
         MakerStep("xiaomi-autostart", Symbols.Autorenew, "Turn on Autostart", "App info › Autostart") {
             component("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
-        },
-        MakerStep("xiaomi-battery-saver", Symbols.BatterySaver, "Set Battery saver to No restrictions", "App info › Battery saver") { c ->
-            component("com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity")
-                .putExtra("package_name", c.packageName).putExtra("package_label", "Often Enough")
         },
     ))
     "oneplus", "oppo", "realme" -> Maker("Your phone stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(

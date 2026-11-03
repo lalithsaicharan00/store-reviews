@@ -38,7 +38,7 @@ class ReminderWordsTest {
 
     @Test fun stepsByMaker() {
         assertEquals(listOf("Set battery to Unrestricted"), maker("samsung").steps.map { it.title })
-        assertEquals(listOf("Set battery to Unrestricted", "Turn on Autostart", "Set Battery saver to No restrictions"), maker("redmi").steps.map { it.title })
+        assertEquals(listOf("Set battery to Unrestricted", "Turn on Autostart"), maker("redmi").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Allow background activity", "Allow auto launch"), maker("OnePlus").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Allow high background power use", "Turn on Autostart"), maker("iQOO").steps.map { it.title })
         assertEquals(listOf("Set battery to Unrestricted", "Manage App launch yourself, all three on"), maker("HONOR").steps.map { it.title })
@@ -54,7 +54,7 @@ class ReminderWordsTest {
         val xiaomi = maker("xiaomi")
         assertEquals(samsung.lead, keepLead(samsung, notifications = true, exact = true, stepsLeft = 1))
         assertEquals("All set. Reminders will come on time.", keepLead(samsung, true, true, 0))
-        assertEquals("Battery is Unrestricted. Also do the steps below, if you haven’t: your phone doesn’t let the app check them.", keepLead(xiaomi, true, true, 0))
+        assertEquals("Battery is Unrestricted. Also do the step below, if you haven’t: your phone doesn’t let the app check it.", keepLead(xiaomi, true, true, 0))
         assertEquals("All set. Reminders will come on time.", keepLead(maker("Google"), true, true, 0))
         assertEquals("Reminders may come late. Android sends them on time only when Alarms & reminders is allowed. It’s Android’s setting, not the app’s.",
             keepLead(maker("Google"), true, exact = false, stepsLeft = 0))
