@@ -129,10 +129,29 @@ fun remindersLeftToFix(context: Context, reminders: Boolean = true): Int =
     (if (!reminders || Reminders.canPost(context)) 0 else 1) + (if (!reminders || Reminders.canBeExact(context)) 0 else 1) +
         maker(Build.MANUFACTURER ?: "").steps.count { it.checked != null && !stepDone(context, it) }
 
-/** Whether a missed reminder's notice on Today can go because Keep reminders coming has nothing left to fix. Never on a
- *  phone with a step no app can read (Xiaomi's Autostart): there that step may be what held the reminder back, and the
- *  notice is the one thing that points to it (3 Nov 2026). */
-internal fun missedNoticeFixed(leftToFix: Int, phone: Maker): Boolean = leftToFix == 0 && phone.steps.none { it.checked == null }
+/**
+ * What a missed reminder's notice on Today asks for next, in this page's order; none, and the notice goes. Its button
+ * goes straight there (the user, 3 Nov 2026: "it should directly redirect them to that page"): Android's question,
+ * Alarms & reminders' own page, Keep Often Enough awake for battery, or a maker's own page. A step no app can read
+ * (Xiaomi's Autostart) counts once its page was opened from the notice ([opened]): that step may be what held the
+ * reminder back, and the notice is the one thing that points to it.
+ */
+internal sealed interface MissedFix {
+    object Notifications : MissedFix
+    object Exact : MissedFix
+    object Battery : MissedFix
+    class Step(val step: MakerStep) : MissedFix
+}
+
+internal fun missedFix(notifications: Boolean, exact: Boolean, phone: Maker, done: (MakerStep) -> Boolean, opened: Set<String>): MissedFix? = when {
+    !notifications -> MissedFix.Notifications
+    !exact -> MissedFix.Exact
+    else -> phone.steps.firstOrNull { if (it.checked != null) !done(it) else it.key !in opened }
+        ?.let { if (it.key == BATTERY_STEP) MissedFix.Battery else MissedFix.Step(it) }
+}
+
+internal fun missedFix(context: Context, opened: Set<String>): MissedFix? =
+    missedFix(Reminders.canPost(context), Reminders.canBeExact(context), maker(Build.MANUFACTURER ?: ""), { stepDone(context, it) }, opened)
 
 /**
  * 5.8.1, **Keep reminders coming** (Figma 804:192; flows on the Today and Settings pages; A40, A66, A70; Components —

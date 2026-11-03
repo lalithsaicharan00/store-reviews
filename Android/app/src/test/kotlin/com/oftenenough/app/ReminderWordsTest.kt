@@ -7,7 +7,8 @@ import com.oftenenough.app.data.ReminderTime
 import com.oftenenough.app.ui.settings.hasReminders
 import com.oftenenough.app.ui.settings.keepLead
 import com.oftenenough.app.ui.settings.maker
-import com.oftenenough.app.ui.settings.missedNoticeFixed
+import com.oftenenough.app.ui.settings.MissedFix
+import com.oftenenough.app.ui.settings.missedFix
 import java.util.Locale
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -51,15 +52,21 @@ class ReminderWordsTest {
             assertEquals(listOf("Set battery to Unrestricted"), maker(name).steps.filter { it.checked != null }.map { it.title })
     }
 
-    /** A missed reminder's notice goes once nothing is left to fix, but never on a phone with a step no app can read:
-     *  there that step may be what held the reminder back (Xiaomi's Autostart, 3 Nov 2026). */
-    @Test fun missedNoticeStaysWhereAStepCantBeRead() {
-        assertTrue(missedNoticeFixed(0, maker("Google")))
-        assertTrue(missedNoticeFixed(0, maker("samsung")))
-        assertFalse(missedNoticeFixed(1, maker("Google")))
-        assertFalse(missedNoticeFixed(0, maker("Xiaomi")))
-        assertFalse(missedNoticeFixed(0, maker("POCO")))
-        assertFalse(missedNoticeFixed(0, maker("vivo")))
+    /** A missed reminder's notice goes straight to what's left, in Keep reminders coming's order, and goes once nothing
+     *  is; a step no app can read (Xiaomi's Autostart) counts once its page was opened from the notice (3 Nov 2026). */
+    @Test fun missedNoticeOpensWhatsLeft() {
+        val none = emptySet<String>()
+        val battery = { done: Boolean -> { _: com.oftenenough.app.ui.settings.MakerStep -> done } }
+        assertTrue(missedFix(false, false, maker("Google"), battery(false), none) is MissedFix.Notifications)
+        assertTrue(missedFix(true, false, maker("Google"), battery(false), none) is MissedFix.Exact)
+        assertTrue(missedFix(true, true, maker("Google"), battery(false), none) is MissedFix.Battery)
+        assertEquals(null, missedFix(true, true, maker("Google"), battery(true), none))
+        assertEquals(null, missedFix(true, true, maker("samsung"), battery(true), none))
+        val xiaomi = missedFix(true, true, maker("Xiaomi"), battery(true), none)
+        assertEquals("xiaomi-autostart", (xiaomi as MissedFix.Step).step.key)
+        assertEquals(null, missedFix(true, true, maker("POCO"), battery(true), setOf("xiaomi-autostart")))
+        assertEquals("vivo-background-power", (missedFix(true, true, maker("vivo"), battery(true), none) as MissedFix.Step).step.key)
+        assertEquals("vivo-autostart", (missedFix(true, true, maker("vivo"), battery(true), setOf("vivo-background-power")) as MissedFix.Step).step.key)
     }
 
     /** The lead says what's left (Figma's Today, flows 38 and 39; A109: only steps the app can read count). */

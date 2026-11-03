@@ -652,7 +652,6 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun archivedHabits() = nav.navigate(Routes.ARCHIVED)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
     override fun backup() = nav.navigate(Routes.page(SettingsPage.BACKUP))
-    override fun reminders() = nav.navigate(Routes.page(SettingsPage.REMINDERS))
     override fun battery() = nav.navigate(Routes.page(SettingsPage.BATTERY))
 }
 
