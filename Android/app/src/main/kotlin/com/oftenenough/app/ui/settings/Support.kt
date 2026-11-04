@@ -16,7 +16,7 @@ import com.oftenenough.app.ui.newhabit.Note
 
 /** Where people write to us, and what the email starts with: the app and Android versions, never their habits. */
 object Support {
-    const val EMAIL = "support@oftenenough.com"
+    const val EMAIL = "lalithsaicharan00@gmail.com"
     val appVersion: String get() = "${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})"
 
     /** Contact us (the menu): help. A29's subject, so the two are told apart at a glance. */

@@ -178,11 +178,11 @@ front").
 - **Help & Feedback** (redesigned 15 Oct 2026, Figma `1476:110`; the name kept, as on the iPhone): **for writing to us,
   nothing else** (the user: "just launch with email").
   - **Write to us** · **Report a problem** · *Something isn't working* › and **Suggest an idea** · *A feature you'd like
-    to see* ›; *Both open your email app, to support@oftenenough.com. We read every message. Your app and Android
+    to see* ›; *Both open your email app, to lalithsaicharan00@gmail.com. We read every message. Your app and Android
     versions are added for you; your habits never are.*
   - Each row opens the phone's email app (Android asks which, if there are several) with To, a Subject (*Often Enough:
     a problem* / *Often Enough: an idea*) and a last line (*Often Enough 1.0 (free) · Android 16 · Pixel 9*). With no
-    email app: a dialog, *No email app* · *Write to us at support@oftenenough.com from any email you use.* · Close ·
+    email app: a dialog, *No email app* · *Write to us at lalithsaicharan00@gmail.com from any email you use.* · Close ·
     Copy address.
   - **No questions and answers, no search, no Show the welcome again.** Each answer already lives on the screen where
     the problem happens; a FAQ is written later from the questions people actually send.
