@@ -1,5 +1,6 @@
 package com.oftenenough.app
 
+import com.oftenenough.app.app.reminders.loosensExactAlarms
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitColor
 import com.oftenenough.app.data.HabitKind
@@ -88,6 +89,14 @@ class ReminderWordsTest {
         assertTrue(missedFix(true, true, maker("Xiaomi"), battery(true), emptySet())!!.canDismiss)
         // Opened from the notice and back: nothing is left, so the notice goes.
         assertEquals(null, missedFix(true, true, maker("Xiaomi"), battery(true), setOf("xiaomi-autostart")))
+    }
+
+    /** Infinix, Tecno and itel get a second alarm: XOS loosens exact alarms planned with the screen off (A40). */
+    @Test fun transsionPhonesGetTheSecondAlarm() {
+        for (name in listOf("INFINIX", "Infinix Mobility Limited", "TECNO", "TECNO MOBILE LIMITED", "itel", "ITEL MOBILE LIMITED"))
+            assertEquals(name, true, loosensExactAlarms(name))
+        for (name in listOf("motorola", "Google", "samsung", "Xiaomi", "OPPO", "HONOR", ""))
+            assertEquals(name, false, loosensExactAlarms(name))
     }
 
     /** The lead says what's left (Figma's Today, flows 38 and 39; A109: only steps the app can read count). */

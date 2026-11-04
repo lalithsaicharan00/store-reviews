@@ -33,6 +33,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
+ * Infinix, Tecno and itel: an exact alarm planned while the screen is off isn't kept exact, even an alarm clock. Android's
+ * rule for inexact alarms takes over (up to 75 % of the time left, at most an hour late), and the next reminder is planned
+ * just then, when one fires on a sleeping phone. Only [AlarmManager.setWindow] keeps its time, for an app on Unrestricted
+ * (Infinix X6815D, XOS 13, 4 Nov 2026: a 10:45 exact alarm's window read +2 m 14 s; a 1 s window fired at 10:46:01 on time).
+ */
+internal fun loosensExactAlarms(manufacturer: String = Build.MANUFACTURER ?: "") =
+    manufacturer.lowercase().let { maker -> listOf("infinix", "tecno", "itel").any(maker::startsWith) }
+
+/**
  * Reminders that arrive (what Android people ask for most): one exact alarm for the next reminder time, re-planned
  * after every change (300 ms after the last, S16) and after each alarm; at the alarm, every reminder due then is posted,
  * same-minute ones together. A reminder's Done or +1 saves from the notification shade, on a locked phone too, without
@@ -168,8 +177,10 @@ object Reminders {
         val alarms = context.getSystemService(AlarmManager::class.java) ?: return
         val intent = PendingIntent.getBroadcast(context, 0, Intent(context, ReminderReceiver::class.java).setAction(ACTION_ALARM),
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        val second = PendingIntent.getBroadcast(context, 2, Intent(context, ReminderReceiver::class.java).setAction(ACTION_ALARM),
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         val prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
-        if (next == null) { alarms.cancel(intent); prefs.edit().remove(PLANNED).apply(); return }
+        if (next == null) { alarms.cancel(intent); alarms.cancel(second); prefs.edit().remove(PLANNED).apply(); return }
         // An alarm planned earlier that never fired (the phone put the app to sleep) is kept before it's replaced.
         noteNeverFired(context, store.clock())
         prefs.edit().putString(PLANNED, "${next.fire}|${next.habit.id}|${next.fire.minuteOfDay()}").apply()
@@ -179,6 +190,8 @@ object Reminders {
             alarms.setAlarmClock(AlarmManager.AlarmClockInfo(next.fire, show), intent)
         } else if (canBeExact(context)) alarms.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
         else alarms.setAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, next.fire, intent)
+        // Whichever comes first posts; the other finds nothing due (fire) and the next plan replaces it.
+        if (loosensExactAlarms()) alarms.setWindow(AlarmManager.RTC_WAKEUP, next.fire, 1_000, second)
     }
 
     /** The alarm: post every reminder due since the last one (a late alarm still posts, never twice), then plan again. */
