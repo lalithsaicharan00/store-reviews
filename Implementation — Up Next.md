@@ -21,9 +21,9 @@
 
 | In Plus | Always free |
 |---|---|
-| Unlimited habits (free has 5) | The Week view, and each habit's Progress, Streaks, Milestones and Month |
+| Unlimited habits (free has 5) | The Week, Month and Year views, and each habit's Progress, Streaks, Milestones and Month |
 | The Today list and This week widgets | History of every log, and Day details for any date |
-| **The year at a glance:** the Habits page's Month and Year views, and Year in Pixels | Backup, Google Drive, export and restore |
+| **Year in Pixels** on Habit details (Month and Year views are free: the user, 4 Nov 2026, Android A110) | Backup, Google Drive, export and restore |
 | **Checklist habits** (making a new one; existing ones always work) | Dark mode |
 | **If not done, remind me again** | Reminders, including several per habit |
 | Supporting the developer | Tasks, the routine player and the timer |
