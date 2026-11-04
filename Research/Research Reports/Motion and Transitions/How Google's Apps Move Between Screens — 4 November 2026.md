@@ -2,7 +2,7 @@
 
 Written by Claude (Claude Code), 4 November 2026, at the user's request: "do some research, how the production apps do when it comes to the animations … take heavy inspiration from Google products … Everywhere throughout the app … performance … you don't need to implement something that is very costly."
 
-The decision this led to is Android A110 in [Android/Docs/README.md](<../../../Android/Docs/README.md>); the rule is in the [Rulebook](<../../../RULEBOOK.md>), "Starting again"; the code is `ui/theme/Motion.kt`.
+The decision this led to is Android A112 in [Android/Docs/README.md](<../../../Android/Docs/README.md>); the rule is in the [Rulebook](<../../../RULEBOOK.md>), "Starting again"; the code is `ui/theme/Motion.kt`.
 
 ## In short
 

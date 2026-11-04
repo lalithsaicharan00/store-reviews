@@ -2,6 +2,7 @@ package com.oftenenough.app.ui.today
 
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.CardNotice
+import com.oftenenough.app.ui.settings.canDismiss
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -30,8 +31,8 @@ import kotlinx.coroutines.launch
 /**
  * One notice on Today (Figma 1.9–1.9.7): something the person should know about their data, their reminders or their
  * purchase, in plain words, with what to do about it. One at a time, the most important first; only on today, above the
- * first time of day; [dismiss] ("Not now", "Later", "Dismiss") hides it for 7 days (a missed reminder, until the next).
- * A notice with no [dismiss] stays until what it asks for is done (battery, A109).
+ * first time of day; [dismiss] ("Not now") hides it for 7 days, a missed reminder's ("Dismiss") ends that one. A
+ * notice with no [dismiss] stays until Android says what it asks for is done (reminders, alarms, battery: A109).
  */
 class TodayNotice(
     val key: String, val icon: ImageVector, val title: String, val body: String,
@@ -56,7 +57,6 @@ class NoticeWork(
 /** Where a notice's action goes on Today's side (the pages are Today's to open). */
 interface NoticeNav {
     fun backup()
-    fun reminders()
     /** Keep Often Enough awake (A109). */
     fun battery()
 }
@@ -154,26 +154,45 @@ object TodayNotices {
             nav.battery()
         }
         val missed = Reminders.missed(context, now)
-        // Fixed on Keep reminders coming (nothing left to do there): the notice goes, and the reminder it was about
-        // with it (Figma's Today, flows 38 and 39, the last frame; notices end when the problem is fixed elsewhere).
-        val fixed = (missed != null || forced == "missed" || forced == "late") && com.oftenenough.app.ui.settings.remindersLeftToFix(context) == 0
-        if (fixed) {
+        // The user, 3 Nov 2026: the button goes straight to what's left to fix, named for where it goes (Show me how only
+        // for battery, Open settings for a settings page), and the notice stays until Android says it's done; only a
+        // step no app can read has Dismiss, and opening its page counts. Nothing left: the notice goes, and the
+        // reminder it was about with it (notices end when the problem is fixed elsewhere).
+        val showMissed = missed != null || forced == "missed" || forced == "late"
+        val missedId = missed?.let { "${it.at}|${it.habitId}" } ?: "forced"
+        val fix = if (showMissed) com.oftenenough.app.ui.settings.missedFix(context, opened(context, missedId)) else null
+        if (showMissed && fix == null) {
             if (missed != null) Reminders.dismissMissed(context)
             if (forced == "missed" || forced == "late") TodayNotices.forced = null
+            clearOpened(context)
         }
-        if (!fixed && (missed != null || forced == "missed" || forced == "late")) {
-            // Figma's words: whose reminder, and why, by this phone's maker (A40); a late one says how late, and an
-            // exact-time reminder held back says what to allow.
+        if (fix != null) {
+            // Figma's words: whose reminder, and why, by this phone's maker (A40); a late one says how late, and one
+            // held back by Alarms & reminders says what to allow.
             val name = missed?.let { store.habit(it.habitId)?.name }
             val time = missed?.let { DayWords.clockMinute(it.minute) } ?: "8:00 AM"
             val whose = name?.let { (if (it.endsWith("s")) "$it'" else "$it's") + " $time reminder" } ?: "Your $time reminder"
             val late = missed?.lateMinutes ?: if (forced == "late") 40L else null
             val title = if (late != null) "$whose came $late ${if (late == 1L) "minute" else "minutes"} late" else "$whose didn't arrive"
-            val why = if (late != null && !Reminders.canBeExact(context))
+            val why = if (fix is com.oftenenough.app.ui.settings.MissedFix.Exact)
                 "Android sends reminders at the exact time only when Alarms & reminders is allowed for Often Enough."
                 else makerReason(android.os.Build.MANUFACTURER ?: "")
+            val (action, act) = when (fix) {
+                is com.oftenenough.app.ui.settings.MissedFix.Notifications -> "Turn on" to turnOn
+                is com.oftenenough.app.ui.settings.MissedFix.Exact -> "Open settings" to {
+                    open(context, Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM, Uri.parse("package:" + context.packageName)))
+                }
+                is com.oftenenough.app.ui.settings.MissedFix.Battery -> "Show me how" to { nav.battery() }
+                // A page the app can't read back: opened from here, it counts as done for this reminder.
+                is com.oftenenough.app.ui.settings.MissedFix.Step -> "Open settings" to {
+                    markOpened(context, missedId, fix.step.key)
+                    open(context, fix.step.intent(context))
+                }
+            }
             // A late one has the clock (Figma's Today, flow 39); one that didn't come, the paused bell (flow 38).
-            list += TodayNotice("missed", if (late != null) Symbols.Schedule else Symbols.NotificationsPaused, title, why, "Dismiss", "Show me how") { nav.reminders() }
+            list += TodayNotice("missed", if (late != null) Symbols.Schedule else Symbols.NotificationsPaused, title, why,
+                // Dismiss only where the app can't read what's left (Xiaomi's Autostart); otherwise it stays until Android says it's done.
+                if (fix.canDismiss) "Dismiss" else null, action, act = act)
         }
         if (AppGraph.plus.pending != null || forced == "pending") list += TodayNotice("pending", Symbols.HourglassTop,
             "Plus is waiting for your payment", "Google Play hasn’t finished it yet. Plus turns on by itself when it does.", "Not now", "Open Google Play") {
@@ -184,9 +203,28 @@ object TodayNotices {
 
     /** "Not now": hidden for 7 days; a missed reminder's Dismiss ends that one (the next one shows again). */
     fun dismiss(context: Context, notice: TodayNotice, now: Long) {
-        if (notice.key == "missed") Reminders.dismissMissed(context) else hide(context, notice.key, now)
+        if (notice.key == "missed") {
+            Reminders.dismissMissed(context)
+            clearOpened(context)
+        } else hide(context, notice.key, now)
         if (forced == notice.key || forced == "late" && notice.key == "missed") forced = null
     }
+
+    /** The maker's pages opened from a missed reminder's notice, for that reminder only: the next one asks again. */
+    private fun opened(context: Context, missedId: String): Set<String> {
+        val raw = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).getString(OPENED, null) ?: return emptySet()
+        return if (raw.substringBefore('#') == missedId) raw.substringAfter('#').split(',').filter { it.isNotEmpty() }.toSet() else emptySet()
+    }
+
+    private fun markOpened(context: Context, missedId: String, key: String) {
+        val keys = opened(context, missedId) + key
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().putString(OPENED, missedId + "#" + keys.joinToString(",")).apply()
+    }
+
+    private fun clearOpened(context: Context) =
+        context.getSharedPreferences(PREFS, Context.MODE_PRIVATE).edit().remove(OPENED).apply()
+
+    private const val OPENED = "missedOpened"
 
     // A phone without that page opens App info (U40).
     private fun open(context: Context, intent: Intent) = com.oftenenough.app.ui.settings.openSettingsPage(context, intent)

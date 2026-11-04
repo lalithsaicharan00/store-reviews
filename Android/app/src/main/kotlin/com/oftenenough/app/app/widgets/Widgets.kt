@@ -185,10 +185,21 @@ private val LocalCard = staticCompositionLocalOf { DpSize(328.dp, 176.dp) }
  * stretched to fill them, or kept in Figma's proportions, pulled its parts apart (99 between a 2×2's button and its
  * name, where Figma has 40).
  */
-internal fun cardSize(kind: WidgetKind, space: DpSize): DpSize {
+internal fun cardSize(kind: WidgetKind, space: DpSize, manufacturer: String = android.os.Build.MANUFACTURER ?: ""): DpSize {
     val design = kind.design
-    return DpSize(space.width, minOf(design.height, space.height))
+    // ColorOS (OPPO, realme, OnePlus) says a 2×2 is 152 × 176 but shows only its middle 150 × 146, cutting the card's
+    // padding off above and below (OPPO CPH2557, ColorOS 14, 3 Nov 2026): the card keeps to what's shown.
+    val shown = if (kind == WidgetKind.ONE_HABIT && manufacturer.lowercase() in setOf("oppo", "realme", "oneplus")) 144.dp else design.height
+    return DpSize(space.width, minOf(design.height, shown, space.height))
 }
+
+/**
+ * The One habit card's least heights. Its parts are 48 (the button row), ~41 (the name and its line), 12 and 8 (the
+ * bar) inside 12 and 16: 137. Below that the padding is 6 and 10 and the gap 8, so the bar fits from 121; a band
+ * (20) needs 133.
+ */
+private val SMALL_FULL = 137.dp
+private val SMALL_BAND = 133.dp
 
 @Composable
 private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: String?, page: Int, widgetId: Int) {
@@ -196,12 +207,14 @@ private fun WidgetBody(kind: WidgetKind, snapshot: WidgetSnapshot?, choice: Stri
     val frame = snapshot?.frame(now)
     // One habit: 12 above, 16 at the sides and under (Figma 1235:46). The lists: 10 above and 12 round on a 4×2, 12 all
     // round on a 4×4 (Figma 1240:488). This week keeps 12 until its own component.
+    val card = cardSize(kind, LocalSize.current)
     val inside = when {
+        // A short 2×2 (149 × 124 on an HONOR Magic V's home screen, 3 Nov 2026) keeps its bar: 6 above, 10 under.
+        kind == WidgetKind.ONE_HABIT && card.height < SMALL_FULL -> GlanceModifier.padding(start = 16.dp, end = 16.dp, top = 6.dp, bottom = 10.dp)
         kind == WidgetKind.ONE_HABIT -> GlanceModifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 16.dp)
         !kind.oneHabit && !kind.large -> GlanceModifier.padding(start = 12.dp, end = 12.dp, top = 10.dp, bottom = 12.dp)
         else -> GlanceModifier.padding(12.dp)
     }
-    val card = cardSize(kind, LocalSize.current)
     Box(GlanceModifier.fillMaxSize(), contentAlignment = Alignment.Center) {
     CompositionLocalProvider(LocalCard provides card) {
     // As wide as the cells really are: a launcher can pad them (8 all round on a moto g54) and still report their whole
@@ -320,14 +333,18 @@ private fun SmallCard(item: WidgetItem, frame: WidgetFrame) {
             else -> Text(item.value.ifEmpty { item.line }, style = style(14.sp, Secondary), maxLines = 1)
         }
         val caption = item.caption
-        if (item.milestone != null) {
-            Spacer(GlanceModifier.height(12.dp))
+        // On a short card the gap is 8, and a band (20 tall) only where it fits whole: otherwise the bar, if there is one.
+        val height = LocalCard.current.height
+        val gap = if (height < SMALL_FULL) 8.dp else 12.dp
+        val bandFits = height >= SMALL_BAND
+        if (item.milestone != null && bandFits) {
+            Spacer(GlanceModifier.height(gap))
             MilestoneBand(item, item.milestone)
-        } else if (caption != null) {
-            Spacer(GlanceModifier.height(12.dp))
+        } else if (caption != null && bandFits) {
+            Spacer(GlanceModifier.height(gap))
             Band(caption)
         } else if ((item.cardFraction ?: item.fraction) != null) {
-            Spacer(GlanceModifier.height(12.dp))
+            Spacer(GlanceModifier.height(gap))
             Bar(item, LocalCard.current.width - 32.dp)
         }
     }

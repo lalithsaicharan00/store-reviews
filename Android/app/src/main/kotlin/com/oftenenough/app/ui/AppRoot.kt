@@ -215,7 +215,7 @@ private fun AppMain(
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
     val pages = @Composable {
     NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen),
-        // Android's own page transition; between the menu's own places, fade through (Motion.kt, Android A110).
+        // Android's own page transition; between the menu's own places, fade through (Motion.kt, Android A112).
         enterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.enter },
         exitTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.exit },
         popEnterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.popEnter },
@@ -674,7 +674,6 @@ private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : 
     override fun archivedHabits() = nav.navigate(Routes.ARCHIVED)
     override fun startRoutine(part: String, day: Int, habits: List<Habit>) = nav.navigate(Routes.routine(part, day, habits.map { it.id }))
     override fun backup() = nav.navigate(Routes.page(SettingsPage.BACKUP))
-    override fun reminders() = nav.navigate(Routes.page(SettingsPage.REMINDERS))
     override fun battery() = nav.navigate(Routes.page(SettingsPage.BATTERY))
 }
 

@@ -60,33 +60,47 @@ private val unrestricted: (Context) -> Boolean = { !Reminders.notUnrestricted(it
  * (Google Play allows it only when Doze breaks an app's core function; reminders use alarms that fire in Doze). A phone
  * without the page opens App info ([openSettingsPage], U40).
  */
-internal fun appBatteryPage(c: Context) = Intent("android.settings.VIEW_ADVANCED_POWER_USAGE_DETAIL", Uri.parse("package:" + c.packageName))
+internal fun appBatteryPage(c: Context) =
+    // MagicOS has no App battery usage page (it opened App info, which has no battery choice): its Unrestricted is
+    // Battery optimisation's Don't allow, in Android's list of every app, the nearest page any app can open; never the
+    // one-tap question (HONOR MBH-N49, MagicOS 10, Android 16, 3 Nov 2026).
+    if (honor()) Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+    else Intent("android.settings.VIEW_ADVANCED_POWER_USAGE_DETAIL", Uri.parse("package:" + c.packageName))
+
+internal fun honor(manufacturer: String = Build.MANUFACTURER ?: "") = manufacturer.equals("honor", ignoreCase = true)
 
 /** The step every phone has, and the one the app can read (A109); its button opens Keep Often Enough awake. */
 internal const val BATTERY_STEP = "battery"
 private val batteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage)
+private val honorBatteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set battery to Unrestricted", "Battery optimisation › Often Enough › Don’t allow", unrestricted, ::appBatteryPage)
 
 /**
  * The steps for this phone, by `Build.MANUFACTURER` (menu names change with versions: A40 asks for each to be checked
  * on a real phone before release). A page a phone doesn't have opens App info instead ([openSettingsPage], U40).
  */
-internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()) {
+internal fun maker(manufacturer: String, sdk: Int = Build.VERSION.SDK_INT): Maker = when (manufacturer.lowercase()) {
     // Samsung leaves an Unrestricted app out of its sleeping apps (it isn't even offered for Never auto sleeping apps),
     // so one step covers both (Galaxy A57, One UI 8, 3 Nov 2026).
     "samsung" -> Maker("Samsung puts apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(
         batteryStep,
     ))
-    "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+    // Android's Unrestricted also sets Xiaomi's Battery saver to No restrictions, so one step covers both (Xiaomi 14,
+    // HyperOS 2, 3 Nov 2026).
+    "xiaomi", "redmi", "poco" -> Maker("Xiaomi stops apps in the background to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
         batteryStep,
-        MakerStep("xiaomi-autostart", Symbols.Autorenew, "Turn on Autostart", "App info › Autostart") {
+        // HyperOS 2 has no Autostart row in App info: this opens Background autostart, a list of every app (no page
+        // opens Often Enough's own switch), so the line names the list and the row to find (Xiaomi 14, 3 Nov 2026).
+        MakerStep("xiaomi-autostart", Symbols.Autorenew, "Turn on Autostart", "Background autostart › Often Enough") {
             component("com.miui.securitycenter", "com.miui.permcenter.autostart.AutoStartManagementActivity")
         },
-        MakerStep("xiaomi-battery-saver", Symbols.BatterySaver, "Set Battery saver to No restrictions", "App info › Battery saver") { c ->
-            component("com.miui.powerkeeper", "com.miui.powerkeeper.ui.HiddenAppsConfigActivity")
-                .putExtra("package_name", c.packageName).putExtra("package_label", "Often Enough")
-        },
     ))
-    "oneplus", "oppo", "realme" -> Maker("Your phone stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
+    // ColorOS 14 (Android 14): Unrestricted alone does it. With ColorOS's own Allow background activity at its default
+    // (off), Allow foreground activity on and the app closed from Recents, a reminder came on time, an alarm rang full
+    // screen and a widget tap worked; ColorOS's switch, turned on, only sets Android's Unrestricted; and there's no Auto
+    // launch page anyone can reach (OPPO CPH2557, 3 Nov 2026). Older ColorOS keeps its steps until checked on one.
+    "oneplus", "oppo", "realme" -> if (sdk >= 34) Maker("Your phone stops apps in the background to save battery, which can stop reminders. One step keeps Often Enough running.", listOf(
+        batteryStep,
+    )) else Maker("Your phone stops apps in the background to save battery, which can stop reminders. Three steps keep Often Enough running.", listOf(
         batteryStep,
         MakerStep("oppo-background", Symbols.Sync, "Allow background activity", "App info › Battery usage", intent = ::appInfo),
         MakerStep("oppo-auto-launch", Symbols.Autorenew, "Allow auto launch", "App info › Battery usage", intent = ::appInfo),
@@ -100,11 +114,21 @@ internal fun maker(manufacturer: String): Maker = when (manufacturer.lowercase()
             component("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.BgStartUpManagerActivity")
         },
     ))
-    "honor", "huawei" -> Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+    // MagicOS 10 (Android 16): Battery optimisation's Don't allow alone does it. With App launch left to manage itself
+    // and the app closed from Recents, an alarm rang full screen on time and widget taps worked (HONOR MBH-N49,
+    // 3 Nov 2026); App launch isn't something the app can read. Older MagicOS and Huawei keep App launch until checked.
+    "honor" -> if (sdk >= 36) Maker("Your phone closes apps to save battery, which can stop reminders. One step keeps Often Enough running.", listOf(
+        honorBatteryStep,
+    )) else Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+        honorBatteryStep,
+        MakerStep("huawei-app-launch", Symbols.RocketLaunch, "Manage App launch yourself, all three on", "Settings › Battery › App launch › Often Enough") {
+            component("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
+        },
+    ))
+    "huawei" -> Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
         batteryStep,
         MakerStep("huawei-app-launch", Symbols.RocketLaunch, "Manage App launch yourself, all three on", "Settings › Battery › App launch › Often Enough") {
-            if (manufacturer.equals("honor", ignoreCase = true)) component("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
-            else component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
+            component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
         },
     ))
     else -> Maker("Your phone can put apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(
@@ -128,6 +152,37 @@ private fun stepDone(context: Context, step: MakerStep): Boolean = step.checked?
 fun remindersLeftToFix(context: Context, reminders: Boolean = true): Int =
     (if (!reminders || Reminders.canPost(context)) 0 else 1) + (if (!reminders || Reminders.canBeExact(context)) 0 else 1) +
         maker(Build.MANUFACTURER ?: "").steps.count { it.checked != null && !stepDone(context, it) }
+
+/**
+ * What a missed reminder's notice on Today asks for next, in this page's order; none, and the notice goes. Its button
+ * goes straight there (the user, 3 Nov 2026: "it should directly redirect them to that page"): Android's question,
+ * Alarms & reminders' own page, Keep Often Enough awake for battery, or a maker's own page. A step no app can read
+ * (Xiaomi's Autostart) counts once its page was opened from the notice ([opened]): that step may be what held the
+ * reminder back, and the notice is the one thing that points to it.
+ */
+internal sealed interface MissedFix {
+    object Notifications : MissedFix
+    object Exact : MissedFix
+    object Battery : MissedFix
+    class Step(val step: MakerStep) : MissedFix
+}
+
+/**
+ * Whether the notice can be dismissed (the user, 3 Nov 2026: "wherever we can't reliably detect … whether the
+ * permission is enabled … they should have dismissed … and … go away once they open it; where we can certainly tell
+ * … the card should stay until the phone reads the permission is gotten"): only for a step the app can't read.
+ */
+internal val MissedFix.canDismiss: Boolean get() = this is MissedFix.Step && step.checked == null
+
+internal fun missedFix(notifications: Boolean, exact: Boolean, phone: Maker, done: (MakerStep) -> Boolean, opened: Set<String>): MissedFix? = when {
+    !notifications -> MissedFix.Notifications
+    !exact -> MissedFix.Exact
+    else -> phone.steps.firstOrNull { if (it.checked != null) !done(it) else it.key !in opened }
+        ?.let { if (it.key == BATTERY_STEP) MissedFix.Battery else MissedFix.Step(it) }
+}
+
+internal fun missedFix(context: Context, opened: Set<String>): MissedFix? =
+    missedFix(Reminders.canPost(context), Reminders.canBeExact(context), maker(Build.MANUFACTURER ?: ""), { stepDone(context, it) }, opened)
 
 /**
  * 5.8.1, **Keep reminders coming** (Figma 804:192; flows on the Today and Settings pages; A40, A66, A70; Components —

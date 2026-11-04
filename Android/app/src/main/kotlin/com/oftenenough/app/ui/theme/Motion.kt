@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 
 /*
- * The app's one way of moving between screens (Android A110; Research/Research Reports/Motion and Transitions/). Every
+ * The app's one way of moving between screens (Android A112; Research/Research Reports/Motion and Transitions/). Every
  * number here was read from this phone's Android 15 system files or measured frame by frame in Google's own apps.
  *
  * - A page, and anything deeper or back up: Android's own page transition, the one Settings, Clock's settings, Files and

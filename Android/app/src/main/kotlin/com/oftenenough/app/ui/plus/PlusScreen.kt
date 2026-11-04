@@ -108,7 +108,7 @@ private class Feature(val icon: ImageVector, val title: String, val line: String
 
 private val unlimited = Feature(Symbols.AllInclusive, "Unlimited habits", "Free has ${HabitStore.FREE_HABIT_LIMIT}. Add as many as you like.")
 private val widgets = Feature(Symbols.Widgets, "Today’s list and This week widgets", "Your whole day on your home screen.")
-private val year = Feature(Symbols.CalendarMonth, "Your year at a glance", "Every habit by month and year, and each habit’s Year in Pixels.")
+private val year = Feature(Symbols.CalendarMonth, "Year in Pixels", "Every day of a habit’s year as one square, on its page.")
 private val checklist = Feature(Symbols.Checklist, "Checklist habits", "One habit, several steps. Tick each one off.")
 private val remind = Feature(Symbols.NotificationsActive, "Remind me again", "If a habit isn’t done, get another nudge later.")
 private val support = Feature(Symbols.Favorite, "Support me as a developer", "Help keep Often Enough going.")

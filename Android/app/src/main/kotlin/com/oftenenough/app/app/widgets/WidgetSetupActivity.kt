@@ -54,7 +54,6 @@ import androidx.glance.appwidget.ExperimentalGlanceRemoteViewsApi
 import androidx.glance.appwidget.GlanceRemoteViews
 import com.oftenenough.app.app.AppGraph
 import com.oftenenough.app.app.MainActivity
-import com.oftenenough.app.app.reminders.Reminders
 import com.oftenenough.app.data.DaySection
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.Habit
@@ -115,11 +114,8 @@ class WidgetSetupActivity : ComponentActivity() {
                         choice?.let { WidgetDisk.setChoice(this@WidgetSetupActivity, widgetId, it) }
                         setResult(RESULT_OK, Intent().putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId))
                         finish()
-                        // A109: battery matters from the first widget on, so the first one added while it isn't
-                        // Unrestricted opens Keep Often Enough awake (once; Today's card asks after that).
-                        if (Reminders.askOnce(this@WidgetSetupActivity, "widget"))
-                            startActivity(Intent(this@WidgetSetupActivity, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                                .putExtra(MainActivity.WIDGET_ROUTE, "battery"))
+                        // Nothing opens after: the launcher places the widget, and Today's card asks for battery
+                        // (the user, 3 Nov 2026: a page opening on its own is "wrong and unexpected").
                     }
                 }
             }

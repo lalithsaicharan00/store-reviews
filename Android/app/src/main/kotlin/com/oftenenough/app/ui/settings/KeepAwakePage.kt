@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -40,6 +41,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.oftenenough.app.R
 import com.oftenenough.app.app.reminders.Reminders
+import com.oftenenough.app.app.reminders.loosensExactAlarms
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.newhabit.FormPage
@@ -89,10 +91,25 @@ fun KeepAwakePage(onBack: () -> Unit, onDone: () -> Unit) {
                         // One UI: the row's words open the three choices at once, with no switch between (Galaxy A57, One UI 8, 3 Nov 2026).
                         Step(2, "On Battery, tap the Allow background usage row: its words, not its switch.", R.drawable.keep_awake_samsung_step2)
                         Step(3, "Choose Unrestricted, then come back here.", R.drawable.keep_awake_samsung_step3)
+                    } else if (honor()) {
+                        // MagicOS: Android's Battery optimisation list, where Don't allow is Unrestricted (HONOR MBH-N49,
+                        // MagicOS 10, 3 Nov 2026). "Allowed" there means the app is optimised.
+                        Step(2, "On Battery optimisation, tap Not allowed at the top and choose All apps.", R.drawable.keep_awake_honor_step2)
+                        Step(3, "Tap Often Enough.", R.drawable.keep_awake_honor_step3)
+                        Step(4, "Choose Don’t allow, tap OK, then come back here.", R.drawable.keep_awake_honor_step4)
+                    } else if (Build.VERSION.SDK_INT >= 34 && Build.MANUFACTURER.lowercase() in setOf("oppo", "realme", "oneplus")) {
+                        // ColorOS opens the three choices at once, no row or switch between (OPPO CPH2557, ColorOS 14, 3 Nov 2026).
+                        Step(2, "On App battery usage, choose Unrestricted, then come back here.", R.drawable.keep_awake_oppo_step2)
                     } else if (Build.VERSION.SDK_INT >= 34) {
-                        Step(2, "On App battery usage, tap the Allow background usage row: its words, not its switch.", R.drawable.keep_awake_step2)
-                        Step(3, "Turn on Allow background usage.", R.drawable.keep_awake_step3)
-                        Step(4, "Choose Unrestricted, then come back here.", R.drawable.keep_awake_step4)
+                        // HyperOS has the Pixel's four steps and words on its own-looking screens (Xiaomi 14, HyperOS 2, 3 Nov 2026).
+                        val xiaomi = Build.MANUFACTURER.lowercase() in setOf("xiaomi", "redmi", "poco")
+                        Step(2, "On App battery usage, tap the Allow background usage row: its words, not its switch.",
+                            if (xiaomi) R.drawable.keep_awake_xiaomi_step2 else R.drawable.keep_awake_step2)
+                        Step(3, "Turn on Allow background usage.", if (xiaomi) R.drawable.keep_awake_xiaomi_step3 else R.drawable.keep_awake_step3)
+                        Step(4, "Choose Unrestricted, then come back here.", if (xiaomi) R.drawable.keep_awake_xiaomi_step4 else R.drawable.keep_awake_step4)
+                    } else if (loosensExactAlarms()) {
+                        // XOS calls the page Battery Usage (Infinix X6815D, XOS 13, Android 13, 4 Nov 2026).
+                        Step(2, "On Battery Usage, choose Unrestricted, then come back here.", R.drawable.keep_awake_infinix_step2)
                     } else {
                         Step(2, "On App battery usage, choose Unrestricted, then come back here.")
                     }
@@ -124,7 +141,8 @@ private fun Step(number: Int, words: String, @DrawableRes shot: Int? = null) {
             Text(words, Modifier.weight(1f), style = AppType.bodyLarge, color = s.onSurface)
         }
         if (shot != null) Image(painterResource(shot), "The phone's settings for step $number, what to tap boxed in red",
-            Modifier.fillMaxWidth().clip(RoundedCornerShape(24.dp)).border(1.dp, s.outlineVariant, RoundedCornerShape(24.dp)),
+            // No wider than a phone's: on a foldable's open screen (HONOR MBH-N49) a full-width picture filled the page.
+            Modifier.align(Alignment.CenterHorizontally).widthIn(max = 400.dp).fillMaxWidth().clip(RoundedCornerShape(24.dp)).border(1.dp, s.outlineVariant, RoundedCornerShape(24.dp)),
             contentScale = ContentScale.FillWidth)
     }
 }

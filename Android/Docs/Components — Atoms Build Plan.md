@@ -1323,8 +1323,9 @@ What each atom changed, newest last.
   - A day with a note had a dot in its square's corner; gone (A60).
   - The footnote "Tap a square to see its day." was missing.
   Noted, not changed:
-  - The Free plan isn't switched on: A73 makes the year at a glance Plus (this card, and the Habits page's Month and
+  - The Free plan isn't switched on: A73 made the year at a glance Plus (this card, and the Habits page's Month and
     Year), which is one change with the Plus screen and Habits & Tasks (section 5). The card is ready for it.
+    **Corrected 4 Nov 2026 (A110): only this card is Plus; the Habits page's Month and Year are free.**
   - Figma's grid shows no today ring; the Day cell keeps its Today ring (3.6).
   - The blur is Android 12's and later; on Android 11 a locked card shows the scrim and the prompt without it.
   - **Built:** run 40767915907 (Android #114, commit db8856e) passed: assembleDebug, unit tests and lint.
