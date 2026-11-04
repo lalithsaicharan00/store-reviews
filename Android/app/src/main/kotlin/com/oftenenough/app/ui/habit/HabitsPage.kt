@@ -106,6 +106,7 @@ import com.oftenenough.app.ui.progress.rememberToday
 import com.oftenenough.app.ui.theme.AppType
 import com.oftenenough.app.ui.theme.tabular
 import com.oftenenough.app.ui.theme.appColors
+import com.oftenenough.app.ui.theme.arrival
 import com.oftenenough.app.ui.today.BackToButton
 import kotlinx.coroutines.launch
 
@@ -283,7 +284,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                 PrimaryTabs(tab, listOf("Habits", "Tasks"), { tab = it }, containerColor = bar,
                     tag = { i -> if (i == 0) "habits-tab-habits" else "habits-tab-tasks" })
             }
-            Box(Modifier.weight(1f).fillMaxWidth()) {
+            Box(Modifier.weight(1f).fillMaxWidth().arrival(if (searching) -1 else tab)) {
                 when {
                     searching -> PageSearch(store, query, today, sections,
                         // Any habit opens its details; ← comes back to the search as it was, the keyboard down (Figma
@@ -305,7 +306,7 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                                     key == "period" -> Box(Modifier.onSizeChanged { periodPx = it.height }) { PeriodRow(snap, Color.Transparent, move) }
                                     key.startsWith("title-") -> CardSectionTitle(sections.first { "title-" + it.key == key }.title, first = keys.getOrNull(2) == key)
                                     key.startsWith("card-") -> cards[key.removePrefix("card-")]?.let { card ->
-                                        HabitCard(card, snap, store, nav, menu, Modifier.padding(horizontal = 16.dp, vertical = 6.dp))
+                                        HabitCard(card, snap, store, nav, menu, Modifier.arrival(range to anchor).padding(horizontal = 16.dp, vertical = 6.dp))
                                     }
                                     key == "archived" -> Box(Modifier.padding(start = 16.dp, end = 16.dp, top = 14.dp, bottom = 6.dp)) {
                                         ArchivedRow(archived.size, enabled = true) { nav.archived() }
@@ -317,8 +318,8 @@ fun HabitsPage(store: HabitStore, nav: HabitsNav) {
                             }
                         }
                         if (pinned) PeriodRow(snap, bar, move)
-                        if (!snap.isRunning) Box(Modifier.align(Alignment.BottomCenter).navigationBarsPadding()) {
-                            BackToButton("Back to this ${range.noun}", "habits-back-to-now") { anchor = null }
+                        Box(Modifier.align(Alignment.BottomCenter).navigationBarsPadding()) {
+                            com.oftenenough.app.ui.today.ComesAndGoes(!snap.isRunning) { BackToButton("Back to this ${range.noun}", "habits-back-to-now") { anchor = null } }
                         }
                     }
                 }

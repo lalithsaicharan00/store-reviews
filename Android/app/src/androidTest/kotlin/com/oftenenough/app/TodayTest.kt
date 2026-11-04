@@ -103,6 +103,15 @@ class TodayTest {
      * Milestones (Android/Docs/Milestones): first come, first served, within the day's limits. The days demo has Floss
      * at 29 days, Take vitamins at 13, Water at its 200th glass in total today, and Smoking 30 days clean since yesterday.
      */
+    /** Rows sit 2 dp apart: a wrapper round a lazy item that stacks its children lost the gap (Motion, 4 Nov 2026). */
+    @Test fun rowsKeepTheirGap() {
+        launch("design")
+        val meds = compose.onNode(hasTestTag("row-Meds")).fetchSemanticsNode().boundsInRoot
+        val stretch = compose.onNode(hasTestTag("row-Stretch")).fetchSemanticsNode().boundsInRoot
+        val density = compose.onNode(hasTestTag("row-Meds")).fetchSemanticsNode().layoutInfo.density.density
+        assertEquals("2 dp between Meds and Stretch", 2f, (stretch.top - meds.bottom) / density, 0.6f)
+    }
+
     @Test fun milestonesTakeThePopUpThenTheBarThenTheRow() {
         launch(demo = "days")
         // Judged at the day's end: the band, never a pop-up when the app opens (R.9). Quitting is below the fold.

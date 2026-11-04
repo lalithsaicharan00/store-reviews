@@ -158,7 +158,7 @@ fun KeepRemindersComingPage(store: HabitStore, onBatteryHow: () -> Unit, onBack:
     val done = remember(refresh) { phone.steps.associate { st -> st.key to stepDone(context, st) } }
     val anyReminder = store.habits.any(::hasReminders)
 
-    FormPage("Keep reminders coming", onBack = onBack) {
+    FormPage("Keep reminders coming", onBack = onBack, ownBack = false) {
         Column(Modifier.padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             Text(if (anyReminder) keepLead(phone, notifications, exact, phone.steps.count { it.checked != null && done[it.key] != true }) else "No habit has a reminder yet. When one does, these steps make sure it comes on time. You can do them now or later.",
                 Modifier.padding(horizontal = 16.dp).semantics { testTag = "keep-reminders-lead" }, style = AppType.bodyLarge, color = s.onSurfaceVariant)

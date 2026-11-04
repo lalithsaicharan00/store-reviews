@@ -11,7 +11,6 @@ import com.oftenenough.app.ui.components.AppSnackbarHost
 import com.oftenenough.app.ui.components.AppMenuItem
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppTopBar
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -77,7 +76,6 @@ fun ArchivedHabitsScreen(store: HabitStore, nav: ArchivedNav, tasks: Boolean = f
     val snackbar = remember { SnackbarHostState() }
     var hidden by remember { mutableStateOf(emptySet<String>()) }
     var deleting by remember { mutableStateOf<Habit?>(null) }
-    BackHandler { nav.back() }
     val archived = store.habits.filter { it.archived && (it.kind == HabitKind.Task) == tasks && it.id !in hidden }
         .sortedByDescending { store.archivedOn[it.id] ?: Int.MIN_VALUE }
     fun say(text: String, onUndo: () -> Unit) {

@@ -100,7 +100,6 @@ fun driveEmail(center: BackupCenter): String? = center.link.email
 @Composable
 private fun TitledPage(title: String, onBack: () -> Unit, tag: String, content: @Composable androidx.compose.foundation.layout.ColumnScope.() -> Unit) {
     val c = appColors
-    BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize().background(c.screen).statusBarsPadding().semantics { testTag = tag }) {
         AppTopBar(title, navigationIcon = {
             NavigationIcon(Symbols.ArrowBack, "Back", onBack, Modifier.semantics { testTag = "page-back" })

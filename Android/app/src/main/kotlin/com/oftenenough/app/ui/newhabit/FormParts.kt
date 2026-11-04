@@ -62,9 +62,12 @@ import com.oftenenough.app.ui.theme.appColors
 @Composable
 fun FormPage(
     title: String, onBack: () -> Unit, close: Boolean = false, actions: @Composable () -> Unit = {},
-    scrolls: Boolean = true, content: @Composable ColumnScope.() -> Unit,
+    scrolls: Boolean = true,
+    /** False where it's a page of the NavHost's, which takes it back with the back swipe's preview. */
+    ownBack: Boolean = true,
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    BackHandler(onBack = onBack)
+    if (ownBack) BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize().background(androidx.compose.material3.MaterialTheme.colorScheme.surfaceContainer).imePadding()) {
         AppTopBar(
             title,

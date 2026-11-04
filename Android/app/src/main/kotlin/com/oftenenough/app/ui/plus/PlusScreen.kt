@@ -153,6 +153,8 @@ fun PlusScreen(
     reason: PlusReason, store: HabitStore, plus: PlusStore, onBack: () -> Unit, onBought: () -> Unit,
     /** Restoring a habit past the free five says "Restore a 6th habit" (the same screen, Archived habits' Restore). */
     title: String? = null,
+    /** False where it's a page of its own: the NavHost takes it back, with the back swipe's preview. */
+    ownBack: Boolean = true,
 ) {
     val s = MaterialTheme.colorScheme
     val activity = LocalActivity.current
@@ -166,7 +168,7 @@ fun PlusScreen(
     // Opened on the free plan: once Play turns Plus on (bought here, or a waiting payment confirmed), the caller goes on.
     val startedFree = remember { !owned }
     LaunchedEffect(owned) { if (startedFree && owned) onBought() }
-    BackHandler(onBack = onBack)
+    if (ownBack) BackHandler(onBack = onBack)
 
     fun buy() {
         val a = activity ?: return

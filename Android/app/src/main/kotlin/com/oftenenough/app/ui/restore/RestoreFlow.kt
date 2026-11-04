@@ -17,6 +17,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.BackHandler
+import com.oftenenough.app.ui.theme.PageSwitch
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -301,7 +302,9 @@ fun RestoreFlow(
 
     // ---------------------------------------------------------------- The screens
 
-    when (step) {
+    // Its steps come in as the app's pages do (Motion.kt): Where is it? first, everything else one step on.
+    PageSwitch(step, { if (it == WHERE) 0 else 1 }) { at ->
+    when (at) {
         // 582:7893 · Restoring your habits, with Cancel the whole time (Figma draws it on every Restoring): the
         // phone ends as it was, whether a file's or Google Drive's copy was coming in.
         RESTORING -> WaitScreen(
@@ -401,6 +404,7 @@ fun RestoreFlow(
                     Modifier.semantics { testTag = "restore-ask" }, confirmTag = "restore-ask-confirm")
             }
         }
+    }
     }
 }
 

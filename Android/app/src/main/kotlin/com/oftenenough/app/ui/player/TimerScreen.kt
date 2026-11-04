@@ -1,7 +1,6 @@
 package com.oftenenough.app.ui.player
 
 import com.oftenenough.app.ui.theme.Symbols
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -81,7 +80,6 @@ fun TimerScreen(
     val scope = rememberCoroutineScope()
     val lifecycle = LocalLifecycleOwner.current.lifecycle
 
-    BackHandler(onBack = onClose)
     DisposableEffect(view, running) {
         view.keepScreenOn = running
         onDispose { view.keepScreenOn = false }

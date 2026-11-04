@@ -88,6 +88,7 @@ import com.oftenenough.app.ui.components.Segment
 import com.oftenenough.app.ui.components.SegmentedList
 import com.oftenenough.app.ui.record.DiscardDialog
 import com.oftenenough.app.ui.record.GoalNumber
+import com.oftenenough.app.ui.theme.PageSwitch
 import com.oftenenough.app.ui.theme.appColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
@@ -128,11 +129,6 @@ fun NewHabitFlow(
     // habit, built, quit or cut down, opens Plus the moment it's chosen; a task never does. Its ← goes back to What do you
     // want to do? (or leaves, from the Habits page's +); bought, it carries on where the person was going. No Make room.
     var afterPlus by rememberSaveable { mutableStateOf("") }
-    if (room == "sixth") {
-        PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { if (roomFirst) onClose() else room = "" },
-            onBought = { room = ""; if (afterPlus.isNotEmpty()) step = afterPlus; afterPlus = ""; onPlusOn() })
-        return
-    }
     fun habitStep(next: String) { if (store.canAddHabit) step = next else { afterPlus = next; room = "sixth" } }
     // Checklist on the free plan opened Plus (A73): once it's bought, the checklist form opens straight away (Figma's
     // "A checklist on the free plan", 4).
@@ -141,28 +137,32 @@ fun NewHabitFlow(
         if (step != "build") wantsChecklist = false
         else if (wantsChecklist && store.isPlus) { wantsChecklist = false; step = "form:${ItemType.CHECKLIST.name}" }
     }
+    // Each step comes in as the app's pages do (Motion.kt); what's chosen stays above, so going back keeps it.
+    PageSwitch(if (room == "sixth") room else step, { flowDepth(it) }) { at ->
     when {
-        step == "choose" -> {
+        at == "sixth" -> PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { if (roomFirst) onClose() else room = "" },
+            onBought = { room = ""; if (afterPlus.isNotEmpty()) step = afterPlus; afterPlus = ""; onPlusOn() })
+        at == "choose" -> {
             BackHandler(onBack = onClose)
             NewChoices(onClose, onBuild = { habitStep("build") }, onQuit = { habitStep("quit") }, onTask = { step = "task" })
         }
-        step == "task" -> {
+        at == "task" -> {
             // From Tasks' +, back closes; from What do you want to do?, it goes back there.
             val back = { if (task) onClose() else step = "choose" }
             BackHandler(onBack = back)
             TaskKinds(back) { r -> repeats = r; step = "form:${ItemType.TASK.name}" }
         }
-        step == "build" -> {
+        at == "build" -> {
             BackHandler { step = "choose" }
             TypeChoices("How do you want to track it?", listOf(ItemType.CHECK, ItemType.AMOUNT, ItemType.TIME, ItemType.CHECKLIST), { step = "choose" },
                 plus = store.isPlus, onPlus = { wantsChecklist = true; onPlus(PlusReason.CHECKLIST) }) { step = "form:${it.name}" }
         }
-        step == "quit" -> {
+        at == "quit" -> {
             BackHandler { step = "choose" }
             TypeChoices("What do you want to do?", listOf(ItemType.QUIT, ItemType.CUT_DOWN), { step = "choose" }) { step = "form:${it.name}" }
         }
         else -> {
-            val type = ItemType.valueOf(step.removePrefix("form:"))
+            val type = ItemType.valueOf(at.removePrefix("form:"))
             // From a copy, back closes the flow; the step itself never goes blank, since this screen can be drawn
             // once more while it leaves (an empty step made `ItemType.valueOf("")` throw).
             val back = {
@@ -173,6 +173,14 @@ fun NewHabitFlow(
                 repeats = repeats.takeIf { type == ItemType.TASK && copyOf == null }, onPlusOn = onPlusOn)
         }
     }
+    }
+}
+
+/** How deep a step of [NewHabitFlow] sits, for which way it moves: the first choice, then the kinds, then the form. */
+private fun flowDepth(step: String) = when {
+    step == "choose" -> 0
+    step.startsWith("form:") -> 2
+    else -> 1
 }
 
 /**
@@ -271,7 +279,9 @@ fun HabitForm(
         add()
     }
 
-    when (pages.lastOrNull()) {
+    // The form's pages come in as the app's pages do (Motion.kt); what's typed and chosen stays above them.
+    PageSwitch(pages.lastOrNull() to pages.size, { it.second }) { (page, _) ->
+    when (page) {
         Page.HOW_MUCH -> when {
             form.timed -> HowLongPage(form, ::back)
             form.type == ItemType.CUT_DOWN -> LimitPage(form, { open(Page.UNIT) }, ::back)
@@ -291,6 +301,7 @@ fun HabitForm(
         Page.SIXTH -> PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = ::back,
             onBought = { pages = emptyList(); onPlusOn(); add() })
         null -> FormBody(form, store, typed, describing, scroll, nameFocus, ::open, ::close, ::save)
+    }
     }
     if (discard) DiscardDialog(if (form.editing) "Discard your changes?" else if (form.type == ItemType.TASK) "Discard this task?" else "Discard this habit?",
         // Figma's Discard this habit? / Discard this task?: "What you’ve typed won’t be saved." (QA, 1 Nov 2026).

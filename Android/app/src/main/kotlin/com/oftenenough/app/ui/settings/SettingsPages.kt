@@ -71,7 +71,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun ChoicePage(title: String, intro: String, options: List<String>, selected: Int, tag: String, onBack: () -> Unit, onPick: (Int) -> Unit) {
     val s = MaterialTheme.colorScheme
-    FormPage(title, onBack = onBack) {
+    FormPage(title, onBack = onBack, ownBack = false) {
         Column(Modifier.padding(top = 8.dp, bottom = 16.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
             Text(intro, Modifier.padding(horizontal = 16.dp), style = AppType.bodyLarge, color = s.onSurfaceVariant)
             SegmentedList {
@@ -135,7 +135,7 @@ fun ThemePage(prefs: Prefs, onBack: () -> Unit) {
 fun TimesOfDayPage(store: HabitStore, onEdit: (String?) -> Unit, onBack: () -> Unit) {
     val s = MaterialTheme.colorScheme
     Box(Modifier.fillMaxSize()) {
-        FormPage("Times of day", onBack = onBack) {
+        FormPage("Times of day", onBack = onBack, ownBack = false) {
             // Under the content, room for the FAB over it (56 and its 16), so the footer is never covered.
             Column(Modifier.padding(top = 8.dp, bottom = 72.dp), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                 val timed = store.timedSections()

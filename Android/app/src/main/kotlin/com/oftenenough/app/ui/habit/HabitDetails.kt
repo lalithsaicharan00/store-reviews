@@ -22,7 +22,6 @@ import com.oftenenough.app.ui.components.MenuDivider
 import com.oftenenough.app.ui.components.PrimaryTabs
 import com.oftenenough.app.ui.components.scrolledTopBarColor
 import com.oftenenough.app.ui.components.AppTopBar
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -85,7 +84,9 @@ import com.oftenenough.app.data.isTask
 import com.oftenenough.app.ui.components.HabitIcon
 import com.oftenenough.app.ui.newhabit.DayDialog
 import com.oftenenough.app.ui.theme.AppType
+import com.oftenenough.app.ui.theme.PageSwitch
 import com.oftenenough.app.ui.theme.appColors
+import com.oftenenough.app.ui.theme.arrivalBelow
 import kotlinx.coroutines.launch
 
 // Habit details (Figma 1373:2, 19 Oct 2026; the iPhone's HabitPageView.swift): a header (icon, name, the goal in words, the
@@ -166,7 +167,6 @@ private const val SHOW_PERCENTAGES = "progress.showPercentages"
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav, onBack: () -> Unit) {
-    BackHandler(onBack = onBack)
     val c = appColors
     val habit = store.habits.firstOrNull { it.id == habitId }
     if (habit == null) {
@@ -249,24 +249,28 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
     // coming back from one isn't a change of tab, so the list stays where it was (QA, 1 Nov 2026: ← from Streaks
     // jumped to the tabs).
     var listTab by remember(habitId) { mutableStateOf(shown) }
-    if (howMilestones) {
-        // Over All milestones: ← goes back there.
-        HowMilestonesWorkPage(habit.kind == HabitKind.Quit || habit.atMost) { howMilestones = false }
-        return
-    }
-    if (allMilestones && progress != null) {
-        AllMilestonesPage(habit.name, progress.second.shown(showStreaks), habit.color, onHowTheyWork = { howMilestones = true }) { allMilestones = false }
-        return
-    }
-    if (allStreaks) {
-        StreaksPage(habit, store, today, revision) { allStreaks = false }
-        return
-    }
+    // All milestones keeps its numbers while it slides away, once the tab under it no longer asks for them.
+    val lastProgress = remember(habitId) { arrayOfNulls<Pair<HabitOverall?, HabitMilestones>>(1) }
+    if (progress != null) lastProgress[0] = progress
     val months = if (shown == HabitTab.HISTORY) model.history(store, habit, revision, today) else emptyList()
-    if (searching) {
-        HistorySearchPage(habit.name, months, habit.color, onBack = { searching = false }) { day -> nav.openDay(habit, day) }
-        return
+    val over = when {
+        howMilestones -> HabitOver.HOW_MILESTONES
+        allMilestones && progress != null -> HabitOver.MILESTONES
+        allStreaks -> HabitOver.STREAKS
+        searching -> HabitOver.SEARCH
+        else -> null
     }
+    // The pages it opens over itself come in as the app's pages do (Motion.kt); the list keeps its place underneath.
+    PageSwitch(over, { it?.depth ?: 0 }) { at ->
+    when (at) {
+        // Over All milestones: ← goes back there.
+        HabitOver.HOW_MILESTONES -> HowMilestonesWorkPage(habit.kind == HabitKind.Quit || habit.atMost) { howMilestones = false }
+        HabitOver.MILESTONES -> lastProgress[0]?.let { held ->
+            AllMilestonesPage(habit.name, held.second.shown(showStreaks), habit.color, onHowTheyWork = { howMilestones = true }) { allMilestones = false }
+        }
+        HabitOver.STREAKS -> StreaksPage(habit, store, today, revision) { allStreaks = false }
+        HabitOver.SEARCH -> HistorySearchPage(habit.name, months, habit.color, onBack = { searching = false }) { day -> nav.openDay(habit, day) }
+        null -> {
     val earlier = remember(habit, store.habits) { store.earlierOf(habit.id) }
     val barColor = if (collapsed) scrolledTopBarColor else MaterialTheme.colorScheme.surfaceContainer
     // Nothing logged is no progress yet, except for a quit or cut-down habit once a day has ended: a day with nothing
@@ -294,7 +298,10 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
                 },
                 containerColor = barColor,
             )
-            LazyColumn(Modifier.fillMaxWidth().weight(1f).semantics { testTag = "habit-details-list" }, state = listState) {
+            LazyColumn(Modifier.fillMaxWidth().weight(1f).semantics { testTag = "habit-details-list" }
+                // Another tab arrives under the tabs, which stay where they are.
+                .arrivalBelow(shown, MaterialTheme.colorScheme.surfaceContainer) { listState.layoutInfo.visibleItemsInfo.firstOrNull { it.key == "tabs" }?.let { it.offset + it.size } ?: 0 },
+                state = listState) {
                 item(key = "header") { Header(habit, sentence, store.descriptions[habit.id]) }
                 if (tabs.size > 1) stickyHeader(key = "tabs") {
                     PrimaryTabs(tabs.indexOf(shown), tabs.map { it.title }, { tab = tabs[it] },
@@ -380,7 +387,13 @@ fun HabitDetailsScreen(habitId: String, store: HabitStore, nav: HabitDetailsNav,
             "The free plan keeps ${HabitStore.FREE_HABIT_LIMIT} habits going at once. Archive one, or get Plus, to bring ${habit.name} back.",
             "OK", { noRoom = false }, { noRoom = false }, dismiss = null)
     }
+        }
+    }
+    }
 }
+
+/** What Habit details opens over itself, and how deep it sits. */
+private enum class HabitOver(val depth: Int) { MILESTONES(1), STREAKS(1), SEARCH(1), HOW_MILESTONES(2) }
 
 /**
  * What the habit is, in a glance (Figma's Large title · habit, 1020:4052): its icon (56, the habit's colour), 16, its name
