@@ -1440,7 +1440,7 @@ all would be good"; fix the fonts and hierarchy; the name may change; research i
      Often Enough, say you've used it before, then scan the code or type its 6 digits. Both phones need the internet.
   8. **Get Plus back:** Plus bought with this Google account comes back by itself. Otherwise, in ≡ › Plus & Account,
      Sign in, or tap Restore from Google Play.
-- **Before release:** lalithsaicharan00@gmail.com must exist and be answered (Build Plan #72). An answer that names a
+- **Before release:** support@oftenenough.com must exist and be answered (Build Plan #72). An answer that names a
   button changes with that button.
 
 ### Help & Feedback: email only, 15 Oct 2026 (the user, after the questions were designed)
@@ -1455,12 +1455,12 @@ free plan; Intercom $29–132 a seat a month) and hold people's messages.
 
 - **1 · Help & Feedback:** **Write to us** · **Report a problem** (`bug_report`, *Something isn't working*) and
   **Suggest an idea** (`lightbulb`, *A feature you'd like to see*), Plus & Account's grouped rows; the footer *Both open
-  your email app, to lalithsaicharan00@gmail.com. We read every message. Your app and Android versions are added for you;
+  your email app, to support@oftenenough.com. We read every message. Your app and Android versions are added for you;
   your habits never are.*
-- **1.1 · the email app's new message** (its own screen, shown for what we fill in): To lalithsaicharan00@gmail.com,
+- **1.1 · the email app's new message** (its own screen, shown for what we fill in): To support@oftenenough.com,
   Subject *Often Enough: a problem* (*… an idea* from Suggest), the cursor at the top, and our last line *Often Enough
   1.0 (free) · Android 16 · Pixel 9*. Built with `ACTION_SENDTO` and a `mailto:` address, so only email apps answer.
-- **1.2 · No email app** (dialog over the page, from either row): *Write to us at lalithsaicharan00@gmail.com from any email
+- **1.2 · No email app** (dialog over the page, from either row): *Write to us at support@oftenenough.com from any email
   you use.* · Close · Copy address (Android shows its own "Copied" notice).
 - Arrows from both rows to 1.1, and from either row to 1.2. Before release, the mailbox must exist and be answered
   (Build Plan #72). The iPhone's Help is cut to the same two rows when it's updated to match.
