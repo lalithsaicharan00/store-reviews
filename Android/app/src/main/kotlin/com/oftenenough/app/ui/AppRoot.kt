@@ -211,6 +211,7 @@ private fun AppMain(
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
     val motion = rememberPageMotion()
+    val buttons = com.oftenenough.app.ui.components.backIsAButton()
     val drawer = rememberDrawerState(DrawerValue.Closed)
     val openMenu: () -> Unit = { rootScope.launch { drawer.open() } }
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
@@ -221,8 +222,15 @@ private fun AppMain(
         exitTransition = { BackSwipe.holding = false; if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.exit },
         popEnterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.popEnter },
         popExitTransition = { BackSwipe.holding = false; if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.popExit },
-        predictivePopEnterTransition = { motion.swipeEnter },
-        predictivePopExitTransition = { BackSwipe.holding = true; motion.swipeExit },
+        // A press of the bottom arrow is the plain Back the top arrow is, and only a real swipe follows a finger: Android 15
+        // reports the press as a swipe that never moves, and the preview's straight 450 ms played with no finger (A115).
+        predictivePopEnterTransition = {
+            if (!buttons) motion.swipeEnter else if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.popEnter
+        },
+        predictivePopExitTransition = {
+            BackSwipe.holding = !buttons
+            if (!buttons) motion.swipeExit else if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.popExit
+        },
         sizeTransform = null) {
         page(Routes.TODAY) { e ->
             TodayScreen(store, prefs, todayNav(nav, openMenu), todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
