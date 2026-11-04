@@ -106,6 +106,9 @@ class TodayTest {
     /** Rows sit 2 dp apart: a wrapper round a lazy item that stacks its children lost the gap (Motion, 4 Nov 2026). */
     @Test fun rowsKeepTheirGap() {
         launch("design")
+        // GitHub's slower emulator hadn't drawn the demo yet when this read it (run 41828553041).
+        showRow("Meds")
+        waitFor(hasTestTag("row-Stretch"), "Stretch under Meds")
         val meds = compose.onNode(hasTestTag("row-Meds")).fetchSemanticsNode().boundsInRoot
         val stretch = compose.onNode(hasTestTag("row-Stretch")).fetchSemanticsNode().boundsInRoot
         val density = compose.onNode(hasTestTag("row-Meds")).fetchSemanticsNode().layoutInfo.density.density
