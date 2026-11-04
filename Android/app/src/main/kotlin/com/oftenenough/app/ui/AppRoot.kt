@@ -75,6 +75,7 @@ import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
 import androidx.compose.ui.input.pointer.pointerInput
 import com.oftenenough.app.ui.components.ReportMenu
+import com.oftenenough.app.ui.theme.BackSwipe
 import com.oftenenough.app.ui.theme.appColors
 import com.oftenenough.app.ui.theme.rememberPageMotion
 import com.oftenenough.app.ui.theme.stepsAside
@@ -217,11 +218,11 @@ private fun AppMain(
     NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen),
         // Android's own page transition; between the menu's own places, fade through (Motion.kt, Android A112).
         enterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.enter },
-        exitTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.exit },
+        exitTransition = { BackSwipe.holding = false; if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.exit },
         popEnterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.popEnter },
-        popExitTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.popExit },
+        popExitTransition = { BackSwipe.holding = false; if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.popExit },
         predictivePopEnterTransition = { motion.swipeEnter },
-        predictivePopExitTransition = { motion.swipeExit },
+        predictivePopExitTransition = { BackSwipe.holding = true; motion.swipeExit },
         sizeTransform = null) {
         page(Routes.TODAY) { e ->
             TodayScreen(store, prefs, todayNav(nav, openMenu), todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)

@@ -133,6 +133,15 @@ class PageMotion(private val slide: Int) {
     }
 }
 
+/**
+ * Whether the page leaving now is held by a back swipe. Only the NavHost's transitions know, and they say so as each one
+ * starts: Compose keeps its own `Transition.isSeeking` to itself.
+ */
+object BackSwipe {
+    var holding = false
+    val leaving: () -> Boolean = { holding }
+}
+
 /** The app's [PageMotion] for this phone. */
 @Composable
 fun rememberPageMotion(): PageMotion {
@@ -162,10 +171,11 @@ fun <T> PageSwitch(target: T, depth: (T) -> Int, modifier: Modifier = Modifier, 
  */
 @Composable
 fun Modifier.stepsAside(transition: Transition<EnterExitState>): Modifier {
+    val swiped = BackSwipe.leaving
     val gone by remember(transition) {
-        derivedStateOf { transition.targetState == EnterExitState.PostExit && !transition.isSeeking && transition.playTimeNanos > PAGE_GONE_NANOS }
+        derivedStateOf { transition.targetState == EnterExitState.PostExit && !swiped() && transition.playTimeNanos > PAGE_GONE_NANOS }
     }
-    val leaving = transition.targetState == EnterExitState.PostExit && !transition.isSeeking
+    val leaving = transition.targetState == EnterExitState.PostExit && !swiped()
     val focus = LocalFocusManager.current
     val focused = remember { booleanArrayOf(false) }
     LaunchedEffect(leaving) { if (leaving && focused[0]) focus.clearFocus(force = true) }
