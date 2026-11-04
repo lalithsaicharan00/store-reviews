@@ -127,3 +127,14 @@ Frame times over these runs: median 7–12 ms; 95th percentile 13–44 ms; 99th 
 - **The back swipe:** held half way on the emulator with `input motionevent`, then released. The page shrinks and follows the finger, the page under it comes in, and release finishes the move.
 - **Edge cases on the phone:** three quick Backs land on Today, never a blank screen. The keyboard stays up from the form to How much, whose field takes over the focus.
 
+## Added the same day: the bottom Back arrow
+
+The user pressed the bottom arrow on a Settings page and it moved out "very weirdly slowly".
+
+- **What was happening:** on Android 15 a real press of the arrow goes through the system's back animation. The app gets no key, and Android reports a left-edge swipe that never moves. The page played the preview meant to follow a finger: its 450 ms run in a straight line, with nothing to follow.
+- **Why the checks missed it:** `input keyevent 4` and `input tap` are instant and take the plain path. Only a held press (`input swipe 240 2340 240 2340 150`) shows it. My first fix, catching the key, changed nothing, because there is no key.
+- **The fix:** with buttons on screen there is no edge swipe, so Back is the plain page exit; gesture navigation keeps the preview (`backIsAButton`, Android A115).
+- **Measured on the phone:** before, 468 ms in a straight line, against 355 ms for the top arrow. After, 399–411 ms on the normal curve on all six Settings pages. Android's own Settings is about 410 ms measured the same way.
+- **Everywhere else:** the same held press landed correctly on every page, sheet and dialog tried, including the Day sheet (135 ms), the form's pages (409–445 ms), Arrange (401 ms), the routine player (309 ms), the drawer (102–125 ms), Habit details (413 ms), Plus (388 ms) and Backup (401 ms).
+- **Not checked after this fix:** a real swipe on a gesture-navigation phone. Those were last checked on the emulator before the fix; the code path for gestures is unchanged.
+
