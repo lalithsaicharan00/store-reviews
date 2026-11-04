@@ -41,6 +41,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.oftenenough.app.R
 import com.oftenenough.app.app.reminders.Reminders
+import com.oftenenough.app.app.reminders.loosensExactAlarms
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.ButtonSize
 import com.oftenenough.app.ui.newhabit.FormPage
@@ -106,6 +107,9 @@ fun KeepAwakePage(onBack: () -> Unit, onDone: () -> Unit) {
                             if (xiaomi) R.drawable.keep_awake_xiaomi_step2 else R.drawable.keep_awake_step2)
                         Step(3, "Turn on Allow background usage.", if (xiaomi) R.drawable.keep_awake_xiaomi_step3 else R.drawable.keep_awake_step3)
                         Step(4, "Choose Unrestricted, then come back here.", if (xiaomi) R.drawable.keep_awake_xiaomi_step4 else R.drawable.keep_awake_step4)
+                    } else if (loosensExactAlarms()) {
+                        // XOS calls the page Battery Usage (Infinix X6815D, XOS 13, Android 13, 4 Nov 2026).
+                        Step(2, "On Battery Usage, choose Unrestricted, then come back here.", R.drawable.keep_awake_infinix_step2)
                     } else {
                         Step(2, "On App battery usage, choose Unrestricted, then come back here.")
                     }
