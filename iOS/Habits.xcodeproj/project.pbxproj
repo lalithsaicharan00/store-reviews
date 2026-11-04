@@ -59,7 +59,7 @@
 		AA0000000000000000000005 /* Habits */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = AA000000000000000000000C /* Build configuration list for PBXNativeTarget "Habits" */;
-			buildPhases = (AA0000000000000000000020 /* Build Kotlin Core */, AA0000000000000000000006 /* Sources */, AA0000000000000000000007 /* Frameworks */, AA0000000000000000000008 /* Resources */, AA0000000000000000000021 /* Embed Foundation Extensions */, );
+			buildPhases = (AA0000000000000000000006 /* Sources */, AA0000000000000000000007 /* Frameworks */, AA0000000000000000000008 /* Resources */, AA0000000000000000000021 /* Embed Foundation Extensions */, );
 			buildRules = ();
 			dependencies = (AA0000000000000000000023 /* PBXTargetDependency */, );
 			fileSystemSynchronizedGroups = (AA0000000000000000000002 /* Habits */, DD0000000000000000000002 /* Shared */, );
@@ -128,21 +128,6 @@
 		CC0000000000000000000008 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		AA0000000000000000000020 /* Build Kotlin Core */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = ();
-			inputPaths = ();
-			name = "Build Kotlin Core";
-			outputPaths = ();
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n# Builds the Kotlin shared core (Core/) and embeds it. See Architecture/Shared Core Decision.md.\nif [ -z \"$JAVA_HOME\" ]; then export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\"; fi\n# Xcode Cloud has no Android Studio: ci_scripts/ci_post_clone.sh installs Java with Homebrew.\nif [ ! -d \"$JAVA_HOME\" ]; then for brew_prefix in /opt/homebrew /usr/local; do if [ -d \"$brew_prefix/opt/openjdk@21\" ]; then export JAVA_HOME=\"$brew_prefix/opt/openjdk@21/libexec/openjdk.jdk/Contents/Home\"; fi; done; fi\ncd \"$SRCROOT/../Core\"\n./gradlew :embedAndSignAppleFrameworkForXcode\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		BB0000000000000000000006 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
 		AA0000000000000000000006 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
@@ -188,7 +173,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
-				KOTLIN_FRAMEWORK_BUILD_TYPE = release;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 			};
@@ -199,7 +183,6 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				KOTLIN_FRAMEWORK_BUILD_TYPE = release;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 			};
@@ -211,15 +194,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MHTC4C9P8F;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../Core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)", );
-				OTHER_LDFLAGS = ("$(inherited)", "-framework", Core, );
 				INFOPLIST_FILE = "Habits-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Often Enough";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-                SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) HABITS_APP";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -242,15 +221,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MHTC4C9P8F;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				FRAMEWORK_SEARCH_PATHS = ("$(inherited)", "$(SRCROOT)/../Core/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)", );
-				OTHER_LDFLAGS = ("$(inherited)", "-framework", Core, );
 				INFOPLIST_FILE = "Habits-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Often Enough";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
-                SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) HABITS_APP";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;

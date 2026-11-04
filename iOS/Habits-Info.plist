@@ -4,28 +4,8 @@
 <dict>
 	<!-- Merged with the keys Xcode generates from build settings (GENERATE_INFOPLIST_FILE). Only keys that
 	     can't be build settings live here. -->
-	<key>BGTaskSchedulerPermittedIdentifiers</key>
-	<array>
-		<string>com.oftenenough.app.refresh</string>
-	</array>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>fetch</string>
-		<string>remote-notification</string>
-	</array>
-	<!-- Google sign-in returns to the app on its iOS client ID, reversed (Architecture/Backlog.md, 1 Oct 2026); widgets on
-	     oftenenough://. One CFBundleURLTypes key only: a second one would silently replace the first. -->
 	<key>CFBundleURLTypes</key>
 	<array>
-		<dict>
-			<key>CFBundleURLName</key>
-			<string>Google sign-in</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>com.googleusercontent.apps.367584981284-c8q0v1eqmtbng2nu75k3abjuih4s5b8k</string>
-			</array>
-		</dict>
-		<!-- Widgets open the app on oftenenough://today and oftenenough://item/<id>. -->
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
@@ -52,23 +32,10 @@
 	</array>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<false/>
-	<!-- Public project capture key, never a personal/admin API key. EU Default project 290602.
-	     Keep release sending gated until real provider ingestion/privacy verification is recorded. -->
-	<key>AnalyticsProjectToken</key>
-	<string>phc_wwVdJeLuFoZV76M974mkwQmZmQwkVjzcBhaVLmJxpuoK</string>
-	<key>AnalyticsReleaseChannel</key>
-	<string>production</string>
-	<key>AnalyticsProductionEnabled</key>
-	<false/>
-	<!-- One window: the app is iPhone-only (the user, 21 Oct 2026). -->
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
-	<key>NSFaceIDUsageDescription</key>
-	<string>Face ID unlocks the app when App Lock is on.</string>
-	<key>NSAlarmKitUsageDescription</key>
-	<string>Often Enough rings an alarm at your habit's time when you choose Alarm for it.</string>
 </dict>
 </plist>

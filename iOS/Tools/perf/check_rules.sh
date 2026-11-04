@@ -10,8 +10,6 @@ fail() { echo "SPEED RULE BROKEN: $1"; echo "    $2"; FAIL=1; }
 P=Habits.xcodeproj/project.pbxproj
 grep -q 'SWIFT_OPTIMIZATION_LEVEL = "-Onone"' "$P" &&
   fail "Debug builds Swift with -Onone" "Rulebook S1: the phone runs Debug; keep SWIFT_OPTIMIZATION_LEVEL = \"-O\""
-[ "$(grep -c 'KOTLIN_FRAMEWORK_BUILD_TYPE = release' "$P")" -ge 2 ] ||
-  fail "The Kotlin core isn't built as release in both configurations" "Rulebook S1"
 
 SWIFT=$(find Habits HabitsLiveActivity Shared -name '*.swift')
 
