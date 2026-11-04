@@ -142,6 +142,7 @@ class HabitStore(
 
     private val memo = HashMap<String, HashMap<String, Any?>>()
     private val summaries = HashMap<Int, DayScore>()
+    private var memoDay = Int.MIN_VALUE
 
     private fun forget(habitId: String) {
         memo.remove(habitId)
@@ -157,6 +158,13 @@ class HabitStore(
 
     @Suppress("UNCHECKED_CAST")
     private fun <T> remembered(habitId: String, key: String, work: () -> T): T {
+        // What's remembered is true for one day: a new day ends a limit's day and can end a run, with no log to say so.
+        val today = today()
+        if (today != memoDay) {
+            memoDay = today
+            memo.clear()
+            summaries.clear()
+        }
         val map = memo.getOrPut(habitId) { HashMap() }
         if (map.containsKey(key)) return map[key] as T
         return work().also { map[key] = it }
@@ -189,6 +197,21 @@ class HabitStore(
 
     fun streak(habit: Habit, day: Int): Int =
         if (timers.containsKey(habit.id)) rules.streak(habit, day) else remembered(habit.id, "streak$day") { rules.streak(habit, day) }
+
+    /**
+     * The streak a row shows for [day] (ST-1a, the user, 4 Nov 2026: "when there is no log, then how you are counting a
+     * streak?"). A day or period still going may yet be met, so what came before it stands (ST-1). Once it has ended
+     * unmet, the run stopped there, as today's own streak says, so it shows none. A day that wasn't due (not its day,
+     * skipped, paused) stays neutral. The milestones keep [streak], the run as it stood before the log they judge.
+     */
+    fun shownStreak(habit: Habit, day: Int): Int = remembered(habit.id, "shown$day") {
+        val today = today()
+        val r = rule(habit, day)
+        val range = rules.periodRange(r, day)
+        val ended = if (range != null) range.last < today else day < today
+        val neutral = if (range != null) range.any { isPaused(habit, it) } else !rules.isDue(r, day)
+        if (ended && !neutral && !rules.isComplete(r, day)) 0 else rules.streak(habit, day)
+    }
 
     fun bestStreak(habit: Habit): Int = remembered(habit.id, "best") { rules.bestStreak(habit) }
 
