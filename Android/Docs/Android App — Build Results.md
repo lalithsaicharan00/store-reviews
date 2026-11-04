@@ -387,7 +387,8 @@ Sync and Restore's rows, Erase's question, Move when it can't connect), `TodayTe
 | Play Billing for real, and how Plus Family reaches a family | Needs the user's Play Console app, and a decision |
 | A stable debug key in CI's secrets | The user's to add (below) |
 | Home-screen tests that tap a placed widget on CI | The widget taps were driven by hand on the PC's emulator and measured from screen recordings |
-| Macrobenchmark, a Baseline Profile, startup time, typing speed | Not built |
+| A Baseline Profile (A114, `:baselineprofile`), startup time | Built 4 Nov 2026; numbers under "Speed on the phone, 4 Nov 2026" |
+| Macrobenchmark, typing speed | Not built |
 | The iPad's wider layouts (list beside page, two cards across, popovers, shortcuts) | Only the sidebar and the centred column are built |
 | The running timer as Android 16's Live Update | An ongoing notification with Stop and save exists; the Live Update API isn't used yet |
 | Usage sharing; a Quick Settings tile (D8, "later") | Not built |
@@ -434,3 +435,29 @@ Each is ported from the Swift with tests, and should move into `Core` when the s
 
 - How Plus Family should reach a family on Google Play (Play's Family Library only shares some purchases): to decide
   before anything irreversible in the Play Console.
+
+## Speed on the phone, 4 Nov 2026
+
+Moto g54 5G, Android 15, 120 Hz (8 ms a frame). An optimised build (`assembleRelease` with the debug key, `cmd package compile -f -m speed-profile`), the "many" demo (30 habits, two years of logs), Android's own counters (`dumpsys gfxinfo`). Every screen was acceptable or better, so no screen was changed for speed.
+
+| Scrolling | Typical frame | Slowest |
+|---|---|---|
+| Today | 7 ms | 28 ms |
+| Habits & Tasks: Week, Month, Year | 7, 6, 10 ms | 23, 15, 29 ms |
+| Habit details: Progress, History | 7, 6 ms | 25, 30 ms |
+| Routine player, swiping | 6 ms | 13 ms |
+| Settings, the habit form (controls) | 6 ms | 9 ms |
+
+| One action | Slowest frame |
+|---|---|
+| Logging from a row | 23 ms |
+| Changing day | 42 ms |
+| Menu open and close | 27 ms |
+| Pages opening | 32–57 ms |
+| Closing the routine player | 77 ms |
+| Day details opening | 57–93 ms, once 150 ms |
+
+Any bottom sheet costs 34–48 ms to create its window (the Colour sheet, a control); Day details' content adds about 30 ms. Not worth a rewrite.
+
+**The Baseline Profile (A114):** generated on an emulator, 36,429 lines. Against the same build without it, measured once on this phone: first opening of Settings 57 → 40 ms, Habit details 57 → 38 ms; Day details 57–93 → 65–93 ms and cold start 247–387 → 201–381 ms, both within normal variation. A fresh install, where it should help most, was not measured.
+

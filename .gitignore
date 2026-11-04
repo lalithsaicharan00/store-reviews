@@ -28,3 +28,6 @@ Core/fixtures/inputs/*
 !Core/fixtures/inputs/hand.json
 # Editor settings (VS Code), personal to each machine
 .vscode/
+
+# Personal IDE settings
+.idea/
