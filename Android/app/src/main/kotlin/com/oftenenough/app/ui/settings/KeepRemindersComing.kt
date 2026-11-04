@@ -60,11 +60,19 @@ private val unrestricted: (Context) -> Boolean = { !Reminders.notUnrestricted(it
  * (Google Play allows it only when Doze breaks an app's core function; reminders use alarms that fire in Doze). A phone
  * without the page opens App info ([openSettingsPage], U40).
  */
-internal fun appBatteryPage(c: Context) = Intent("android.settings.VIEW_ADVANCED_POWER_USAGE_DETAIL", Uri.parse("package:" + c.packageName))
+internal fun appBatteryPage(c: Context) =
+    // MagicOS has no App battery usage page (it opened App info, which has no battery choice): its Unrestricted is
+    // Battery optimisation's Don't allow, in Android's list of every app, the nearest page any app can open; never the
+    // one-tap question (HONOR MBH-N49, MagicOS 10, Android 16, 3 Nov 2026).
+    if (honor()) Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+    else Intent("android.settings.VIEW_ADVANCED_POWER_USAGE_DETAIL", Uri.parse("package:" + c.packageName))
+
+internal fun honor(manufacturer: String = Build.MANUFACTURER ?: "") = manufacturer.equals("honor", ignoreCase = true)
 
 /** The step every phone has, and the one the app can read (A109); its button opens Keep Often Enough awake. */
 internal const val BATTERY_STEP = "battery"
 private val batteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set battery to Unrestricted", "App info › Battery", unrestricted, ::appBatteryPage)
+private val honorBatteryStep = MakerStep(BATTERY_STEP, Symbols.BatteryFull, "Set battery to Unrestricted", "Battery optimisation › Often Enough › Don’t allow", unrestricted, ::appBatteryPage)
 
 /**
  * The steps for this phone, by `Build.MANUFACTURER` (menu names change with versions: A40 asks for each to be checked
@@ -106,11 +114,21 @@ internal fun maker(manufacturer: String, sdk: Int = Build.VERSION.SDK_INT): Make
             component("com.vivo.permissionmanager", "com.vivo.permissionmanager.activity.BgStartUpManagerActivity")
         },
     ))
-    "honor", "huawei" -> Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+    // MagicOS 10 (Android 16): Battery optimisation's Don't allow alone does it. With App launch left to manage itself
+    // and the app closed from Recents, an alarm rang full screen on time and widget taps worked (HONOR MBH-N49,
+    // 3 Nov 2026); App launch isn't something the app can read. Older MagicOS and Huawei keep App launch until checked.
+    "honor" -> if (sdk >= 36) Maker("Your phone closes apps to save battery, which can stop reminders. One step keeps Often Enough running.", listOf(
+        honorBatteryStep,
+    )) else Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
+        honorBatteryStep,
+        MakerStep("huawei-app-launch", Symbols.RocketLaunch, "Manage App launch yourself, all three on", "Settings › Battery › App launch › Often Enough") {
+            component("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
+        },
+    ))
+    "huawei" -> Maker("Your phone closes apps to save battery, which can stop reminders. Two steps keep Often Enough running.", listOf(
         batteryStep,
         MakerStep("huawei-app-launch", Symbols.RocketLaunch, "Manage App launch yourself, all three on", "Settings › Battery › App launch › Often Enough") {
-            if (manufacturer.equals("honor", ignoreCase = true)) component("com.hihonor.systemmanager", "com.hihonor.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
-            else component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
+            component("com.huawei.systemmanager", "com.huawei.systemmanager.startupmgr.ui.StartupNormalAppListActivity")
         },
     ))
     else -> Maker("Your phone can put apps to sleep to save battery, which can stop reminders. One step keeps Often Enough awake.", listOf(

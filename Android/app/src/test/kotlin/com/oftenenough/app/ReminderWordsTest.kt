@@ -49,7 +49,12 @@ class ReminderWordsTest {
         assertEquals(listOf("Set battery to Unrestricted"), maker("OPPO", sdk = 34).steps.map { it.title })
         assertTrue(maker("OPPO", sdk = 34).lead.contains("One step"))
         assertEquals(listOf("Set battery to Unrestricted", "Allow high background power use", "Turn on Autostart"), maker("iQOO").steps.map { it.title })
-        assertEquals(listOf("Set battery to Unrestricted", "Manage App launch yourself, all three on"), maker("HONOR").steps.map { it.title })
+        assertEquals(listOf("Set battery to Unrestricted", "Manage App launch yourself, all three on"), maker("HONOR", sdk = 35).steps.map { it.title })
+        assertEquals(listOf("Set battery to Unrestricted", "Manage App launch yourself, all three on"), maker("HUAWEI").steps.map { it.title })
+        // MagicOS 10: Battery optimisation's Don't allow alone keeps alarms and widgets working (HONOR MBH-N49, 3 Nov 2026).
+        assertEquals(listOf("Set battery to Unrestricted"), maker("HONOR", sdk = 36).steps.map { it.title })
+        assertTrue(maker("HONOR", sdk = 36).lead.contains("One step"))
+        assertTrue(maker("HONOR", sdk = 36).steps[0].path.startsWith("Battery optimisation"))
         assertEquals(listOf("Set battery to Unrestricted"), maker("Google").steps.map { it.title })
         // A109: only Unrestricted can be read, so only it can be shown done.
         for (name in listOf("samsung", "redmi", "OnePlus", "iQOO", "HONOR", "Google"))
