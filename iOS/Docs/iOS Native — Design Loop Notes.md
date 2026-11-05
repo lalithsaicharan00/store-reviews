@@ -102,3 +102,10 @@ section below is headed with the doc it belongs to; move it there once the docs 
 - **Every empty or waiting page is a ContentUnavailableView** (4252:428521): the symbol (48) in Secondary Label with no
   shape behind it, the title in Title 2 Bold and Title Case, the description in Subheadline Secondary, then one Large
   Prominent button.
+
+## Inputs — iOS Native · 6 Nov 2026: the letters keyboard everywhere; no results (screen H)
+
+- **Keyboard · letters (native)** (990:251) is Apple's iOS 26 kit keyboard, cropped to 260 so screens keep their
+  place: every letters keyboard in the file is now the iPhone's.
+- **A search with no results is iOS's no-results view** (ContentUnavailableView with the magnifying glass): "No
+  Results for “yoga”", a line, and one Large Prominent button when there's something to do (Add “yoga”).

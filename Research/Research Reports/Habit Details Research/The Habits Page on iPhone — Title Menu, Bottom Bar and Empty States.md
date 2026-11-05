@@ -45,6 +45,25 @@ folder: the cards are the content, so the top must be quiet and say plainly whic
   bottom bar, nothing sticks while scrolling; ⋮ → ⋯, ← → ‹, snackbar → banner, menu items in Title Case, across the
   page (64 texts).
 
+## Screen H: Archived habits and Search (988:7736, 991:8050)
+
+**Archived habits** was already iOS's shape (‹, an intro line, one list newest first, each row's ⋯ with Restore and
+a red Delete). Changed: the title is **Archived Habits** (Title Case); **No Archived Habits** is now a
+ContentUnavailableView (the box symbol, no shape behind it, no button: there's nothing to do); the "snackbar" layers
+are named Banner, which is what they are (the design system's Banner).
+
+**Search** had Android's keyboard (an icon strip, ?123, a dark return) and a no-match state of small grey words with a
+small capsule "+ Add “yoga”". Changed:
+
+- **Keyboard · letters (native)** (990:251, design system on the settings page) is now **Apple's iOS 26 kit keyboard**
+  (suggestions, four rows, 123, a grey return), cropped to its old 260 so no screen moved; every copy on every page
+  follows.
+- **No match** is iOS's own no-results view: the magnifying glass, **No Results for “yoga”**, "Check the spelling, or
+  add it as a new habit or task.", and **one Large Prominent button, Add “yoga”** (A72: a word can be either, so it
+  doesn't guess). Both no-match copies name their own word (yoga, plumber).
+- Captions: the search field at the top with ✕ beside it, not "Android's full-screen search view"; Move to Another
+  Day… opens the calendar.
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is
