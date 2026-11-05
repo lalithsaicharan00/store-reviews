@@ -38,3 +38,30 @@ section below is headed with the doc it belongs to; move it there once the docs 
   over Day details: ✕ at the left (16 from the top and side), the habit's name with the day as the subtitle, and
   **Day Details** as a word at the right, which opens that day's Day details over the timer. ✕ or a swipe down puts
   it away; the clock keeps running (Today's row and the Live Activity keep it).
+
+## Inputs — iOS Native · 6 Nov 2026: dates, times, amounts and durations (screens B and C)
+
+- **A date or time in a form is a compact picker** at the trailing edge of its row (List item › Show picker): a grey
+  pill reading "21 Oct 2026" or "2:05 PM". Date and Time are two rows of one section (a time habit's is "Finished").
+- **Tapping the date** opens the calendar popover under the row (Date picker 705:1025): the chosen day an Ink circle,
+  today Ink Semibold, days outside the limit Tertiary Label. Choosing a day closes it; **no OK or Cancel**.
+- **Tapping the time** opens the time wheels popover under the pill (Time picker 703:602: hour, minute, AM or PM).
+  Tapping outside closes it. A time later than now can't be chosen: the wheel turns back.
+- **An amount is a row** ("Amount … 2 glasses", the number in Label, the unit in Secondary), typed on the **decimal
+  pad** (Number pad 4234:5418), never Android's keypad. Money puts the symbol first and drops the unit ("$50").
+- **A duration is Clock's wheels** (Duration picker 4236:2507): hours · min, and sec only on a log that has seconds.
+- **Nothing typed yet: the confirming word is off** (Tertiary), as Calendar's Done; no red line under the field.
+
+## Lists and Rows — iOS Native · 6 Nov 2026: rows without an icon, a saved record, Delete
+
+- A row with no leading icon turns on **Separator from the edge**, so its separator starts at its text (16).
+- **A saved record reads as rows**: the label at the left, the value trailing in Secondary Label (Date says Today or
+  Yesterday). Edit is a word in the bar.
+- **Delete is a red row in a section of its own** at the end ("Delete Log", "Delete Slip"), never a capsule; it asks
+  first with an alert, Cancel and Delete (D9).
+
+## Menus and Sheets — iOS Native · 6 Nov 2026: adding a log
+
+- Add Log, Add Slip and Edit Log are a **Large sheet** over Day details: ✕ at the left, the title, and **Add** (or
+  **Save**) as a Semibold glass word at the right; never a Prominent capsule above the keyboard. Alerts ask before
+  discarding typed changes ("Discard this log?", Keep Editing · Discard).

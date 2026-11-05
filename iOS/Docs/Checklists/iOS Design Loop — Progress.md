@@ -26,8 +26,8 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 |---|---|---|---|---|---|
 | — | Menu, Today, Edit Today, Day details | 669:234 … | Finished before this loop (reference) | — | — |
 | A | Timer screens | 705:7745 | **Done** 6 Nov | Large sheet; Timer ring + Clock buttons replace cookie, wave, chip and capsule pair; ✕, name over the day, Day Details word; Paused / Goal met / Over the limit; 13 copies (Day details 4, Today 3, routine player 7) restored; captions on 3 pages; 200 % frame 4230:447235; DS: Clock button 4228:2548, Timer ring 4228:2551, Navigation bar actions capsule | [Timer on iPhone](<../../../Research/Research Reports/Day Structure and Organization/The Timer on iPhone — Clock's Ring and Round Buttons.md>) |
-| B | Log screens (Add log, Log view, Edit log, Delete log) | 687:829 | Next | | |
-| C | Time picker · Date picker (every copy, every page) | 703:602 · 705:1025 | Not started | | |
+| B | Log screens (Add log, Log view, Edit log, Delete log) | 687:829 | **Done** 6 Nov | Large sheet as Health's Add Data: rows, compact Date/Time pickers, Amount row on the decimal pad, Duration on Clock's wheels, Add/Save as glass words (off until there's an amount: Error → Empty), view with Edit in the bar and a red Delete row; 63 copies restored (day details 54, Today 6, routine player 3); captions; 200 % frame 4243:334448; DS: Number pad 4234:5418, Duration picker 4236:2507, List item › Show picker | [Logging on iPhone](<../../../Research/Research Reports/Day Structure and Organization/Logging on iPhone — Health's Rows, Compact Pickers and the Decimal Pad.md>) |
+| C | Time picker · Date picker (every copy, every page) | 703:602 · 705:1025 | **Done** 6 Nov (months on K and P's flows still October) | Calendar popover (Limit variants, a circle per day) and time wheels popover replace Android's dialogs; 35 copies on 6 pages: scrims gone, anchored under their rows, values set, no OK steps | same report |
 | D | Note screens | 765:1087 | Not started | | |
 | E | Routine player | 906:89513 | Not started | | |
 | F | Your routine sheet | 907:29174 | Not started | | |
@@ -52,11 +52,15 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 2. Day Details as a word in the bar (chosen) or inside ⋯ (hides it).
 3. Should the ring's clock (SF Pro Light 64) become a text style, and what's its name?
 
+**B · Log screens** ([687:829](https://www.figma.com/design/zLgBjb7M7Fp6UN0pg7J3a8/IOS-app?node-id=687-829)):
+1. Amount as a row (chosen) or the 48 pt number card.
+2. Ask before deleting with an alert (kept, Cancel · Delete) or iOS 26's popover from the row.
+3. Date format: "21 Oct 2026" (the file's) or the American "Oct 21, 2026".
+
 ## Next
 
-Screen B, the log screens (687:829): research DatePicker styles (compact, graphical, wheels) and Apple's
-view/edit screens (Contacts, Calendar event) on the Simulator, with each Apple app in its own test (Clock isn't on
-the Simulator; one failed launch stopped the rest).
+Screen D, the note screens (765:1087). Carried over: History's Go to date flows (details pages 1150:76414 …) and
+the create-new forms still show October in the new calendar: set their months and days in K and P.
 
 ## How the probes work
 
