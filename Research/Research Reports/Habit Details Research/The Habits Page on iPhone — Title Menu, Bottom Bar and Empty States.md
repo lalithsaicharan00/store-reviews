@@ -110,6 +110,13 @@ the medal (Small, 40, its own shape kept) or the ring (48) in a 48 slot, with th
 rows of both variants were replaced, each keeping its number, arc and colour. The title is **All Milestones**.
 Streaks was already right (one inset list of runs with bars, a footer) and is unchanged.
 
+## Screen M: Search in a habit's notes (1053:9079)
+
+Its defects: the results rows had History's squashed day ✓ (fixed the same way: the 24-point day cell, in Water's
+blue); "No notes with “swim”" was two lines of small grey text, now iOS's no-results view (**No Notes with “swim”**,
+the magnifying glass, "Search looks through this habit's notes. To find a day, use Go to Date…", no button), filling
+the space above the keyboard. The keyboard is already the iPhone's (H).
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is
