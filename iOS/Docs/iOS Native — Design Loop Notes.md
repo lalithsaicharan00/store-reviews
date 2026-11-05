@@ -87,3 +87,18 @@ section below is headed with the doc it belongs to; move it there once the docs 
   calendar symbol and never a chip that names a day ("Today").
 - In a bottom bar, the main action keeps its **word** in a Prominent capsule (Mark Done, Start, Next); the iOS bar
   draws a Label as its symbol alone, which is too little for the main action.
+
+## Navigation — iOS Native · 6 Nov 2026: Habits and Tasks, and a period (screen G)
+
+- **Habits and Tasks are a title menu**, Habits ⌄ (Navigation bar › Text=Title menu): ☰ at the left (a place in the
+  menu, as Today), search and + at the right. Never ‹ on a menu place, never a segmented capsule squeezed between
+  them.
+- **A period you step through lives in the bottom bar**, as Today's day does: ‹ 18–24 Oct ⌄ › (Bottom toolbar,
+  ring and count off), › off on the latest period. Nothing sticks to the top while scrolling; Back to This Week
+  floats above the bar as the plain glass button.
+
+## Menus and Sheets — iOS Native · 6 Nov 2026: empty states
+
+- **Every empty or waiting page is a ContentUnavailableView** (4252:428521): the symbol (48) in Secondary Label with no
+  shape behind it, the title in Title 2 Bold and Title Case, the description in Subheadline Secondary, then one Large
+  Prominent button.
