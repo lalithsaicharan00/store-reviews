@@ -35,6 +35,13 @@ enum Variants {
         case "noteFormEmpty": Presenter(style: .sheet) { NoteEntry(typed: false) }
         case "noteFull": Presenter(style: .sheet) { NoteEntry(fullSheet: true) }
         case "noteView": NoteView()
+        case "pCheck": PlayerCheck()
+        case "pCheckBar": PlayerCheck(header: 1)
+        case "pCheckDay": PlayerCheck(dayButton: true)
+        case "pTime": PlayerTime()
+        case "pList": PlayerChecklist()
+        case "pEnd": PlayerEnd()
+        case "pCheckAX": PlayerCheck().dynamicTypeSize(.accessibility1)
         default: Text("Probe index")
         }
     }
