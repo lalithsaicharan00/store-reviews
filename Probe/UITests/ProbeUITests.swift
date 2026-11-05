@@ -22,12 +22,12 @@ final class ProbeUITests: XCTestCase {
         app.launch()
         sleep(2)
         dismissWelcome(app)
-        snap(s.name)
+        snap(s.name, app: s.bundle == nil ? nil : app)
         for st in s.steps {
             switch st {
             case .tap(let id): tap(app, id); sleep(1)
             case .wait(let t): Thread.sleep(forTimeInterval: t)
-            case .shot(let n): snap("\(s.name)-\(n)")
+            case .shot(let n): snap("\(s.name)-\(n)", app: s.bundle == nil ? nil : app)
             case .swipeUp: app.swipeUp(); sleep(1)
             case .swipeDown: app.swipeDown(); sleep(1)
             case .type(let t): app.typeText(t)
@@ -54,10 +54,18 @@ final class ProbeUITests: XCTestCase {
         }
     }
 
-    func snap(_ name: String) {
+    /// Our own screens: a screenshot. Apple's apps: a screenshot kept only in the artifact, and the element tree as text.
+    func snap(_ name: String, app: XCUIApplication? = nil) {
+        let prefix = app == nil ? "" : "apple-"
         let a = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-        a.name = name
+        a.name = prefix + name
         a.lifetime = .keepAlways
         add(a)
+        if let app {
+            let t = XCTAttachment(string: app.debugDescription)
+            t.name = prefix + name + "-tree"
+            t.lifetime = .keepAlways
+            add(t)
+        }
     }
 }
