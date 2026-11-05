@@ -97,13 +97,31 @@ the time pill; the chosen day or time is set (20 Oct, 8:30 PM, 6:00 PM, 8:15 AM,
 names say "the calendar" and "the time wheels", and the OK steps are gone ("Closes", "Tap outside"). The captions on
 the day details page describe the iPhone's behaviour: no OK; Add waits; later days are grey; a later time turns back.
 
+## Screen D: the note screens (6 Nov 2026)
+
+[Note screen 765:1087](https://www.figma.com/design/zLgBjb7M7Fp6UN0pg7J3a8/IOS-app?node-id=765-1087) had the same
+Android parts: Gboard (the icon strip, ?123, a dark return key), a Save capsule over it, and Delete note | Edit
+capsules on the view. On the Simulator, a note field in a list (a multi-line TextField in its own card, 'Note' as its
+placeholder) beat a full-sheet editor like Notes: it reads as the same sheet as Add Log, the habit stays in view, and
+Add greys out by itself while it's empty.
+
+Now: a Large sheet, ✕ · **Add Note** · **Add** (Semibold, off while empty; **Edit Note** and **Save** when editing);
+the habit as a card; the note's card (200 tall while typing); a footer that names the day ("A note for today,
+21 Oct." — a note's day can't be changed); **the iPhone keyboard** from Apple's iOS 26 kit (no accessory bar,
+suggestions on, 123, a grey return, as the Simulator showed). The view: ‹ · Note · **Edit**; the habit with **Today**;
+the note; **Delete Note** in red. The habit's icon and name layers were moved, not redrawn, and the note text is a
+property, so all 21 copies (day details 8, Today 10, routine player 1, details pages 2) kept their words; the two
+History copies' footers say their days (Sun, 20 Sep; Tue, 8 Sep). Captions on both pages now say Add turns on,
+Delete Note is a red row, and Edit is in the bar.
+
 ## Left for the user
 
 1. **Rows or the big number.** Rows were chosen from the Simulator; if the amount should feel bigger, the
    alternative is the 48 pt card (it slides under the keypad on smaller phones).
 2. **Ask before deleting: alert or popover.** Kept the alert (Cancel and Delete, D9). iOS 26's own apps more often
    show a popover from the row with the one red action; it can't be misclicked either.
-3. **Date format.** The pill reads "21 Oct 2026" (the file's format); an American iPhone shows "Oct 21, 2026". The
+3. **A note's confirm word.** Add (as Add Log) for a new note, Save when editing; the old screen said Save for both.
+4. **Date format.** The pill reads "21 Oct 2026" (the file's format); an American iPhone shows "Oct 21, 2026". The
    view says Today or Yesterday as Reminders does.
 
 ## Still open (other screens)

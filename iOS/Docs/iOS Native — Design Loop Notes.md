@@ -65,3 +65,11 @@ section below is headed with the doc it belongs to; move it there once the docs 
 - Add Log, Add Slip and Edit Log are a **Large sheet** over Day details: ✕ at the left, the title, and **Add** (or
   **Save**) as a Semibold glass word at the right; never a Prominent capsule above the keyboard. Alerts ask before
   discarding typed changes ("Discard this log?", Keep Editing · Discard).
+
+## Inputs — iOS Native · 6 Nov 2026: a note, and the letters keyboard (screen D)
+
+- **A note is a multi-line text field in a card of its own** in the sheet (Body, 'Note' as the placeholder in
+  Tertiary Label), 200 tall while typing; the view shows the whole note in its card.
+- **The letters keyboard is the iPhone's**: Apple's iOS 26 kit keyboard (Type Default), resized to the frame,
+  accessory bar off, suggestions on, **123** at the bottom left and a **grey return** (Type Return, not
+  Return-Prominent), as the Simulator shows for a multi-line field. Never Gboard's icon strip or ?123.
