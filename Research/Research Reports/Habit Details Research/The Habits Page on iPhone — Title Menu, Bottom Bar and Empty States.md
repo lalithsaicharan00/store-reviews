@@ -71,6 +71,16 @@ in all 12 variants. One-time | Repeating stays as the content's segmented contro
 places). **No Tasks Yet** and **No Repeating Tasks** are ContentUnavailableView with one Large **New Task**. Captions
 and frame names say the title, not tabs (10 texts, 5 frames).
 
+## Screen J: Archived tasks and Completed tasks (1001:178, 1002:230)
+
+The user: "Archived habits, archived tasks and completed tasks must share ONE mental model and look consistent." They
+now share one shape, written into all three components' descriptions: ‹ and a Title Case title (**Archived Habits**,
+**Archived Tasks**, **Completed Tasks**); an intro line saying what's kept there (Completed Tasks gained one: "Done
+tasks stay here, by the day they were done. Open one again with Mark as Not Done."); one inset list, newest first
+(Completed: one per day); each row's ⋯ with the way back (Restore, **Mark as Not Done**) then a red Delete; Undo in a
+Banner; and an empty state that is a ContentUnavailableView with no button (**No Archived Tasks**, **Nothing Completed
+Yet**, also under the Deleted banner). Completed's bar ⋯ keeps **Delete All Completed**.
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is

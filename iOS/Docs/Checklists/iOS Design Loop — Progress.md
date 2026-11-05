@@ -34,7 +34,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | G | Habits page | 986:150825 | **Done** 6 Nov | Title menu Habits ⌄ (☰ · search +), period in a Today-style bottom bar, nothing pinned, Back to This Week glass, ⋯ centred (card component), ContentUnavailableView empty states; 52 copies; 64 captions; DS: Navigation bar › Title menu, ContentUnavailableView 4252:428521 | [Habits Page on iPhone](<../../../Research/Research Reports/Habit Details Research/The Habits Page on iPhone — Title Menu, Bottom Bar and Empty States.md>) |
 | H | Archived habits · Search | 988:7736 · 991:8050 | **Done** 6 Nov | Archived Habits title; No Archived Habits as ContentUnavailableView; snackbar layers → Banner; letters keyboard component rebuilt from Apple's kit (all copies); No Results for “yoga” with one Large Add “yoga”; captions | Habits Page report § H |
 | I | Tasks page | 999:1061 | **Done** 6 Nov | Tasks ⌄ title menu (☰ · search +) in 12 variants; One-time \| Repeating kept as content filter; No Tasks Yet / No Repeating Tasks as ContentUnavailableView with New Task; captions | Habits Page report § I |
-| J | Archived tasks · Completed tasks | 1001:178 · 1002:230 | Not started | | |
+| J | Archived tasks · Completed tasks | 1001:178 · 1002:230 | **Done** 6 Nov | One shape with Archived Habits (Title Case titles, intro line, one list, ⋯ with the way back and red Delete, Banner, ContentUnavailableView); Completed gained its intro; Mark as Not Done / Delete All Completed | Habits Page report § J |
 | K | Habit details | 1020:4052 | Not started | | |
 | L | Streaks · All milestones | 1034:74 · 1036:235 | Not started | | |
 | M | Search (details pages) | 1053:9079 | Not started | | |
@@ -69,7 +69,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 ## Next
 
-Screen J, Archived tasks (1001:178) and Completed tasks (1002:230): one mental model with Archived habits. Still open from E: a time habit in the player should use the Timer ring
+Screen K, Habit details (1020:4052). Carried over from C: History's Go to date flows still show October. Still open from E: a time habit in the player should use the Timer ring
 (a Screen=Time variant); the player page's 'outside the app' frames still show Android's Live Update chip (iPhone:
 Live Activity), with the notifications page. Carried over: History's Go to date flows (details pages 1150:76414 …) and
 the create-new forms still show October in the new calendar: set their months and days in K and P.
