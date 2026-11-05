@@ -29,7 +29,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | B | Log screens (Add log, Log view, Edit log, Delete log) | 687:829 | **Done** 6 Nov | Large sheet as Health's Add Data: rows, compact Date/Time pickers, Amount row on the decimal pad, Duration on Clock's wheels, Add/Save as glass words (off until there's an amount: Error → Empty), view with Edit in the bar and a red Delete row; 63 copies restored (day details 54, Today 6, routine player 3); captions; 200 % frame 4243:334448; DS: Number pad 4234:5418, Duration picker 4236:2507, List item › Show picker | [Logging on iPhone](<../../../Research/Research Reports/Day Structure and Organization/Logging on iPhone — Health's Rows, Compact Pickers and the Decimal Pad.md>) |
 | C | Time picker · Date picker (every copy, every page) | 703:602 · 705:1025 | **Done** 6 Nov (months on K and P's flows still October) | Calendar popover (Limit variants, a circle per day) and time wheels popover replace Android's dialogs; 35 copies on 6 pages: scrims gone, anchored under their rows, values set, no OK steps | same report |
 | D | Note screens | 765:1087 | **Done** 6 Nov | Large sheet: Add Note / Edit Note, Add / Save glass words (off while empty), note card, footer with the day, Apple's iOS keyboard (123, grey return); view with Edit in the bar and a red Delete Note row; 21 copies kept their words (habit layers moved, note a property); captions on 2 pages | [Logging on iPhone § D](<../../../Research/Research Reports/Day Structure and Organization/Logging on iPhone — Health's Rows, Compact Pickers and the Decimal Pad.md>) |
-| E | Routine player | 906:89513 | Not started | | |
+| E | Routine player | 906:89513 | **Done** 6 Nov (time habits' ring and the Live Activity still open) | Title menu with '1 of 3' under it; circle replaces the cookie (colours copied per copy); no hero card; Day Details button replaces the Today chip; Title Case words; 92 copies; captions | [Routine Player on iPhone](<../../../Research/Research Reports/Day Structure and Organization/The Routine Player on iPhone — Title Menu, Circles and Day Details.md>) |
 | F | Your routine sheet | 907:29174 | Not started | | |
 | G | Habits page | 986:150825 | Not started | | |
 | H | Archived habits · Search | 988:7736 · 991:8050 | Not started | | |
@@ -59,9 +59,15 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 **D · Notes**: Add for a new note (as Add Log) and Save when editing; the old screen said Save for both.
 
+**E · Routine player** ([906:89513](https://www.figma.com/design/zLgBjb7M7Fp6UN0pg7J3a8/IOS-app?node-id=906-89513)):
+1. Day Details visible under the name (chosen) or first in ⋯.
+2. The hero card removed on the habit and end screens.
+
 ## Next
 
-Screen E, the routine player (906:89513). Carried over: History's Go to date flows (details pages 1150:76414 …) and
+Screen F, Your routine sheet (907:29174). Still open from E: a time habit in the player should use the Timer ring
+(a Screen=Time variant); the player page's 'outside the app' frames still show Android's Live Update chip (iPhone:
+Live Activity), with the notifications page. Carried over: History's Go to date flows (details pages 1150:76414 …) and
 the create-new forms still show October in the new calendar: set their months and days in K and P.
 
 ## How the probes work

@@ -73,3 +73,17 @@ section below is headed with the doc it belongs to; move it there once the docs 
 - **The letters keyboard is the iPhone's**: Apple's iOS 26 kit keyboard (Type Default), resized to the frame,
   accessory bar off, suggestions on, **123** at the bottom left and a **grey return** (Type Return, not
   Return-Prominent), as the Simulator shows for a multi-line field. Never Gboard's icon strip or ?123.
+
+## Navigation — iOS Native · 6 Nov 2026: a title menu with its count (screen E)
+
+- A screen whose title opens something (the routine player's Morning, which opens Your routine) is a **title menu**:
+  the title in Headline with a small chevron.down, centred, and its count under it in Caption 1 Secondary
+  ("1 of 3", "Yesterday · 1 of 3"). Never a pop-up button's up-down chevrons pushed to the left, and no second row of
+  progress.
+
+## Buttons — iOS Native · 6 Nov 2026: Day Details, and words in a bottom bar
+
+- **Day Details** opens a day's details from a page about one habit: a Small Bordered button with the word, no
+  calendar symbol and never a chip that names a day ("Today").
+- In a bottom bar, the main action keeps its **word** in a Prominent capsule (Mark Done, Start, Next); the iOS bar
+  draws a Label as its symbol alone, which is too little for the main action.
