@@ -1,0 +1,39 @@
+name: Probe
+options:
+  bundleIdPrefix: com.oftenenough.probe
+  deploymentTarget:
+    iOS: "26.0"
+targets:
+  Probe:
+    type: application
+    platform: iOS
+    sources: [App]
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.oftenenough.probe.app
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        TARGETED_DEVICE_FAMILY: 1
+        SWIFT_VERSION: 5.0
+        MARKETING_VERSION: 1.0
+        CURRENT_PROJECT_VERSION: 1
+  ProbeUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    dependencies:
+      - target: Probe
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: Probe
+        SWIFT_VERSION: 5.0
+schemes:
+  Probe:
+    build:
+      targets:
+        Probe: all
+        ProbeUITests: [test]
+    test:
+      targets: [ProbeUITests]
