@@ -38,7 +38,7 @@ fun Habit.record(position: Int, now: Long = System.currentTimeMillis(), deleted:
         quitSince = quitSince, position = position, createdAt = createdAt, updatedAt = now,
         archivedAt = if (archived) now else null, deletedAt = if (deleted) now else null,
         remind = remind, alert = alert, followUpMinutes = followUpMinutes, startsOn = startsOn?.let(::dayKey),
-        endsOn = endsOn?.let(::dayKey), reminderText = reminderText,
+        endsOn = endsOn?.let(::dayKey), reminderText = reminderText, symbolNames = IconNames.toSave(symbol, symbolNames),
     )
 }
 
@@ -60,7 +60,7 @@ fun habitOf(r: HabitRecord, steps: List<StepRecord>, reminders: List<ReminderRec
         else -> return null
     }
     return Habit(
-        id = r.id, name = r.name, symbol = r.symbol, color = color, kind = kind,
+        id = r.id, name = r.name, symbol = IconNames.closest(r.symbol, r.symbolNames) ?: r.symbol, symbolNames = r.symbolNames, color = color, kind = kind,
         parts = r.part.split(",").map { it.trim() }.filter { it.isNotEmpty() }.ifEmpty { listOf(DaySection.ANYTIME) },
         goal = r.goal, frequency = frequency,
         checkUnit = if (kind == HabitKind.Check) r.unit?.takeIf { it.isNotEmpty() && it != "times" } else null,

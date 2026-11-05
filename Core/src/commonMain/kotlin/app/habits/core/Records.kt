@@ -55,6 +55,8 @@ data class HabitRecord(
     /** Schema 8: "Reminder says…", the person's own words for this habit's reminders (24 characters at most); null
      *  when none. Shown instead of the habit's name while names are hidden outside the app. */
     @ColumnInfo(name = "reminder_text") val reminderText: String? = null,
+    /** Schema 11: every name `symbol`'s icon goes by, comma-separated ("figure.run,directions_run,run,jog"), so a backup file keeps the icon on the other platform; null until filled (`fillSymbolNames`). */
+    @ColumnInfo(name = "symbol_names") val symbolNames: String? = null,
 )
 
 @Entity(tableName = "step", indices = [Index("habit_id")])

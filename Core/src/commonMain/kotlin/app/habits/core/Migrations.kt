@@ -109,6 +109,13 @@ internal object Migrations {
         }
     }
 
+    /** Schema 11: every name a habit's icon goes by (`habit.symbol_names`), so a backup file keeps the icon on the other platform. Only adds. */
+    val v10ToV11 = object : Migration(10, 11) {
+        override suspend fun migrate(connection: SQLiteConnection) {
+            if (!connection.hasColumn("habit", "symbol_names")) connection.execSQL("ALTER TABLE habit ADD COLUMN symbol_names TEXT")
+        }
+    }
+
     /** Schema 9's iCloud columns and the waiting ops' row and stamp, each only where missing (safe to run twice). */
     private fun SQLiteConnection.addCloudColumns() {
         val connection = this

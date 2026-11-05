@@ -84,6 +84,7 @@ interface HabitDao {
 
     // Single rows, tombstones included: sync works on every row.
     @Query("SELECT * FROM habit WHERE id = :id") suspend fun habitById(id: String): HabitRecord?
+    @Query("SELECT * FROM habit WHERE symbol_names IS NULL AND deleted_at IS NULL") suspend fun habitsWithoutSymbolNames(): List<HabitRecord>
     @Query("SELECT * FROM step WHERE id = :id") suspend fun stepById(id: String): StepRecord?
     @Query("SELECT * FROM reminder WHERE id = :id") suspend fun reminderById(id: String): ReminderRecord?
     @Query("SELECT * FROM entry WHERE id = :id") suspend fun entryById(id: String): EntryRecord?

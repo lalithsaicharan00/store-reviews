@@ -50,6 +50,19 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             reminders.forEach { sync.change(SyncCodec.REMINDER, it.id, SyncCodec.reminder(it)) }
         }
 
+    /**
+     * Gives habits saved before schema 11, or restored from an older file, their icon's names (`symbol_names`). Only that
+     * field changes, as any edit would change it: a habit's other fields and `updated_at` stay as they are.
+     */
+    @Throws(Exception::class)
+    suspend fun fillSymbolNames(names: (String) -> String) {
+        val missing = dao.habitsWithoutSymbolNames()
+        if (missing.isEmpty()) return
+        dao.synced(clock()) { sync ->
+            missing.forEach { sync.change(SyncCodec.HABIT, it.id, SyncCodec.habit(it.copy(symbolNames = names(it.symbol)))) }
+        }
+    }
+
     /** Includes tombstones, so replaying an undone system action cannot bring it back. */
     @Throws(Exception::class)
     suspend fun hasEntry(id: String): Boolean = dao.hasEntry(id)
@@ -320,7 +333,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
 
     companion object {
         /** Bump with every schema change, and add a migration plus a migration test. */
-        const val SCHEMA_VERSION = 10
+        const val SCHEMA_VERSION = 11
 
         @Throws(Exception::class)
         fun open(path: String): HabitRepository = HabitRepository(configure(databaseBuilder(path)), ::currentTimeMillis)
@@ -338,7 +351,7 @@ class HabitRepository private constructor(private val database: HabitDatabase, p
             builder
                 .setDriver(BundledSQLiteDriver())
                 .setQueryCoroutineContext(databaseDispatcher)
-                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7, Migrations.v7ToV8, Migrations.v8ToV9, Migrations.v9ToV10)
+                .addMigrations(Migrations.v1ToV2, Migrations.v2ToV3, Migrations.v3ToV4, Migrations.v4ToV5, Migrations.v5ToV6, Migrations.v6ToV7, Migrations.v7ToV8, Migrations.v8ToV9, Migrations.v9ToV10, Migrations.v10ToV11)
                 .addCallback(Durability)
                 .build()
     }

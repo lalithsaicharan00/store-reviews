@@ -104,7 +104,7 @@ enum CloudSyncCheck {
                         dueMinute: r.dueMinute, atMost: r.atMost, quitSince: r.quitSince, position: r.position, createdAt: r.createdAt,
                         updatedAt: Date.now.millis, archivedAt: r.archivedAt, deletedAt: deletedAt.map { KotlinLong(value: $0) } ?? r.deletedAt,
                         remind: r.remind, alert: r.alert, followUpMinutes: r.followUpMinutes, startsOn: r.startsOn, endsOn: r.endsOn,
-                        reminderText: r.reminderText)
+                        reminderText: r.reminderText, symbolNames: r.symbolNames)
         }
     }
 

@@ -16,6 +16,7 @@
 - The iPhone and Android phone apps, released together, with the features designed and built so far.
 - No accounts and no server (D16).
 - Backup to the person's own iCloud or Google Drive (D4).
+- **Still to build on the iPhone:** a habit stores every name its icon goes by, so a backup file keeps its icons between iPhone and Android (Android has it, A111). See [Icon Names in Backup Files — To Build](<iOS/Docs/Icon Names in Backup Files — To Build.md>).
 
 **Plus at launch**, decided 27 Oct 2026 and recorded as Android A73:
 

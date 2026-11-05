@@ -151,7 +151,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     /** The habit as chosen: the one place it's built. */
     fun makeHabit(name: String): Habit {
-        var h = Habit(name = name, symbol = symbol, color = color, kind = HabitKind.Check)
+        var h = Habit(name = name, symbol = symbol, symbolNames = original?.symbolNames, color = color, kind = HabitKind.Check)
         when (type) {
             ItemType.QUIT -> h = h.copy(kind = HabitKind.Quit, quitSince = quitSince)
             ItemType.TASK -> {

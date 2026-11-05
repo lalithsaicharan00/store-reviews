@@ -127,7 +127,7 @@ enum GoldenRecorder {
                 dueMinute: h.dueMinute.map { KotlinInt(value: Int32($0)) }, atMost: h.atMost ?? false,
                 quitSince: h.quitSince.map { KotlinLong(value: $0) }, position: Int32(h.position ?? i), createdAt: h.createdAt,
                 updatedAt: h.createdAt, archivedAt: h.archivedAt.map { KotlinLong(value: $0) }, deletedAt: nil, remind: true,
-                alert: "notification", followUpMinutes: nil, startsOn: h.startsOn, endsOn: h.endsOn, reminderText: nil)
+                alert: "notification", followUpMinutes: nil, startsOn: h.startsOn, endsOn: h.endsOn, reminderText: nil, symbolNames: nil)
         }
         let steps = (rows.steps ?? []).map { StepRecord(id: $0.id, habitId: $0.habitId, name: $0.name ?? "Step", position: Int32($0.position), deletedAt: nil) }
         let reminders = (rows.reminders ?? []).map { ReminderRecord(id: $0.id, habitId: $0.habitId, hour: Int32($0.hour), minute: Int32($0.minute), deletedAt: nil) }

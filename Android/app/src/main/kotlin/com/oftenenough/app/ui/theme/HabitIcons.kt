@@ -1,6 +1,7 @@
 package com.oftenenough.app.ui.theme
 
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.oftenenough.app.data.IconNames
 
 /**
  * Habit icons are saved by the iPhone's symbol names (SF Symbols: "drop.fill"), so a habit keeps its icon on every
@@ -110,31 +111,7 @@ object HabitIcons {
     )
 
     /** Extra words for search (the iPhone's `IconLibrary.keywords`). */
-    val keywords: Map<String, List<String>> = mapOf(
-        "drop.fill" to listOf("water", "hydrate", "drink"), "pills.fill" to listOf("meds", "medicine", "vitamin", "pill", "tablet"),
-        "bed.double.fill" to listOf("sleep", "bed", "nap"), "mouth.fill" to listOf("teeth", "brush", "floss", "dentist"),
-        "figure.walk" to listOf("walk", "steps"), "figure.run" to listOf("run", "jog"), "figure.yoga" to listOf("yoga"),
-        "figure.flexibility" to listOf("stretch"), "figure.strengthtraining.traditional" to listOf("gym", "workout", "lift", "weights"),
-        "figure.pool.swim" to listOf("swim"), "bicycle" to listOf("bike", "cycle", "cycling"), "dumbbell.fill" to listOf("exercise", "push-ups", "pushups"),
-        "figure.mind.and.body" to listOf("meditate", "meditation", "breathe", "mindful"), "book.fill" to listOf("read", "reading", "book"),
-        "pencil" to listOf("write", "journal", "diary"), "music.note" to listOf("music", "practice", "piano", "sing"),
-        "graduationcap.fill" to listOf("study", "learn", "homework", "class"), "character.book.closed.fill" to listOf("language", "spanish", "french", "vocabulary"),
-        "house.fill" to listOf("home", "tidy", "clean"), "washer.fill" to listOf("laundry", "wash"), "dishwasher.fill" to listOf("dishes"),
-        "sink.fill" to listOf("sink", "kitchen"), "refrigerator.fill" to listOf("fridge", "groceries"), "trash.fill" to listOf("trash", "bins", "rubbish"),
-        "leaf.fill" to listOf("plants", "water plants", "garden"), "pawprint.fill" to listOf("dog", "cat", "pet", "walk the dog"),
-        "cart.fill" to listOf("shop", "shopping"), "tshirt.fill" to listOf("clothes", "iron"), "shower.fill" to listOf("shower", "bath"),
-        "envelope.fill" to listOf("email", "inbox"), "phone.fill" to listOf("call", "phone", "family"), "calendar" to listOf("plan", "appointment", "dentist"),
-        "dollarsign.circle.fill" to listOf("money", "budget", "save", "invest"), "hands.and.sparkles.fill" to listOf("pray", "prayer", "gratitude"),
-        "book.closed.fill" to listOf("bible", "quran", "scripture", "torah"), "building.columns.fill" to listOf("church", "mosque", "temple"),
-        "moon.stars.fill" to listOf("night", "evening"), "sunrise.fill" to listOf("morning", "wake"), "fork.knife" to listOf("eat", "meal", "lunch", "dinner", "breakfast", "cook"),
-        "carrot.fill" to listOf("vegetables", "veggies", "healthy"), "fish.fill" to listOf("fish"), "mug.fill" to listOf("tea"), "cup.and.saucer.fill" to listOf("coffee", "caffeine"),
-        "wineglass" to listOf("alcohol", "wine", "drinking", "beer"), "smoke.fill" to listOf("smoking", "cigarette", "vape", "nicotine"),
-        "iphone.slash" to listOf("screen time", "social media", "scrolling", "doomscrolling"), "gamecontroller.fill" to listOf("games", "gaming"), "tv.fill" to listOf("tv", "netflix", "youtube"),
-        "birthday.cake.fill" to listOf("sugar", "sweets", "dessert"), "takeoutbag.and.cup.and.straw.fill" to listOf("junk food", "fast food", "takeaway"),
-        "heart.fill" to listOf("health", "heart", "self-care"), "brain.head.profile" to listOf("mental", "therapy", "mood"), "lungs.fill" to listOf("breathing"),
-        "eye.fill" to listOf("eyes", "contacts"), "stethoscope" to listOf("doctor", "check-up"), "flame.fill" to listOf("streak", "challenge"),
-        "laptopcomputer" to listOf("work", "code", "computer"), "clock.fill" to listOf("time", "early"), "person.2.fill" to listOf("friends", "social"),
-    )
+    val keywords: Map<String, List<String>> get() = IconNames.keywords
 
     fun icon(symbol: String): ImageVector = map[symbol] ?: Symbols.Filled.Star
 

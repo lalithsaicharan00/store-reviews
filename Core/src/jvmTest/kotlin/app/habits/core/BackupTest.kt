@@ -167,6 +167,21 @@ class BackupTest {
         assertEquals(null, newPhone.load().habits.single { it.name == "Water" }.reminderText)
     }
 
+    /** An icon's names (schema 11, Android A111) go into the file and come back with a restore; an older file has none (D5). */
+    @Test fun iconNamesRoundTripThroughAFileAndARestore() = runBlocking {
+        val names = "figure.run,directions_run,run,jog"
+        val phone = repo("phone").apply {
+            fill()
+            saveHabit(habit("h3", "Run").copy(symbol = "figure.run", symbolNames = names), emptyList(), emptyList(), 1)
+        }
+        val file = phone.backupFile(info)
+        assertEquals(names, BackupFile.read(file.base64).snapshot.habits.single { it.id == "h3" }.symbolNames)
+        val newPhone = repo("new-phone")
+        newPhone.restore(file.base64, RestoreMode.REPLACE, info)
+        assertEquals(names, newPhone.load().habits.single { it.name == "Run" }.symbolNames)
+        assertEquals(null, newPhone.load().habits.single { it.name == "Water" }.symbolNames)
+    }
+
     // MARK: Checks before anything changes
 
     @Test fun aDamagedFileIsRefusedAndNothingChanges() = runBlocking {

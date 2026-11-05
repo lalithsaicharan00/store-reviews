@@ -10,6 +10,7 @@ import app.habits.core.TimerStop
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -243,6 +244,8 @@ class HabitStore(
 
     private suspend fun loadHere() {
         try {
+            // Names are only for a backup file's move to the other phone: failing to add them never stops the app opening.
+            try { repository.fillSymbolNames(IconNames::stored) } catch (e: CancellationException) { throw e } catch (_: Exception) {}
             val snapshot = repository.load()
             val steps = snapshot.steps.groupBy { it.habitId }
             val reminders = snapshot.reminders.groupBy { it.habitId }

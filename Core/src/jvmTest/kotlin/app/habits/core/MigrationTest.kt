@@ -211,6 +211,28 @@ class MigrationTest {
         }
     }
 
+    /** Schema 11 adds every name a habit's icon goes by (Android A111). Every schema upgrades to it with nothing lost and none invented. */
+    @Test fun everyPastVersionUpgradesToIconNames() = runTest {
+        for (version in 1 until HabitRepository.SCHEMA_VERSION) {
+            File(path).delete(); File("$path-wal").delete(); File("$path-shm").delete()
+            createSchema(version).close()
+            val repo = HabitRepository.open(path)
+            assertEquals(HabitRepository.SCHEMA_VERSION.toString(), repo.pragma("user_version"), "version $version upgrades")
+            val habit = HabitRecord(
+                id = "h$version", name = "Run", symbol = "figure.run", color = "orange", kind = "check", unit = null, increment = 1.0,
+                part = "anytime", goal = 1.0, period = "day", scheduleDays = null, frequency = "daily", dueDay = null, dueMinute = null,
+                atMost = false, quitSince = null, position = 0, createdAt = 1_000, updatedAt = 1_000, archivedAt = null, deletedAt = null,
+            )
+            repo.saveHabit(habit, emptyList(), emptyList(), 2_000)
+            assertEquals(null, repo.load().habits.single().symbolNames, "version $version invents no names")
+            repo.fillSymbolNames { "$it,directions_run" }
+            val filled = repo.load().habits.single()
+            assertEquals("figure.run,directions_run", filled.symbolNames, "version $version keeps the names")
+            assertEquals(habit.copy(symbolNames = filled.symbolNames), filled, "version $version changes nothing else")
+            repo.close()
+        }
+    }
+
     @Test fun version7KeepsEverythingAndHasNoReminderWords() = runTest {
         val connection = createSchema(7)
         connection.execSQL(

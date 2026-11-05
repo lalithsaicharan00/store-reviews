@@ -181,6 +181,8 @@ data class Habit(
     val startsOn: Int? = null,
     val endsOn: Int? = null,
     val reminderText: String? = null,
+    /** Every name the icon goes by (`IconNames`), as stored; null until it's first saved. */
+    val symbolNames: String? = null,
     val quitSince: Long? = null,
     val createdAt: Long = System.currentTimeMillis(),
     val archived: Boolean = false,

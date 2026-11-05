@@ -44,7 +44,7 @@ extension Habit {
             position: Int32(position), createdAt: createdAt.millis, updatedAt: now.millis,
             archivedAt: archived ? KotlinLong(value: now.millis) : nil, deletedAt: deleted ? KotlinLong(value: now.millis) : nil,
             remind: remind, alert: alert.rawValue, followUpMinutes: followUpMinutes.map { KotlinInt(value: Int32($0)) },
-            startsOn: startsOn?.key, endsOn: endsOn?.key, reminderText: reminderText)
+            startsOn: startsOn?.key, endsOn: endsOn?.key, reminderText: reminderText, symbolNames: nil)
     }
 
     func stepRecords() -> [StepRecord] {

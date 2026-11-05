@@ -120,6 +120,23 @@ class SyncTest {
         listOf(phone, ipad).forEach { it.close() }
     }
 
+    /** Filling in an icon's names (schema 11) changes only that field, reaches the other device, and leaves a later edit alone. */
+    @Test fun fillingIconNamesChangesOnlyThatField() = runBlocking {
+        val (phone, ipad) = devices("phone", "ipad")
+        val saved = habit("h1")
+        phone.repo.saveHabit(saved, emptyList(), emptyList(), 1)
+        phone.sync(); ipad.sync()
+        phone.wall += 1_000
+        phone.repo.fillSymbolNames { "$it,water_drop" }
+        phone.sync(); ipad.sync()
+        assertEquals(saved.copy(symbolNames = "drop.fill,water_drop"), ipad.state().habits.single())
+        assertEquals(phone.state(), ipad.state())
+        phone.wall += 1_000
+        phone.repo.fillSymbolNames { "something else" }
+        assertEquals("drop.fill,water_drop", phone.state().habits.single().symbolNames)
+        listOf(phone, ipad).forEach { it.close() }
+    }
+
     /** "Reminder says…" (schema 8, Current Work 58) reaches the other device, and clearing it does too (D12, D14). */
     @Test fun reminderWordsSyncAndCanBeCleared() = runBlocking {
         val (phone, ipad) = devices("phone", "ipad")

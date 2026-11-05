@@ -172,7 +172,7 @@ enum AppLockCheck {
         let start = day.adding(days: -5, calendar: local)
         let meds = Habit(name: "Secret meds", symbol: "pills", color: .red, kind: .check,
                          reminders: [ReminderTime(hour: 8, minute: 0)], remind: true, followUpMinutes: 15, startsOn: start,
-                         reminderText: "The usual")
+                         reminderText: "The usual", symbolNames: nil)
         let water = Habit(name: "Private water", symbol: "drop", color: .blue, kind: .amount(unit: "glasses", increment: 1), goal: 8,
                           reminders: [ReminderTime(hour: 9, minute: 0)], remind: true, startsOn: start)
         let walk = Habit(name: "Hidden walk", symbol: "figure.walk", color: .green, kind: .check,

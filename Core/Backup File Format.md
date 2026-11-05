@@ -63,6 +63,7 @@ Habit fields added since format 1, each optional for readers (an older file simp
 | Field | Schema | Meaning |
 |---|---|---|
 | `reminder_text` | 8 (9 Oct 2026, Current Work 58) | "Reminder says…": the person's own words for the habit's reminders, at most 24 characters; `null` for none. A file from schema 7 or earlier restores with none |
+| `symbol_names` | 11 (5 Nov 2026, Android A111) | Every name the habit's icon goes by, comma-separated: see [Icon names](#icon-names-5-nov-2026). A file from schema 10 or earlier restores with none, and the app fills them in |
 
 ## Format 2: the compact automatic backup (10 Oct 2026)
 
@@ -147,6 +148,36 @@ file from any other: Restore › A backup file in Settings, and **A backup file*
   YYYY-MM-DD.db`). Make it save the shared zip, or remove its Save button. The iPhone's Restore can keep reading an older
   `.db` (`BackupCenter.isOlderBackupFile`, adding only what's missing) until release; nothing outside our own test
   phones has one, as the app isn't out yet.
+
+## Icon names (5 Nov 2026)
+
+The user, 5 Nov 2026: "whatever multiple names we have for that icon, we should store all of them … So when we move to the
+another platform, whichever the icons that fits or matches very closely, we just pick that up."
+
+A habit stores names, never a picture:
+
+```json
+{ "symbol": "figure.run", "symbol_names": "figure.run,directions_run,run_circle,sprint,run,jog" }
+```
+
+- **`symbol`** is one SF Symbol's name, on both platforms. It's what older files have, and an older app reads only this.
+- **`symbol_names`** holds the icon's SF Symbol name, then its Material Symbol names, then the plain words people search for.
+  They're comma-separated, because no name contains a comma.
+
+**Reading (`closest`):** go through `symbol_names` in order, then `symbol`, and take the first name this phone can draw.
+Capitals and a trailing `.fill` don't matter, so `heart` finds `heart.fill`. If none is known, keep the habit's own values
+and draw the default icon.
+
+**Saving (`toSave`):**
+- **Same icon:** while the icon is still the one its names lead to, keep the names in their order and add any this phone
+  knows. An icon only the other phone has goes back to it unchanged, even after an edit here.
+- **New icon:** a habit given a new icon starts again from that icon's own names.
+
+**Filling in:** a habit with no names, from before schema 11 or an older file, gets them the next time the app loads
+(`HabitRepository.fillSymbolNames`). Only that field changes; `updated_at` doesn't.
+
+**The table:** `Android/app/src/main/kotlin/com/oftenenough/app/data/IconNames.kt`. A new icon in either app's picker goes in
+both apps' tables. The iPhone's side is [Icon Names in Backup Files — To Build](<../iOS/Docs/Icon Names in Backup Files — To Build.md>).
 
 ## Checks before anything changes
 
