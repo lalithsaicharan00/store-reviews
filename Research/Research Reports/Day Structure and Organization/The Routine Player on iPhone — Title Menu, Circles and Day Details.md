@@ -48,6 +48,14 @@ carried over; each copy's colour was copied from its cookie onto its circle befo
 yesterday flow says so in the subtitle ("Yesterday · 1 of 3"), since the chip that named the day is gone.
 Captions, arrow labels and frame names on the page: the title menu, Day Details, banner (not snackbar), the circle.
 
+## Screen F: Your routine (907:29174)
+
+Already iOS's own shape: a Medium sheet without a handle (one height), Edit as a word, Change order as the List's
+edit mode with grabbers, a footer. Two things changed: the **done row's trailing ✓ is gone** (a trailing checkmark
+on iOS means "selected"; the row's supporting line already says Done), so only the row you're on keeps a marker,
+▶ (play.fill, Secondary, as Music marks what's playing); and **Done** in Change order is a Semibold glass word, as
+Add and Save are. Its 4 copies on the page follow.
+
 ## Left for the user
 
 1. **Day Details visible or in ⋯.** Chosen visible (a small capsule under the name); the alternative keeps the hero

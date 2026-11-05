@@ -30,7 +30,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | C | Time picker · Date picker (every copy, every page) | 703:602 · 705:1025 | **Done** 6 Nov (months on K and P's flows still October) | Calendar popover (Limit variants, a circle per day) and time wheels popover replace Android's dialogs; 35 copies on 6 pages: scrims gone, anchored under their rows, values set, no OK steps | same report |
 | D | Note screens | 765:1087 | **Done** 6 Nov | Large sheet: Add Note / Edit Note, Add / Save glass words (off while empty), note card, footer with the day, Apple's iOS keyboard (123, grey return); view with Edit in the bar and a red Delete Note row; 21 copies kept their words (habit layers moved, note a property); captions on 2 pages | [Logging on iPhone § D](<../../../Research/Research Reports/Day Structure and Organization/Logging on iPhone — Health's Rows, Compact Pickers and the Decimal Pad.md>) |
 | E | Routine player | 906:89513 | **Done** 6 Nov (time habits' ring and the Live Activity still open) | Title menu with '1 of 3' under it; circle replaces the cookie (colours copied per copy); no hero card; Day Details button replaces the Today chip; Title Case words; 92 copies; captions | [Routine Player on iPhone](<../../../Research/Research Reports/Day Structure and Organization/The Routine Player on iPhone — Title Menu, Circles and Day Details.md>) |
-| F | Your routine sheet | 907:29174 | Not started | | |
+| F | Your routine sheet | 907:29174 | **Done** 6 Nov | Already native (Medium sheet, Edit, grabbers); done row's trailing ✓ removed (✓ means selected on iOS), ▶ marks the current one, Done Semibold; 4 copies | Routine Player report § F |
 | G | Habits page | 986:150825 | Not started | | |
 | H | Archived habits · Search | 988:7736 · 991:8050 | Not started | | |
 | I | Tasks page | 999:1061 | Not started | | |
@@ -65,7 +65,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 ## Next
 
-Screen F, Your routine sheet (907:29174). Still open from E: a time habit in the player should use the Timer ring
+Screen G, the Habits page (986:150825). Still open from E: a time habit in the player should use the Timer ring
 (a Screen=Time variant); the player page's 'outside the app' frames still show Android's Live Update chip (iPhone:
 Live Activity), with the notifications page. Carried over: History's Go to date flows (details pages 1150:76414 …) and
 the create-new forms still show October in the new calendar: set their months and days in K and P.
