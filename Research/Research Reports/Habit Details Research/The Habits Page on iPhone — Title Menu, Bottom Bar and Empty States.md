@@ -64,6 +64,13 @@ small capsule "+ Add “yoga”". Changed:
 - Captions: the search field at the top with ✕ beside it, not "Android's full-screen search view"; Move to Another
   Day… opens the calendar.
 
+## Screen I: the Tasks page (999:1061)
+
+The same header problem as Habits, so the same answer: ☰ · **Tasks ⌄** (the title menu: Habits, Tasks) · search and +,
+in all 12 variants. One-time | Repeating stays as the content's segmented control (it filters one list, not two
+places). **No Tasks Yet** and **No Repeating Tasks** are ContentUnavailableView with one Large **New Task**. Captions
+and frame names say the title, not tabs (10 texts, 5 frames).
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is
