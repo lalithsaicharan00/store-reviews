@@ -81,6 +81,25 @@ tasks stay here, by the day they were done. Open one again with Mark as Not Done
 Banner; and an empty state that is a ContentUnavailableView with no button (**No Archived Tasks**, **Nothing Completed
 Yet**, also under the Deleted banner). Completed's bar ⋯ keeps **Delete All Completed**.
 
+## Screen K: Habit details (1020:4052)
+
+"Mostly good, with inconsistencies" (the user). What changed:
+
+- **See All**, not "+ See all streaks" / "+ See all 4": the + said "add", which none of them does (22 buttons).
+- **No Progress Yet** and **Nothing Here Yet** are ContentUnavailableView, no shape behind the symbol, no button
+  (logging happens on Today). Medals keep their own shape.
+- **History's buttons**: **With Notes** (a filter: Bordered, Prominent while on) and **Go to Date…** (Bordered with the
+  calendar; "…" because it opens the calendar first), Small capsules, Title Case.
+- **The squashed check marks** (1148:286731, 1158:377814 and every history row, 376): the history rows forced the
+  28-point day cell into a 12-point slot. They now hold the 24-point day cell (the same squares as the cards), in
+  Water's blue.
+- **Go to Date… in History** (9 frames): the calendar opens under the button; a new **Month=September** variant of the
+  Date picker (September 2026 starts on a Tuesday) shows the earlier month; the chosen day is an Ink circle; choosing
+  a day closes the calendar and opens or scrolls to that day (no "Open Tue 8 Sep" button: iOS's calendar acts on the
+  tap). ‹ is off before the habit began, › off on this month.
+- Captions (42 texts, 23 frames): ⋯ and ‹, banner, the calendar, Title Case button words. Add Note is Title Case on
+  its floating button (8).
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is
