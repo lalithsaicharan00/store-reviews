@@ -1,0 +1,13 @@
+Ignoring --strip-bitcode because --sign was not passed
+Ignoring --strip-bitcode because --sign was not passed
+Test Case '-[ProbeUITests.ProbeUITests testAProbes]' started.
+2026-11-05 21:55:18.625 xcodebuild[2938:14511] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-11-05 21:55:34.961 xcodebuild[2938:14511] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+2026-11-05 21:55:52.654 xcodebuild[2938:14511] [MT] IDELaunchParametersSnapshot: The operation couldn’t be completed. (DebuggerLLDB.DebuggerVersionStore.StoreError error 0.)
+Test Case '-[ProbeUITests.ProbeUITests testAProbes]' passed (56.731 seconds).
+Test Case '-[ProbeUITests.ProbeUITests testReminders]' started.
+Test Case '-[ProbeUITests.ProbeUITests testReminders]' passed (27.502 seconds).
+Test Suite 'ProbeUITests' passed at 2026-11-05 21:56:35.958.
+Test Suite 'ProbeUITests.xctest' passed at 2026-11-05 21:56:35.960.
+Test Suite 'All tests' passed at 2026-11-05 21:56:35.960.
+** TEST SUCCEEDED **

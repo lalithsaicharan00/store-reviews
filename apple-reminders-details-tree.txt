@@ -1,0 +1,164 @@
+Attributes: Application, 0x118e26e40, pid: 6878, label: 'Reminders'
+Element subtree:
+ →Application, 0x118e26e40, pid: 6878, label: 'Reminders'
+    Window (Main), 0x118e26f80, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x118e270c0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x118e27200, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x118e27340, {{-402.0, -874.0}, {1206.0, 2622.0}}
+          Other, 0x118e27480, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x118e275c0, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x118e27700, {{0.0, 0.0}, {402.0, 874.0}}
+                Other, 0x118e27840, {{0.0, 0.0}, {402.0, 874.0}}
+                  NavigationBar, 0x118e27980, {{0.0, 62.0}, {402.0, 106.0}}, identifier: 'Reminders'
+                    Button, 0x118e27ac0, {{16.0, 62.0}, {44.0, 44.0}}, identifier: 'BackButton', label: 'Back'
+                    Button, 0x118e27c00, {{346.0, 66.0}, {36.0, 36.0}}, label: 'More'
+                    StaticText, 0x118e27d40, {{16.0, 120.7}, {165.0, 39.7}}, label: 'Reminders'
+                  Other, 0x118e27e80, {{0.0, 0.0}, {402.0, 874.0}}
+                    Other, 0x118e25400, {{0.0, 0.0}, {402.0, 874.0}}
+                      Other, 0x118e25540, {{0.0, 0.0}, {402.0, 874.0}}
+                        Other, 0x118e25680, {{0.0, 0.0}, {402.0, 874.0}}
+                          Other, 0x118e257c0, {{0.0, 0.0}, {402.0, 874.0}}
+                            Other, 0x118e25900, {{0.0, 0.0}, {402.0, 874.0}}
+                              Other, 0x118e25a40, {{0.0, 0.0}, {402.0, 874.0}}
+                                CollectionView, 0x118e25b80, {{0.0, 0.0}, {402.0, 874.0}}, identifier: 'RemindersList.ID.RemindersTable'
+                                  Other, 0x118e25cc0, {{0.0, -1580.0}, {402.0, 3538.0}}
+                                  Other, 0x118e25e00, {{0.0, 0.0}, {402.0, 874.0}}
+                                  Other, 0x118e25f40, {{0.0, 0.0}, {402.0, 874.0}}
+                                  Other, 0x118e26080, {{0.0, 0.0}, {402.0, 874.0}}
+                                  Cell, 0x118e261c0, {{0.0, 168.0}, {402.0, 42.0}}, identifier: '<x-apple-reminderkit://REMCDReminder/CC96AFF5-A61B-4A10-B678-16B839B78241>', label: 'New Reminder, Incomplete'
+                                    Other, 0x118e26300, {{0.0, 168.0}, {402.0, 42.0}}
+                                      Other, 0x118e26440, {{0.0, 168.0}, {402.0, 42.0}}
+                                    Other, 0x118e26580, {{0.0, 168.0}, {402.0, 42.0}}
+                                      Button, 0x118e266c0, {{6.8, 166.2}, {44.0, 44.0}}, label: 'circle'
+                                      TextField, 0x118e26800, {{53.7, 178.0}, {289.7, 22.0}}, label: 'Title', value: New Reminder
+                                        Other, 0x118e26940, {{53.7, 178.0}, {0.0, 0.0}}, identifier: '_UITextSelectionRangeAdjustmentContainerView'
+                                          Other, 0x118e26a80, {{53.7, 178.0}, {0.0, 0.0}}, identifier: 'com.apple.text.grabber.leading'
+                                            Other, 0x118e26bc0, {{46.4, 164.5}, {16.5, 16.5}}
+                                            Other, 0x118e26d00, {{53.7, 178.0}, {2.0, 0.0}}
+                                          Other, 0x118ef8000, {{53.7, 178.0}, {0.0, 0.0}}, identifier: 'com.apple.text.grabber.leading'
+                                            Other, 0x118ef8140, {{46.4, 164.5}, {16.5, 16.5}}
+                                            Other, 0x118ef8280, {{53.7, 178.0}, {2.0, 0.0}}
+                                      Other, 0x118ef83c0, {{343.3, 178.0}, {42.7, 20.3}}
+                                        Other, 0x118ef8500, {{343.3, 178.0}, {42.7, 20.3}}
+                                          Button, 0x118ef8640, {{350.2, 166.2}, {44.0, 44.0}}, label: 'Edit Details'
+                                          StaticText, 0x118ef8780, {{385.0, 178.0}, {1.0, 20.3}}, label: ' '
+                                  Other, 0x118ef88c0, {{369.0, 116.0}, {30.0, 672.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                                    Other, 0x118ef8a00, {{396.0, 676.0}, {3.0, 109.0}}
+                                  Other, 0x118ef8b40, {{62.0, 755.0}, {278.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                                    Other, 0x118ef8c80, {{65.0, 782.0}, {272.0, 3.0}}
+                                  Other, 0x118ef8dc0, {{369.0, 116.0}, {30.0, 672.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                                    Other, 0x118ef8f00, {{396.0, 676.0}, {3.0, 109.0}}
+                                  Other, 0x118ef9040, {{62.0, 755.0}, {278.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                                    Other, 0x118ef9180, {{65.0, 782.0}, {272.0, 3.0}}
+                  Other, 0x118ef92c0, {{0.0, 0.0}, {402.0, 874.0}}
+                    Other, 0x118ef9400, {{0.0, 0.0}, {402.0, 874.0}}
+                      Other, 0x118ef9540, {{0.0, 788.0}, {402.0, 86.0}}
+                        Other, 0x118ef9680, {{28.0, 798.0}, {346.0, 48.0}}
+                          Other, 0x118ef97c0, {{28.0, 798.0}, {346.0, 48.0}}
+                            Other, 0x118ef9900, {{28.0, 798.0}, {0.0, 0.0}}
+                              Other, 0x118ef9a40, {{326.0, 798.0}, {48.0, 48.0}}
+                                Other, 0x118ef9b80, {{326.0, 798.0}, {48.0, 48.0}}
+                                  Other, 0x118ef9cc0, {{331.0, 803.0}, {38.0, 38.0}}
+                                    Other, 0x118ef9e00, {{331.0, 803.0}, {38.0, 38.0}}
+                                      Button, 0x118ef9f40, {{331.0, 803.0}, {38.0, 38.0}}, label: 'New Reminder'
+            Other, 0x118efa080, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x118efa1c0, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x118efa300, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x118efa440, {{-402.0, -874.0}, {1206.0, 2622.0}}
+        Other, 0x118efa580, {{0.0, 62.0}, {402.0, 812.0}}
+          Other, 0x118efa6c0, {{0.0, 62.0}, {402.0, 812.0}}
+            Other, 0x118efa800, {{0.0, 62.0}, {402.0, 812.0}}
+              Other, 0x118efa940, {{0.0, 62.0}, {402.0, 812.0}}
+                NavigationBar, 0x118efaa80, {{0.0, 78.0}, {402.0, 54.0}}, identifier: 'Details'
+                  Button, 0x118efabc0, {{20.0, 82.0}, {36.0, 36.0}}, label: 'Cancel'
+                  StaticText, 0x118efad00, {{173.3, 89.7}, {55.0, 20.7}}, label: 'Details'
+                  Button, 0x118efae40, {{346.0, 82.0}, {36.0, 36.0}}, label: 'Done'
+                Other, 0x118efaf80, {{0.0, 62.0}, {402.0, 812.0}}
+                  Other, 0x118efb0c0, {{0.0, 62.0}, {402.0, 812.0}}
+                    Other, 0x118efb200, {{0.0, 62.0}, {402.0, 812.0}}
+                      Table, 0x118efb340, {{0.0, 62.0}, {402.0, 812.0}}, identifier: 'ReminderDetail.ID.DetailsTable'
+                        Other, 0x118efb480, {{0.0, 140.0}, {402.0, 0.0}}
+                        Cell, 0x118efb5c0, {{20.0, 140.0}, {362.0, 65.0}}
+                          Other, 0x118efb700, {{0.0, 0.0}, {inf, 1.0}}
+                          TextField, 0x118efb840, {{36.0, 155.3}, {330.0, 34.0}}, identifier: 'Detail View Title Field', label: 'Title', value: New Reminder
+                            Other, 0x118efb980, {{333.0, 165.3}, {30.0, 24.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                              Other, 0x118efbac0, {{360.0, 116.3}, {3.0, 36.0}}
+                          Other, 0x118efbc00, {{20.0, 140.0}, {362.0, 65.0}}
+                            Other, 0x118efbd40, {{20.0, 140.0}, {362.0, 65.0}}
+                        Cell, 0x118efbe80, {{20.0, 205.0}, {362.0, 39.0}}
+                          TextField, 0x118f50000, {{36.0, 206.3}, {330.0, 22.0}}, identifier: 'Notes text view', label: 'Notes'
+                            Other, 0x118f50140, {{333.0, 206.3}, {30.0, 18.5}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                              Other, 0x118f50280, {{360.0, 167.3}, {3.0, 36.0}}
+                          Other, 0x118f503c0, {{20.0, 205.0}, {362.0, 39.0}}
+                            Other, 0x118f50500, {{20.0, 205.0}, {362.0, 39.0}}
+                          Other, 0x118f50640, {{20.0, 243.0}, {362.0, 1.0}}
+                        Other, 0x118f50780, {{0.0, 244.0}, {402.0, 16.0}}
+                        Other, 0x118f508c0, {{0.0, 260.0}, {402.0, 40.3}}, identifier: 'Date & Time'
+                          Other, 0x118f50a00, {{20.0, 260.0}, {362.0, 40.3}}, label: 'Date & Time'
+                        Cell, 0x118f50b40, {{20.0, 300.3}, {362.0, 51.3}}, label: 'Date', value: Off, Collapsed
+                          Other, 0x118f50c80, {{20.0, 300.3}, {362.0, 51.3}}
+                            Image, 0x118f50dc0, {{36.0, 311.3}, {29.0, 29.0}}, identifier: 'calendar', label: 'calendar'
+                            StaticText, 0x118f50f00, {{80.0, 315.7}, {208.0, 20.3}}, label: 'Date'
+                            Other, 0x118f51040, {{303.0, 312.0}, {63.0, 28.0}}
+                              Switch, 0x118f51180, {{303.0, 312.0}, {63.0, 28.0}}, label: 'Date', value: 0
+                          Other, 0x118f512c0, {{20.0, 300.3}, {362.0, 51.3}}
+                            Other, 0x118f51400, {{20.0, 300.3}, {362.0, 51.3}}
+                          Other, 0x118f51540, {{80.0, 350.7}, {286.0, 1.0}}
+                        Cell, 0x118f51680, {{20.0, 351.7}, {362.0, 51.3}}, label: 'Time', value: Off, Collapsed
+                          Other, 0x118f517c0, {{20.0, 351.7}, {362.0, 51.3}}
+                            Image, 0x118f51900, {{36.0, 362.7}, {29.0, 29.0}}, identifier: 'clock', label: 'clock'
+                            StaticText, 0x118f51a40, {{80.0, 367.0}, {208.0, 20.3}}, label: 'Time'
+                            Other, 0x118f51b80, {{303.0, 363.3}, {63.0, 28.0}}
+                              Switch, 0x118f51cc0, {{303.0, 363.3}, {63.0, 28.0}}, label: 'Time', value: 0
+                          Other, 0x118f51e00, {{20.0, 351.7}, {362.0, 51.3}}
+                            Other, 0x118f51f40, {{20.0, 351.7}, {362.0, 51.3}}
+                          Other, 0x118f52080, {{20.0, 402.0}, {362.0, 1.0}}
+                        Other, 0x118f521c0, {{0.0, 403.0}, {402.0, 16.0}}
+                        Other, 0x118f52300, {{0.0, 419.0}, {402.0, 40.3}}, identifier: 'Organization'
+                          Other, 0x118f52440, {{20.0, 419.0}, {362.0, 40.3}}, label: 'Organization'
+                        Cell, 0x118f52580, {{20.0, 459.3}, {362.0, 51.3}}, label: 'List', value: Reminders, List ba...
+                          StaticText, 0x118f526c0, {{80.0, 474.7}, {169.0, 20.3}}, label: 'List'
+                          StaticText, 0x118f52800, {{264.0, 474.7}, {79.7, 20.3}}, label: 'Reminders'
+                          Other, 0x118f52940, {{35.0, 469.3}, {31.0, 31.0}}, identifier: 'Blue', value: Blue
+                            Image, 0x118f52a80, {{35.0, 469.3}, {31.0, 31.0}}, identifier: 'ListBadgeDefault'
+                          Other, 0x118f52bc0, {{20.0, 459.3}, {362.0, 51.3}}
+                            Other, 0x118f52d00, {{20.0, 459.3}, {362.0, 51.3}}
+                          Other, 0x118f52e40, {{20.0, 509.7}, {362.0, 1.0}}
+                          Button, 0x118f52f80, {{351.7, 478.0}, {10.3, 14.0}}, label: 'chevron', Disabled
+                        Other, 0x118f530c0, {{0.0, 510.7}, {402.0, 4.0}}
+                        Other, 0x118f53200, {{0.0, 514.7}, {402.0, 4.0}}
+                        Cell, 0x118f53340, {{20.0, 518.7}, {362.0, 51.3}}, label: 'Priority', value: None
+                          StaticText, 0x118f53480, {{309.3, 534.0}, {40.3, 20.3}}, label: 'None'
+                          StaticText, 0x118f535c0, {{80.0, 534.0}, {52.7, 20.3}}, label: 'Priority'
+                          Other, 0x118f53700, {{20.0, 518.7}, {362.0, 51.3}}
+                            Other, 0x118f53840, {{20.0, 518.7}, {362.0, 51.3}}
+                          Other, 0x118f53980, {{20.0, 569.0}, {362.0, 1.0}}
+                        Other, 0x118f53ac0, {{0.0, 570.0}, {402.0, 16.0}}
+                        Other, 0x118f53c00, {{0.0, 586.0}, {402.0, 40.3}}, identifier: 'Places & People'
+                          Other, 0x118f53d40, {{20.0, 586.0}, {362.0, 40.3}}, label: 'Places & People'
+                        Cell, 0x118f53e80, {{20.0, 626.3}, {362.0, 51.3}}, label: 'Location', value: Off, Collapsed
+                          Other, 0x118f58000, {{20.0, 626.3}, {362.0, 51.3}}
+                            Image, 0x118f58140, {{36.0, 637.3}, {29.0, 29.0}}, identifier: 'location', label: 'location services'
+                            StaticText, 0x118f58280, {{80.0, 641.7}, {208.0, 20.3}}, label: 'Location'
+                            Other, 0x118f583c0, {{303.0, 638.0}, {63.0, 28.0}}
+                              Switch, 0x118f58500, {{303.0, 638.0}, {63.0, 28.0}}, label: 'Location', value: 0
+                          Other, 0x118f58640, {{20.0, 626.3}, {362.0, 51.3}}
+                            Other, 0x118f58780, {{20.0, 626.3}, {362.0, 51.3}}
+                          Other, 0x118f588c0, {{20.0, 676.7}, {362.0, 1.0}}
+                        Other, 0x118f58a00, {{0.0, 677.7}, {402.0, 4.0}}
+                        Other, 0x118f58b40, {{369.0, 132.0}, {30.0, 680.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                          Other, 0x118f58c80, {{396.0, 276.0}, {3.0, 539.0}}
+                        Other, 0x118f58dc0, {{62.0, 841.0}, {278.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                          Other, 0x118f58f00, {{59.0, 868.0}, {284.0, 3.0}}
+                Other, 0x118f59040, {{0.0, 62.0}, {402.0, 812.0}}
+                  Other, 0x118f59180, {{0.0, 62.0}, {402.0, 812.0}}
+    Window, 0x118f592c0, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x118f59400, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x118f59540, {{0.0, 0.0}, {402.0, 874.0}}
+Path to element:
+ →Application, 0x118e26e40, pid: 6878, label: 'Reminders'
+Query chain:
+ →Find: Application 'com.apple.reminders'
+  Output: {
+    Application, 0x118f59680, pid: 6878, label: 'Reminders'
+  }

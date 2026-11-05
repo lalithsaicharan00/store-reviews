@@ -1,0 +1,58 @@
+Attributes: Application, 0x106617ac0, pid: 6878, label: 'Reminders'
+Element subtree:
+ →Application, 0x106617ac0, pid: 6878, label: 'Reminders'
+    Window (Main), 0x106617c00, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x106617d40, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x106617e80, {{0.0, 0.0}, {402.0, 874.0}}
+          Other, 0x117880000, {{0.0, 0.0}, {402.0, 874.0}}
+            Other, 0x117880140, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x117880280, {{0.0, 0.0}, {402.0, 874.0}}
+                Other, 0x1178803c0, {{0.0, 0.0}, {402.0, 874.0}}
+                  NavigationBar, 0x117880500, {{0.0, 62.0}, {402.0, 106.0}}, identifier: 'Reminders'
+                    Button, 0x117880640, {{16.0, 62.0}, {44.0, 44.0}}, identifier: 'BackButton', label: 'Back'
+                    Button, 0x117880780, {{346.0, 66.0}, {36.0, 36.0}}, label: 'More'
+                    StaticText, 0x1178808c0, {{16.0, 120.7}, {165.0, 39.7}}, label: 'Reminders'
+                  Other, 0x117880a00, {{0.0, 0.0}, {402.0, 874.0}}
+                    Other, 0x117880b40, {{0.0, 0.0}, {402.0, 874.0}}
+                      Other, 0x117880c80, {{0.0, 0.0}, {402.0, 874.0}}
+                        Other, 0x117880dc0, {{0.0, 0.0}, {402.0, 874.0}}
+                          Other, 0x117880f00, {{0.0, 0.0}, {402.0, 874.0}}
+                            Other, 0x117881040, {{0.0, 0.0}, {402.0, 874.0}}
+                              Other, 0x117881180, {{0.0, 0.0}, {402.0, 874.0}}
+                                CollectionView, 0x1178812c0, {{0.0, 0.0}, {402.0, 874.0}}, identifier: 'RemindersList.ID.RemindersTable'
+                                  Other, 0x117881400, {{0.0, 0.0}, {402.0, 874.0}}
+                                  Other, 0x117881540, {{0.0, 0.0}, {402.0, 874.0}}
+                                  Other, 0x117881680, {{0.0, 0.0}, {402.0, 874.0}}
+                                  Other, 0x1178817c0, {{369.0, 116.0}, {30.0, 672.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                                    Other, 0x117881900, {{396.0, 739.0}, {3.0, 46.0}}
+                                  Other, 0x117881a40, {{62.0, 755.0}, {278.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                                    Other, 0x117881b80, {{330.0, 782.0}, {7.0, 3.0}}
+                                  Other, 0x117881cc0, {{369.0, 116.0}, {30.0, 672.0}}, label: 'Vertical scroll bar, 1 page', value: 0%
+                                    Other, 0x117881e00, {{396.0, 739.0}, {3.0, 46.0}}
+                                  Other, 0x117881f40, {{62.0, 755.0}, {278.0, 30.0}}, label: 'Horizontal scroll bar, 1 page', value: 0%
+                                    Other, 0x117882080, {{330.0, 782.0}, {7.0, 3.0}}
+                              Other, 0x1178821c0, {{16.0, 425.0}, {370.0, 24.0}}, label: 'Reminders List'
+                                StaticText, 0x117882300, {{139.3, 425.0}, {123.0, 24.0}}, label: 'No Reminders'
+                  Other, 0x117882440, {{0.0, 0.0}, {402.0, 874.0}}
+                    Other, 0x117882580, {{0.0, 0.0}, {402.0, 874.0}}
+                      Toolbar, 0x1178826c0, {{0.0, 788.0}, {402.0, 86.0}}, identifier: 'Toolbar', label: 'Toolbar'
+                        Other, 0x117882800, {{28.0, 798.0}, {346.0, 48.0}}
+                          Other, 0x117882940, {{28.0, 798.0}, {346.0, 48.0}}
+                            Other, 0x117882a80, {{28.0, 798.0}, {0.0, 0.0}}
+                              Other, 0x117882bc0, {{326.0, 798.0}, {48.0, 48.0}}
+                                Other, 0x117882d00, {{326.0, 798.0}, {48.0, 48.0}}
+                                  Other, 0x117882e40, {{331.0, 803.0}, {38.0, 38.0}}
+                                    Other, 0x117882f80, {{331.0, 803.0}, {38.0, 38.0}}
+                                      Button, 0x1178830c0, {{331.0, 803.0}, {38.0, 38.0}}, label: 'New Reminder'
+            Other, 0x117883200, {{0.0, 0.0}, {402.0, 874.0}}
+              Other, 0x117883340, {{0.0, 0.0}, {402.0, 874.0}}
+    Window, 0x117883480, {{0.0, 0.0}, {402.0, 874.0}}
+      Other, 0x1178835c0, {{0.0, 0.0}, {402.0, 874.0}}
+        Other, 0x117883700, {{0.0, 0.0}, {402.0, 874.0}}
+Path to element:
+ →Application, 0x106617ac0, pid: 6878, label: 'Reminders'
+Query chain:
+ →Find: Application 'com.apple.reminders'
+  Output: {
+    Application, 0x117883840, pid: 6878, label: 'Reminders'
+  }
