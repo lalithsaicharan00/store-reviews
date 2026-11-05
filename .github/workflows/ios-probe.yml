@@ -30,6 +30,7 @@ jobs:
           c=[(k,x) for k,v in d.items() if 'iOS' in k for x in v if x['name']=='iPhone 17']
           c.sort(key=lambda t:t[0]); print(c[-1][1]['udid'])")
           echo "UDID=$UDID" >> $GITHUB_ENV
+          defaults write com.apple.iphonesimulator ConnectHardwareKeyboard -bool false
           xcrun simctl boot "$UDID"
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl status_bar "$UDID" override --time 9:41 --dataNetwork wifi --wifiMode active --wifiBars 3 --cellularMode active --cellularBars 4 --batteryState charged --batteryLevel 100

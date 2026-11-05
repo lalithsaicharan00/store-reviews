@@ -1,6 +1,6 @@
 import XCTest
 
-enum Step { case tap(String), wait(Double), shot(String), swipeUp, swipeDown, type(String) }
+enum Step { case tap(String), tapIndex(String, Int), tapAt(Double, Double), wait(Double), shot(String), swipeUp, swipeDown, type(String) }
 
 struct Shot {
     let name: String
@@ -13,7 +13,10 @@ final class ProbeUITests: XCTestCase {
     override func setUp() { continueAfterFailure = true }
 
     func testProbes() { for s in Shots.probes { run(s) } }
-    func testAppleApps() { for s in Shots.apple { run(s) } }
+    func testCalendar() { run(Shots.calendar) }
+    func testContacts() { run(Shots.contacts) }
+    func testHealth() { run(Shots.health) }
+    func testReminders() { run(Shots.reminders) }
 
     func run(_ s: Shot) {
         let app: XCUIApplication
@@ -26,6 +29,12 @@ final class ProbeUITests: XCTestCase {
         for st in s.steps {
             switch st {
             case .tap(let id): tap(app, id); sleep(1)
+            case .tapIndex(let label, let i):
+                _ = label
+                let pickers = app.datePickers
+                if pickers.count > i { pickers.element(boundBy: i).tap() } else { XCTFail("no date picker \(i)") }
+                sleep(1)
+            case .tapAt(let x, let y): app.coordinate(withNormalizedOffset: CGVector(dx: x, dy: y)).tap(); sleep(1)
             case .wait(let t): Thread.sleep(forTimeInterval: t)
             case .shot(let n): snap("\(s.name)-\(n)", app: s.bundle == nil ? nil : app)
             case .swipeUp: app.swipeUp(); sleep(1)
