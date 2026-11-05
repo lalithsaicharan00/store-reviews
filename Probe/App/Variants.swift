@@ -27,6 +27,10 @@ enum Variants {
         case "view2": LogView(deleteStyle: 2)
         case "viewDur": LogView(kind: .duration)
         case "viewAlert": LogDeleteAlert()
+        case "logRowsAX": Presenter(style: .sheet) { LogEntryRows().dynamicTypeSize(.accessibility1) }
+        case "logBigAX": Presenter(style: .sheet) { LogEntryRows(bigNumber: true).dynamicTypeSize(.accessibility1) }
+        case "viewAX": LogView().dynamicTypeSize(.accessibility1)
+        case "durWheelAX": Presenter(style: .sheet) { LogEntryRows(kind: .duration, durationStyle: 0).dynamicTypeSize(.accessibility1) }
         default: Text("Probe index")
         }
     }
