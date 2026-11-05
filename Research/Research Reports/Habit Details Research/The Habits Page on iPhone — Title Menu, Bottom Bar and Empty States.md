@@ -100,6 +100,16 @@ Yet**, also under the Deleted banner). Completed's bar ⋯ keeps **Delete All Co
 - Captions (42 texts, 23 frames): ⋯ and ‹, banner, the calendar, Title Case button words. Add Note is Title Case on
   its floating button (8).
 
+## Screen L: Streaks and All milestones (1034:74, 1036:235)
+
+"The badges look weird" (the user). They were squeezed: every List item fixes its leading slot at 24 × 24, and All
+milestones swapped a 40-point medal and a 48-point progress ring into it, so numbers spilled out of the rings ("400")
+and the medals became blobs. Neither the Medal nor the Progress ring uses auto layout, so the slot can't simply hug
+them. A new **Milestone row** (design system 4256:2590; Kind Reached/Next × Position First/Middle/Last/Single) holds
+the medal (Small, 40, its own shape kept) or the ring (48) in a 48 slot, with the name and when beside it; the 15
+rows of both variants were replaced, each keeping its number, arc and colour. The title is **All Milestones**.
+Streaks was already right (one inset list of runs with bars, a footer) and is unchanged.
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is

@@ -36,7 +36,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | I | Tasks page | 999:1061 | **Done** 6 Nov | Tasks ⌄ title menu (☰ · search +) in 12 variants; One-time \| Repeating kept as content filter; No Tasks Yet / No Repeating Tasks as ContentUnavailableView with New Task; captions | Habits Page report § I |
 | J | Archived tasks · Completed tasks | 1001:178 · 1002:230 | **Done** 6 Nov | One shape with Archived Habits (Title Case titles, intro line, one list, ⋯ with the way back and red Delete, Banner, ContentUnavailableView); Completed gained its intro; Mark as Not Done / Delete All Completed | Habits Page report § J |
 | K | Habit details | 1020:4052 | **Done** 6 Nov | See All (no +); No Progress Yet / Nothing Here Yet as ContentUnavailableView; With Notes / Go to Date… buttons; 376 history day cells unsquashed (24 pt) in Water blue; Go to Date calendars anchored, September variant added to the Date picker; captions | Habits Page report § K |
-| L | Streaks · All milestones | 1034:74 · 1036:235 | Not started | | |
+| L | Streaks · All milestones | 1034:74 · 1036:235 | **Done** 6 Nov | Squeezed medals and rings replaced by a new Milestone row (DS 4256:2590), 15 rows with their numbers, arcs and colours; All Milestones title; Streaks unchanged | Habits Page report § L |
 | M | Search (details pages) | 1053:9079 | Not started | | |
 | N | Task details | 1136:9271 | Not started | | |
 | O | The page at 1142:29063 | 1142:29063 | Not started | | |
@@ -69,7 +69,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 ## Next
 
-Screen L, Streaks (1034:74) and All milestones (1036:235). Still open from E: a time habit in the player should use the Timer ring
+Screen M, Search on the details pages (1053:9079). Still open from E: a time habit in the player should use the Timer ring
 (a Screen=Time variant); the player page's 'outside the app' frames still show Android's Live Update chip (iPhone:
 Live Activity), with the notifications page. Carried over: History's Go to date flows (details pages 1150:76414 …) and
 the create-new forms still show October in the new calendar: set their months and days in K and P.

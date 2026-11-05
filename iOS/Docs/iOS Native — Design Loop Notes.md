@@ -109,3 +109,9 @@ section below is headed with the doc it belongs to; move it there once the docs 
   place: every letters keyboard in the file is now the iPhone's.
 - **A search with no results is iOS's no-results view** (ContentUnavailableView with the magnifying glass): "No
   Results for “yoga”", a line, and one Large Prominent button when there's something to do (Add “yoga”).
+
+## Lists and Rows — iOS Native · 6 Nov 2026: what a List item's icon slot can hold (screens K, L)
+
+- A List item's leading slot is **24 × 24, fixed**: only a 24-point part goes in it (the Icon, a Year-size Day cell).
+  Anything bigger is squeezed (History's ✓, All milestones' medals). A medal or a progress ring goes in a **Milestone
+  row** (48 slot); a day's status in a history row is the 24-point Day cell.
