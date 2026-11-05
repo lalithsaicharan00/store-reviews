@@ -42,6 +42,9 @@ enum Variants {
         case "pList": PlayerChecklist()
         case "pEnd": PlayerEnd()
         case "pCheckAX": PlayerCheck().dynamicTypeSize(.accessibility1)
+        case "h0": HabitsPage(header: 0)
+        case "h1": HabitsPage(header: 1)
+        case "h2": HabitsPage(header: 2)
         default: Text("Probe index")
         }
     }
