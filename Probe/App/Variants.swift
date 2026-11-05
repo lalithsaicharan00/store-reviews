@@ -31,6 +31,10 @@ enum Variants {
         case "logBigAX": Presenter(style: .sheet) { LogEntryRows(bigNumber: true).dynamicTypeSize(.accessibility1) }
         case "viewAX": LogView().dynamicTypeSize(.accessibility1)
         case "durWheelAX": Presenter(style: .sheet) { LogEntryRows(kind: .duration, durationStyle: 0).dynamicTypeSize(.accessibility1) }
+        case "noteForm": Presenter(style: .sheet) { NoteEntry() }
+        case "noteFormEmpty": Presenter(style: .sheet) { NoteEntry(typed: false) }
+        case "noteFull": Presenter(style: .sheet) { NoteEntry(fullSheet: true) }
+        case "noteView": NoteView()
         default: Text("Probe index")
         }
     }

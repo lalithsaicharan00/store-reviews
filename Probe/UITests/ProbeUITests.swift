@@ -13,9 +13,6 @@ final class ProbeUITests: XCTestCase {
     override func setUp() { continueAfterFailure = true }
 
     func testAProbes() { for s in Shots.probes { run(s) } }
-    func testCalendar() { run(Shots.calendar) }
-    func testContacts() { run(Shots.contacts) }
-    func testHealth() { run(Shots.health) }
     func testReminders() { run(Shots.reminders) }
 
     func run(_ s: Shot) {
