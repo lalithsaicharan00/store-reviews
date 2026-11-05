@@ -37,7 +37,7 @@ jobs:
         run: |
           cd Probe
           set -o pipefail
-          xcodebuild test -project Probe.xcodeproj -scheme Probe -destination "id=$UDID" -resultBundlePath ../R.xcresult CODE_SIGNING_ALLOWED=NO 2>&1 | grep -E "error|warning: unable|Test Case|failed|passed|\*\*" | head -200 || true
+          xcodebuild test -project Probe.xcodeproj -scheme Probe -destination "id=$UDID" -resultBundlePath ../R.xcresult CODE_SIGNING_ALLOWED=NO 2>&1 | grep -E "error|warning: unable|Test Case|failed|passed|XCTAssert|\*\*" | head -300 | tee ../test-log.txt || true
       - name: Export
         if: always()
         run: |
@@ -57,6 +57,7 @@ jobs:
           print(sorted(os.listdir('shots')), sorted(os.listdir('apple')))
           PY
           for f in shots/*.png; do sips -Z 1100 "$f" >/dev/null; done
+          rm -f shots/*.mp4; cp test-log.txt shots/ || true
       - name: Push our own probe shots (never Apple's images, D11)
         if: always()
         run: |

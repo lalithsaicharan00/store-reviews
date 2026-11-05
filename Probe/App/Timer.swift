@@ -218,3 +218,65 @@ struct ClockButton: View {
         .buttonStyle(.plain)
     }
 }
+
+// Round 2: E's body with the header options and every state.
+enum TimerState { case running, paused, goalMet, overLimit }
+
+struct TimerF: View {
+    var header: Int = 0          // 0: title + subtitle, Day Details word; 1: title + subtitle, ⋯ menu
+    var state: TimerState = .running
+    var body: some View {
+        let limit = state == .overLimit
+        let tint: Color = limit ? Color(.systemGray) : habitGreen
+        NavigationStack {
+            VStack(spacing: 0) {
+                Spacer()
+                ZStack {
+                    Circle().stroke(tint.opacity(0.18), lineWidth: 10)
+                    Circle().trim(from: 0, to: state == .goalMet || limit ? 1 : 0.67)
+                        .stroke(tint, style: StrokeStyle(lineWidth: 10, lineCap: .round)).rotationEffect(.degrees(-90))
+                    VStack(spacing: 6) {
+                        Image(systemName: limit ? "iphone" : "figure.flexibility").font(.title).foregroundStyle(limit ? Color(red: 1, green: 45/255, blue: 85/255) : habitGreen)
+                        Text(limit ? "31:20" : state == .goalMet ? "10:12" : "6:42").font(.system(size: 64, weight: .light)).monospacedDigit()
+                            .minimumScaleFactor(0.5).lineLimit(1)
+                        Text(limit ? "of 30 min max" : "of 10 min").foregroundStyle(.secondary)
+                    }
+                    .padding(.horizontal, 24)
+                }
+                .frame(width: 270, height: 270)
+                Group {
+                    switch state {
+                    case .running: Text(" ")
+                    case .paused: Text("Paused")
+                    case .goalMet: Label("Goal met", systemImage: "checkmark.circle.fill")
+                    case .overLimit: Text("Over the limit")
+                    }
+                }
+                .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+                .padding(.top, 20)
+                Spacer()
+                HStack {
+                    ClockButton(title: "Log Time", tint: Color(.systemGray), prominent: false)
+                    Spacer()
+                    ClockButton(title: state == .paused ? "Resume" : "Pause", tint: state == .goalMet ? habitGreen : ink, prominent: true)
+                }
+                .padding(.horizontal, 28)
+                .padding(.bottom, 20)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) { Button { } label: { Image(systemName: "xmark") } }
+                ToolbarItem(placement: .principal) {
+                    VStack(spacing: 0) {
+                        Text(limit ? "Social media" : "Stretch").font(.headline)
+                        Text("Today").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    if header == 0 { Button("Day Details") { } }
+                    else { Menu { Button("Day Details", systemImage: "calendar") { }; Button("Log Time…", systemImage: "square.and.pencil") { } } label: { Image(systemName: "ellipsis") } }
+                }
+            }
+        }
+    }
+}
