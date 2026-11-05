@@ -343,6 +343,7 @@ The Feature Ledger files carry no "Written by Claude" line, because each rebuild
 
 - [Full-screen Focus Player — One Thing at a Time](<Day Structure and Organization/Full-screen Focus Player — One Thing at a Time.md>) — Codex, 29 Sep 2026. Review evidence, native focus-player design, mixed habit types and the decision against a competing whole-routine countdown.
 - [Focus Player — How It Should Behave](<Day Structure and Organization/Focus Player — How It Should Behave.md>) — Claude, 29 Sep 2026. 2,271 routine/timer reviews screened in ten themes; pause that doesn't hold is the top bug elsewhere; 17 numbered behaviours the manual bug hunt checks.
+- [The Timer on iPhone — Clock's Ring and Round Buttons](<Day Structure and Organization/The Timer on iPhone — Clock's Ring and Round Buttons.md>) — Claude, 6 Nov 2026. iPhone design loop A: the timer as a Large sheet with Clock's ring and round buttons, in place of Android's cookie, wave, chip and button pair; five Simulator versions and every state; new Clock button and Timer ring parts.
 - [Weekly Overview Card — Which Numbers to Show](<Progress and Statistics/Weekly Overview Card — Which Numbers to Show.md>) — Claude, 2 Oct 2026. Designed one combined weekly number; the user then removed the overview card and the calendar rings. Replaced by [Weekly Habit Cards — What Each Card Shows](<Progress and Statistics/Weekly Habit Cards — What Each Card Shows.md>).
 
 ## iPhone widget implementation

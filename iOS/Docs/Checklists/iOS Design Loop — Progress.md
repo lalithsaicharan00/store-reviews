@@ -25,8 +25,8 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | | Screen | Figma | Status | What changed | Report |
 |---|---|---|---|---|---|
 | — | Menu, Today, Edit Today, Day details | 669:234 … | Finished before this loop (reference) | — | — |
-| A | Timer screens | 705:7745 | In progress | | |
-| B | Log screens (Add log, Log view, Edit log, Delete log) | 687:829 | Not started | | |
+| A | Timer screens | 705:7745 | **Done** 6 Nov | Large sheet; Timer ring + Clock buttons replace cookie, wave, chip and capsule pair; ✕, name over the day, Day Details word; Paused / Goal met / Over the limit; 13 copies (Day details 4, Today 3, routine player 7) restored; captions on 3 pages; 200 % frame 4230:447235; DS: Clock button 4228:2548, Timer ring 4228:2551, Navigation bar actions capsule | [Timer on iPhone](<../../../Research/Research Reports/Day Structure and Organization/The Timer on iPhone — Clock's Ring and Round Buttons.md>) |
+| B | Log screens (Add log, Log view, Edit log, Delete log) | 687:829 | Next | | |
 | C | Time picker · Date picker (every copy, every page) | 703:602 · 705:1025 | Not started | | |
 | D | Note screens | 765:1087 | Not started | | |
 | E | Routine player | 906:89513 | Not started | | |
@@ -47,8 +47,21 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 ## Left for the user
 
-(Decisions of taste, with frame links, collected as screens are done.)
+**A · Timer** ([705:7745](https://www.figma.com/design/zLgBjb7M7Fp6UN0pg7J3a8/IOS-app?node-id=705-7745)):
+1. ✕ (as every sheet) or a glass ⌄ ("put away, the clock keeps going") at the top left.
+2. Day Details as a word in the bar (chosen) or inside ⋯ (hides it).
+3. Should the ring's clock (SF Pro Light 64) become a text style, and what's its name?
 
 ## Next
 
-Screen A, Timer screens.
+Screen B, the log screens (687:829): research DatePicker styles (compact, graphical, wheels) and Apple's
+view/edit screens (Contacts, Calendar event) on the Simulator, with each Apple app in its own test (Clock isn't on
+the Simulator; one failed launch stopped the rest).
+
+## How the probes work
+
+`claude/nice-hopper-dhgw5r-probe` holds a SwiftUI app (`Probe/`) whose screens are variants (`-variant name`) and a
+UI test that screenshots them (`Shots.swift`). Pushing runs `.github/workflows/ios-probe.yml` on `macos-26`
+(iPhone 17, iOS 26, 9:41). Our own screenshots come back on `claude/nice-hopper-dhgw5r-shots` (both branches safe to
+delete); a cloud session can't download artifacts. Apple's apps come back as element trees (text) only; their
+screenshots stay in the run's artifact (D11).
