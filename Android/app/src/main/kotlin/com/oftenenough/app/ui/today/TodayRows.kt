@@ -112,7 +112,7 @@ private fun rowModel(store: HabitStore, habit: Habit, day: Int, slot: String?, t
     val progress = rules.progress(habit, day, now)
     val goal = rules.goal(store.rule(habit, day))
     val done = slot?.let { store.isSlotDone(habit, it, day) } ?: (rules.isDone(habit, day) && !habit.atMost)
-    val streak = if (habit.kind == HabitKind.Task) 0 else store.streak(habit, day)
+    val streak = if (habit.kind == HabitKind.Task) 0 else store.shownStreak(habit, day)
     val running = store.timers.containsKey(habit.id) && day == today
     var line = store.rowLine(habit, day, slot, time, progress, goal, running)
     // A milestone keeps the row's own line; its band says it, below (Figma R.1, decided 17 Oct 2026).

@@ -998,10 +998,14 @@ private fun Description(name: String, text: String) {
     var open by remember { mutableStateOf(false) }
     Text(text, Modifier.fillMaxWidth().clickable(onClickLabel = "Read all") { open = true }.semantics { testTag = "player-description" },
         style = AppType.bodyLarge, color = appColors.secondary, textAlign = TextAlign.Center, maxLines = 2, overflow = TextOverflow.Ellipsis)
-    if (open) com.oftenenough.app.ui.components.AppBottomSheet({ open = false }, Modifier.semantics { testTag = "description-sheet"; testTagsAsResourceId = true }, title = name) {
+    if (open) {
+    val sheet = com.oftenenough.app.ui.components.rememberWholeSheetState()
+    val close = com.oftenenough.app.ui.components.rememberSheetClose(sheet)
+    com.oftenenough.app.ui.components.AppBottomSheet({ open = false }, Modifier.semantics { testTag = "description-sheet"; testTagsAsResourceId = true }, title = name, sheetState = sheet) {
         Text(text, Modifier.padding(horizontal = 16.dp), style = AppType.bodyMedium, color = appColors.secondary)
-        com.oftenenough.app.ui.components.AppButton("Close", { open = false }, Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 24.dp),
+        com.oftenenough.app.ui.components.AppButton("Close", { close { open = false } }, Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, top = 24.dp),
             style = com.oftenenough.app.ui.components.ButtonStyle.Outlined, tag = "description-close")
+    }
     }
 }
 

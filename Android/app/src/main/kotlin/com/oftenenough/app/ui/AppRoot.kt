@@ -73,7 +73,12 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import com.oftenenough.app.app.Prefs
 import com.oftenenough.app.data.Habit
 import com.oftenenough.app.data.HabitStore
+import androidx.compose.ui.input.pointer.pointerInput
+import com.oftenenough.app.ui.components.ReportMenu
+import com.oftenenough.app.ui.theme.BackSwipe
 import com.oftenenough.app.ui.theme.appColors
+import com.oftenenough.app.ui.theme.rememberPageMotion
+import com.oftenenough.app.ui.theme.stepsAside
 import com.oftenenough.app.ui.today.TodayActions
 import com.oftenenough.app.ui.today.TodayNav
 import com.oftenenough.app.ui.today.TodayScreen
@@ -189,7 +194,7 @@ private fun AppMain(
     LaunchedEffect(AppGraph.dayToOpen) {
         AppGraph.dayToOpen?.let { target -> AppGraph.dayToOpen = null; nav.popBackStack(Routes.TODAY, inclusive = false); dayTarget = target }
     }
-    val dayNav = dayNav(nav, askPause, sayUndo, deleteWithUndo) { dayTarget = null }
+    val dayNav = dayNav(nav, askPause, sayUndo, deleteWithUndo)
     // Today places its own messages above the day bar; every other page shows them here, at the bottom.
     val entry = nav.currentBackStackEntryAsState().value
     val route = entry?.destination?.route
@@ -205,49 +210,54 @@ private fun AppMain(
         com.oftenenough.app.ui.components.LocalMenuOpen provides menuOpen) {
     Box(Modifier.fillMaxSize().background(appColors.screen)) {
     val appContext = androidx.compose.ui.platform.LocalContext.current
+    val motion = rememberPageMotion()
+    val buttons = com.oftenenough.app.ui.components.backIsAButton()
+    val drawer = rememberDrawerState(DrawerValue.Closed)
+    val openMenu: () -> Unit = { rootScope.launch { drawer.open() } }
     AdaptiveFrame(store, menuItem, onPick = { item -> openMenuItem(item, nav, appContext) }) {
-    NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen)) {
-        composable(Routes.TODAY) {
-            val drawer = rememberDrawerState(DrawerValue.Closed)
-            val scope = rememberCoroutineScope()
-            // Back closes the open menu first; it used to leave the app.
-            androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
-            com.oftenenough.app.ui.components.ReportMenu(drawer)
-            // With the sidebar (tablets, unfolded foldables) there's no drawer to open; the phone is untouched.
-            if (LocalSidebar.current) {
-                TodayScreen(store, prefs, todayNav(nav) {}, todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
-            } else ModalNavigationDrawer(drawerContent = {
-                MenuDrawer(store, MenuItem.TODAY) { item ->
-                    scope.launch { drawer.close() }
-                    openMenuItem(item, nav, appContext)
-                }
-            }, drawerState = drawer) {
-                TodayScreen(store, prefs, todayNav(nav) { scope.launch { drawer.open() } }, todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
-            }
+    val pages = @Composable {
+    NavHost(nav, startDestination = Routes.TODAY, modifier = Modifier.fillMaxSize().background(appColors.screen),
+        // Android's own page transition; between the menu's own places, fade through (Motion.kt, Android A112).
+        enterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.enter },
+        exitTransition = { BackSwipe.holding = false; if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.exit },
+        popEnterTransition = { if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.popEnter },
+        popExitTransition = { BackSwipe.holding = false; if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.popExit },
+        // A press of the bottom arrow is the plain Back the top arrow is, and only a real swipe follows a finger: Android 15
+        // reports the press as a swipe that never moves, and the preview's straight 450 ms played with no finger (A115).
+        predictivePopEnterTransition = {
+            if (!buttons) motion.swipeEnter else if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughEnter else motion.popEnter
+        },
+        predictivePopExitTransition = {
+            BackSwipe.holding = !buttons
+            if (!buttons) motion.swipeExit else if (initialState.isMenuPlace && targetState.isMenuPlace) motion.throughExit else motion.popExit
+        },
+        sizeTransform = null) {
+        page(Routes.TODAY) { e ->
+            TodayScreen(store, prefs, todayNav(nav, openMenu), todayActions(nav, view, askPause) { h, d -> dayTarget = h.id + "|" + d }, snackbar, todayLayout)
             dayTarget?.split("|")?.let { (id, d) ->
-                DayDetailsSheet(id, d.toInt(), store, dayNav) { dayTarget = null }
+                DayDetailsSheet(id, d.toInt(), store, dayNav, covered = nav.covers(e)) { dayTarget = null }
             }
         }
-        composable("add/{habit}/{day}?from={from}",
+        page("add/{habit}/{day}?from={from}",
             arguments = listOf(androidx.navigation.navArgument("from") { type = androidx.navigation.NavType.StringType; nullable = true; defaultValue = null })) { e ->
             AddLogScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store,
                 say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } },
                 // Back on the timer, the time added says so, with Undo (Figma 956:75584: "8 min added to Social media").
                 sayAdded = if (e.arguments?.getString("from") == "timer") ({ text, undo -> sayUndo(text, undo) }) else null) { nav.back(e) }
         }
-        composable("log/{id}") { e ->
+        page("log/{id}") { e ->
             LogScreen(e.arguments!!.getString("id")!!, store, say = { text -> rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) } },
                 sayUndo = sayUndo) { nav.back(e) }
         }
-        composable("alllogs/{habit}/{day}") { e ->
+        page("alllogs/{habit}/{day}") { e ->
             AllLogsScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, { nav.navigate(Routes.log(it.id)) }) { nav.back(e) }
         }
-        composable("note/{habit}/{day}") { e ->
+        page("note/{habit}/{day}") { e ->
             NoteScreen(e.arguments!!.getString("habit")!!, e.arguments!!.getString("day")!!.toInt(), store, say = { text, undo ->
                 if (undo != null) sayUndo(text, undo) else rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar(text) }
             }) { nav.back(e) }
         }
-        composable(Routes.NEW + "?name={name}&copy={copy}&from={from}") { entry ->
+        page(Routes.NEW + "?name={name}&copy={copy}&from={from}") { entry ->
             val a = entry.arguments
             val copyOf = a?.getString("copy")?.let { store.habit(it) }
             // From Habits & Tasks' + on Habits: back there once added, with the 6th-habit page first.
@@ -256,47 +266,47 @@ private fun AppMain(
             val fromHabits = a?.getString("from") == "habits"
             // Search's Add “word” (A72): back to Habits & Tasks once it's made, with no Add a 6th habit first (it may be a task).
             val fromSearch = a?.getString("from") == "search"
-            NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { habit ->
+            NewHabitFlow(store, onClose = { nav.pop() }, onSaved = { habit ->
                 copyOf?.let { store.placeAfter(habit.id, it.id) }
                 if (fromHabits || fromTasks || fromSearch) {
                     com.oftenenough.app.ui.habit.JustAdded.id = habit.id
                     com.oftenenough.app.ui.habit.JustAdded.copy = copyOf != null
-                    nav.popBackStack()
+                    nav.pop()
                 }
                 else nav.popBackStack(Routes.TODAY, inclusive = false)
             }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) }, copyOf = copyOf, name = a?.getString("name"), roomFirst = fromHabits,
                 task = fromTasks && copyOf == null, onPlusOn = plusOn)
         }
-        composable(Routes.ARCHIVED) {
+        page(Routes.ARCHIVED) {
             ArchivedHabitsScreen(store, object : ArchivedNav {
                 override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                 override fun restoreNoRoom(habit: Habit) = nav.navigate(Routes.restoreRoom(habit.id))
-                override fun back() { nav.popBackStack() }
+                override fun back() { nav.pop() }
             })
         }
-        composable(Routes.ARCHIVED_TASKS) {
+        page(Routes.ARCHIVED_TASKS) {
             ArchivedHabitsScreen(store, object : ArchivedNav {
                 override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                 override fun restoreNoRoom(habit: Habit) {}
-                override fun back() { nav.popBackStack() }
+                override fun back() { nav.pop() }
             }, tasks = true)
         }
-        composable(Routes.COMPLETED_TASKS) {
+        page(Routes.COMPLETED_TASKS) {
             com.oftenenough.app.ui.habit.CompletedTasksScreen(store, object : com.oftenenough.app.ui.habit.CompletedNav {
                 override fun open(task: Habit) = nav.navigate(Routes.habit(task.id))
-                override fun back() { nav.popBackStack() }
+                override fun back() { nav.pop() }
             })
         }
-        composable("restoreroom/{id}") { e ->
+        page("restoreroom/{id}") { e ->
             // Restore a 6th habit (Habits, Figma 6.4): Plus (Reason=6th habit); bought, the habit comes back; ← leaves it
             // archived (A94: no Make room).
             val habit = store.habit(e.arguments!!.getString("id")!!)
-            val done = { habit?.let { store.restore(it) }; nav.popBackStack(); Unit }
-            if (habit == null) LaunchedEffect(Unit) { nav.popBackStack() }
-            else PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { nav.popBackStack() }, onBought = { plusOn(); done() },
-                title = "Restore a 6th habit")
+            val done = { habit?.let { store.restore(it) }; nav.pop(); Unit }
+            if (habit == null) LaunchedEffect(Unit) { nav.pop() }
+            else PlusScreen(PlusReason.SIXTH, store, AppGraph.plus, onBack = { nav.pop() }, onBought = { plusOn(); done() },
+                title = "Restore a 6th habit", ownBack = false)
         }
-        composable("edit/{id}") { e ->
+        page("edit/{id}") { e ->
             // Saved, the page it came back to says so (Figma): Habit details "Changes saved"; Habits & Tasks and Tasks
             // "Stretch saved · Undo". Today shows the change on the row itself.
             EditHabitScreen(e.arguments!!.getString("id")!!, store, { reason -> nav.navigate(Routes.plus(reason)) }, { nav.back(e) }, plusOn) { saved, undo ->
@@ -308,12 +318,13 @@ private fun AppMain(
                 }
             }
         }
-        composable("page/{title}") { entry ->
+        page("page/{title}") { entry ->
             when (val title = entry.arguments?.getString("title") ?: "") {
-                MenuItem.HABITS.title -> WithMenu(store, MenuItem.HABITS, nav) { openMenu ->
-                    WithDay(store, nav) { openDay ->
+                MenuItem.HABITS.title -> {
+                    val menuButton = if (LocalSidebar.current) null else openMenu
+                    WithDay(store, nav, entry) { openDay ->
                         HabitsPage(store, object : HabitsNav {
-                            override val openMenu = openMenu
+                            override val openMenu = menuButton
                             override fun open(habit: Habit) = nav.navigate(Routes.habit(habit.id))
                             override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                             override fun edit(habit: Habit) = nav.navigate(Routes.edit(habit.id))
@@ -331,37 +342,35 @@ private fun AppMain(
                         })
                     }
                 }
-                SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store, { nav.navigate(Routes.page(SettingsPage.BATTERY)) }) { nav.popBackStack() }
+                SettingsPage.REMINDERS -> com.oftenenough.app.ui.settings.KeepRemindersComingPage(store, { nav.navigate(Routes.page(SettingsPage.BATTERY)) }) { nav.pop() }
                 // A109: set while open, it goes back and says so.
-                SettingsPage.BATTERY -> com.oftenenough.app.ui.settings.KeepAwakePage({ nav.popBackStack() }) {
-                    nav.popBackStack()
+                SettingsPage.BATTERY -> com.oftenenough.app.ui.settings.KeepAwakePage({ nav.pop() }) {
+                    nav.pop()
                     rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Battery is Unrestricted") }
                 }
                 // The menu's Plus (Reason=Menu): bought here, it stays, saying Plus is yours.
-                MenuItem.PLUS.title -> PlusScreen(PlusReason.MENU, store, AppGraph.plus, { nav.popBackStack() }, plusOn)
-                MenuItem.SETTINGS.title -> WithMenu(store, MenuItem.SETTINGS, nav) { openMenu ->
-                    SettingsHome(store, prefs, AppGraph.backup, openMenu) { page -> nav.navigate(Routes.page(page)) }
-                }
+                MenuItem.PLUS.title -> PlusScreen(PlusReason.MENU, store, AppGraph.plus, { nav.pop() }, plusOn, ownBack = false)
+                MenuItem.SETTINGS.title -> SettingsHome(store, prefs, AppGraph.backup, if (LocalSidebar.current) null else openMenu) { page -> nav.navigate(Routes.page(page)) }
                 "Arrange your day" -> {
                     // After a time of day is deleted: Anytime, where its habits went (Figma 842:65986).
                     val reveal by entry.savedStateHandle.getStateFlow<String?>("reveal", null).collectAsState()
                     ArrangeDayScreen(store, { id -> nav.navigate("section/" + (id ?: "new")) }, reveal = reveal,
-                        onRevealed = { entry.savedStateHandle["reveal"] = null }) { nav.popBackStack() }
+                        onRevealed = { entry.savedStateHandle["reveal"] = null }) { nav.pop() }
                 }
-                SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.popBackStack() }
-                SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.popBackStack() }
-                SettingsPage.THEME -> ThemePage(prefs) { nav.popBackStack() }
+                SettingsPage.NEW_DAY -> com.oftenenough.app.ui.settings.NewDayStartsAtPage(store) { nav.pop() }
+                SettingsPage.WEEK_START -> com.oftenenough.app.ui.settings.WeekStartsOnPage(store) { nav.pop() }
+                SettingsPage.THEME -> ThemePage(prefs) { nav.pop() }
                 // After Erase all my data the app starts again on Today, as a fresh install (Figma's Erase flow).
                 SettingsPage.BACKUP -> BackupScreen(AppGraph.backup, store, { nav.navigate(Routes.RESTORE_FROM_SETTINGS) }, { nav.popBackStack(Routes.TODAY, inclusive = false) },
-                    { nav.popBackStack() }, snackbar)
-                SettingsPage.TIMES_OF_DAY -> TimesOfDayPage(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.popBackStack() }
+                    { nav.pop() }, snackbar)
+                SettingsPage.TIMES_OF_DAY -> TimesOfDayPage(store, { id -> nav.navigate("section/" + (id ?: "new")) }) { nav.pop() }
                 // A page that doesn't exist (an old link): straight back.
-                else -> LaunchedEffect(title) { nav.popBackStack() }
+                else -> LaunchedEffect(title) { nav.pop() }
             }
         }
-        composable("habit/{id}") { e ->
+        page("habit/{id}") { e ->
             val id = e.arguments!!.getString("id")!!
-            WithDay(store, nav) { openDay ->
+            WithDay(store, nav, e) { openDay ->
                 HabitDetailsScreen(id, store, object : HabitDetailsNav {
                     override fun openDay(habit: Habit, day: Int) = openDay(habit, day)
                     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
@@ -372,7 +381,7 @@ private fun AppMain(
                     override fun duplicate(habit: Habit) = nav.navigate(Routes.NEW + "?copy=${habit.id}&from=tasks")
                     override fun plus() = nav.navigate(Routes.plus(PlusReason.YEAR))
                     override fun deleted(habit: Habit) {
-                        nav.popBackStack()
+                        nav.pop()
                         // Today has its own snackbar, not this one: from there it goes at once, as before.
                         if (nav.currentBackStackEntry?.destination?.route == Routes.TODAY) { store.delete(listOf(habit)); return }
                         com.oftenenough.app.ui.habit.PendingDelete.ids.add(habit.id)
@@ -388,12 +397,12 @@ private fun AppMain(
                             }
                         }
                     }
-                }) { nav.popBackStack() }
+                }) { nav.pop() }
             }
         }
-        composable("routine/{part}/{day}/{ids}?at={at}", arguments = listOf(androidx.navigation.navArgument("at") { nullable = true; defaultValue = null })) { e ->
+        page("routine/{part}/{day}/{ids}?at={at}", arguments = listOf(androidx.navigation.navArgument("at") { nullable = true; defaultValue = null })) { e ->
             val a = e.arguments!!
-            WithDay(store, nav) { openDay ->
+            WithDay(store, nav, e) { openDay ->
                 RoutinePlayer(store, a.getString("part")!!, a.getString("day")!!.toInt(), a.getString("ids")!!.split(",").filter { it.isNotEmpty() },
                     startAt = a.getString("at"), nav =
                     object : PlayerNav {
@@ -406,34 +415,34 @@ private fun AppMain(
                             if (milestones) com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id
                             nav.navigate(Routes.habit(habit.id))
                         }
-                    }) { nav.popBackStack() }
+                    }) { nav.pop() }
             }
         }
-        composable(Routes.RESTORE + "?from={from}", arguments = listOf(androidx.navigation.navArgument("from") { nullable = true; defaultValue = null })) { e ->
+        page(Routes.RESTORE + "?from={from}", arguments = listOf(androidx.navigation.navArgument("from") { nullable = true; defaultValue = null })) { e ->
             // From the empty Today the restore ends on Today and nothing more (Figma's onboarding, 2.7 and every flow's
             // last screen); from Settings it says what came back (Settings' Restore flows end "Today, habits restored").
             val fromSettings = e.arguments?.getString("from") == "settings"
             com.oftenenough.app.ui.restore.RestoreFlow(AppGraph.backup, store, AppGraph.plus, { AppGraph.hasPlus },
-                onBack = { nav.popBackStack() }, fromSettings = fromSettings) { message, done, undoable ->
+                onBack = { nav.pop() }, fromSettings = fromSettings) { message, done, undoable ->
                 nav.popBackStack(Routes.TODAY, inclusive = false)
                 // Settings' restore over the phone's own habits: "12 habits restored · Undo" (Figma 1183:5080).
                 if (undoable) sayUndo(message) { rootScope.launch { AppGraph.backup.undoRestore() } }
                 else if (fromSettings || !done) rootScope.launch { snackbar.showSnackbar(message, duration = androidx.compose.material3.SnackbarDuration.Long) }
             }
         }
-        composable(Routes.NEW_TASK) {
-            NewHabitFlow(store, onClose = { nav.popBackStack() }, onSaved = { nav.popBackStack() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
+        page(Routes.NEW_TASK) {
+            NewHabitFlow(store, onClose = { nav.pop() }, onSaved = { nav.pop() }, onPlus = { reason -> nav.navigate(Routes.plus(reason)) },
                 task = true, onPlusOn = plusOn)
         }
-        composable("timer/{id}") { e ->
+        page("timer/{id}") { e ->
             val id = e.arguments!!.getString("id")!!
-            WithDay(store, nav) { openDay ->
-                TimerScreen(store, id, { nav.popBackStack() },
+            WithDay(store, nav, e) { openDay ->
+                TimerScreen(store, id, { nav.pop() },
                     onLogManually = { nav.navigate(Routes.add(id, store.today()) + "?from=timer") },
                     onOpenDay = { store.habit(id)?.let { openDay(it, store.today()) } })
             }
         }
-        composable("section/{id}") { e ->
+        page("section/{id}") { e ->
             val existing = e.arguments!!.getString("id")!!.takeIf { it != "new" }
             // Back on Times of day (5.8.4, Figma's flows): "Changes saved" after an edit (a new one just appears in its
             // place, in time order); "Morning deleted" with Undo, which brings it back with its habits.
@@ -442,23 +451,36 @@ private fun AppMain(
             val fromSettings = nav.previousBackStackEntry?.arguments?.getString("title") == SettingsPage.TIMES_OF_DAY
             SectionEditorScreen(store, existing, listedAtOnce = fromSettings, fromSettings = fromSettings, onDeleted = { name, undo ->
                 nav.previousBackStackEntry?.savedStateHandle?.set("reveal", com.oftenenough.app.data.DaySection.ANYTIME)
-                nav.popBackStack()
+                nav.pop()
                 rootScope.launch {
                     snackbar.currentSnackbarData?.dismiss()
                     if (snackbar.showSnackbar("$name deleted", "Undo", duration = androidx.compose.material3.SnackbarDuration.Long) ==
                         androidx.compose.material3.SnackbarResult.ActionPerformed) store.undoSectionDelete(undo)
                 }
             }) { saved ->
-                nav.popBackStack()
+                nav.pop()
                 if (saved != null && existing != null) rootScope.launch { snackbar.currentSnackbarData?.dismiss(); snackbar.showSnackbar("Changes saved") }
             }
         }
         // Plus (5.9.1), for a reason: once it's on, back where the person was, which goes on as Figma's flows say (the
         // checklist form opens; Reminders loses its badge; Year in pixels unlocks), and "Plus is on".
-        composable(Routes.PLUS) { e ->
-            PlusScreen(PlusReason.of(e.arguments?.getString("reason")), store, AppGraph.plus, { nav.popBackStack() },
-                onBought = { nav.popBackStack(); plusOn() })
+        page(Routes.PLUS) { e ->
+            PlusScreen(PlusReason.of(e.arguments?.getString("reason")), store, AppGraph.plus, { nav.pop() },
+                onBought = { nav.pop(); plusOn() }, ownBack = false)
         }
+    }
+    }
+    // The menu is one, over every page: it keeps sliding shut while the page under it changes, as Gmail's does; before,
+    // each page had its own, which left with the page. Pages deeper than the menu's own places have no swipe to open it.
+    if (LocalSidebar.current) pages()
+    else {
+        ReportMenu(drawer)
+        ModalNavigationDrawer(drawerContent = {
+            MenuDrawer(store, menuItem ?: MenuItem.TODAY, drawer) { item ->
+                rootScope.launch { drawer.close() }
+                if (item != menuItem) openMenuItem(item, nav, appContext)
+            }
+        }, drawerState = drawer, gesturesEnabled = drawer.isOpen || entry?.isMenuPlace != false) { pages() }
     }
     }
     // A page with no pinned button (Plus, All logs, Habits & Tasks, Habit details, Archived and Completed) has its
@@ -595,29 +617,9 @@ object Routes {
         "routine/" + android.net.Uri.encode(part) + "/$day/" + ids.joinToString(",") + (at?.let { "?at=$it" } ?: "")
 }
 
-/**
- * A top-level page with its own ☰ (Habits, Figma 2106:2): Material's navigation drawer over it on a phone; with the
- * sidebar beside the page there's no drawer and no ☰ (null).
- */
-@Composable
-private fun WithMenu(store: HabitStore, current: MenuItem, nav: NavHostController, content: @Composable (openMenu: (() -> Unit)?) -> Unit) {
-    if (LocalSidebar.current) { content(null); return }
-    val drawer = rememberDrawerState(DrawerValue.Closed)
-    val scope = rememberCoroutineScope()
-    val pageContext = androidx.compose.ui.platform.LocalContext.current
-    androidx.activity.compose.BackHandler(enabled = drawer.isOpen) { scope.launch { drawer.close() } }
-    com.oftenenough.app.ui.components.ReportMenu(drawer)
-    ModalNavigationDrawer(drawerContent = {
-        MenuDrawer(store, current) { item ->
-            scope.launch { drawer.close() }
-            if (item != current) openMenuItem(item, nav, pageContext)
-        }
-    }, drawerState = drawer) { content { scope.launch { drawer.open() } } }
-}
-
-/** Day details' way out to the pages it opens; [close] closes the sheet first where a page replaces it. */
-private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String, () -> Unit) -> Unit, delete: (Habit) -> Unit, close: () -> Unit) = object : DayNav {
-    override fun habitPage(habit: Habit) { close(); nav.navigate(Routes.habit(habit.id)) }
+/** Day details' way out to the pages it opens. */
+private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String, () -> Unit) -> Unit, delete: (Habit) -> Unit) = object : DayNav {
+    override fun habitPage(habit: Habit) { nav.navigate(Routes.habit(habit.id)) }
     override fun allMilestones(habit: Habit) { com.oftenenough.app.ui.habit.HabitPageOpen.milestones = habit.id; habitPage(habit) }
     override fun addLog(habit: Habit, day: Int) = nav.navigate(Routes.add(habit.id, day))
     override fun note(habit: Habit, day: Int) = nav.navigate(Routes.note(habit.id, day))
@@ -636,13 +638,42 @@ private fun dayNav(nav: NavHostController, pause: (Habit) -> Unit, say: (String,
  * with the page, so going back from a page the sheet opened returns to the sheet, as on Today.
  */
 @Composable
-private fun WithDay(store: HabitStore, nav: NavHostController, content: @Composable (openDay: (Habit, Int) -> Unit) -> Unit) {
+private fun WithDay(store: HabitStore, nav: NavHostController, e: androidx.navigation.NavBackStackEntry, content: @Composable (openDay: (Habit, Int) -> Unit) -> Unit) {
     var target by rememberSaveable { mutableStateOf<String?>(null) }
     content { h, d -> target = h.id + "|" + d }
     target?.split("|")?.let { (id, d) ->
-        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current, LocalDeleteWithUndo.current) { target = null }, sayPastAdds = true) { target = null }
+        DayDetailsSheet(id, d.toInt(), store, dayNav(nav, LocalPause.current, LocalSayUndo.current, LocalDeleteWithUndo.current),
+            sayPastAdds = true, covered = nav.covers(e)) { target = null }
     }
 }
+
+/** Whether another page has opened over [e]: its Day details steps aside at once, not after the page has arrived. */
+@Composable
+private fun NavHostController.covers(e: androidx.navigation.NavBackStackEntry): Boolean = currentBackStackEntryAsState().value?.id != e.id
+
+/** One of the places the menu goes to and the page has its menu button (Today, Habits & Tasks, Settings), not a page with a back arrow deeper in. */
+private val androidx.navigation.NavBackStackEntry.isMenuPlace: Boolean
+    get() = when (destination.route) {
+        Routes.TODAY -> true
+        "page/{title}" -> arguments?.getString("title").let { it == MenuItem.HABITS.title || it == MenuItem.SETTINGS.title }
+        else -> false
+    }
+
+/**
+ * A destination, with what every page needs while it moves: the screen's colour under it, so the page it covers never
+ * shows through, and a surface that takes every touch on it, so a tap on a page still coming in never reaches the page
+ * it's coming in over; on its way out it steps aside ([stepsAside]).
+ */
+private fun androidx.navigation.NavGraphBuilder.page(
+    route: String,
+    arguments: List<androidx.navigation.NamedNavArgument> = emptyList(),
+    content: @Composable (androidx.navigation.NavBackStackEntry) -> Unit,
+) = composable(route, arguments) { e ->
+    Box(Modifier.fillMaxSize().stepsAside(transition).background(appColors.screen).pointerInput(Unit) {}) { content(e) }
+}
+
+/** Back one page. Never the page at the bottom: with two quick backs while a page leaves, that left a blank screen. */
+private fun NavHostController.pop() { if (previousBackStackEntry != null) popBackStack() }
 
 private fun todayNav(nav: NavHostController, openDrawer: () -> Unit) = object : TodayNav {
     override fun openMenu() = openDrawer()

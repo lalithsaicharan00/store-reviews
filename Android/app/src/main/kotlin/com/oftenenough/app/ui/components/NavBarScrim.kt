@@ -32,6 +32,19 @@ const val NavBarScrimAlpha = 0.9f
 @Composable
 fun threeButtonNavigation(): Boolean = WindowInsets.tappableElement.getBottom(LocalDensity.current) > 0
 
+/**
+ * True when Android shows buttons on any side (a phone on its side keeps them at its end), so Back is a press. With
+ * buttons there is no edge swipe, and with gestures no arrow: this is what tells a press from a swipe on Android 15,
+ * which reports both alike (Android A115).
+ */
+@Composable
+fun backIsAButton(): Boolean {
+    val density = LocalDensity.current
+    val direction = androidx.compose.ui.platform.LocalLayoutDirection.current
+    val bar = WindowInsets.tappableElement
+    return bar.getBottom(density) > 0 || bar.getLeft(density, direction) > 0 || bar.getRight(density, direction) > 0
+}
+
 /** Whether a menu drawer is open, told by the page that holds it ([ReportMenu]); the bar's tint steps aside then. */
 val LocalMenuOpen = staticCompositionLocalOf<MutableState<Boolean>?> { null }
 

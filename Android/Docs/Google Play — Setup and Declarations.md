@@ -2,7 +2,7 @@
 
 Written by Claude (Claude Code), 15 October 2026, while the user set up Google Play and Google Cloud step by step.
 Everything that was configured, every answer given to Google, and what is still open. **No secrets are here**
-(D11): passwords, the review code, bank, tax and KYC details stay with the user.
+(D11): passwords, promo codes, bank, tax and KYC details stay with the user.
 
 ## Identity and signing
 
@@ -92,10 +92,10 @@ Cloudflare: Wrangler is logged in on the user's PC (OAuth, saved outside the rep
 |---|---|
 | Privacy policy | `https://oftenenough.com/privacy` (needs the optional-account section, below) |
 | Ads / Advertising ID | No ads · advertising ID **No** (the manifest removes `AD_ID`) |
-| Sign in details | Yes (payments, optional Google sign-in, QR codes, biometric App lock, actions on another device). Instructions: free plan needs no sign-in; Plus via **Plus & Account › Redeem a code** with the review code (`PlusCodes`; only its SHA-256 is in the app). "Full access including paid content" ticked. A random 12-character code was made on the user's PC on 15 Oct 2026 (kept in their password manager as "Often Enough review code"); its fingerprint is in the app from version 4. **Once version 4 is live, put the random code in Sign in details, then remove the first code's fingerprint** |
+| Sign in details | Some functionality restricted (Plus, paid). No sign-in and no accounts; reviewers get Plus with Google Play promo codes: see [Reviewers' access to Plus](#reviewers-access-to-plus-4-nov-2026). The old in-app review code is gone (`PlusCodes`, 22 Oct 2026) |
 | Content rating | All other app types; everything No except digital purchases Yes |
 | Target audience | 13–15, 16–17, 18+ (not under 13, so not the Families policy; 18+ alone can restrict availability) |
-| Data safety | Collected, not shared, optional, encrypted in transit, deletable: Email address, User IDs (account management), Purchase history (account management, app functionality). Habits are not "collected": they go only to the person's own Google Drive (Google's FAQ exemption). Account creation: OAuth. Delete URL `https://oftenenough.com/delete-account` |
+| Data safety | **No data collected or shared** (the user chose No on 4 Nov 2026, version 6 active in closed testing). No accounts, ads, analytics or crash reporting; the advertising ID is removed; Android's own backup is off. Habits go only to the person's own Google Drive, and Google's FAQ exempts that when we never receive them; our backups run by themselves once someone connects Drive, so Google could read that differently, and the fix would be to declare it. Google Play handles payments and the app keeps no purchase history |
 | Government apps, Financial features | No |
 | Health | **Activity and fitness** only (Google's definitions: the app records exercise; it is not dedicated to sleep and gives no meditation guidance) |
 | Category, contact | Productivity (21 of the top 30 habit trackers on Play are); tags pending the research (`Research/Research Reports/Store Listing and ASO/`); contact email the user's Gmail; no phone |
@@ -116,8 +116,17 @@ replace them with Android screenshots before Production.**
 
 All Digital content, tax category Digital app sales, one per purchase, every country. Google doesn't check that an
 upgrade buyer owns Plus: the app offers the upgrade only to people who do. Real Play Billing is in the app from
-version 3 (`PlayPlusStore`); version 2 still uses the stand-in store. Play promo codes are not needed yet (reviewers
-use the in-app review code, testers are license testers); they're for giveaways and press after launch.
+version 3 (`PlayPlusStore`); version 2 still uses the stand-in store. Testers are license testers; reviewers use Play promo codes (below).
+
+## Reviewers' access to Plus (4 Nov 2026)
+
+Version 6 has no in-app review code, so Google's reviewers reach Plus with **Google Play promo codes**.
+
+- **Where:** Monetize with Play › Promo codes › Create promo code › One-time product › Plus, named `App review`. 5 codes, because each works once.
+- **They end on 31 December 2026, on purpose** (the user, 4 Nov 2026): so codes that leak stop working. Google's help also says unused codes end with the quarter, so a later date wouldn't help.
+- **Before that date, and before any review after it, make new codes and replace them in Sign in details.** An expired code can stop reviewers reaching Plus and get the app rejected. The production review may well fall after it.
+- **The codes themselves never go in this repository or a chat** (D11; the repository is public). They live in Play Console.
+- **How it works in the app:** nothing in the app takes a code. The reviewer redeems it in the Play Store, and `PlayPlusStore` finds the purchase when the app opens.
 
 ## Testing tracks
 
@@ -133,8 +142,8 @@ use the in-app review code, testers are license testers); they're for giveaways 
 2. ~~License testers~~ (done: Settings › License testing, the "Family & me" list of 4, RESPOND_NORMALLY). Version 3
    is in review; once it's out, try a test purchase of each product on a tester's phone (Play's test card), then
    Restore on a second phone.
-3. 12+ closed testers for 14 days, then **Apply for production** (needs Android screenshots, the random review code in
-   Sign in details, and the Worker for accounts).
+3. 12+ closed testers for 14 days, then **Apply for production** (needs Android screenshots, and promo codes in Sign in
+   details that are still valid).
 
 ### Store polish: once the app is finished and thoroughly tested (the user, 15 Oct 2026: "let's add them later")
 

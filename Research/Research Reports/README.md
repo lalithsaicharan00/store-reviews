@@ -23,6 +23,12 @@ Reusable marketing examples are saved in the root Marketing folder.
 | [Google Play Listing Tags — Evidence and Launch Shortlist](<Store Listing and ASO/Google Play Listing Tags — Evidence and Launch Shortlist.md>) | Codex | 15 Oct 2026 | Current Google relevance/policy/discovery guidance, a dated third-party taxonomy transcription with explicit official-verification gap, ten competitors' observed categories/Similar apps, and a provisional two-tag launch shortlist. No competitor saved-tag sets or live Console taxonomy claimed as verified. |
 | [Marketing and How We Can Market It](<../../Marketing/Marketing and How We Can Market It.md>) | Codex | 13 Oct 2026 | User-selected examples: Habit Tracker Reddit challenge and bondavi app/store localization. Original sources, discovery, exact app identities, reusable approaches and limits; localization reports gradual overseas growth, not a measured surge. User-data/content-coverage tactic excluded. |
 
+## Motion and Transitions
+
+| Report | Author | Date | What it is |
+|---|---|---|---|
+| [How Google's Apps Move Between Screens](<Motion and Transitions/How Google's Apps Move Between Screens — 4 November 2026.md>) | **Claude** | 4 Nov 2026 | Android 15's own transition files and frame-by-frame recordings of Settings, Gmail, Drive, Clock, Files, Contacts, Calendar and Play on the phone, a machine scan of reviews, and what Often Enough does now, with before and after |
+
 ## Market Discovery
 
 | Report | Author | Date | What it is |

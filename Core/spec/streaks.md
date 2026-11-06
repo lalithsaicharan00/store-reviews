@@ -16,6 +16,18 @@ The streak on a day is **the current period, if met, plus the run before it**:
 
 Its unit follows the goal: days (every day), times (other day schedules), weeks, months or years.
 
+## ST-1a — What a past day's row shows (the app, 4 Nov 2026)
+
+The user: "when there is no log, then how you are counting a streak?" A row for a day or period that has **ended unmet**
+shows no streak: the run stopped there, as today's own streak says. It stays as ST-1 for a day that wasn't due (not its
+day, skipped, paused), and for a day or period still going, which may yet be met. This is what the row shows
+(`HabitStore.shownStreak`); `HabitRules.streak`, its golden answers and the milestones, which judge the run as it stood
+before a log, are unchanged.
+
+**Every streak is worked out from the logs:** it follows a log added, undone, deleted, edited or moved, on any day, and
+a skip or a pause, on every surface. What's remembered (S5) is forgotten on every change to that habit and at the start
+of every day. `StreakTest` checks all of it.
+
 ## ST-2 — The run before, day by day
 
 Walking back from the day before: a **due** day that was met adds 1; a due day not met ends the run; a day that isn't due

@@ -817,7 +817,9 @@ fun FullScreenSheet(onAllow: () -> Unit, onDismiss: () -> Unit) = SettingsSheet(
 @Composable
 private fun SettingsSheet(icon: ImageVector, title: String, why: String, what: String, tag: String, onAllow: () -> Unit, onDismiss: () -> Unit) {
     val s = MaterialTheme.colorScheme
-    AppBottomSheet(onDismiss, Modifier.semantics { testTag = "$tag-sheet"; testTagsAsResourceId = true }) {
+    val sheet = com.oftenenough.app.ui.components.rememberWholeSheetState()
+    val close = com.oftenenough.app.ui.components.rememberSheetClose(sheet)
+    AppBottomSheet(onDismiss, Modifier.semantics { testTag = "$tag-sheet"; testTagsAsResourceId = true }, sheetState = sheet) {
         Column(Modifier.fillMaxWidth().padding(horizontal = 24.dp), horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(16.dp)) {
             Icon(icon, null, tint = s.primary)
@@ -829,7 +831,7 @@ private fun SettingsSheet(icon: ImageVector, title: String, why: String, what: S
             // Both at their drawn 40, 8 apart, their touch spreading past (Figma's Actions: 8 above, 40 + 8 + 40).
             Column(Modifier.fillMaxWidth().padding(top = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 AppButton("Open settings", onAllow, Modifier.fillMaxWidth().drawnHeight(), tag = "$tag-allow")
-                AppButton("Not now", onDismiss, Modifier.fillMaxWidth().drawnHeight(), style = ButtonStyle.Text, tag = "$tag-not-now")
+                AppButton("Not now", { close(onDismiss) }, Modifier.fillMaxWidth().drawnHeight(), style = ButtonStyle.Text, tag = "$tag-not-now")
             }
         }
     }
@@ -1104,12 +1106,14 @@ fun IconPage(form: FormState, onBack: () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ColourSheet(form: FormState, onDismiss: () -> Unit) {
-    AppBottomSheet(onDismiss, Modifier.semantics { testTagsAsResourceId = true }, title = "Colour") {
+    val sheet = com.oftenenough.app.ui.components.rememberWholeSheetState()
+    val close = com.oftenenough.app.ui.components.rememberSheetClose(sheet)
+    AppBottomSheet(onDismiss, Modifier.semantics { testTagsAsResourceId = true }, title = "Colour", sheetState = sheet) {
         // Figma's Swatches: 16 at the sides, 8 above, 24 under (the sheet adds its own 24), rows 12 apart, 8 between.
         Column(Modifier.padding(horizontal = 16.dp).padding(top = 8.dp, bottom = 24.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
             for (row in HabitColor.entries.chunked(7)) {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    for (c in row) ColourSwatch(appColors.habit(c), c == form.color, { form.color = c; onDismiss() },
+                    for (c in row) ColourSwatch(appColors.habit(c), c == form.color, { form.color = c; close(onDismiss) },
                         if (c == HabitColor.GRAY) "Grey" else c.key.replaceFirstChar { it.uppercase() }, Modifier.semantics { testTag = "colour-${c.key}" })
                 }
             }

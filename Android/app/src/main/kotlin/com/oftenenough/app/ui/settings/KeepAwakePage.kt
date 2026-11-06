@@ -73,7 +73,7 @@ fun KeepAwakePage(onBack: () -> Unit, onDone: () -> Unit) {
     val neededAtFirst = remember { Reminders.notUnrestricted(context) }
     LaunchedEffect(needed) { if (neededAtFirst && !needed) onDone() }
 
-    FormPage("Keep Often Enough awake", onBack = onBack, scrolls = false) {
+    FormPage("Keep Often Enough awake", onBack = onBack, ownBack = false, scrolls = false) {
         Column(Modifier.weight(1f).verticalScroll(rememberScrollState()).padding(top = 8.dp, bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(24.dp)) {
             // One short paragraph, so How to set it is in view (the user, 3 Nov 2026: "it is occupying too much space").

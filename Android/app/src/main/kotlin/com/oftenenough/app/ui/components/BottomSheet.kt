@@ -23,10 +23,13 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 
 /**
  * Atom 1.18, **Bottom sheet** (Figma 737:184; Components — Atoms Build Plan): Material's own `ModalBottomSheet` as it
@@ -95,3 +98,14 @@ fun sheetInsets(): WindowInsets = WindowInsets.navigationBars.only(WindowInsetsS
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun rememberWholeSheetState(): SheetState = rememberBottomSheetState(SheetValue.Hidden, setOf(SheetValue.Hidden, SheetValue.Expanded))
+
+/**
+ * Closes a sheet from a button inside it the way a swipe does: it slides away, then [after][close] runs. Taking a sheet
+ * out of composition straight away made it vanish in one frame (Motion and Transitions, 4 Nov 2026).
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun rememberSheetClose(state: SheetState): (after: () -> Unit) -> Unit {
+    val scope = rememberCoroutineScope()
+    return remember(state, scope) { { after -> scope.launch { state.hide() }.invokeOnCompletion { after() } } }
+}

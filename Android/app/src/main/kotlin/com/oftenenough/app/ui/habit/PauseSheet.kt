@@ -3,6 +3,8 @@ package com.oftenenough.app.ui.habit
 import com.oftenenough.app.ui.components.ButtonStyle
 import com.oftenenough.app.ui.components.AppButton
 import com.oftenenough.app.ui.components.AppBottomSheet
+import com.oftenenough.app.ui.components.rememberSheetClose
+import com.oftenenough.app.ui.components.rememberWholeSheetState
 import com.oftenenough.app.ui.components.RadioListItem
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
@@ -57,14 +59,16 @@ fun PauseSheet(habits: List<Habit>, store: HabitStore, onDismiss: () -> Unit, on
     var picking by rememberSaveable { mutableStateOf(false) }
     val one = habits.size == 1
     val name = if (one) habits[0].name else "${habits.size} habits"
+    val sheet = rememberWholeSheetState()
+    val close = rememberSheetClose(sheet)
     AppBottomSheet(
-        onDismiss, Modifier.semantics { testTag = "pause-sheet"; testTagsAsResourceId = true }, title = "Pause $name",
+        onDismiss, Modifier.semantics { testTag = "pause-sheet"; testTagsAsResourceId = true }, title = "Pause $name", sheetState = sheet,
         actions = {
-            AppButton("Cancel", onDismiss, Modifier.semantics { testTag = "pause-cancel" }, style = ButtonStyle.Text)
+            AppButton("Cancel", { close(onDismiss) }, Modifier.semantics { testTag = "pause-cancel" }, style = ButtonStyle.Text)
             AppButton("Pause", {
                 val back = pauseBack(length, today, chosen ?: (today + 7))
                 for (h in habits) store.pause(h, today, back?.let { it - 1 })
-                onPaused(back)
+                close { onPaused(back) }
             }, Modifier.semantics { testTag = "confirm-pause" })
         },
     ) {

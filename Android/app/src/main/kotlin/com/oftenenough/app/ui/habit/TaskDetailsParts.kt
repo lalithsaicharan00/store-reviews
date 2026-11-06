@@ -1,6 +1,5 @@
 package com.oftenenough.app.ui.habit
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -103,7 +102,6 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun TaskDetailsScreen(task: Habit, store: HabitStore, nav: HabitDetailsNav, onBack: () -> Unit) {
-    BackHandler(onBack = onBack)
     val s = MaterialTheme.colorScheme
     val today = store.today()
     val revision = store.revision(task.id)

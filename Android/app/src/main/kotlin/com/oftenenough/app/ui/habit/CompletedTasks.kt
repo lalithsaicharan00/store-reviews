@@ -1,7 +1,6 @@
 package com.oftenenough.app.ui.habit
 
 import com.oftenenough.app.ui.components.MoreMenuButton
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -96,7 +95,6 @@ fun CompletedTasksScreen(store: HabitStore, nav: CompletedNav) {
     var deletingAll by remember { mutableStateOf(false) }
     var menu by remember { mutableStateOf(false) }
     val today = store.today()
-    BackHandler { nav.back() }
 
     val all = remember(store.habits, store.dataVersion, hidden, today, PendingDelete.ids.toList()) {
         store.habits.filter { it.isTask && !it.archived && it.id !in hidden && it.id !in PendingDelete.ids }.flatMap { t ->

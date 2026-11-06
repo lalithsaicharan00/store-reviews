@@ -14,7 +14,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.MutableTransitionState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import com.oftenenough.app.ui.theme.EmphasizedDecelerate
+import com.oftenenough.app.ui.theme.arrival
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -60,6 +65,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -147,6 +153,13 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
     val today = store.today(now)
     var shownDay by rememberSaveable { mutableStateOf<Int?>(null) }
     val day = shownDay ?: today
+    // Which way the day just went, so the next one comes from that side.
+    val dayBefore = remember { intArrayOf(day) }
+    val dayDirection = remember(day) { (day - dayBefore[0]).coerceIn(-1, 1).also { dayBefore[0] = day } }
+    // True for the one pass that draws another day; its rows don't animate.
+    val drawnDay = remember { intArrayOf(day) }
+    val justMoved = drawnDay[0] != day
+    SideEffect { drawnDay[0] = day }
     val isToday = day == today
     val scope = rememberCoroutineScope()
     // Kept above Today by the app, so the cards and steps opened stay open while a note or Add log is on top.
@@ -262,7 +275,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     val content = remember(store.dataVersion, day, today, now / 60_000, layout.holding) {
                         TodayContent.make(store, day, today, now)
                     }
-                    if (content.isEmpty) NothingPlanned(nav, isToday)
+                    if (content.isEmpty) Box(Modifier.fillMaxSize().arrival(day, dayDirection)) { NothingPlanned(nav, isToday) }
                     else Column(Modifier.fillMaxSize()) {
                     val listState = rememberLazyListState()
                     val index = remember { ItemIndex() }
@@ -282,7 +295,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                     val topLine = day > today || content.allDone
                     LaunchedEffect(day, topLine) { if (topLine && listState.firstVisibleItemIndex <= 1) listState.scrollToItem(0) }
                     LazyColumn(
-                        Modifier.fillMaxSize().semantics { testTag = "today-list" },
+                        Modifier.fillMaxSize().arrival(day, dayDirection).semantics { testTag = "today-list" },
                         state = listState,
                         // Figma's 80 under the last card for the day bar (and 56 more for Back to today on another day),
                         // above the gesture bar.
@@ -290,6 +303,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                             bottom = (if (isToday) 80.dp else 136.dp) + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
                     ) {
                         index.reset()
+                        index.moves = !justMoved
                         if (isToday && notice != null) indexed(index, "notice-${notice.key}") {
                             NoticeCard(notice, dismissNotice)
                             Spacer(Modifier.height(16.dp))
@@ -321,7 +335,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
                             }
                         }
                         TodaySnackbars(snackbar)
-                        if (!isToday) BackToButton("Back to today", "back-to-today") { shownDay = null }
+                        ComesAndGoes(!isToday) { BackToButton("Back to today", "back-to-today") { shownDay = null } }
                         DayBar(store, day, today, onPrevious = { shownDay = (day - 1).takeIf { it != today } }, onNext = { shownDay = (day + 1).takeIf { it != today } }, onPick = { calendar = true })
                     }
                 }
@@ -344,7 +358,7 @@ fun TodayScreen(store: HabitStore, prefs: Prefs, nav: TodayNav, appActions: Toda
         }
     }
     // Back on another day returns to today first (Figma 4.2).
-    androidx.activity.compose.BackHandler(enabled = !isToday) { shownDay = null }
+    androidx.activity.compose.BackHandler(enabled = !isToday && com.oftenenough.app.ui.components.LocalMenuOpen.current?.value != true) { shownDay = null }
     if (calendar) {
         AppDatePicker(day, { true }, { calendar = false }, title = "Go to a day", atOnce = true) { picked ->
             shownDay = if (picked == today) null else picked
@@ -382,6 +396,12 @@ private fun TodaySnackbars(snackbar: SnackbarHostState) =
  * button with calendar_today, on Surface container lowest with Elevation Level 3, 16 above what it floats over.
  */
 @Composable
+internal fun ComesAndGoes(visible: Boolean, content: @Composable () -> Unit) {
+    AnimatedVisibility(visible, enter = fadeIn(tween(150)) + scaleIn(tween(200, easing = EmphasizedDecelerate), initialScale = 0.9f),
+        exit = fadeOut(tween(100)) + scaleOut(tween(100), targetScale = 0.9f)) { content() }
+}
+
+@Composable
 internal fun BackToButton(label: String, tag: String, onClick: () -> Unit) {
     val s = MaterialTheme.colorScheme
     val h = ButtonDefaults.MinHeight
@@ -398,6 +418,7 @@ internal fun BackToButton(label: String, tag: String, onClick: () -> Unit) {
 
 /** Where each of Today's list items is, by key, as the list is built (to bring a new habit's row into view). */
 class ItemIndex {
+    var moves = true
     var n = 0
     val at = HashMap<String, Int>()
     fun reset() { n = 0; at.clear() }
@@ -406,7 +427,13 @@ class ItemIndex {
 /** An item, counted in [ix]. */
 private fun LazyListScope.indexed(ix: ItemIndex, key: String, content: @Composable androidx.compose.foundation.lazy.LazyItemScope.() -> Unit) {
     ix.at[key] = ix.n++
-    item(key = key, content = content)
+    val moves = ix.moves
+    // Rows folded away go, and what's under them slides up. On a change of day they don't: the whole list arrives instead.
+    // A Column, as a lazy item lays out what it holds: a row's 2 dp gap and its row are two children (a Box stacked them).
+    item(key = key) {
+        Column(if (moves) Modifier.animateItem(fadeInSpec = tween(150), placementSpec = tween(300, easing = EmphasizedDecelerate), fadeOutSpec = tween(100))
+            else Modifier.animateItem(null, null, null)) { content() }
+    }
 }
 
 /** One row on Today: a habit in one time of day. */

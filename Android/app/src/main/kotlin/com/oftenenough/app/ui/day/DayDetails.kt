@@ -57,6 +57,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import com.oftenenough.app.ui.components.rememberWholeSheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -161,7 +162,7 @@ private fun shortDays(habit: Habit, weekStart: Int): String {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, sayPastAdds: Boolean = false, onDismiss: () -> Unit) {
+fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, sayPastAdds: Boolean = false, covered: Boolean = false, onDismiss: () -> Unit) {
     val habit = store.habit(habitId) ?: run { onDismiss(); return }
     // While it's open, milestones logged here are this sheet's, not Today's underneath.
     DisposableEffect(habitId) {
@@ -172,6 +173,16 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, s
     }
     val c = appColors
     val state = rememberWholeSheetState()
+    val sheetScope = rememberCoroutineScope()
+    // Closed from inside (its close button, a menu's choice), it slides away as a swipe would; it used to vanish in one frame.
+    val close: () -> Unit = { sheetScope.launch { state.hide() }.invokeOnCompletion { onDismiss() } }
+    // A page opened from here comes in as the sheet goes down, and the sheet rises again when the page goes back.
+    LaunchedEffect(covered) { if (covered) state.hide() else if (state.targetValue == SheetValue.Hidden) state.show() }
+    // A page that replaces this sheet: it doesn't rise again on coming back.
+    val leaving = object : DayNav by nav {
+        override fun habitPage(habit: Habit) { close(); nav.habitPage(habit) }
+        override fun allMilestones(habit: Habit) { close(); nav.allMilestones(habit) }
+    }
     ModalBottomSheet(onDismiss, Modifier.belowStatusBar(), sheetState = state, contentWindowInsets = { sheetInsets() }) {
         // A sheet is its own window: its tags reach UI Automator only if it says so too.
         val snackbar = com.oftenenough.app.ui.components.LocalAppSnackbar.current ?: remember { SnackbarHostState() }
@@ -180,7 +191,7 @@ fun DayDetailsSheet(habitId: String, day: Int, store: HabitStore, nav: DayNav, s
             // Over a page that shows a habit's past (Habit details, Habits & Tasks), a log added to an earlier day says what it
             // added and where, with Undo (Figma's details pages, flow 7: "1 glass added to Sat 19 Sep"); over Today, whose
             // own day is on screen, it says nothing (Day details' Yesterday flow).
-            DayDetailsContent(habit, day, store, nav, onDismiss, if (!sayPastAdds) null else { words ->
+            DayDetailsContent(habit, day, store, leaving, close, if (!sayPastAdds) null else { words ->
                 scope.launch {
                     snackbar.currentSnackbarData?.dismiss()
                     if (snackbar.showSnackbar(words, actionLabel = "Undo", duration = SnackbarDuration.Long) == SnackbarResult.ActionPerformed) {

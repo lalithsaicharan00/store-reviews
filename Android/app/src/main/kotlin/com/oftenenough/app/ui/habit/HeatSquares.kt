@@ -115,7 +115,7 @@ fun HabitKeyCard(open: Boolean, onToggle: () -> Unit, color: HabitColor, modifie
 private val keyRows: List<Pair<HeatCell, String>> = listOf(
     HeatCell.level(4) to "Done: the goal was reached",
     HeatCell.level(5) to "More than the goal",
-    HeatCell.level(2) to "Part of the goal",
+    HeatCell.level(2) to "Partially completed",
     HeatCell.level(0) to "Not done",
     HeatCell.notScheduled to "No goal that day",
     HeatCell.skipped to "Skipped",
@@ -172,7 +172,7 @@ fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifi
                 Modifier.fillMaxWidth().clip(RoundedCornerShape(4.dp, 4.dp, 24.dp, 24.dp)).background(c.surface)
                     .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 20.dp).clearAndSetSemantics {
                     // "%", not the word: the key names the steps; it isn't a progress percentage.
-                    contentDescription = "Key. In the habit's colour: part of the goal, lighter; done, with a check; more than the goal, deeper, " +
+                    contentDescription = "Key. In the habit's colour: partially completed, lighter; done, with a check; more than the goal, deeper, " +
                         "with a check. Planned that day, grey: not done with a cross, skipped, paused. Other days: plain grey " +
                         "still to come, a dashed outline no goal that day, a ring for today."
                     testTag = "progress-key"
@@ -211,7 +211,7 @@ fun HeatKeyCard(open: Boolean, onToggle: () -> Unit, modifier: Modifier = Modifi
 }
 
 private val stepCells: List<HeatCell> = listOf(HeatCell.level(2), HeatCell.level(4), HeatCell.level(5))
-private val stepNames = listOf("Part of\nthe goal", "Done", "More than\nthe goal")
+private val stepNames = listOf("Partially\ncompleted", "Done", "More than\nthe goal")
 
 @Composable
 private fun KeyHeading(title: String, note: String?) {
