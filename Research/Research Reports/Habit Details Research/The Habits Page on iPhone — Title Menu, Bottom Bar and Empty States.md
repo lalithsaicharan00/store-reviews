@@ -117,6 +117,21 @@ blue); "No notes with “swim”" was two lines of small grey text, now iOS's no
 the magnifying glass, "Search looks through this habit's notes. To find a day, use Go to Date…", no button), filling
 the space above the keyboard. The keyboard is already the iPhone's (H).
 
+## Screen N: Task details (1136:9271)
+
+"The cells have problems; the Nothing done yet card has padding issues" (the user). The history rows had the same
+squeezed day cell as Habit details (28 points forced into a 12-point slot); they now hold the 24-point day cell, each
+in its task's own colour. **Nothing Done Yet** is a ContentUnavailableView (no shape behind the symbol, no button), so
+its spacing is the design system's, not a card's. The ⋯ menu reads **Edit Task** and **Move to Another Day…**.
+
+## Screen O: How milestones work (1142:29063)
+
+"It looks very weird" (the user). It read like an Android page of grey 17-point headers over cards of 15-point
+paragraphs, all evenly spaced. Now it follows Settings' grammar: section headers in Subheadline Semibold, Secondary
+Label; each card's first sentence in Body (the rule), the rest in Subheadline, Secondary Label (the detail); 28 between
+sections and 8 under each header, so each section reads as one piece. The title is **How Milestones Work**. Both
+variants (habits; quitting and cutting down).
+
 ## Left for the user
 
 1. **Title menu or segmented control.** The title menu was chosen for room and clarity; the segmented control is

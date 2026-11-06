@@ -38,8 +38,8 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | K | Habit details | 1020:4052 | **Done** 6 Nov | See All (no +); No Progress Yet / Nothing Here Yet as ContentUnavailableView; With Notes / Go to Date… buttons; 376 history day cells unsquashed (24 pt) in Water blue; Go to Date calendars anchored, September variant added to the Date picker; captions | Habits Page report § K |
 | L | Streaks · All milestones | 1034:74 · 1036:235 | **Done** 6 Nov | Squeezed medals and rings replaced by a new Milestone row (DS 4256:2590), 15 rows with their numbers, arcs and colours; All Milestones title; Streaks unchanged | Habits Page report § L |
 | M | Search (details pages) | 1053:9079 | **Done** 6 Nov | Results' day cells unsquashed; No Notes with “swim” as ContentUnavailableView above the keyboard | Habits Page report § M |
-| N | Task details | 1136:9271 | Not started | | |
-| O | The page at 1142:29063 | 1142:29063 | Not started | | |
+| N | Task details | 1136:9271 | **Done** 6 Nov | History cells unsquashed (24 pt, the task's colour); Nothing Done Yet as ContentUnavailableView; Edit Task / Move to Another Day… | Habits Page report § N |
+| O | How milestones work | 1142:29063 | **Done** 6 Nov | Settings' grammar: Subheadline Semibold headers, Body rule + Subheadline detail in each card, 28 between sections; How Milestones Work title | Habits Page report § O |
 | P | Create new (components 1061:2015, page 381:2) | 381:2 | Not started | | |
 | Q | Settings | 804:79 · 781:34017 | Not started | | |
 | R | Plus | 1204:175 | Not started | | |
@@ -69,7 +69,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 ## Next
 
-Screen N, Task details (1136:9271). Still open from E: a time habit in the player should use the Timer ring
+Screen P, Create new (components 1061:2015, page 381:2) — the largest group; then Q Settings and R Plus. Still open from E: a time habit in the player should use the Timer ring
 (a Screen=Time variant); the player page's 'outside the app' frames still show Android's Live Update chip (iPhone:
 Live Activity), with the notifications page. Carried over: History's Go to date flows (details pages 1150:76414 …) and
 the create-new forms still show October in the new calendar: set their months and days in K and P.
