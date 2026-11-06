@@ -251,35 +251,33 @@ fun StreakUnit.word(n: Int): String = when (this) {
 
 // ---------------------------------------------------------------------------------------------------------- Header
 
-/** "morning and evening", keeping a renamed time of day as the person wrote it. */
-fun partsPhrase(names: List<String>): String {
-    val usual = setOf("morning", "afternoon", "evening", "night")
-    return HabitCopy.join(names.map { if (it.lowercase() in usual) it.lowercase() else it })
-}
+/** "morning", keeping a renamed time of day as the person wrote it. */
+fun partPhrase(name: String): String =
+    if (name.lowercase() in setOf("morning", "afternoon", "evening", "night")) name.lowercase() else name
 
-/** The habit in one sentence, with its parts of the day: "Water 8 glasses a day, anytime"; "Quitting since 2 Sep
+/** The habit in one sentence, with its time of day: "Water 8 glasses a day, anytime"; "Quitting since 2 Sep
  *  2026"; "Call the bank on Mon, 13 Oct". [quitSince] is the calendar day a quit habit counts from. */
-fun pageSentenceOf(habit: Habit, weekStart: Int, partNames: List<String>, quitSince: Int): String {
+fun pageSentenceOf(habit: Habit, weekStart: Int, partName: String, quitSince: Int): String {
     if (habit.kind == HabitKind.Quit) return "Quitting since " + DayWords.long(quitSince)
     if (habit.kind == HabitKind.Task && habit.dueDay == NO_DATE_DAY) return habit.name + ", no date yet"
     if (habit.kind == HabitKind.Task && habit.dueDay != null) return habit.name + " on " + DayWords.short(habit.dueDay)
-    val parts = if (habit.parts == listOf(DaySection.ANYTIME)) "anytime" else partsPhrase(partNames)
-    return HabitCopy.sentence(habit, weekStart) + ", " + parts
+    val part = if (habit.part == DaySection.ANYTIME) "anytime" else partPhrase(partName)
+    return HabitCopy.sentence(habit, weekStart) + ", " + part
 }
 
 /**
- * Habit details' line under the name (Figma 1020:4052): the goal, then its times of day by name, "8 glasses a day |
+ * Habit details' line under the name (Figma 1020:4052): the goal, then its time of day by name, "8 glasses a day |
  * Anytime"; a quit habit's "Quitting since 2 Sep". Paused or archived is said by the card at the top, not here. The name is
  * just above it, so it isn't said again.
  */
 fun HabitStore.pageGoalLine(habit: Habit): String =
     // Figma's quit habit's Progress: "Quitting since 27 Sep", as Day details says it (QA, 1 Nov 2026: "Quit since").
     if (habit.kind == HabitKind.Quit) "Quitting since " + DayWords.dayMonth(rules.quitStartDay(habit))
-    else HabitCopy.capitalized(HabitCopy.plan(habit, weekStart)) + " | " + habit.parts.joinToString(", ") { section(it).name }
+    else HabitCopy.capitalized(HabitCopy.plan(habit, weekStart)) + " | " + section(habit.part).name
 
 fun HabitStore.pageSentence(habit: Habit): String {
     val since = rules.calendarDayOf(habit.quitSince ?: habit.createdAt)
-    return pageSentenceOf(habit, weekStart, habit.parts.map { section(it).name }, since)
+    return pageSentenceOf(habit, weekStart, section(habit.part).name, since)
 }
 
 // ---------------------------------------------------------------------------------------------------------- Period cards

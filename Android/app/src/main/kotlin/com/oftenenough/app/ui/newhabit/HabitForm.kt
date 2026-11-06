@@ -523,9 +523,7 @@ private fun PlanRows(form: FormState, open: (Page) -> Unit) {
 private fun PlaceRows(form: FormState, store: HabitStore, open: (Page) -> Unit, withTime: Boolean) {
     SegmentedList {
         val count = if (withTime) 2 else 1
-        // In the day's order, whatever order they were ticked in (Figma: "Before work, Morning and Evening").
-        val dayOrder = form.timesOfDay.sortedBy { id -> store.sections.indexOfFirst { it.id == id }.let { if (it < 0) Int.MAX_VALUE else it } }
-        if (withTime) OpenRow("Time of day", HabitCopy.join(dayOrder.map { store.section(it).name }), null, 0, count, "time-of-day-row", rowColor) { open(Page.TIME_OF_DAY) }
+        if (withTime) OpenRow("Time of day", store.section(form.timeOfDay).name, null, 0, count, "time-of-day-row", rowColor) { open(Page.TIME_OF_DAY) }
         OpenRow("Reminders", form.remindersSummary(), null, count - 1, count, "reminders-row", rowColor) { open(Page.REMINDERS) }
     }
 }

@@ -50,7 +50,7 @@ fun HabitStore.doneEntry(task: Habit): Entry? = entries(task.id).maxByOrNull { i
 
 /** The time or time of day a task is for: "5:00 PM · Evening", "Morning", "10:30 AM", "Anytime". */
 fun HabitStore.taskWhen(task: Habit): String {
-    val part = task.parts.firstOrNull()?.takeIf { it != DaySection.ANYTIME }?.let { section(it).name }
+    val part = task.part.takeIf { it != DaySection.ANYTIME }?.let { section(it).name }
     val time = task.dueMinute?.let { DayWords.clockMinute(it) }
     return listOfNotNull(time, part).joinToString(" · ").ifEmpty { "Anytime" }
 }
@@ -199,7 +199,7 @@ fun HabitStore.taskDetailsLine(task: Habit, today: Int): String {
 /** A one-time task's day with its time and time of day: "Tue 4 Nov, Morning", "Today, 5:00 PM, Evening"; null with No date. */
 fun HabitStore.taskPlannedFor(task: Habit, today: Int): String? {
     val due = task.dueDay?.takeIf { it != NO_DATE_DAY } ?: return null
-    val part = task.parts.firstOrNull()?.takeIf { it != DaySection.ANYTIME }?.let { section(it).name }
+    val part = task.part.takeIf { it != DaySection.ANYTIME }?.let { section(it).name }
     val time = task.dueMinute?.let { DayWords.clockMinute(it) }
     return listOfNotNull(if (due == today) "Today" else detailsDay(due, today), time, part).joinToString(", ")
 }

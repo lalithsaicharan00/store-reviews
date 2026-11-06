@@ -185,7 +185,7 @@ class WidgetSetupActivity : ComponentActivity() {
     /** A habit's times of day and goal, as Figma's choices say it: "Anytime · 8 glasses a day", "Morning · every day". */
     private fun habitLine(store: HabitStore, h: Habit): String =
         if (h.kind == HabitKind.Quit) store.pageSentence(h)
-        else h.parts.joinToString(", ") { store.section(it).name } + " · " + HabitCopy.plan(h, store.weekStart)
+        else store.section(h.part).name + " · " + HabitCopy.plan(h, store.weekStart)
 
     /**
      * The widget as it will look, drawn by Glance itself ([GlanceRemoteViews]) from the app's own snapshot and the choice

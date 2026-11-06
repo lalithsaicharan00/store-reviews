@@ -162,8 +162,8 @@ data class Habit(
     val symbol: String,
     val color: HabitColor,
     val kind: HabitKind,
-    /** The time-of-day IDs for a habit with no times; ignored while it has times. */
-    val parts: List<String> = listOf(DaySection.ANYTIME),
+    /** The one time of day it sits in (A118). */
+    val part: String = DaySection.ANYTIME,
     val goal: Double = 1.0,
     val frequency: Frequency = Frequency.Daily,
     /** Check it off: what one tick counts ("glasses"); null means "times". Stored in the unit column. */

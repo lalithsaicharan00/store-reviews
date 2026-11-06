@@ -33,7 +33,7 @@ fun Habit.record(position: Int, now: Long = System.currentTimeMillis(), deleted:
     }
     return HabitRecord(
         id = id, name = name, symbol = symbol, color = color.key, kind = kind.storageName, unit = unit, increment = increment,
-        part = parts.joinToString(","), goal = goal, period = "day", scheduleDays = null,
+        part = part, goal = goal, period = "day", scheduleDays = null,
         frequency = SwiftJson.storageKey(frequency), dueDay = dueDay?.let(::dayKey), dueMinute = dueMinute, atMost = atMost,
         quitSince = quitSince, position = position, createdAt = createdAt, updatedAt = now,
         archivedAt = if (archived) now else null, deletedAt = if (deleted) now else null,
@@ -61,7 +61,7 @@ fun habitOf(r: HabitRecord, steps: List<StepRecord>, reminders: List<ReminderRec
     }
     return Habit(
         id = r.id, name = r.name, symbol = IconNames.closest(r.symbol, r.symbolNames) ?: r.symbol, symbolNames = r.symbolNames, color = color, kind = kind,
-        parts = r.part.split(",").map { it.trim() }.filter { it.isNotEmpty() }.ifEmpty { listOf(DaySection.ANYTIME) },
+        part = r.part.ifEmpty { DaySection.ANYTIME },
         goal = r.goal, frequency = frequency,
         checkUnit = if (kind == HabitKind.Check) r.unit?.takeIf { it.isNotEmpty() && it != "times" } else null,
         atMost = r.atMost, dueDay = parseDay(r.dueDay), dueMinute = r.dueMinute,

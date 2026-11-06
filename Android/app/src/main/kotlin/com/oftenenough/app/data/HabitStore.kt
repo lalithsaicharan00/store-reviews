@@ -1176,9 +1176,8 @@ class HabitStore(
             saveSetting(Keys.SECTIONS, SwiftJson.sections(cleaned))
             val next = habits.toMutableList()
             for ((i, h) in next.withIndex()) {
-                if (h.parts.none { it in removed }) continue
-                val kept = h.parts.filter { it !in removed }
-                next[i] = h.copy(parts = kept.ifEmpty { listOf(DaySection.ANYTIME) })
+                if (h.part !in removed) continue
+                next[i] = h.copy(part = DaySection.ANYTIME)
                 saveHabitRecord(next[i], i)
             }
             habits = next
@@ -1187,17 +1186,17 @@ class HabitStore(
         }
     }
 
-    /** What Undo puts back after a time of day is deleted: the list as it was, and each moved habit's places then and now. */
-    class SectionUndo(val sections: List<DaySection>, val parts: Map<String, Pair<List<String>, List<String>>>)
+    /** What Undo puts back after a time of day is deleted: the list as it was, the time of day, and the habits it moved. */
+    class SectionUndo(val sections: List<DaySection>, val part: String, val moved: Set<String>)
 
     /** Deletes a time of day (its habits move to Anytime, [saveSections]) and returns what its Undo needs. */
     fun deleteSection(id: String): SectionUndo {
-        val moved = habits.filter { id in it.parts }.associate { h -> h.id to (h.parts to h.parts.filter { it != id }.ifEmpty { listOf(DaySection.ANYTIME) }) }
-        val undo = SectionUndo(sections, moved)
+        val moved = habits.filter { it.part == id }.map { it.id }.toSet()
+        val undo = SectionUndo(sections, id, moved)
         val anytime = rules.cardMembers()[DaySection.ANYTIME].orEmpty()
         saveSections(sections.filter { it.id != id })
         // Its habits go to the end of Anytime, in their own order (Figma 842:65986), once the move is saved (the queue's order).
-        val arriving = habits.filter { h -> moved[h.id]?.second == listOf(DaySection.ANYTIME) && h.id !in anytime }.map { it.id }
+        val arriving = habits.filter { it.id in moved && it.id !in anytime }.map { it.id }
         if (arriving.isNotEmpty()) perform { reorder(anytime + arriving) }
         return undo
     }
@@ -1212,9 +1211,8 @@ class HabitStore(
         perform {
             val next = habits.toMutableList()
             for ((i, h) in next.withIndex()) {
-                val (was, after) = undo.parts[h.id] ?: continue
-                if (h.parts != after) continue
-                next[i] = h.copy(parts = was)
+                if (h.id !in undo.moved || h.part != DaySection.ANYTIME) continue
+                next[i] = h.copy(part = undo.part)
                 saveHabitRecord(next[i], i)
             }
             habits = next

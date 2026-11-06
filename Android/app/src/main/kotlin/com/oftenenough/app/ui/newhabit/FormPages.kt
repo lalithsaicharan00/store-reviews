@@ -739,8 +739,7 @@ private fun daysIn(month: Int): Int = java.time.YearMonth.of(2024, month).length
  * day. On Surface container: the Top app bar (← "Time of day"); one group of Options 16 in and 16 down, on Surface
  * bright: Anytime ("No set time") and every time of day with its hours ("6:00 AM – 12:00 PM"), all on the page from the
  * start. A habit sits in one, so these are radios. The Extended FAB, New time of day, opens the same page as Settings ›
- * Times of day, and what it makes is chosen. No line under the list repeating the choice (A64). A habit saved in several
- * times of day before A118 shows a radio on for each until one is tapped; nothing changes unless the person does that.
+ * Times of day, and what it makes is chosen. No line under the list repeating the choice (A64).
  */
 @Composable
 fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew: () -> Unit) {
@@ -750,9 +749,9 @@ fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew:
             val count = timed.size + 1
             // Under the list, room for the FAB over it (56 and its 16), so the last row is never covered.
             SegmentedList(Modifier.padding(top = 16.dp, bottom = 72.dp)) {
-                RadioRow("Anytime", DaySection.ANYTIME in form.timesOfDay, 0, count, "part-anytime", detail = "No set time", option = true) { form.choose(DaySection.ANYTIME) }
+                RadioRow("Anytime", form.timeOfDay == DaySection.ANYTIME, 0, count, "part-anytime", detail = "No set time", option = true) { form.choose(DaySection.ANYTIME) }
                 timed.forEachIndexed { i, s ->
-                    RadioRow(s.name, s.id in form.timesOfDay, i + 1, count, "part-${s.id}", detail = FormOutcome.hours(s, store), option = true) { form.choose(s.id) }
+                    RadioRow(s.name, s.id == form.timeOfDay, i + 1, count, "part-${s.id}", detail = FormOutcome.hours(s, store), option = true) { form.choose(s.id) }
                 }
             }
         }

@@ -55,7 +55,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
     val taskHasNoDate: Boolean get() = type == ItemType.TASK && !taskRepeats && taskDate == com.oftenenough.app.data.NO_DATE_DAY
     var taskHasTime by mutableStateOf(false)
     var taskMinute by mutableStateOf(9 * 60)
-    var timesOfDay by mutableStateOf(from?.parts?.ifEmpty { listOf(DaySection.ANYTIME) } ?: listOf(DaySection.ANYTIME))
+    var timeOfDay by mutableStateOf(from?.part ?: DaySection.ANYTIME)
     var remindOn by mutableStateOf(from?.let { it.remind && it.reminders.isNotEmpty() } ?: false)
     var times by mutableStateOf<List<DraftTime>>(from?.reminders?.map { DraftTime(if (original != null) it.id else newId(), it.minuteOfDay, null) } ?: emptyList())
     var remindersEdited by mutableStateOf(from != null)
@@ -164,7 +164,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
                 if (type == ItemType.CHECKLIST) h = h.copy(steps = filledItems)
             }
         }
-        if (type != ItemType.QUIT) h = h.copy(parts = timesOfDay)
+        if (type != ItemType.QUIT) h = h.copy(part = timeOfDay)
         if (remind && type != ItemType.QUIT) {
             val seen = HashSet<Int>()
             h = h.copy(reminders = times.mapNotNull { t -> ReminderTime(t.id, t.minute / 60, t.minute % 60).takeIf { seen.add(t.minute) } }
@@ -178,13 +178,13 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     // ------------------------------------------------------------------ Times of day and reminders
 
-    /** A habit sits in one time of day (A118): choosing one replaces whatever was chosen. */
+    /** A habit sits in one time of day (A118). */
     fun choose(id: String) {
-        timesOfDay = listOf(id)
+        timeOfDay = id
         syncReminders()
     }
 
-    private val reminderParts: List<String> get() = if (type == ItemType.CUT_DOWN) listOf(DaySection.ANYTIME) else timesOfDay
+    private val reminderPart: String get() = if (type == ItemType.CUT_DOWN) DaySection.ANYTIME else timeOfDay
 
     /** An hour into a time of day (or halfway, for a short one); 9:00 AM for Anytime. */
     fun defaultMinute(id: String): Int {
@@ -195,9 +195,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     fun syncReminders(force: Boolean = false) {
         if (!force && !(remind && !remindersEdited)) return
-        // In the day's order, as Add a time keeps them (Figma: "two times, in order"), not the order the times of day were ticked.
-        times = reminderParts.mapIndexed { i, id -> DraftTime(times.getOrNull(i)?.id ?: newId(), defaultMinute(id), id.takeIf { it != DaySection.ANYTIME }) }
-            .sortedBy { store.rules.dayMinute(it.minute) }
+        times = listOf(DraftTime(times.firstOrNull()?.id ?: newId(), defaultMinute(reminderPart), reminderPart.takeIf { it != DaySection.ANYTIME }))
     }
 
     /** Add a time (Figma 2.1.6.2.1): the minute picked, in whichever time of day it falls. */
@@ -208,7 +206,7 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     fun partFor(minute: Int): String? {
         val id = store.rules.sectionForMinute(minute)
-        return if (id in reminderParts && id != DaySection.ANYTIME) id else null
+        return if (id == reminderPart && id != DaySection.ANYTIME) id else null
     }
 
     /** "9:00 AM", "9:00 AM and 6:00 PM", "3 reminders", "Off". */

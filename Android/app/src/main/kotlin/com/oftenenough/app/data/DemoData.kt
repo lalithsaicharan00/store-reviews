@@ -12,9 +12,9 @@ object DemoData {
         val today = store.today(now)
         val dayMs = 86_400_000L
         fun ago(days: Int) = now - days * dayMs
-        fun h(name: String, symbol: String, color: HabitColor, kind: HabitKind, parts: List<String> = listOf(DaySection.ANYTIME),
+        fun h(name: String, symbol: String, color: HabitColor, kind: HabitKind, part: String = DaySection.ANYTIME,
               goal: Double = 1.0, frequency: Frequency = Frequency.Daily, steps: List<Step> = emptyList(), quitSince: Long? = null, created: Int) =
-            Habit(name = name, symbol = symbol, color = color, kind = kind, parts = parts, goal = goal, frequency = frequency, steps = steps,
+            Habit(name = name, symbol = symbol, color = color, kind = kind, part = part, goal = goal, frequency = frequency, steps = steps,
                 quitSince = quitSince, createdAt = ago(created), remind = false)
 
         val smoking = h("Smoking", "smoke.fill", HabitColor.GRAY, HabitKind.Quit, quitSince = now - (12 * 86400 + 11 * 3600 + 23 * 60) * 1000L, created = 60)
@@ -22,19 +22,19 @@ object DemoData {
         val read = h("Read", "book.fill", HabitColor.ORANGE, HabitKind.Duration, goal = 20.0, created = 30)
         val call = h("Call family", "phone.fill", HabitColor.GREEN, HabitKind.Check, frequency = Frequency.PerWeek(3), created = 40)
         val water = h("Water", "drop.fill", HabitColor.BLUE, HabitKind.Amount("glasses", 1.0), goal = 8.0, created = 40)
-        val stretch = h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, listOf(DaySection.MORNING), 10.0, created = 20)
-        val skincare = h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, listOf(DaySection.MORNING),
+        val stretch = h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, DaySection.MORNING, 10.0, created = 20)
+        val skincare = h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.MORNING,
             steps = listOf("Cleanser", "Vitamin C serum, 2 drops", "Moisturiser", "Sunscreen").map { Step(name = it) }, created = 20)
-        val teeth = h("Brush teeth", "mouth.fill", HabitColor.MINT, HabitKind.Duration, listOf(DaySection.MORNING), 2.0, created = 100)
-        val meds = h("Meds", "pills.fill", HabitColor.RED, HabitKind.Check, listOf(DaySection.MORNING), created = 70)
-        val walk = h("Walk", "figure.walk", HabitColor.GREEN, HabitKind.Amount("steps", 1000.0), listOf(DaySection.AFTERNOON), 8000.0, created = 20)
-        val lunch = h("Lunch, no phone", "fork.knife", HabitColor.ORANGE, HabitKind.Check, listOf(DaySection.AFTERNOON), created = 5)
-        val floss = h("Floss", "mouth.fill", HabitColor.CYAN, HabitKind.Check, listOf(DaySection.EVENING), created = 40)
-        val plan = h("Plan tomorrow", "checklist", HabitColor.INDIGO, HabitKind.Check, listOf(DaySection.EVENING), created = 20)
-        val meds2 = h("Meds 14:00", "pills.fill", HabitColor.RED, HabitKind.Check, listOf(DaySection.AFTERNOON), created = 70)
-        val noScreens = h("No screens", "iphone.slash", HabitColor.PINK, HabitKind.Check, listOf(DaySection.EVENING), created = 10)
-        val meditate = h("Meditate", "figure.mind.and.body", HabitColor.PURPLE, HabitKind.Duration, listOf(DaySection.EVENING), 10.0, created = 30)
-        val bed = h("Bed by 23:00", "bed.double.fill", HabitColor.INDIGO, HabitKind.Check, listOf(DaySection.EVENING), created = 10)
+        val teeth = h("Brush teeth", "mouth.fill", HabitColor.MINT, HabitKind.Duration, DaySection.MORNING, 2.0, created = 100)
+        val meds = h("Meds", "pills.fill", HabitColor.RED, HabitKind.Check, DaySection.MORNING, created = 70)
+        val walk = h("Walk", "figure.walk", HabitColor.GREEN, HabitKind.Amount("steps", 1000.0), DaySection.AFTERNOON, 8000.0, created = 20)
+        val lunch = h("Lunch, no phone", "fork.knife", HabitColor.ORANGE, HabitKind.Check, DaySection.AFTERNOON, created = 5)
+        val floss = h("Floss", "mouth.fill", HabitColor.CYAN, HabitKind.Check, DaySection.EVENING, created = 40)
+        val plan = h("Plan tomorrow", "checklist", HabitColor.INDIGO, HabitKind.Check, DaySection.EVENING, created = 20)
+        val meds2 = h("Meds 14:00", "pills.fill", HabitColor.RED, HabitKind.Check, DaySection.AFTERNOON, created = 70)
+        val noScreens = h("No screens", "iphone.slash", HabitColor.PINK, HabitKind.Check, DaySection.EVENING, created = 10)
+        val meditate = h("Meditate", "figure.mind.and.body", HabitColor.PURPLE, HabitKind.Duration, DaySection.EVENING, 10.0, created = 30)
+        val bed = h("Bed by 23:00", "bed.double.fill", HabitColor.INDIGO, HabitKind.Check, DaySection.EVENING, created = 10)
         val habits = mutableListOf(smoking, alcohol, read, call, water, stretch, skincare, teeth, meds, walk, lunch, meds2, floss, plan, noScreens, meditate, bed)
         val entries = ArrayList<Entry>()
         fun log(habit: Habit, day: Int, value: Double, stepId: String? = null, at: Long? = null) =
@@ -101,7 +101,7 @@ object DemoData {
         fun h(name: String, symbol: String, color: HabitColor, kind: HabitKind, part: String = DaySection.ANYTIME, goal: Double = 1.0,
               frequency: Frequency = Frequency.Daily, steps: List<Step> = emptyList(), atMost: Boolean = false, reminders: List<ReminderTime> = emptyList(),
               quitSince: Long? = null, dueDay: Int? = null) =
-            Habit(name = name, symbol = symbol, color = color, kind = kind, parts = listOf(part), goal = goal, frequency = frequency, steps = steps,
+            Habit(name = name, symbol = symbol, color = color, kind = kind, part = part, goal = goal, frequency = frequency, steps = steps,
                 atMost = atMost, reminders = reminders, remind = reminders.isNotEmpty(), quitSince = quitSince, dueDay = dueDay, createdAt = ago(400))
         val stretch = h("Stretch", "figure.flexibility", HabitColor.TEAL, HabitKind.Duration, DaySection.MORNING, 10.0)
         val skincare = h("Skincare", "sparkles", HabitColor.PURPLE, HabitKind.Checklist, DaySection.MORNING,
@@ -204,7 +204,7 @@ object DemoData {
         val dayMs = 86_400_000L
         fun h(name: String, symbol: String, color: HabitColor, kind: HabitKind, goal: Double = 1.0, frequency: Frequency = Frequency.Daily,
               part: String = DaySection.ANYTIME, steps: List<Step> = emptyList(), atMost: Boolean = false, quitSince: Long? = null, dueDay: Int? = null) =
-            Habit(name = name, symbol = symbol, color = color, kind = kind, parts = listOf(part), goal = goal, frequency = frequency, steps = steps,
+            Habit(name = name, symbol = symbol, color = color, kind = kind, part = part, goal = goal, frequency = frequency, steps = steps,
                 atMost = atMost, quitSince = quitSince, dueDay = dueDay, remind = false, createdAt = now - 120 * dayMs)
         val water = h("Water", "drop.fill", HabitColor.BLUE, HabitKind.Amount("glasses", 1.0), 8.0)
         val read = h("Read", "book.fill", HabitColor.ORANGE, HabitKind.Duration, 20.0)
@@ -271,7 +271,7 @@ object DemoData {
         fun h(name: String, symbol: String, color: HabitColor, kind: HabitKind, part: String = DaySection.ANYTIME, goal: Double = 1.0,
               frequency: Frequency = Frequency.Daily, steps: List<String> = emptyList(), atMost: Boolean = false, reminder: Int? = null,
               quitSince: Long? = null, archived: Boolean = false) =
-            Habit(name = name, symbol = symbol, color = color, kind = kind, parts = listOf(part), goal = goal, frequency = frequency,
+            Habit(name = name, symbol = symbol, color = color, kind = kind, part = part, goal = goal, frequency = frequency,
                 steps = steps.map { Step(name = it) }, atMost = atMost, reminders = listOfNotNull(reminder?.let { ReminderTime(hour = it / 60, minute = it % 60) }),
                 remind = reminder != null, quitSince = quitSince, archived = archived, createdAt = now - 200 * dayMs)
         val habits = listOf(
@@ -318,7 +318,7 @@ object DemoData {
         fun weekday(day: Int) = java.time.LocalDate.ofEpochDay(day.toLong()).dayOfWeek.value % 7 + 1
         fun t(name: String, symbol: String, color: HabitColor, due: Int?, part: String = DaySection.ANYTIME, minute: Int? = null,
               frequency: Frequency = Frequency.Daily, archived: Boolean = false, created: Int = 30) =
-            Habit(name = name, symbol = symbol, color = color, kind = HabitKind.Task, parts = listOf(part), dueDay = due, dueMinute = minute,
+            Habit(name = name, symbol = symbol, color = color, kind = HabitKind.Task, part = part, dueDay = due, dueMinute = minute,
                 frequency = frequency, archived = archived, remind = false, createdAt = store.rules.dayStart(today - created) + 19 * 3_600_000L + 40 * 60_000L,
                 startsOn = if (due == null) today - created else null)
         val tasks = listOf(

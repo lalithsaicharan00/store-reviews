@@ -259,8 +259,7 @@ fun ArrangeDayScreen(
         val old = store.habit(row.habitId) ?: return
         val toCard = cardAt(entries.indexOf(row)) ?: return
         if (fromCard != toCard) {
-            val parts = (old.parts.filter { it != fromCard } + toCard).distinct()
-            store.update(old.copy(parts = parts))
+            store.update(old.copy(part = toCard))
         }
         store.reorder(rowsOf(toCard).map { it.habitId })
         if (fromCard != toCard) {
@@ -398,7 +397,7 @@ fun ArrangeDayScreen(
         val from = store.placements(h).firstOrNull()?.section ?: DaySection.ANYTIME
         if (to == from) return@MoveToDialog
         val before = store.habits.map { it.id }
-        store.update(h.copy(parts = (h.parts.filter { it != from } + to).distinct()))
+        store.update(h.copy(part = to))
         // It goes to the end of that time of day (Figma 2.3).
         store.reorder((members[to] ?: emptyList()).map { it.id } + h.id)
         val where = store.section(to).name

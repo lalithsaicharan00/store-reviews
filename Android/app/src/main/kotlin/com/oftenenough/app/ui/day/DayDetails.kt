@@ -142,7 +142,7 @@ fun planLine(habit: Habit, store: HabitStore): String = when (habit.kind) {
         // flow 44), or with its reminder times.
         val where = if (habit.remind && habit.reminders.isNotEmpty()) habit.reminders.sortedBy { it.minuteOfDay }.joinToString(", ") { DayWords.clockMinute(it.minuteOfDay) }
             else if (habit.atMost) null
-            else if (habit.parts == listOf("anytime")) "Anytime" else HabitCopy.capitalized(HabitCopy.join(habit.parts.map { store.section(it).name }))
+            else HabitCopy.capitalized(store.section(habit.part).name)
         if (where == null) plan else "$plan · $where"
     }
 }

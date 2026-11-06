@@ -253,7 +253,7 @@ fun SectionEditorScreen(
     if (picking == "start") MinuteDialog(start ?: 6 * 60, { picking = null }, title = "Starts") { start = it; startPicked = true }
     if (confirmDelete && existing != null) {
         // Figma's "Delete Morning?" (842:65872): Cancel and Delete only (D9), saying where its habits go.
-        val habits = store.habits.count { existing.id in it.parts && !it.archived && it.kind != HabitKind.Task }
+        val habits = store.habits.count { it.part == existing.id && !it.archived && it.kind != HabitKind.Task }
         // Settings' words say what stays; Today's frame (842:65872) has the shorter line (D-64).
         AppDialog("Delete ${existing.name}?", when {
             habits == 0 -> "No habits are in it."

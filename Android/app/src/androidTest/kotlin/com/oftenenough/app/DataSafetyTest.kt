@@ -58,7 +58,7 @@ class DataSafetyTest {
     /** Everything a person would notice: each habit with its goal and how many logs it has, and each note. */
     private fun everything(): String = onMain {
         store.habits.sortedBy { it.name }.joinToString("\n") { h ->
-            "${h.name}|${h.kind}|${h.goal}|${h.frequency}|${h.parts}|${h.archived}|${store.entries(h.id).size}|" +
+            "${h.name}|${h.kind}|${h.goal}|${h.frequency}|${h.part}|${h.archived}|${store.entries(h.id).size}|" +
                 store.entries(h.id).sumOf { it.value } + "|" + store.notes(h).joinToString(",") { "${it.first}:${it.second}" }
         }
     }

@@ -159,7 +159,7 @@ class ScreensTest {
         waitFor(hasText("Morning, Afternoon, Evening, or your own, like Before work. Each one ends when the next one starts."), "the footer")
         val store = AppGraph.store
         val morning = store.sections.first { it.name == "Morning" }
-        val inMorning = store.habits.filter { morning.id in it.parts }.map { it.id to it.parts }
+        val inMorning = store.habits.filter { it.part == morning.id }.map { it.id }
         tapTag("section-Morning")
         tapTag("section-delete")
         waitFor(hasText("Delete Morning?"), "the question")
@@ -167,7 +167,7 @@ class ScreensTest {
         waitFor(hasText("Morning deleted"), "the snackbar")
         compose.waitUntil(15_000) { store.sections.none { it.id == morning.id } }
         tapText("Undo")
-        compose.waitUntil(15_000) { store.sections.any { it.id == morning.id } && inMorning.all { (id, parts) -> store.habit(id)?.parts == parts } }
+        compose.waitUntil(15_000) { store.sections.any { it.id == morning.id } && inMorning.all { id -> store.habit(id)?.part == morning.id } }
         waitFor(hasTestTag("section-Morning"), "Morning back on Times of day")
     }
 
