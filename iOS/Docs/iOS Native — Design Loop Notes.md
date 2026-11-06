@@ -154,3 +154,9 @@ section below is headed with the doc it belongs to; move it there once the docs 
   My Data… (D9).
 - **An action in a list is a row** (Add Time of Day), never a floating button; Delete is a red row in its own section.
 - **Acknowledgements** lists the libraries as rows; **Save to Files** is Apple's sheet (place, Save).
+
+## Buttons — iOS Native · 6 Nov 2026: buying Plus (screen R)
+
+- **Get Plus · $29.99 is a Large Prominent button** across the bottom bar, the page's one main action; **Restore
+  Purchases** is a Small Borderless button centred under it (App Review 3.1.1; StoreKit's `AppStore.sync()`). The App
+  Store's own sheet takes the payment; the app draws nothing of it. The price is StoreKit's, in the person's currency.
