@@ -78,3 +78,24 @@ Add and Save are. Its 4 copies on the page follow.
   bound to the old chip properties), **Lock Screen (iOS)** and **Lock Screen · Live Activity (iOS)** (the date over the
   large time, the card at the bottom; Android's shade and quick settings are gone). The player's frames and notes say
   Dynamic Island, Lock Screen and Live Activity; ⋮ → ⋯.
+
+## The notifications & alarms page (6 Nov 2026)
+
+[Notifications & alarms 1265:24553](https://www.figma.com/design/zLgBjb7M7Fp6UN0pg7J3a8/IOS-app?node-id=1265-24553)
+showed Android's notifications: an app-name header with an expand chevron, a row of buttons, the shade, a status
+bar chip, an inbox-style group and Android's direct reply. Now, drawn as the iPhone's (not Apple's images, D11):
+
+- **Reminder notification** (1268:127): **Collapsed** is iOS's banner (the app icon, the title in Semibold, the text,
+  the time at the trailing edge); **Expanded** is the long press: the notification grows (the progress shows) and its
+  actions are a **menu under it**, up to four, one per row; **Reply** is iOS's text input action. Every copy shows the
+  app icon, as iOS does (78 copies had a habit-coloured icon); "Often Enough · now" became the time alone (45).
+- **Reminder group** (1273:903): iOS **stacks** reminders of the same minute (the newest on top, the rest as layers);
+  opened, an "Often Enough" header with Show Less and each reminder its own notification.
+- **Screens:** Heads-up → **Home Screen · reminder**; Lock screen → **Lock Screen · reminders** (the date over the large
+  time, notifications in the lower half); Shade → **Notification Center · reminders** (no quick settings). The timer
+  flow's Live Updates are the **Live Activity**.
+- **Captions (14):** a long press for the actions, up to four, the reply field, Face ID or the passcode for Open, the
+  Dynamic Island, the stack.
+- **Left for the user:** the two alarm flows stay Android's, marked "iPhone: AlarmKit, left for the user (screen P)";
+  "An alarm without full screen" has no iPhone version.
+

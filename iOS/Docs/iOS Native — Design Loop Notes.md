@@ -174,3 +174,10 @@ section below is headed with the doc it belongs to; move it there once the docs 
   goal, the clock, the progress line, Pause). Never a status-bar chip or a notification in a shade. Figma: Live
   Activity (iOS), Home Screen (iOS) › Live Activity in the Dynamic Island, Lock Screen · Live Activity (iOS).
 - **A notification is iOS's banner**: the app icon, the title in Semibold, the body, the time at the trailing edge.
+
+## Menus and Sheets — iOS Native · 6 Nov 2026: a reminder notification
+
+- **A reminder is iOS's banner** (the app icon, never a habit-coloured one; the title Semibold; the text; the time).
+  **Its actions show on a long press**, as a menu under the grown notification, up to four (+1 Glass, Undo, Start,
+  Open). **Typing a number** is iOS's text input action: a reply field over the keyboard. **Several at one minute**
+  are a stack, opened under "Often Enough" with Show Less. Never Android's chevron, button row, inbox lines or shade.
