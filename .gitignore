@@ -31,3 +31,6 @@ Core/fixtures/inputs/*
 
 # Personal IDE settings
 .idea/
+
+# Wrangler's local cache
+.wrangler/

@@ -1,5 +1,7 @@
 # Shared core: Kotlin Multiplatform
 
+**5 November 2026: no longer applies to the iPhone.** The user chose to write the iPhone app in Swift alone (Rulebook, "Starting again"). Android still uses the core.
+
 **Status: Accepted by the user, 26 September 2026.** Resolves Backlog #15. Architecture decision finalized; implementation and integration checks are not yet complete.
 
 ## Decision
