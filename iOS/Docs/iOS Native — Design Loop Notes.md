@@ -143,3 +143,14 @@ section below is headed with the doc it belongs to; move it there once the docs 
   Don't Allow · Allow, the first time Remind me is turned on (U37). After Don't Allow the switch goes back off and the
   line offers **Open Settings** straight away (iOS never asks again). There's no Get reminders on time sheet and no
   battery page on iPhone: a scheduled notification needs nothing else.
+
+## Lists and Rows — iOS Native · 6 Nov 2026: Settings (screen Q)
+
+- **A setting is one row: its name at the leading edge, its value trailing** ("Week Starts On  Sunday ›"), Title Case;
+  a status that matters (the backup) may keep a second line. Settings is a menu place: ☰, not ‹.
+- **Notifications is one row in General** (On or Off ›, opening the app's page in iOS Settings); no Reminders section,
+  no "things to fix", no battery or exact-alarm pages on iPhone.
+- **Backup is iCloud only**: no account row, no Google Drive; the red rows are Delete My Data from iCloud… and Erase All
+  My Data… (D9).
+- **An action in a list is a row** (Add Time of Day), never a floating button; Delete is a red row in its own section.
+- **Acknowledgements** lists the libraries as rows; **Save to Files** is Apple's sheet (place, Save).
