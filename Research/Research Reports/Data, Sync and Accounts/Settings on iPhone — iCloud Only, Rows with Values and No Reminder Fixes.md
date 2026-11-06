@@ -57,6 +57,25 @@ problem to fix unless it is one.
 - Two Samsung battery components with no copies left were deleted. Keep reminders coming, Alarms & reminders and
   Android's notifications dialog still have copies on the Today page's Android-only notices (left for the "+" item).
 
+## Today's notices (the "+" item, 6 Nov 2026)
+
+The Today page (54:5580) still had Android's notice flows. Their cards had already been given iOS's words in the
+earlier Today review; the flows around them hadn't.
+
+- **Deleted, with no iPhone version:** a reminder didn't arrive (exact alarms), the Xiaomi version of it, a reminder
+  came late (battery), Keep reminders coming on each phone, Alarms can't ring and Let Often Enough run in the
+  background (53 + 2 nodes); the page closed up. Then the components with no copies left: Keep reminders coming,
+  Android's Alarms & reminders, its notifications dialog and notification settings, and Android's number keypad.
+- **Backup is paused** (iCloud full: Manage Storage opens iCloud storage in Settings), **Backup is off** (not signed in
+  to iCloud: Open Settings; Google's account chooser and Drive access steps removed), **iCloud backup deleted** (D3:
+  nothing goes up until the person chooses Back Up Again): captions and frame names say iCloud.
+- **Reminders can't come** is two flows, as iOS works: not asked yet on this iPhone (after a restore) → **Turn On**
+  shows iOS's own alert, once; notifications refused or turned off → **Open Settings** to the app's page, and the
+  notice goes on return. Android's "won't ask again after two refusals" is gone.
+- **Plus is waiting:** the App Store hasn't finished (Ask to Buy, or a bank still checking); nothing to do in the app.
+- ← → ‹, snackbar → banner, and Android's date picker and heads-up notification in captions → the calendar and iOS's
+  notification banner.
+
 ## Left for the user
 
 1. **Notifications as a row.** It opens the app's page in iOS Settings and shows On or Off. The alternative is no row

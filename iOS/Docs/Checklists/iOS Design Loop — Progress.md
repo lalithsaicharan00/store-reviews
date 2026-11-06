@@ -43,7 +43,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | P | Create new (components 1061:2015, page 381:2) | 381:2 | **Done** 6 Nov | Add (Save on Edit) is the Prominent glass word on all 10 form types; Icon and Colour two rows, round swatch; Starts a compact picker, Ends a pop-up row (56 each); quit's Started/Time compact pickers; a task's Date a switch; Colour sheet one height, 13 colours shown; How Long and Limit › Time on Clock's wheels, How Much and Limit › Amount on the decimal pad; iOS's notifications alert, asked once (no Get reminders on time); popovers under their rows, no OK; December in the calendar; Title Case titles (131 bars) and choices; 64 captions, 28 frame names; DS: Glass button › Prominent 4258:37268, Date picker › December 4259:113261, Duration picker's upper values | [Creating a Habit on iPhone](<../../../Research/Research Reports/Habit Details Research/Creating a Habit on iPhone — One Prominent Add, Rows and the iPhone's Own Questions.md>) |
 | Q | Settings | 804:79 · 781:34017 | **Done** 6 Nov | ☰; rows with trailing values, Title Case (Appearance, Haptics, Day Starts At…); Reminders section → one Notifications row; Backup & Sync iCloud only (no Change account, Delete My Data from iCloud…); Times of Day's FAB → row; Edit Time of Day compact picker, Prominent Save, red Delete row; Acknowledgements and Save to Files rebuilt for iPhone; Change account, Keep reminders coming (+6 phone-maker pages) and reminders-before-set-up flows deleted; Google steps out of first backup and restore; 69 captions | [Settings on iPhone](<../../../Research/Research Reports/Data, Sync and Accounts/Settings on iPhone — iCloud Only, Rows with Values and No Reminder Fixes.md>) |
 | R | Plus | 1204:175 | **Done** 6 Nov | Get Plus · $29.99 a Large Prominent button with Restore Purchases (Small Borderless) under it in a 100 bar; Apple Account and iCloud words; Title Case titles and rows (55 texts); 5 copies on create new follow | [Plus on iPhone](<../../../Research/Research Reports/Business Model and Monetization/Plus on iPhone — One Large Button, Restore Purchases and the App Store's Sheet.md>) |
-| + | Open from Today's review: History's Back to this week/month (Prominent); Android-only notices on Today | — | Back to This Week done in G (glass); notices still open | | |
+| + | Open from Today's review: History's Back to this week/month (Prominent); Android-only notices on Today | 54:5580 | **Done** 6 Nov | Back to This Week glass (G); notices: exact-alarm, late, battery and phone-maker flows deleted; backup paused/off/deleted say iCloud (no Google chooser); Reminders can't come as iOS's two cases (Turn On → iOS alert once; Open Settings); Plus waiting = App Store pending; unused Android components deleted | [Settings on iPhone § Today's notices](<../../../Research/Research Reports/Data, Sync and Accounts/Settings on iPhone — iCloud Only, Rows with Values and No Reminder Fixes.md>) |
 
 ## Left for the user
 
@@ -86,11 +86,12 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 
 ## Next
 
-The "+" item: Today's Android-only notices (frames on the today page using Keep reminders coming, Alarms & reminders,
-Android's notifications dialog and its notification settings) — remove or replace with iOS's once-only question.
-Then the leftovers: a time habit in the routine player should use the Timer ring; the player page's 'outside the
-app' frames show Android's Live Update chip (iPhone: Live Activity). History's Go to date flows (details pages
-1150:76414 …) could show September.
+Every lettered screen (A–R) and the "+" item are done. Leftovers, one per iteration:
+1. **Routine player, time habits** (906:89513): the clock should sit in the Timer ring (a Screen=Time variant).
+2. **Live Activity** on the routine player page's 'outside the app' frames (958:157631, notes 260:225, 260:231) and the
+   notifications & alarms page (1265:24553): Android's Live Update chip, heads-up notification and shade → iOS's Live
+   Activity, notification banner and Notification Center.
+3. History's Go to date flows (details pages 1150:76414 …) could show September.
 
 ## How the probes work
 
