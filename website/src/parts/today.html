@@ -1,0 +1,31 @@
+          <span class="top-menu">{{i:menu}}</span>
+          <span class="top-edit">{{i:edit}}</span>
+          <span class="top-add">{{i:add}}</span>
+          <div class="today">
+            <div class="group">
+              {{head Morning "Starts 6 AM" left="3 left" start=now}}
+              {{row red medication.fill Meds "Not done | 8:00 AM" streak=57 action=check}}
+              {{row teal self_improvement.fill Stretch "4/10 min" streak=7 fill=40 action=play_arrow.fill}}
+              {{row purple auto_awesome.fill Skincare "1/4 steps" streak=12 fill=25 action=expand_more}}
+            </div>
+            <div class="group">
+              {{head Afternoon "Starts 12 PM" left="3 left" icons=green:directions_walk.fill,orange:menu_book.fill,blue:water_drop.fill,+1}}
+            </div>
+            <div class="group">
+              {{head Evening "Starts 6 PM" left="2 left" icons=indigo:bedtime.fill,purple:auto_awesome.fill,orange:menu_book.fill}}
+            </div>
+            <div class="group">
+              {{head Anytime "" left="2 left" start=later}}
+              {{row orange menu_book.fill Read "12/20 min" streak=6 fill=60 action=play_arrow.fill}}
+              {{row green directions_walk.fill Walk "2/5 km" streak=9 fill=40 action=play_arrow.fill}}
+            </div>
+          </div>
+          <i class="today-fade"></i>
+          <div class="day-bar">
+            <span class="day-prev">{{i:chevron_left}}</span>
+            <span class="day-now">
+              <svg class="ring" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" pathLength="13"/><circle class="ring-done" cx="10" cy="10" r="8.5" pathLength="13"/></svg>
+              <span class="day-name">Today</span>{{i:arrow_drop_down}}<span class="day-count">4/13</span>
+            </span>
+            <span class="day-next">{{i:chevron_right}}</span>
+          </div>

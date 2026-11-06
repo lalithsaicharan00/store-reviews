@@ -1,0 +1,572 @@
+<section class="hero" aria-labelledby="hero-title">
+  <i class="hero-glow" aria-hidden="true"></i>
+  <div class="hero-copy">
+    <h1 class="display" id="hero-title">The simple habit tracker with no subscription.</h1>
+    <p class="lead">Log your habits in a tap. Start free, and pay once if you ever want more.</p>
+    {{store_buttons}}
+    <p class="small">No account. No ads. Your habits stay private.</p>
+  </div>
+  <div class="stage">
+    {{phone "Often Enough's Today screen: habits grouped by morning, afternoon, evening and anytime, each with its progress, its streak and a button to log it."}}
+      {{today_screen}}
+    {{/phone}}
+    <div class="float float-call app" role="img" aria-label="Call family: 2 of 3 this week, a 6-week streak.">
+      {{row green call.fill "Call family" "2 of 3 this week" streak=6 fill=67 action=check}}
+    </div>
+    <div class="float float-social app" role="img" aria-label="Social media: 12 of 30 minutes, a limit you set.">
+      {{row pink smartphone "Social media" "12 of 30 mins max" streak=7 action=play_arrow.fill}}
+    </div>
+    <div class="float float-coffee app" role="img" aria-label="Coffee: cut down to 2 cups a day, 1 so far.">
+      {{row brown local_cafe.fill Coffee "1 of 2 cups" streak=8 action=+1}}
+    </div>
+    <div class="float float-smoking app" role="img" aria-label="Smoking: quit, and the count of days since keeps running.">
+      {{quit}}
+    </div>
+  </div>
+</section>
+<section class="section wrap" id="every-kind" aria-labelledby="every-kind-title">
+  <div class="section-head">
+    <h2 class="headline" id="every-kind-title">A tracker for every kind of habit.</h2>
+    <p class="lead">Tick it off, count it, time it, cut it down or quit it.</p>
+  </div>
+  <div class="kinds-all">
+    <div class="kinds">
+      <div class="kind h-green">
+        <div class="kind-stage app"><div class="tilt-up">{{row green bed "Make your bed" Done streak=23 fill=100 done=1 action=check}}</div></div>
+        <div class="kind-words"><h3 class="title">Check it off</h3><p>Make your bed, take your meds, call home. One tap and it’s done.</p></div>
+      </div>
+      <div class="kind h-blue">
+        <div class="kind-stage app"><div class="tilt-down">{{row blue water_drop.fill Water "5/8 glasses" streak=14 fill=63 action=+1}}</div></div>
+        <div class="kind-words"><h3 class="title">Track an amount</h3><p>Glasses of water, pages read, steps walked. Add as you go.</p></div>
+      </div>
+      <div class="kind h-orange">
+        <div class="kind-stage app"><div class="tilt-up">{{row orange self_improvement.fill Meditate "6/10 min" streak=9 fill=60 action=play_arrow.fill}}</div></div>
+        <div class="kind-words"><h3 class="title">Time it</h3><p>Meditation, practice, study. Start the timer or type it in.</p></div>
+      </div>
+      <div class="kind h-purple">
+        <div class="kind-stage app"><div class="tilt-up">{{row purple fitness_center.fill Workout "2/4 steps" streak=11 fill=50 action=expand_more}}</div></div>
+        <div class="kind-words"><h3 class="title kind-plus">Checklist <span class="plus-tag">Plus</span></h3><p>One habit with several steps, like a workout or a skincare routine.</p></div>
+      </div>
+      <div class="kind h-brown">
+        <div class="kind-stage app"><div class="tilt-down">{{row brown local_cafe.fill Coffee "1 of 2 cups" streak=8 action=+1}}</div></div>
+        <div class="kind-words"><h3 class="title">Cut down</h3><p>Coffee, sugar, screen time. Set a maximum and log how much.</p></div>
+      </div>
+      <div class="kind h-red">
+        <div class="kind-stage app"><div class="tilt-up">{{quit}}</div></div>
+        <div class="kind-words"><h3 class="title">Quit</h3><p>Smoking, alcohol, vaping. See how long it’s been since you stopped.</p></div>
+      </div>
+    </div>
+    <div class="band">
+      <div class="band-words">
+        <h3><span class="band-label">{{i:event_repeat}}Flexible schedules</span><span class="band-title">Often enough doesn’t mean every day.</span></h3>
+        <p>Track each habit on its own flexible schedule: a few times a week, on set days, every few days, monthly or yearly.</p>
+      </div>
+      <ul class="pills">
+        <li>Every day</li>
+        <li class="pill-on">3 times a week</li>
+        <li>Every Monday, Wednesday and Friday</li>
+        <li>Every 3 days</li>
+        <li>Every other week on Friday</li>
+        <li>On the 23rd of every month</li>
+        <li>Every year on October 23</li>
+      </ul>
+    </div>
+  </div>
+  {{more /features "See every feature"}}
+</section>
+<section class="section wrap" id="free-and-plus" aria-labelledby="free-and-plus-title">
+  <div class="section-head">
+    <h2 class="headline two-sentences" id="free-and-plus-title"><span>Free for 5 habits.</span> <span>Pay once for unlimited.</span></h2>
+    <p class="lead">Everything you need to start is free, with no time limit.</p>
+  </div>
+  <div class="plans-all">
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-picture app" aria-hidden="true"><span class="h-green">{{i:bed}}</span><span class="h-blue">{{i:water_drop.fill}}</span><span class="h-orange">{{i:self_improvement.fill}}</span><span class="h-purple">{{i:fitness_center.fill}}</span><span class="h-red">{{i:smoke_free}}</span><span class="plan-empty">{{i:add}}</span></div>
+        <div class="plan-words"><h3 class="subhead">Free</h3><p>No time limit and no account.</p></div>
+        <ul class="plan-list">
+          <li>{{i:check}}Up to 5 habits</li>
+          <li>{{i:check}}Quit and cut-down habits, tasks and timers</li>
+          <li>{{i:check}}Several reminders for each habit</li>
+          <li>{{i:check}}Streaks, milestones and each habit’s progress</li>
+          <li>{{i:check}}Your full history, on any date</li>
+          <li>{{i:check}}Backup to your own Google Drive or iCloud</li>
+        </ul>
+      </div>
+      <div class="plan plan-plus">
+        <div class="plan-picture app" aria-hidden="true" data-may-overflow><span class="h-green">{{i:bed}}</span><span class="h-blue">{{i:water_drop.fill}}</span><span class="h-orange">{{i:self_improvement.fill}}</span><span class="h-purple">{{i:fitness_center.fill}}</span><span class="h-red">{{i:smoke_free}}</span><span class="h-cyan">{{i:menu_book.fill}}</span><span class="h-pink">{{i:smartphone}}</span><span class="h-brown">{{i:local_cafe.fill}}</span><span class="h-indigo">{{i:call.fill}}</span><span class="h-yellow">{{i:wb_sunny.fill}}</span><span class="h-teal">{{i:directions_walk.fill}}</span><span class="h-purple">{{i:auto_awesome.fill}}</span><span class="h-indigo">{{i:bedtime.fill}}</span><span class="h-red">{{i:medication.fill}}</span><span class="h-teal">{{i:self_improvement.fill}}</span><span class="h-blue">{{i:water_drop.fill}}</span></div>
+        <div class="plan-words"><h3 class="subhead">Plus</h3><p>One payment, yours forever. No subscription.</p></div>
+        <ul class="plan-list">
+          <li>{{i:check}}Everything in Free</li>
+          <li>{{i:check}}Unlimited habits</li>
+          <li>{{i:check}}Today and This week widgets</li>
+          <li>{{i:check}}Year in Pixels on each habit’s page</li>
+          <li>{{i:check}}Checklist habits</li>
+          <li>{{i:check}}Remind me again, if a habit isn’t done</li>
+        </ul>
+      </div>
+    </div>
+    <ul class="promises">
+      <li>{{i:event_available}}<div><h3>No trial, no renewal</h3><p>Plus is a one-time purchase, so there’s nothing to cancel.</p></div></li>
+      <li>{{i:verified}}<div><h3>What’s free stays free</h3><p>Nothing free today will ever move into Plus.</p></div></li>
+      <li>{{i:smartphone}}<div><h3>Plus stays with you</h3><p>It comes back on any phone signed in to the same store.</p></div></li>
+    </ul>
+  </div>
+  {{more /plus "See what’s in Plus"}}
+</section>
+<section class="section wrap" id="progress" aria-labelledby="progress-title">
+  <div class="section-head">
+    <h2 class="headline" id="progress-title">See your progress. Keep your streak.</h2>
+    <p class="lead">Calendars, streaks and milestones show how far you’ve come. A missed day never wipes it out.</p>
+  </div>
+  <div class="bento">
+    <div class="bento-top">
+      <div class="tile tile-calendar glow h-teal">
+        <div class="tile-words"><h3 class="title">Every day at a glance</h3><p>Week, month and year views show the days you did it, habit by habit.</p></div>
+        <div class="app-card month app" role="img" aria-label="Stretch, 10 minutes a day: reached on 21 of 22 days so far in October, 3 hours 40 minutes this month.">
+          <div class="app-habit"><span class="app-habit-icon">{{i:self_improvement.fill}}</span><span class="app-habit-words"><span class="row-name">Stretch</span><span class="app-habit-sub">10 min a day</span></span></div>
+          <div class="views"><span>Week</span><span class="views-on">{{i:check}}Month</span><span>Year</span></div>
+          <div class="month-result"><span class="month-reached">Reached on 21 of 22 days so far</span><span class="app-habit-sub">3 h 40 min this month</span></div>
+          <div class="month-days"><div class="month-names"><span class="">S</span><span class="">M</span><span class="">T</span><span class="">W</span><span class="">T</span><span class="week-name-now">F</span><span class="">S</span></div><div class="month-grid"><i class="day day-blank"></i><i class="day day-blank"></i><i class="day day-blank"></i><i class="day day-blank"></i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-more">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-miss">{{i:close}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-today"></i><i class="day day-come"></i><i class="day day-come"></i><i class="day day-come"></i><i class="day day-come"></i><i class="day day-come"></i><i class="day day-come"></i><i class="day day-come"></i><i class="day day-come"></i></div></div>
+        </div>
+      </div>
+      <div class="tile tile-milestones">
+        <div class="tile-words"><h3 class="title">Milestones along the way</h3><p>See what you’ve reached, and how close the next one is.</p></div>
+        <div class="cut cut-milestones">
+          {{phone "Often Enough's All milestones screen for Water: 30 days in a row is next, 7 to go, with 14, 7 and 3 days reached."}}
+            <span class="bar-back">{{i:arrow_back}}</span><span class="bar-title">All milestones</span>
+            <span class="ms-count">Water · 4 reached</span>
+            <span class="ms-head ms-head-a">In a row</span>
+            <div class="ms-list ms-list-a">
+              <div class="ms "><span class="ms-ring h-blue"><svg viewBox="0 0 38 38" aria-hidden="true"><circle cx="19" cy="19" r="17.5" pathLength="100"/><circle class="ms-ring-on" cx="19" cy="19" r="17.5" pathLength="100" stroke-dasharray="76.7 100"/></svg><span class="">30</span></span><span class="ms-name">30 days in a row</span><span class="ms-sub">Next · 7 to go · now 23</span></div>
+              <div class="ms "><span class="medal"><svg aria-hidden="true"><use href="#medal"/></svg><span>14</span></span><span class="ms-name">14 days in a row</span><span class="ms-sub">Reached 13 Oct</span></div>
+              <div class="ms "><span class="medal"><svg aria-hidden="true"><use href="#medal"/></svg><span>7</span></span><span class="ms-name">7 days in a row</span><span class="ms-sub">Reached 6 Oct</span></div>
+              <div class="ms "><span class="medal"><svg aria-hidden="true"><use href="#medal"/></svg><span>3</span></span><span class="ms-name">3 days in a row</span><span class="ms-sub">Reached 2 Oct</span></div>
+            </div>
+            <span class="ms-head ms-head-b">Glasses in total</span>
+            <div class="ms-list ms-list-b">
+              <div class="ms "><span class="ms-ring h-blue"><svg viewBox="0 0 38 38" aria-hidden="true"><circle cx="19" cy="19" r="17.5" pathLength="100"/><circle class="ms-ring-on" cx="19" cy="19" r="17.5" pathLength="100" stroke-dasharray="98 100"/></svg><span class="ms-ring-small">400</span></span><span class="ms-name">400 glasses in total</span><span class="ms-sub">Next · 8 to go · 392 so far</span></div>
+              <div class="ms "><span class="medal"><svg aria-hidden="true"><use href="#medal"/></svg><span>80</span></span><span class="ms-name">80 glasses in total</span><span class="ms-sub">Reached 29 Sep</span></div>
+            </div>
+          {{/phone}}
+        </div>
+      </div>
+    </div>
+    <div class="tile tile-year glow h-orange">
+      <div class="year-words">
+        <div class="year-head">
+          <span class="plus-tag">Plus</span>
+          <h3 class="tile-big">Your year in pixels</h3>
+          <p class="tile-line">Every day of a habit’s year as one square, on its page. One look shows how your whole year went.</p>
+          {{more /plus "See what’s in Plus"}}
+        </div>
+        <div class="squares">
+          <h4>What the squares mean</h4>
+          <ul class="squares-list">
+            <li><i class="sq sq-done">{{i:check}}</i>Done: the goal was reached</li>
+            <li><i class="sq sq-more">{{i:check}}</i>More than the goal</li>
+            <li><i class="sq sq-part"></i>Part of the goal</li>
+            <li><i class="sq sq-grey sq-x">{{i:close}}</i>Not done</li>
+            <li><i class="sq sq-grey">{{i:redo}}</i>Skipped</li>
+            <li><i class="sq sq-grey">{{i:pause.fill}}</i>Paused</li>
+          </ul>
+          <p class="small squares-note">Nothing here counts against you: skipped, paused and no-goal days are left out of every count.</p>
+        </div>
+      </div>
+      <div class="year-phone">
+        {{phone "Read's Progress page in Often Enough: Year in pixels for 2026, reached on 249 of 276 days so far, 83 hours this year."}}
+          <i class="page-top"></i>
+          <span class="bar-back">{{i:arrow_back}}</span><span class="bar-title">Read</span><span class="bar-more">{{i:more_vert}}</span>
+          <span class="tab tab-on">Progress</span><span class="tab tab-off">History</span><i class="tab-line"></i><i class="tab-mark"></i>
+          <div class="pixels">
+            <span class="pixels-title">Year in pixels</span>
+            <span class="pixels-year">2026 · This year</span>
+            <span class="pixels-prev">{{i:chevron_left}}</span><span class="pixels-next">{{i:chevron_right}}</span>
+            <span class="pixels-reached">Reached on 249 of 276 days so far</span>
+            <span class="pixels-hours">83 h this year</span>
+            {{year_grid}}
+          </div>
+        {{/phone}}
+      </div>
+    </div>
+    <div class="tile tile-streaks">
+      <div class="streak-phones">
+        <div class="cut cut-streaks">
+          {{phone "Often Enough's Today screen with three streaks: Water 23 days, Run 6 weeks, Call family 4 months."}}
+            <span class="top-menu">{{i:menu}}</span><span class="top-edit">{{i:edit}}</span><span class="top-add">{{i:add}}</span>
+            <div class="today today-short">
+              <div class="group">
+                {{head Morning "Starts 6 AM" left="3 left" start=now}}
+                {{row blue water_drop.fill Water "3/8 glasses" streak=23 fill=38 action=+1}}
+                {{row teal directions_run.fill Run "2/3 this week" "streak=6 wk" fill=67 action=check}}
+                {{row purple call.fill "Call family" "1/2 this month" "streak=4 mo" fill=50 action=check}}
+              </div>
+              <div class="group">
+                {{head Afternoon "Starts 12 PM" left="3 left" icons=green:directions_walk.fill,orange:menu_book.fill,teal:self_improvement.fill,+1}}
+              </div>
+            </div>
+          {{/phone}}
+        </div>
+        <div class="cut cut-streaks cut-second">
+          {{phone "Water's streaks: 3 runs, the longest 23 days and still going, then 12 and 9 days."}}
+            <span class="bar-back">{{i:arrow_back}}</span><span class="bar-title">Streaks</span>
+            <span class="streak-icon h-blue">{{i:water_drop.fill}}</span><span class="streak-name">Water</span><span class="streak-since">Since 2 Sep 2026</span>
+            <div class="runs">
+              <span class="runs-title">3 runs</span>
+              <div class="run"><span class="row-name">23 days</span><span class="run-when">30 Sep – today · now</span><i class="run-bar"><i class="run-fill run-now"></i></i></div>
+              <div class="run"><span class="row-name">12 days</span><span class="run-when">14 – 25 Sep</span><i class="run-bar"><i class="run-fill run-12"></i></i></div>
+              <div class="run"><span class="row-name">9 days</span><span class="run-when">2 – 10 Sep</span><i class="run-bar"><i class="run-fill run-9"></i></i></div>
+            </div>
+            <span class="runs-note">Runs of 3 days or more, longest first. Skipped and paused days don’t end a run.</span>
+          {{/phone}}
+        </div>
+      </div>
+      <div class="streak-words"><h3 class="tile-big">Streaks that fit your schedule</h3><p class="tile-line">Your streak counts in days, weeks or months, so a habit you do 3 times a week has one too.</p></div>
+    </div>
+    <div class="tile tile-band glow h-blue">
+      <div class="band-text"><h3 class="tile-big">Skip a day and your streak stays.</h3><p class="tile-line">Sick, travelling or need a rest? Skip the day or pause the habit. If you miss one, your best streak and all your history stay.</p></div>
+      <div class="app-card week app" role="img" aria-label="Water, 8 glasses a day, a 23-day streak: done every day this week but Thursday, which was skipped, and the streak carried on.">
+        <div class="app-habit"><span class="app-habit-icon week-icon">{{i:water_drop.fill}}</span><span class="app-habit-words"><span class="row-name">Water</span><span class="app-habit-sub">8 glasses a day</span></span><span class="big-streak"><span class="big-fire">🔥</span><span class="big-number">23 <span>days</span></span></span></div>
+        <div class="week-grid"><span class="week-name">S<span>un</span></span><span class="week-name">M<span>on</span></span><span class="week-name">T<span>ue</span></span><span class="week-name">W<span>ed</span></span><span class="week-name">T<span>hu</span></span><span class="week-name">F<span>ri</span></span><span class="week-name">S<span>at</span></span><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i><i class="day day-skip">{{i:redo}}</i><i class="day day-done">{{i:check}}</i><i class="day day-done">{{i:check}}</i></div>
+        <span class="app-habit-sub">Skipped Thursday. The streak carried on.</span>
+      </div>
+    </div>
+  </div>
+  {{more /features "See how progress works"}}
+</section>
+<section class="section wrap" id="routines" aria-labelledby="routines-title">
+  <div class="section-head">
+    <h2 class="headline" id="routines-title">Morning and evening routines.</h2>
+    <p class="lead">Put your habits in the order you do them, tap Start and go through them one at a time.</p>
+  </div>
+  <div class="routines">
+    <div class="routine-phones phones-stack" data-may-overflow>
+      <div class="routine stack-a">
+        {{phone "Often Enough's Today screen: habits grouped by morning, afternoon, evening and anytime, each with its progress, its streak and a button to log it."}}
+      {{today_screen}}
+        {{/phone}}
+        <div class="routine-words"><h3>Your day, in order</h3><p>Morning, afternoon, evening and anytime.</p></div>
+      </div>
+      <div class="routine stack-front">
+        {{phone "A routine playing in Often Enough: Stretch, the second of three, with its timer at 4:00 of 10 minutes and a Start button."}}
+            <span class="bar-close">{{i:close}}</span><span class="player-title">Morning</span><span class="player-drop">{{i:arrow_drop_down}}</span><span class="bar-more">{{i:more_vert}}</span>
+            <i class="player-now player-now-2"></i><i class="player-rest"></i><span class="player-count">2 of 3</span>
+            <div class="player-card player-card-timer h-teal">
+              <span class="cookie cookie-144"><svg aria-hidden="true"><use href="#cookie"/></svg>{{i:self_improvement.fill}}</span>
+              <span class="player-name player-name-big">Stretch</span>
+              <span class="player-sub player-sub-big">Neck, shoulders and back</span>
+              <span class="player-chip player-chip-big">{{i:calendar_today}}Today</span>
+              <span class="player-clock"><span class="player-time">4:00</span><span class="player-of">of 10 min</span></span>
+              <i class="player-bar"></i><i class="player-track"></i>
+            </div>
+            <span class="player-button player-prev">{{i:chevron_left}}</span>
+            <span class="player-button player-main">{{i:play_arrow.fill}}Start</span>
+            <span class="player-button player-next">{{i:chevron_right}}</span>
+          {{/phone}}
+        <div class="routine-words"><h3>Timers built in</h3><p>Start the clock without leaving the routine.</p></div>
+      </div>
+      <div class="routine stack-b">
+        {{phone "A checklist in Often Enough's routine player: Skincare, the third of three, with Cleanser ticked and three steps to go."}}
+            <span class="bar-close">{{i:close}}</span><span class="player-title">Morning</span><span class="player-drop">{{i:arrow_drop_down}}</span><span class="bar-more">{{i:more_vert}}</span>
+            <i class="player-now player-now-all"></i><span class="player-count">3 of 3</span>
+            <div class="player-card player-card-check h-purple">
+              <span class="cookie cookie-64"><svg aria-hidden="true"><use href="#cookie"/></svg>{{i:auto_awesome.fill}}</span>
+              <span class="player-name">Skincare</span>
+              <span class="player-sub">After the shower</span>
+              <span class="player-chip">{{i:calendar_today}}Today</span>
+              <i class="player-steps-bar"></i><i class="player-steps-track"></i><span class="player-steps-count">1 of 4 steps</span>
+            </div>
+            <div class="player-steps h-purple"><span class="player-step">{{i:check_box.fill}}Cleanser</span><span class="player-step">{{i:check_box_outline_blank}}Serum</span><span class="player-step">{{i:check_box_outline_blank}}Moisturiser</span><span class="player-step">{{i:check_box_outline_blank}}Sunscreen</span></div>
+            <span class="player-button player-half player-half-a">{{i:chevron_left}}</span>
+            <span class="player-button player-half player-half-b">{{i:chevron_right}}</span>
+          {{/phone}}
+        <div class="routine-words"><h3>Checklists too</h3><p>Tick each step as you go.</p></div>
+      </div>
+      <div class="routine stack-none">
+        {{phone "The end of a routine in Often Enough: Morning is done, all 3 done today, with Meds, Stretch and Skincare listed."}}
+            <span class="bar-close">{{i:close}}</span><span class="player-title">Morning</span><span class="player-drop">{{i:arrow_drop_down}}</span><span class="bar-more">{{i:more_vert}}</span>
+            <i class="player-now player-now-all"></i><span class="player-count">3 of 3</span>
+            <div class="player-card player-card-done">
+              <span class="cookie cookie-112"><svg aria-hidden="true"><use href="#cookie"/></svg>{{i:done_all}}</span>
+              <span class="player-name">Morning is done</span>
+              <span class="player-sub">All 3 done today.</span>
+            </div>
+            <span class="player-done-label">Done</span>
+            <div class="player-done-list"><span class="player-done-row h-red"><span class="row-icon">{{i:medication.fill}}</span><span class="row-name">Meds</span><span class="player-done-sub">Done</span></span><span class="player-done-row h-teal"><span class="row-icon">{{i:self_improvement.fill}}</span><span class="row-name">Stretch</span><span class="player-done-sub">10/10 min</span></span><span class="player-done-row h-purple"><span class="row-icon">{{i:auto_awesome.fill}}</span><span class="row-name">Skincare</span><span class="player-done-sub">4/4 steps</span></span></div>
+            <span class="player-button player-wide">{{i:check}}Done</span>
+          {{/phone}}
+        <div class="routine-words"><h3>See it all done</h3><p>Everything you finished, in one place.</p></div>
+      </div>
+    </div>
+    <ul class="chips stack-chips"><li>Your day, in order</li><li>Timers built in</li><li>Checklists too</li><li>See it all done</li></ul>
+  </div>
+  <div class="tile times">
+    <div class="times-words"><h3 class="title">Your own times of day</h3><p>Start with Morning, Afternoon, Evening and Anytime. Change their times or add your own, and each one is a routine you can start.</p></div>
+    <ul class="time-rows">
+        <li class="time-row app"><span class="time-words"><span class="row-name">Morning</span><span class="time-starts">Starts 6 AM</span></span><span class="time-dots" aria-hidden="true"><i class="h-red">{{i:medication.fill}}</i><i class="h-teal">{{i:self_improvement.fill}}</i><i class="h-purple">{{i:auto_awesome.fill}}</i></span><span class="time-left">3 left</span><span class="time-chevron" aria-hidden="true">{{i:expand_more}}</span></li>
+        <li class="time-row app time-row-extra"><span class="time-words"><span class="row-name">Afternoon</span><span class="time-starts">Starts 12 PM</span></span><span class="time-dots" aria-hidden="true"><i class="h-green">{{i:directions_walk.fill}}</i><i class="h-orange">{{i:menu_book.fill}}</i><i class="h-blue">{{i:water_drop.fill}}</i></span><span class="time-left">3 left</span><span class="time-chevron" aria-hidden="true">{{i:expand_more}}</span></li>
+        <li class="time-row app"><span class="time-words"><span class="row-name">After work</span><span class="time-starts">Starts 5 PM</span></span><span class="time-dots" aria-hidden="true"><i class="h-red">{{i:fitness_center.fill}}</i><i class="h-green">{{i:call.fill}}</i></span><span class="time-left">2 left</span><span class="time-chevron" aria-hidden="true">{{i:expand_more}}</span></li>
+        <li class="time-row app time-row-extra"><span class="time-words"><span class="row-name">Evening</span><span class="time-starts">Starts 6 PM</span></span><span class="time-dots" aria-hidden="true"><i class="h-indigo">{{i:bedtime.fill}}</i><i class="h-purple">{{i:auto_awesome.fill}}</i><i class="h-orange">{{i:menu_book.fill}}</i></span><span class="time-left">2 left</span><span class="time-chevron" aria-hidden="true">{{i:expand_more}}</span></li>
+    </ul>
+  </div>
+  {{more /features "See how routines work"}}
+</section>
+<section class="section wrap" id="reminders" aria-labelledby="reminders-title">
+  <div class="section-head">
+    <h2 class="headline" id="reminders-title"><span class="line-phone">Reminders and</span> <span class="line-phone">full-screen alarms.</span></h2>
+    <p class="lead">Choose a notification or an alarm that fills the screen. Either way, you can log it right there.</p>
+  </div>
+  <div class="bento">
+    <div class="tile tile-alarms">
+      <div class="tile-words"><h3 class="title">Full-screen alarms</h3><p>For what you can’t let slide. It fills the screen and rings until you stop it, and you can log it right there.</p></div>
+      <div class="alarm-phones phones-stack h-green" data-may-overflow>
+        <div class="alarm-phone stack-front">
+          {{phone "A full-screen alarm in Often Enough at 7:00: Take vitamins, with breakfast, with a Done button."}}
+            <div class="alarm h-green kind-check">
+              <span class="alarm-time">7:00</span>
+              <span class="alarm-date">Reminder · Fri, 23 Oct</span>
+              <div class="alarm-card"><span class="cookie cookie-108"><svg aria-hidden="true"><use href="#cookie"/></svg>{{i:medication.fill}}</span><span class="alarm-name">Take vitamins</span><span class="alarm-sub">With breakfast</span><span class="alarm-state">Not done yet</span></div>
+              <span class="alarm-button">{{i:check}}Done</span>
+              <span class="alarm-bottom">Not now</span>
+            </div>
+          {{/phone}}
+        </div>
+        <div class="alarm-phone stack-a">
+          {{phone "A full-screen alarm in Often Enough at 10:00: Water, 3 of 8 glasses, with a button that adds one glass."}}
+            <div class="alarm h-blue kind-amount">
+              <span class="alarm-time">10:00</span>
+              <span class="alarm-date">Reminder · Fri, 23 Oct</span>
+              <div class="alarm-card"><span class="cookie cookie-108"><svg aria-hidden="true"><use href="#cookie"/></svg>{{i:water_drop.fill}}</span><span class="alarm-name">Water</span><span class="alarm-sub">Through the day</span><span class="alarm-value"><b>3</b> of 8 glasses</span><i class="alarm-bar"></i><i class="alarm-track"></i></div>
+              <span class="alarm-button">{{i:add}}+1 glass</span>
+              <span class="alarm-bottom">Not now</span>
+            </div>
+          {{/phone}}
+        </div>
+        <div class="alarm-phone stack-b">
+          {{phone "A full-screen alarm in Often Enough at 9:30: Read, 0 of 20 minutes, with a Start button and Log time."}}
+            <div class="alarm h-orange kind-time">
+              <span class="alarm-time">9:30</span>
+              <span class="alarm-date">Reminder · Fri, 23 Oct</span>
+              <div class="alarm-card"><span class="cookie cookie-108"><svg aria-hidden="true"><use href="#cookie"/></svg>{{i:menu_book.fill}}</span><span class="alarm-name">Read</span><span class="alarm-sub">Before bed</span><span class="alarm-value"><b>0 min</b> of 20 min</span><i class="alarm-track alarm-track-full"></i></div>
+              <span class="alarm-button">{{i:play_arrow.fill}}Start</span>
+              <span class="alarm-bottom alarm-bottom-a">Log time</span><span class="alarm-bottom alarm-bottom-b">Not now</span>
+            </div>
+          {{/phone}}
+        </div>
+      </div>
+    </div>
+    <div class="tile tile-notifs">
+      <div class="notifs-side">
+        <div class="tile-words"><h3 class="title">Notifications you can answer</h3><p>Tick it, add to it, type a number or start a timer from the notification. Every kind of habit has its own buttons.</p></div>
+        <div class="notif-columns">
+          <ul class="notif-column">
+          <li class="notif app h-green"><span class="notif-icon"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"/></svg></span><div class="notif-body"><div class="notif-top"><span>Often Enough · now</span><i aria-hidden="true">{{i:expand_less}}</i></div><span class="notif-title">Take vitamins</span><span class="notif-sub">Not done yet</span><div class="notif-acts"><span>Done</span></div></div></li>
+          <li class="notif app h-cyan"><span class="notif-icon"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"/></svg></span><div class="notif-body"><div class="notif-top"><span>Often Enough · now</span><i aria-hidden="true">{{i:expand_less}}</i></div><span class="notif-title">Walk</span><span class="notif-sub">0 of 8,000 steps</span><i class="notif-line"></i><div class="notif-reply"><span>How many steps?</span>{{i:send}}</div></div></li>
+          <li class="notif app notif-extra h-yellow"><span class="notif-icon"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"/></svg></span><div class="notif-body"><div class="notif-top"><span>Often Enough · now</span><i aria-hidden="true">{{i:expand_less}}</i></div><span class="notif-title">Pay rent</span><span class="notif-sub">Task · for today</span><div class="notif-acts"><span>Done</span></div></div></li>
+          </ul>
+          <ul class="notif-column">
+          <li class="notif app h-orange"><span class="notif-icon"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"/></svg></span><div class="notif-body"><div class="notif-top"><span>Often Enough · now</span><i aria-hidden="true">{{i:expand_less}}</i></div><span class="notif-title">Read</span><span class="notif-sub">0 of 20 min</span><i class="notif-line"></i><div class="notif-acts"><span>Start</span><span>Log time</span></div></div></li>
+          <li class="notif app notif-extra h-red"><span class="notif-icon"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"/></svg></span><div class="notif-body"><div class="notif-top"><span>Often Enough · now</span><i aria-hidden="true">{{i:expand_less}}</i></div><span class="notif-title">Workout</span><span class="notif-sub">0 of 5 steps</span><ul class="notif-steps"><li>{{i:radio_button_unchecked}}Warm-up</li><li>{{i:radio_button_unchecked}}Push-ups</li><li>{{i:radio_button_unchecked}}Squats</li><li>{{i:radio_button_unchecked}}Plank</li><li>{{i:radio_button_unchecked}}Stretch</li></ul><div class="notif-acts"><span>Tick Warm-up</span><span>Open</span></div></div></li>
+          </ul>
+        </div>
+      </div>
+      <div class="cut cut-lock">
+        {{phone "A locked phone showing an Often Enough notification for Water, 3 of 8 glasses, with a button that adds one glass."}}
+            <div class="lock h-blue">
+              <span class="lock-clock">9:41</span><span class="lock-date">Fri, 23 Oct</span>
+              <div class="lock-notif">
+                <span class="notif-icon"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><use href="#mark"/></svg></span>
+                <span class="lock-top">Often Enough · now</span><i class="lock-collapse">{{i:expand_less}}</i>
+                <span class="lock-title">Water</span><span class="lock-sub">3 of 8 glasses</span>
+                <i class="lock-bar"></i><i class="lock-track"></i><span class="lock-act">+1 glass</span>
+              </div>
+            </div>
+          {{/phone}}
+      </div>
+    </div>
+    <div class="remind-facts">
+      <div class="remind-fact"><h3 class="title">As many as you need</h3><p>Several reminders a day, each at its own time.</p></div>
+      <div class="remind-fact"><h3 class="title">Quiet once it’s done</h3><p>No reminder on a day it’s already done.</p></div>
+      <div class="remind-fact"><div class="remind-title"><h3 class="title">Remind me again</h3><span class="plus-tag">Plus</span></div><p>If it’s not done, another one every 15 or 30 minutes, or every hour.</p></div>
+    </div>
+  </div>
+  {{more /features "See how reminders work"}}
+</section>
+<section class="section wrap" id="tasks" aria-labelledby="tasks-title">
+  <div class="section-head">
+    <h2 class="headline" id="tasks-title">Unlimited tasks, <span class="nowrap">one-time</span> or repeating.</h2>
+    <p class="lead">Errands and chores sit next to your habits, with no limit, on the free plan too.</p>
+  </div>
+  <div class="bento">
+    <div class="task-kinds">
+      <div class="tile tile-task glow h-blue">
+        <div class="tile-words"><h3 class="title">One-time tasks</h3><p>For a single day, or with no date until you’re ready.</p></div>
+        <ul class="chips chips-left"><li>Today</li><li>Tomorrow</li><li>Thu, 29 Oct</li><li>No date</li></ul>
+        <div class="cut cut-one">
+          {{phone "Often Enough's Tasks page, One-time: today's tasks, some done, and one for tomorrow."}}
+            <span class="top-menu">{{i:menu}}</span><span class="tasks-title">Habits &amp; Tasks</span><span class="tasks-search">{{i:search}}</span><span class="top-add">{{i:add}}</span>
+            <span class="tasks-tab tasks-tab-a">Habits</span><span class="tasks-tab tasks-tab-b">Tasks</span><i class="tasks-line"></i><i class="tasks-mark"></i>
+            <span class="tasks-kind tasks-kind-a views-on">{{i:check}}One-time</span><span class="tasks-kind tasks-kind-b ">Repeating</span>
+            <span class="task-label task-label-222">Today</span>
+            <div class="task-list task-at-254"><div class="task h-blue"><span class="row-icon">{{i:call.fill}}</span><span class="task-name">Call the dentist</span><span class="task-sub">Planned for Wed, 21 Oct</span><span class="task-more">{{i:more_vert}}</span></div><div class="task h-yellow"><span class="row-icon">{{i:bolt.fill}}</span><span class="task-name">Pay electricity bill</span><span class="task-sub">Morning</span><span class="task-more">{{i:more_vert}}</span></div><div class="task h-purple"><span class="row-icon">{{i:local_laundry_service.fill}}</span><span class="task-name">Pick up dry cleaning</span><span class="task-sub">5:00 PM · Evening</span><span class="task-more">{{i:more_vert}}</span></div><div class="task h-sky task-done"><span class="row-icon">{{i:flight.fill}}</span><span class="task-name">Book flights</span><span class="task-sub">Done 9:12 AM</span><span class="task-more">{{i:more_vert}}</span></div><div class="task h-brown task-done"><span class="row-icon">{{i:inventory_2.fill}}</span><span class="task-name">Pick up parcel</span><span class="task-sub">Done 2:05 PM</span><span class="task-more">{{i:more_vert}}</span></div></div>
+            <span class="task-label task-label-638">Tomorrow</span>
+            <div class="task-list task-at-670"><div class="task h-cyan"><span class="row-icon">{{i:kitchen.fill}}</span><span class="task-name">Clean the fridge</span><span class="task-sub">Anytime</span><span class="task-more">{{i:more_vert}}</span></div></div>
+          {{/phone}}
+        </div>
+      </div>
+      <div class="tile tile-task glow h-green">
+        <div class="tile-words"><h3 class="title">Repeating tasks</h3><p>Back on the days you pick, or a while after it’s done.</p></div>
+        <ul class="chips chips-left"><li>Every day</li><li>Tuesdays</li><li>Every 3 days</li><li>Every month</li><li>Every year</li><li>2 weeks after it’s done</li></ul>
+        <div class="cut cut-rep">
+          {{phone "Often Enough's Tasks page, Repeating: tasks grouped by every day, every few days, every week and every month, each with when it's next."}}
+            <span class="top-menu">{{i:menu}}</span><span class="tasks-title">Habits &amp; Tasks</span><span class="tasks-search">{{i:search}}</span><span class="top-add">{{i:add}}</span>
+            <span class="tasks-tab tasks-tab-a">Habits</span><span class="tasks-tab tasks-tab-b">Tasks</span><i class="tasks-line"></i><i class="tasks-mark"></i>
+            <span class="tasks-kind tasks-kind-a ">One-time</span><span class="tasks-kind tasks-kind-b views-on">{{i:check}}Repeating</span>
+            <span class="task-label task-label-222">Every day</span>
+            <div class="task-list task-at-254"><div class="task h-orange"><span class="row-icon">{{i:set_meal.fill}}</span><span class="task-name">Feed the fish</span><span class="task-sub">Done today</span><span class="task-more">{{i:more_vert}}</span></div><div class="task h-red"><span class="row-icon">{{i:pets.fill}}</span><span class="task-name">Walk the dog</span><span class="task-sub">8:00 AM · Next today</span><span class="task-more">{{i:more_vert}}</span></div></div>
+            <span class="task-label task-label-416">Every few days</span>
+            <div class="task-list task-at-449"><div class="task h-green"><span class="row-icon">{{i:local_florist.fill}}</span><span class="task-name">Water plants</span><span class="task-sub">Every 3 days · Next 25 Oct</span><span class="task-more">{{i:more_vert}}</span></div></div>
+            <span class="task-label task-label-536">Every week</span>
+            <div class="task-list task-at-568"><div class="task h-blue"><span class="row-icon">{{i:recycling.fill}}</span><span class="task-name">Take out recycling</span><span class="task-sub">Tuesdays · Next Tue 27 Oct</span><span class="task-more">{{i:more_vert}}</span></div><div class="task h-pink"><span class="row-icon">{{i:call.fill}}</span><span class="task-name">Call grandma</span><span class="task-sub">Sundays · Next Sun 25 Oct</span><span class="task-more">{{i:more_vert}}</span></div></div>
+            <span class="task-label task-label-730">Every month</span>
+            <div class="task-list task-at-762"><div class="task h-yellow"><span class="row-icon">{{i:payments.fill}}</span><span class="task-name">Pay rent</span><span class="task-sub">1st · Next 1 Nov</span><span class="task-more">{{i:more_vert}}</span></div></div>
+          {{/phone}}
+        </div>
+      </div>
+    </div>
+    <div class="tile tile-on-today">
+      <div class="tile-words"><h3 class="title">On Today, beside your habits</h3><p>A task shows up on its day and you tick it off there. One with no date stays on your Tasks page. Tasks can have reminders and alarms too.</p></div>
+      <ul class="on-today">
+        <li class="on-today-row app h-blue"><span class="row-icon on-today-icon">{{i:water_drop.fill}}</span><span class="on-today-words"><span class="row-name">Water</span><span class="on-today-sub">3 of 8 glasses</span></span><span class="on-today-round">+1</span></li>
+        <li class="on-today-row app h-yellow"><span class="row-icon on-today-icon">{{i:bolt.fill}}</span><span class="on-today-words"><span class="row-name">Pay electricity bill</span><span class="on-today-sub">Task · Once</span></span><span class="on-today-round">{{i:check}}</span></li>
+        <li class="on-today-row app h-red"><span class="row-icon on-today-icon">{{i:pets.fill}}</span><span class="on-today-words"><span class="row-name">Walk the dog</span><span class="on-today-sub">Task · Every day</span></span><span class="on-today-round">{{i:check}}</span></li>
+      </ul>
+    </div>
+  </div>
+  {{more /features "See how tasks work"}}
+</section>
+
+<section class="section wrap" id="widgets" aria-labelledby="widgets-title">
+  <div class="section-head">
+    <h2 class="headline" id="widgets-title"><span class="line-phone">Interactive widgets.</span> <span class="line-phone">Tick off from anywhere.</span></h2>
+    <p class="lead">Tick, count and start a timer on your home screen, without opening the app.</p>
+  </div>
+  <div class="home-phones phones-stack h-blue" data-may-overflow>
+    <div class="home-phone stack-a">
+      {{phone "An Android home screen with Often Enough's widgets: Water and Read as small widgets, and a Morning list under them."}}
+        {{home}}{{w2 blue water_drop.fill Water "3 of 8 glasses" action=+1 fill=38}}{{w2 orange menu_book.fill Read "12 of 20 min" action=play_arrow.fill fill=60}}{{wlist 42 Morning "1 of 3 done" "Morning widget: 1 of 3 done. Stretch, 4 of 10 minutes. Meds, done." pages=1}}{{wrow teal self_improvement.fill Stretch "4 of 10 min" fill=40 streak=7 action=play_arrow.fill}}{{wrow red medication.fill Meds Done fill=100 streak=58 action=check done=1}}{{/wlist}}{{/home}}
+      {{/phone}}
+      <p class="home-caption stack-none">One habit, or one part of your day</p>
+    </div>
+    <div class="home-phone stack-front">
+      {{phone "An Android home screen with Often Enough's Today widget: five habits, each with its progress, its streak and a button to log it."}}
+        {{home}}{{wlist 44 Today "4 of 9 done" "Today widget: 4 of 9 done. Water, 3 of 8 glasses. Meds, done. Read, 12 of 20 minutes. Skincare, 1 of 4 steps. Call family, 2 of 3 this week." pages=1}}{{wrow blue water_drop.fill Water "Anytime · 3 of 8 glasses" fill=38 streak=23 action=+1}}{{wrow red medication.fill Meds "Morning · Done" fill=100 streak=58 action=check done=1}}{{wrow orange menu_book.fill Read "Anytime · 12 of 20 min" fill=60 streak=6 action=play_arrow.fill}}{{wrow purple auto_awesome.fill Skincare "Morning · 1 of 4 steps" fill=25 streak=12 action=north_east}}{{wrow green call.fill "Call family" "Anytime · 2 of 3 this week" fill=67 action=check}}{{/wlist}}{{/home}}
+      {{/phone}}
+      <p class="home-caption stack-none">Your whole day</p>
+    </div>
+    <div class="home-phone stack-b">
+      {{phone "An Android home screen with Often Enough's This week widget for Water and a Tasks widget under it."}}
+        {{home}}{{wweek}}{{wlist 42 Tasks "1 of 2 done" "Tasks widget: 1 of 2 done. Pick up parcel, once. Pay rent, every month, done."}}{{wrow brown inventory_2.fill "Pick up parcel" Once action=check}}{{wrow green payments.fill "Pay rent" "Every month" fill=100 action=check done=1}}{{/wlist}}{{/home}}
+      {{/phone}}
+      <p class="home-caption stack-none">A week, and your tasks</p>
+    </div>
+  </div>
+  <div class="bento">
+    <div class="tile wid-panel">
+      <div class="wid-inner">
+        <div class="tile-words"><h3 class="title">Free widgets</h3><p>Any of these habits on a 2×2, and your tasks in two sizes.</p></div>
+        <div class="wid-grid wid-free">
+          <p class="wid-label wl-a">One habit · 2×2</p>
+          <div class="wid-pair wp-a">{{w2 green medication.fill "Take vitamins" Done action=check done=1 fill=100}}{{w2 blue water_drop.fill Water "3 of 8 glasses" action=+1 fill=38}}</div>
+          <div class="wid-pair wp-b">{{w2 cyan directions_walk.fill Walk "4.3k of 8k steps" action=+500 fill=54 more=1}}{{w2 indigo timer.fill Focus 18:24 action=pause.fill fill=60}}</div>
+          <p class="wid-label wl-b wid-more">Tasks · 4×4<span class="wid-two"> and 4×2</span></p>
+          {{wlist 44 Tasks "2 of 5 done" "Tasks widget: 2 of 5 done. Call the dentist. Pay electricity bill. Walk the dog, done. Pay rent, done. Pick up dry cleaning." classes=wid-more,ws-b}}{{wrow blue call.fill "Call the dentist" Once action=check}}{{wrow yellow bolt.fill "Pay electricity bill" Once action=check}}{{wrow red pets.fill "Walk the dog" "Every day" fill=100 action=check done=1}}{{wrow green payments.fill "Pay rent" "Every month" fill=100 action=check done=1}}{{wrow purple local_laundry_service.fill "Pick up dry cleaning" Once action=check}}{{/wlist}}
+          <p class="wid-label wl-c wid-more wid-three">One habit · 2×2, Tasks · 4×2</p>
+          <div class="wid-pair wp-c">{{w2 grey smoke_free Smoking "19d 12:32:45" action=north_east "pill=Best 45 days" clock=1}}{{w2 brown coffee.fill Coffee "1 of 2 cups max" action=+1 "pill=Daily limit" more=1}}</div>
+          <p class="wid-label wl-phone">Tasks · 4×2 and 4×4</p>
+          {{wlist 42 Tasks "1 of 2 done" "Tasks widget: 1 of 2 done. Pay electricity bill, once. Pay rent, every month, done." classes=ws-c}}{{wrow yellow bolt.fill "Pay electricity bill" Once action=check}}{{wrow green payments.fill "Pay rent" "Every month" fill=100 action=check done=1}}{{/wlist}}
+        </div>
+      </div>
+    </div>
+    <div class="tile wid-panel">
+      <div class="wid-inner">
+        <div class="tile-words"><h3 class="title">Plus widgets</h3><p>Your whole day, one time of day, or a week of one habit. Checklist habits come with Plus too.</p></div>
+        <div class="wid-grid wid-plus">
+          <p class="wid-label wl-a">Today · 4×4<span class="wid-one"> and 4×2</span></p>
+          {{wlist 44 Today "4 of 9 done" "Today widget: 4 of 9 done. Water, 3 of 8 glasses. Meds, done. Read, 12 of 20 minutes. Skincare, 1 of 4 steps. Call family, 2 of 3 this week." pages=1 classes=ws-a}}{{wrow blue water_drop.fill Water "Anytime · 3 of 8 glasses" fill=38 streak=23 action=+1}}{{wrow red medication.fill Meds "Morning · Done" fill=100 streak=58 action=check done=1}}{{wrow orange menu_book.fill Read "Anytime · 12 of 20 min" fill=60 streak=6 action=play_arrow.fill}}{{wrow purple auto_awesome.fill Skincare "Morning · 1 of 4 steps" fill=25 streak=12 action=north_east}}{{wrow green call.fill "Call family" "Anytime · 2 of 3 this week" fill=67 action=check}}{{/wlist}}
+          <p class="wid-label wl-b wid-more">Today · 4×2</p>
+          {{wlist 42 Morning "1 of 3 done" "Morning widget: 1 of 3 done. Stretch, 4 of 10 minutes. Meds, done." pages=1 classes=wid-more,ws-b}}{{wrow teal self_improvement.fill Stretch "4 of 10 min" fill=40 streak=7 action=play_arrow.fill}}{{wrow red medication.fill Meds Done fill=100 streak=58 action=check done=1}}{{/wlist}}
+          {{wlist 42 "Quit or cut down" "" "Quit or cut down widget: Smoking, a running count. Coffee, 1 of 2 cups at most." classes=wid-more,ws-c}}{{wrow grey smoke_free Smoking "19d 12:32:45" action=north_east clock=1}}{{wrow brown coffee.fill Coffee "1 of 2 cups max" fill=50 action=+1}}{{/wlist}}
+          <p class="wid-label wl-c">This week · 4×2<span class="wid-not-one">, Checklists · 2×2</span></p>
+          {{wweek}}
+          <div class="wid-pair wp-d wid-more">{{w2 red fitness_center.fill Workout "2 of 5 steps" action=north_east fill=40}}{{w2 purple auto_awesome.fill Skincare "4 of 4 steps" action=north_east fill=100 done=1}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{more /features "See every widget"}}
+</section>
+
+<section class="section wrap" id="private" aria-labelledby="private-title">
+  <div class="section-head">
+    <h2 class="headline" id="private-title">Private, offline and backed up.</h2>
+    <p class="lead">No account and no ads. Your habits stay on your phone, work without internet and back up to your own cloud.</p>
+  </div>
+  <div class="bento">
+    <div class="task-kinds">
+      <div class="tile tile-task tile-safe glow h-blue">
+        <div class="tile-words"><h3 class="title">Backed up to your own cloud</h3><p>Connect your own Google Drive, or iCloud on iPhone. It backs up by itself as you go, and we never see it.</p></div>
+        <div class="cut cut-backup">
+          {{phone "Often Enough's Backup and Sync page: backed up today at 9:14 AM, with Back up now, restore and export options."}}
+            <span class="bar-back">{{i:arrow_back}}</span><span class="bar-title">Backup &amp; Sync</span>
+            <div class="set-list">
+              <div class="set-card"><span class="set-dot set-dot-ink">{{i:cloud_done}}</span><span class="set-words"><span class="set-name">Backed up</span><span class="set-sub set-sub-gap">Today at 9:14 AM. It backs up by itself as you go.</span><span class="set-button">Back up now</span></span></div>
+              <div class="set-row set-after-card"><span class="set-dot">{{i:switch_account}}</span><span class="set-words"><span class="set-name">Change account</span><span class="set-sub">Use a different Google account</span></span></div>
+              <span class="set-label">Restore</span>
+              <div class="set-row"><span class="set-dot">{{i:settings_backup_restore}}</span><span class="set-words"><span class="set-name">Restore from a backup</span><span class="set-sub">From Google Drive or a file</span></span><span class="set-chev">{{i:chevron_right}}</span></div>
+              <span class="set-label">Export</span>
+              <div class="set-row set-top"><span class="set-dot">{{i:save}}</span><span class="set-words"><span class="set-name">Save a backup file</span><span class="set-sub">To restore later, on any phone</span></span></div>
+              <div class="set-row set-bottom"><span class="set-dot">{{i:table}}</span><span class="set-words"><span class="set-name">Export a spreadsheet (CSV)</span><span class="set-sub">To open in Google Sheets or Excel</span></span></div>
+            </div>
+          {{/phone}}
+        </div>
+      </div>
+      <div class="tile tile-task tile-safe glow h-green">
+        <div class="tile-words"><h3 class="title">New phone? Your habits come back.</h3><p>Restore your backup on the new phone and your habits, streaks and history are all there. You can undo a restore for 30 days.</p></div>
+        <div class="cut cut-restore">
+          {{phone "Often Enough asking before it restores: the 3 habits on this phone are replaced by the 12 in your Google Drive, and you can undo this for 30 days."}}
+            <span class="bar-back">{{i:arrow_back}}</span><span class="restore-title">Restore from a backup.</span><span class="restore-sub">Choose where your backup is.</span>
+            <div class="set-list set-list-restore">
+              <div class="set-row set-top"><span class="set-dot">{{i:cloud}}</span><span class="set-words"><span class="set-name">Google Drive</span><span class="set-sub">Backed up automatically</span></span><span class="set-chev">{{i:chevron_right}}</span></div>
+              <div class="set-row set-bottom"><span class="set-dot"></span></div>
+            </div>
+            <i class="scrim"></i>
+            <div class="dialog"><span class="dialog-title">Restore this backup?</span><span class="dialog-body">The 3 habits on this phone are replaced by the 12 in your Google Drive, backed up 21 Oct. You can undo this for 30 days.</span><span class="dialog-actions"><span>Cancel</span><span>Restore</span></span></div>
+          {{/phone}}
+        </div>
+      </div>
+    </div>
+    <div class="safe-facts">
+      <div class="safe-fact"><span class="safe-icon">{{i:person_off}}</span><div class="safe-words"><h3 class="title">No account</h3><p>Nothing to sign up for and no email to give. We run no server, so your habits never reach us.</p></div></div>
+      <div class="safe-fact"><span class="safe-icon">{{i:wifi_off}}</span><div class="safe-words"><h3 class="title">Works offline</h3><p>Log, get reminders and use widgets with no internet. Your backup catches up when you’re back online.</p></div></div>
+      <div class="safe-fact"><span class="safe-icon">{{i:visibility_off}}</span><div class="safe-words"><h3 class="title">No ads, no tracking</h3><p>No ads, no analytics and no trackers in the app, on the free plan too.</p></div></div>
+    </div>
+    <div class="tile tile-take">
+      <div class="tile-words"><h3 class="title">Take your data with you</h3><p>Save one backup file that opens on any phone, iPhone or Android. Or export a spreadsheet to use your history anywhere else. Both are free.</p></div>
+      <ul class="take-list app">
+        <li><span class="set-dot">{{i:save}}</span><span class="set-words"><span class="set-name">Save a backup file</span><span class="set-sub">To restore later, on any phone</span></span></li>
+        <li><span class="set-dot">{{i:table}}</span><span class="set-words"><span class="set-name">Export a spreadsheet (CSV)</span><span class="set-sub">To open in Google Sheets or Excel</span></span></li>
+      </ul>
+    </div>
+  </div>
+  {{more /privacy "Read our privacy policy"}}
+</section>
+
+<section class="closing wrap" id="download" aria-labelledby="download-title">
+  <img class="closing-logo" src="/logo.svg" width="80" height="80" alt="">
+  <div class="section-head">
+    <h2 class="headline" id="download-title">The habit tracker for Android and iPhone.</h2>
+    <p class="lead">Free to start. No subscription, no account and no ads.</p>
+  </div>
+  {{store_buttons}}
+</section>

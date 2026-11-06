@@ -1,0 +1,16 @@
+# Often Enough
+
+> A simple habit tracker for Android and iPhone. Start free, and pay once if you ever want more. No subscription, no account and no ads.
+
+Often Enough tracks habits you check off, count, time, tick step by step, or want to quit or cut down, and one-time or repeating tasks. Habits stay on the phone and in the person's own Google Drive or iCloud, never on a server of ours.
+
+- Free: 5 habits, unlimited tasks, reminders and full-screen alarms, routines, streaks, progress views, One habit and Tasks widgets, backup to your own cloud, and export.
+- Plus, one payment and no subscription: unlimited habits, list widgets (Today, a time of day, Quit or cut down) and the This week widget, Year in Pixels, new checklist habits, and Remind me again.
+- Phones only: an Android app and an iPhone app. There are no tablet, watch or desktop apps.
+
+## Pages
+
+- [Home](https://oftenenough.com/): what the app does, what's free and what's in Plus
+- [Support](https://oftenenough.com/support): late reminders, widgets, backup, a new phone, Plus and refunds, deleting your data
+- [Privacy policy](https://oftenenough.com/privacy): what's stored, where, and who can see it
+- [Terms of use](https://oftenenough.com/terms): the terms for the app and for Plus
