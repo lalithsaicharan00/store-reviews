@@ -2375,12 +2375,12 @@ What each atom changed, newest last.
     choices aren't drawn (no variant picks a 29th to 31st or 29 February); they stay for those days.
   - **Built:** run 40941854863 (Android #160, commit 8851c69) passed: assembleDebug, unit tests and lint.
 
-- **5.7.7 Create new · Time of day page (29 Oct).** Figma: Time of day page (1098:2480), Option At set times of day ·
-  Anytime, and the flow "Time of day: more than one, and a new one". From the form's Time of day. On Surface container:
-  the Top app bar (← "Time of day"); one group of two Options (16 in, 16 down, Surface bright, Body Large over Body
-  Medium): Anytime ("No set time") and At set times of day ("Pick one or more"). Chosen, the second opens in the same
-  piece, 8 under: the times of day as checkboxes 40 further in, each with its hours ("6:00 AM – 12:00 PM"), and + New
-  time of day (the same page as Settings › Times of day). It is `TimeOfDayPage` (`newhabit/FormPages.kt`). The app, the
+- **5.7.7 Create new · Time of day page (29 Oct; one choice since 6 Nov, A118).** Figma: Time of day page (1098:2071),
+  and the flow "Time of day: choose one, or a new one". From the form's Time of day. On Surface container: the Top app
+  bar (← "Time of day"); one group of Options (16 in, 16 down, Surface bright, Body Large over Body Medium, the chosen
+  one's words Title Medium): Anytime ("No set time") and every time of day with its hours ("6:00 AM – 12:00 PM"), as
+  radios. The Extended FAB, New time of day, opens the same page as Settings › Times of day; 72 under the list for it.
+  It is `TimeOfDayPage` (`newhabit/FormPages.kt`). The app, the
   unit tests (55), lint and the instrumented tests' code build in the session.
   Fixed:
   - The title said "Time of Day"; now "Time of day".

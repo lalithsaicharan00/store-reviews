@@ -30,6 +30,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -90,6 +92,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.oftenenough.app.data.CalendarRule
 import com.oftenenough.app.data.DaySection
+import com.oftenenough.app.ui.components.AppExtendedFab
 import com.oftenenough.app.data.DayWords
 import com.oftenenough.app.data.GoalPeriod
 import com.oftenenough.app.data.HabitColor
@@ -732,31 +735,29 @@ private fun daysIn(month: Int): Int = java.time.YearMonth.of(2024, month).length
 // ------------------------------------------------------------------ Time of Day
 
 /**
- * 5.7.7, **Time of day page** (Figma 1098:2480, Option At set times of day · Anytime; Components — Atoms Build Plan),
- * from the form's Time of day. On Surface container: the Top app bar (← "Time of day"); one group of two Options 16 in
- * and 16 down, on Surface bright: Anytime ("No set time") and At set times of day ("Pick one or more"). Chosen, the
- * second opens in the same piece: the times of day as checkboxes, 40 further in, each with its hours ("6:00 AM – 12:00
- * PM"), and + New time of day, which opens the same page as Settings › Times of day; 8 under. No line under it repeating
- * the choice (A64).
+ * 5.7.7, **Time of day page** (Figma 1098:2071; Components — Atoms Build Plan; Android A118), from the form's Time of
+ * day. On Surface container: the Top app bar (← "Time of day"); one group of Options 16 in and 16 down, on Surface
+ * bright: Anytime ("No set time") and every time of day with its hours ("6:00 AM – 12:00 PM"), all on the page from the
+ * start. A habit sits in one, so these are radios. The Extended FAB, New time of day, opens the same page as Settings ›
+ * Times of day, and what it makes is chosen. No line under the list repeating the choice (A64). A habit saved in several
+ * times of day before A118 shows a radio on for each until one is tapped; nothing changes unless the person does that.
  */
 @Composable
 fun TimeOfDayPage(form: FormState, store: HabitStore, onBack: () -> Unit, onNew: () -> Unit) {
-    val anytime = form.timesOfDay == listOf(DaySection.ANYTIME)
-    // At set times of day, chosen before any time is ticked: the times show, waiting for one.
-    var setTimes by remember { mutableStateOf(!anytime) }
-    FormPage("Time of day", onBack = onBack) {
-        val timed = store.sections.filter { !it.isAnytime }
-        val showTimes = setTimes || !anytime
-        SegmentedList(Modifier.padding(top = 16.dp, bottom = 16.dp)) {
-            RadioRow("Anytime", !showTimes, 0, 2, "part-anytime", detail = "No set time", option = true) { setTimes = false; form.choose(DaySection.ANYTIME) }
-            if (!showTimes) RadioRow("At set times of day", false, 1, 2, "part-set", detail = "Pick one or more", option = true) { setTimes = true }
-            else OpenOption("At set times of day", 1, 2, "part-set", bottom = 8.dp, detail = "Pick one or more", gap = 0.dp) {
-                timed.forEach { s ->
-                    CheckRow(s.name, s.id in form.timesOfDay, 0, 1, "part-${s.id}", detail = FormOutcome.hours(s, store), indent = true, option = true) { form.choose(s.id) }
+    Box(Modifier.fillMaxSize()) {
+        FormPage("Time of day", onBack = onBack) {
+            val timed = store.sections.filter { !it.isAnytime }
+            val count = timed.size + 1
+            // Under the list, room for the FAB over it (56 and its 16), so the last row is never covered.
+            SegmentedList(Modifier.padding(top = 16.dp, bottom = 72.dp)) {
+                RadioRow("Anytime", DaySection.ANYTIME in form.timesOfDay, 0, count, "part-anytime", detail = "No set time", option = true) { form.choose(DaySection.ANYTIME) }
+                timed.forEachIndexed { i, s ->
+                    RadioRow(s.name, s.id in form.timesOfDay, i + 1, count, "part-${s.id}", detail = FormOutcome.hours(s, store), option = true) { form.choose(s.id) }
                 }
-                AddRow("New time of day", 0, 1, "new-time-of-day", indent = true, option = true, onClick = onNew)
             }
         }
+        AppExtendedFab("New time of day", Symbols.Add, onNew,
+            Modifier.align(Alignment.BottomEnd).navigationBarsPadding().padding(16.dp), tag = "new-time-of-day")
     }
 }
 

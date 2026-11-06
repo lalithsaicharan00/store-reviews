@@ -402,10 +402,11 @@ class HabitFormTest {
         tapTag("new-build")
         tapTag("type-check")
         tapTag("time-of-day-row")
-        // Time of day (5.7.7, Figma 1098:2480): its title, and no line under it repeating the choice (A64).
+        // Time of day (5.7.7, Figma 1098:2071): its title, every time on the page from the start (A118), and no line
+        // under it repeating the choice (A64).
         waitFor(hasText("Time of day"), "the title")
-        tapTag("part-set")
-        waitFor(hasText("Pick one or more"), "At set times of day")
+        waitFor(hasText("Morning"), "Morning, with nothing to open first")
+        waitFor(hasText("Evening"), "Evening, with nothing to open first")
         assertTrue("no line under the choice", !has(hasText("It shows in", substring = true)))
         tapTag("new-time-of-day")
         // Edit time of day's layout (5.8.2, Figma 830:265): Ends follows from the next one; this one says New.
@@ -422,6 +423,14 @@ class HabitFormTest {
         }
         val id = store.sections.first { it.name == "Before work" }.id
         waitFor(hasTestTag("part-$id"), "Before work on the Time of day page")
+        // What it made is the one choice (A118): tapping another replaces it.
+        tapTag("page-back")
+        waitFor(hasTestTag("time-of-day-row").and(hasContentDescription("Time of day, Before work")), "the form says Before work")
+        tapTag("time-of-day-row")
+        val morning = store.sections.first { it.name == "Morning" }.id
+        tapTag("part-$morning")
+        tapTag("page-back")
+        waitFor(hasTestTag("time-of-day-row").and(hasContentDescription("Time of day, Morning")), "the form says Morning alone")
     }
 
     @Test fun howLongTakesAQuickPickAndATasksTimeWaitsForOk() {

@@ -11,7 +11,6 @@ import com.oftenenough.app.ui.components.AppListItem
 import com.oftenenough.app.ui.theme.Symbols
 import com.oftenenough.app.ui.components.AppSwitch
 import com.oftenenough.app.ui.components.AppFilledIconButton
-import com.oftenenough.app.ui.components.AppCheckbox
 import com.oftenenough.app.ui.components.AppTopBar
 import com.oftenenough.app.ui.theme.AppType
 
@@ -86,7 +85,7 @@ fun FormPage(
     }
 }
 
-/** A grey heading over a group of rows ("In total", "Pick one or more"). */
+/** A grey heading over a group of rows ("In total"). */
 @Composable
 fun GroupTitle(text: String) =
     Text(text, Modifier.padding(start = 16.dp, top = 16.dp, bottom = 8.dp), style = AppType.labelLarge, color = appColors.secondary)
@@ -151,29 +150,6 @@ fun Stepper(label: String, value: Int, range: IntRange, tag: String, unit: (Int)
         if (words.isNotEmpty()) Text(words, Modifier.widthIn(min = 52.dp), style = AppType.bodyLarge, color = s.onSurface)
     }
 }
-
-/** One of any number: a checkbox, its words, and a line under them (List item, 2.4). */
-@Composable
-fun CheckRow(title: String, checked: Boolean, index: Int, count: Int, tag: String, detail: String? = null, indent: Boolean = false, option: Boolean = false, onClick: () -> Unit) =
-    AppListItem(title, index, count, supporting = detail, onClick = onClick, tag = tag,
-        containerColor = if (option) androidx.compose.ui.graphics.Color.Transparent else androidx.compose.ui.graphics.Color.Unspecified,
-        headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, leading = {
-        Row(verticalAlignment = Alignment.CenterVertically) { if (indent) Spacer(Modifier.width(if (option) 40.dp else 36.dp)); AppCheckbox(checked, onCheckedChange = null) }
-    })
-
-/** "+ New group", "+ Add step" (List item, 2.4). */
-@Composable
-fun AddRow(title: String, index: Int, count: Int, tag: String, indent: Boolean = false, option: Boolean = false, onClick: () -> Unit) =
-    AppListItem(title, index, count, onClick = onClick, tag = tag,
-        containerColor = if (option) androidx.compose.ui.graphics.Color.Transparent else androidx.compose.ui.graphics.Color.Unspecified,
-        headlineStyle = if (option) AppType.bodyLarge else AppType.titleMedium, leading = {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            // Under an option the + takes the checkboxes' place, 72 to 96, and its words theirs, at 112 (Figma 1163:335652;
-            // QA, 1 Nov 2026: a 40 box put them at 92 and 128).
-            if (indent) Spacer(Modifier.width(if (option) 40.dp else 36.dp))
-            Icon(Symbols.Add, null)
-        }
-    })
 
 /**
  * A row that opens a page: the setting, what's chosen under it, › (List item, 2.4; Figma 2.1: Title Medium over Body

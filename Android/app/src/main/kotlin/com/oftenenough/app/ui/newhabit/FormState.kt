@@ -178,13 +178,9 @@ class FormState(initialType: ItemType, val original: Habit?, private val store: 
 
     // ------------------------------------------------------------------ Times of day and reminders
 
+    /** A habit sits in one time of day (A118): choosing one replaces whatever was chosen. */
     fun choose(id: String) {
-        timesOfDay = if (id == DaySection.ANYTIME) listOf(DaySection.ANYTIME) else {
-            val chosen = timesOfDay.filter { it != DaySection.ANYTIME }.toMutableList()
-            if (id in chosen) chosen.remove(id) else chosen.add(id)
-            val order = store.sections.map { it.id }
-            if (chosen.isEmpty()) listOf(DaySection.ANYTIME) else chosen.sortedBy { order.indexOf(it).let { i -> if (i < 0) 99 else i } }
-        }
+        timesOfDay = listOf(id)
         syncReminders()
     }
 
