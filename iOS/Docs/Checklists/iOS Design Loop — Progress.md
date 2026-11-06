@@ -87,7 +87,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 ## Next
 
 Every lettered screen (A–R) and the "+" item are done. Leftovers, one per iteration:
-1. **Routine player, time habits** (906:89513): the clock should sit in the Timer ring (a Screen=Time variant).
+1. ~~**Routine player, time habits**~~ **Done 6 Nov:** Screen=Time (4266:18626) with the Timer ring; 25 copies moved, words, colours, arcs and buttons restored (Routine Player report, Still open).
 2. **Live Activity** on the routine player page's 'outside the app' frames (958:157631, notes 260:225, 260:231) and the
    notifications & alarms page (1265:24553): Android's Live Update chip, heads-up notification and shade → iOS's Live
    Activity, notification banner and Notification Center.

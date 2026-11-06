@@ -64,8 +64,12 @@ Add and Save are. Its 4 copies on the page follow.
 
 ## Still open
 
-- **A time habit in the player** still shows its clock as text with a flat line; it should use the Timer ring, as
-  the timer on its own does (a Screen=Time variant).
+- ~~**A time habit in the player** still shows its clock as text with a flat line.~~ **Done 6 Nov 2026:** a new
+  **Screen=Time** variant (4266:18626) puts the clock in the **Timer ring** (the habit's colour on its Fill, the arc
+  as far as the time has gone, full at the goal), with the name, description and Day Details above it and Paused or
+  Goal met under it; the bottom bar says Start, Pause, Resume, Next or Log. Its 25 copies were moved to it: their
+  words (name, count, Yesterday, status, description, banner) were put back from the Android file's same nodes after
+  the swap reset them, each ring took its copy's colour (Teal for Stretch, Orange for Read) and arc (40 %, 67 %, full).
 - **Outside the app** (frames 958:157631 and the notes 260:225, 260:231) the page still shows Android's Live Update
   status-bar chip; on the iPhone a running clock is a Live Activity in the Dynamic Island and on the Lock Screen.
   To do with the notifications page.

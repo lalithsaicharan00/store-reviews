@@ -160,3 +160,9 @@ section below is headed with the doc it belongs to; move it there once the docs 
 - **Get Plus · $29.99 is a Large Prominent button** across the bottom bar, the page's one main action; **Restore
   Purchases** is a Small Borderless button centred under it (App Review 3.1.1; StoreKit's `AppStore.sync()`). The App
   Store's own sheet takes the payment; the app draws nothing of it. The price is StoreKit's, in the person's currency.
+
+## Progress and Milestones — iOS Native · 6 Nov 2026: a time habit in the routine player
+
+- **The routine player's time habit is the Timer ring** (Routine player › Screen=Time): the name, description and Day
+  Details above, the ring with the clock and "of 10 min", Paused or Goal met under it; the bottom bar's word follows
+  the clock (Start, Pause, Resume, Next; Log on a past day). Never a big number over a flat line.
