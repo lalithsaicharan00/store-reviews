@@ -40,7 +40,7 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 | M | Search (details pages) | 1053:9079 | **Done** 6 Nov | Results' day cells unsquashed; No Notes with “swim” as ContentUnavailableView above the keyboard | Habits Page report § M |
 | N | Task details | 1136:9271 | **Done** 6 Nov | History cells unsquashed (24 pt, the task's colour); Nothing Done Yet as ContentUnavailableView; Edit Task / Move to Another Day… | Habits Page report § N |
 | O | How milestones work | 1142:29063 | **Done** 6 Nov | Settings' grammar: Subheadline Semibold headers, Body rule + Subheadline detail in each card, 28 between sections; How Milestones Work title | Habits Page report § O |
-| P | Create new (components 1061:2015, page 381:2) | 381:2 | Not started | | |
+| P | Create new (components 1061:2015, page 381:2) | 381:2 | **Done** 6 Nov | Add (Save on Edit) is the Prominent glass word on all 10 form types; Icon and Colour two rows, round swatch; Starts a compact picker, Ends a pop-up row (56 each); quit's Started/Time compact pickers; a task's Date a switch; Colour sheet one height, 13 colours shown; How Long and Limit › Time on Clock's wheels, How Much and Limit › Amount on the decimal pad; iOS's notifications alert, asked once (no Get reminders on time); popovers under their rows, no OK; December in the calendar; Title Case titles (131 bars) and choices; 64 captions, 28 frame names; DS: Glass button › Prominent 4258:37268, Date picker › December 4259:113261, Duration picker's upper values | [Creating a Habit on iPhone](<../../../Research/Research Reports/Habit Details Research/Creating a Habit on iPhone — One Prominent Add, Rows and the iPhone's Own Questions.md>) |
 | Q | Settings | 804:79 · 781:34017 | Not started | | |
 | R | Plus | 1204:175 | Not started | | |
 | + | Open from Today's review: History's Back to this week/month (Prominent); Android-only notices on Today | — | Back to This Week done in G (glass); notices still open | | |
@@ -67,12 +67,22 @@ that doc when the docs are pushed (so nothing clashes with the unpushed files).
 1. Title menu (chosen) or a segmented Habits | Tasks in the bar.
 2. The period in a bottom bar (chosen, as Today) instead of Android's pinned row.
 
+**P · Create new** ([381:2](https://www.figma.com/design/zLgBjb7M7Fp6UN0pg7J3a8/IOS-app?node-id=381-2)):
+1. Prominent Add on the forms (as asked) but the plain glass word on the log and note sheets (§3): one rule for all?
+2. Remind me with: An alarm → AlarmKit on iPhone, or notifications only at launch.
+3. Time Sensitive reminders (through a Focus the person allows) or ordinary ones.
+4. How Much's big number field, or a row as the log screens chose.
+5. Compact pickers at 200 % text: beside the label (now) or stacked under it.
+
 ## Next
 
-Screen P, Create new (components 1061:2015, page 381:2) — the largest group; then Q Settings and R Plus. Still open from E: a time habit in the player should use the Timer ring
-(a Screen=Time variant); the player page's 'outside the app' frames still show Android's Live Update chip (iPhone:
-Live Activity), with the notifications page. Carried over: History's Go to date flows (details pages 1150:76414 …) and
-the create-new forms still show October in the new calendar: set their months and days in K and P.
+Screen Q, Settings (804:79 · 781:34017): remove the Google Drive rows (iPhone backs up to iCloud only), make the
+reminder permissions quieter, and decide Battery / Keep reminders coming (no iPhone version: P's research). Then R Plus
+(1204:175: StoreKit, Restore Purchases; the Plus captions on the create new page still need the Plus screens' words).
+Still open from E: a time habit in the player should use the Timer ring; the player page's 'outside the app' frames
+show Android's Live Update chip (iPhone: Live Activity). History's Go to date flows (details pages 1150:76414 …)
+still show October where they could show September. Settings' Edit time of day keeps a plain Save (decide with P's
+point 1).
 
 ## How the probes work
 

@@ -115,3 +115,31 @@ section below is headed with the doc it belongs to; move it there once the docs 
 - A List item's leading slot is **24 × 24, fixed**: only a 24-point part goes in it (the Icon, a Year-size Day cell).
   Anything bigger is squeezed (History's ✓, All milestones' medals). A medal or a progress ring goes in a **Milestone
   row** (48 slot); a day's status in a history row is the 24-point Day cell.
+
+## Buttons — iOS Native · 6 Nov 2026: a form's confirming word is Prominent (screen P)
+
+- **The new habit and task forms' Add (Save when editing) is Glass button › Style=Prominent** (4258:37268): Ink glass,
+  a white Semibold word, at the bar's trailing edge, 74 wide so Add and Save sit in the same place. The icon page's
+  Done is the same. It is off (38 %) until there's a name. Never a Small capsule in the bar, never a plain word on one
+  form type and a capsule on another. (The log and note sheets still use the plain glass word: left for the user.)
+
+## Inputs — iOS Native · 6 Nov 2026: a form's rows (screen P)
+
+- **Icon and Colour are two rows**, never two half-width cells; the colour's swatch is a **circle**.
+- **Starts is a compact date picker** ("23 Oct 2026"); **Ends is a pop-up row** ("Never ⌃⌄", or the date); the quit
+  form's **Started** and **Time** are compact pickers.
+- **A task's Date is a switch**, as in Reminders: on, the row says the day and opens the calendar under it; off, no
+  date (the Time row goes). No "No date" button on a calendar.
+- **A popover sits under its row**, or above it when it wouldn't fit below; no OK anywhere.
+- **A duration is Clock's wheels** (Duration picker, hours · min) with Small Bordered quick picks under it (the chosen
+  one Prominent); **a number is typed on the decimal pad** (Number pad 4234:5418). The old Keyboard · numbers (Android's
+  keypad) is no longer used.
+- **A list of times** (Remind me at) deletes a row with a swipe, never a ✕ in the row.
+
+## Menus and Sheets — iOS Native · 6 Nov 2026: one-height sheets and the notifications question (screen P)
+
+- **A sheet with one height has no drag handle** (the Colour sheet: ✕ only; a tap chooses and closes).
+- **Notifications are asked with iOS's own alert, once**: "“Often Enough” Would Like to Send You Notifications",
+  Don't Allow · Allow, the first time Remind me is turned on (U37). After Don't Allow the switch goes back off and the
+  line offers **Open Settings** straight away (iOS never asks again). There's no Get reminders on time sheet and no
+  battery page on iPhone: a scheduled notification needs nothing else.
