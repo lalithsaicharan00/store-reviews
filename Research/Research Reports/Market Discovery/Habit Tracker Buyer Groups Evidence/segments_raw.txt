@@ -1,0 +1,39 @@
+EN 485166 paid 2.066% resist 3.208%
+skincare   n=  2024  0.42% paid=8.05% (3.90x) resist=18.13% (5.65x) life=0.89% ios=54% ★2.74
+     [('12. Fabulous Daily Routine Pla', 509), ('24. Fabulous - Daily Habit Tra', 398), ('10. Finch - Self-Care Pet - Da', 197), ('4. Me+ Lifestyle Routine', 106), ('4. Me+ Lifestyle Routine - Dai', 105), ('13. Productive - Habit Tracker', 74)]
+data       n=  7715  1.59% paid=6.38% (3.09x) resist=3.31% (1.03x) life=1.96% ios=47% ★3.75
+     [('3. Loop Habit Tracker', 1302), ('24. Habit Tracker', 456), ('2. HabitNow Daily Routine Plan', 423), ('1. Habit Tracker - Goal Tracke', 419), ('76. Way of Life - Habit Tracke', 411), ('13. Productive - Habit Tracker', 393)]
+faith      n=   355  0.07% paid=5.63% (2.73x) resist=6.48% (2.02x) life=1.13% ios=59% ★4.18
+     [('10. Finch - Self-Care Pet - Da', 54), ('24. Fabulous - Daily Habit Tra', 39), ('12. Fabulous Daily Routine Pla', 29), ('4. Me+ Lifestyle Routine', 17), ('4. Me+ Lifestyle Routine - Dai', 16), ('23. Streaks - The habit-formin', 13)]
+apple_eco  n= 11568  2.38% paid=5.33% (2.58x) resist=3.03% (0.95x) life=2.18% ios=51% ★4.05
+     [('3. Loop Habit Tracker', 1118), ('84. Tasks - To Do List & Remin', 920), ('3. Days Since - Quit Habit Tra', 829), ('1. Habit Tracker - Goal Tracke', 822), ('10. Finch - Self-Care Pet - Da', 662), ('23. Streaks - The habit-formin', 623)]
+meds       n=  1612  0.33% paid=4.59% (2.22x) resist=3.54% (1.10x) life=1.36% ios=71% ★4.42
+     [('10. Finch - Self-Care Pet - Da', 514), ('24. Fabulous - Daily Habit Tra', 126), ('13. Productive - Habit Tracker', 105), ('12. Fabulous Daily Routine Pla', 104), ('3. Loop Habit Tracker', 67), ('23. Streaks - The habit-formin', 66)]
+adhd       n=  7611  1.57% paid=4.27% (2.07x) resist=6.35% (1.98x) life=0.97% ios=69% ★4.26
+     [('10. Finch - Self-Care Pet - Da', 2568), ('4. Me+ Lifestyle Routine - Dai', 830), ('24. Fabulous - Daily Habit Tra', 804), ('49. RoutineFlow - Routine for ', 587), ('12. Fabulous Daily Routine Pla', 551), ('5. Routine Planner, Habit Trac', 250)]
+language   n=  2927  0.60% paid=4.00% (1.93x) resist=3.96% (1.24x) life=0.75% ios=74% ★4.53
+     [('10. Finch - Self-Care Pet - Da', 1302), ('24. Fabulous - Daily Habit Tra', 196), ('12. Fabulous Daily Routine Pla', 124), ('125. 21 Days Challenge', 119), ('76. Way of Life - Habit Tracke', 100), ('4. Me+ Lifestyle Routine - Dai', 76)]
+fitness    n= 10086  2.08% paid=3.77% (1.82x) resist=3.24% (1.01x) life=1.01% ios=64% ★4.38
+     [('10. Finch - Self-Care Pet - Da', 2382), ('12. Fabulous Daily Routine Pla', 1709), ('24. Fabulous - Daily Habit Tra', 1377), ('4. Me+ Lifestyle Routine - Dai', 391), ('1. Habit Tracker - Goal Tracke', 345), ('23. Streaks - The habit-formin', 296)]
+routine    n=  5023  1.04% paid=3.01% (1.46x) resist=3.78% (1.18x) life=0.58% ios=63% ★4.28
+     [('10. Finch - Self-Care Pet - Da', 958), ('12. Fabulous Daily Routine Pla', 946), ('24. Fabulous - Daily Habit Tra', 768), ('4. Me+ Lifestyle Routine - Dai', 718), ('49. RoutineFlow - Routine for ', 204), ('5. Routine Planner, Habit Trac', 202)]
+parent     n=  5670  1.17% paid=2.95% (1.43x) resist=2.72% (0.85x) life=1.22% ios=75% ★4.60
+     [('10. Finch - Self-Care Pet - Da', 2898), ('4. Me+ Lifestyle Routine - Dai', 295), ('12. Fabulous Daily Routine Pla', 269), ('24. Fabulous - Daily Habit Tra', 263), ('84. Tasks - To Do List & Remin', 259), ('8. Habitica - Gamify Your Task', 256)]
+planner    n= 49199 10.14% paid=2.69% (1.30x) resist=2.71% (0.84x) life=0.86% ios=43% ★4.31
+     [('10. Finch - Self-Care Pet - Da', 7564), ('84. Tasks - To Do List & Remin', 6442), ('126. To Do List', 5393), ('13. Productive - Habit Tracker', 2518), ('8. Habitica - Gamify Your Task', 2501), ('4. Me+ Lifestyle Routine', 2413)]
+student    n=  2208  0.46% paid=2.40% (1.16x) resist=5.16% (1.61x) life=1.45% ios=51% ★4.44
+     [('10. Finch - Self-Care Pet - Da', 355), ('126. To Do List', 226), ('12. Fabulous Daily Routine Pla', 178), ('24. Fabulous - Daily Habit Tra', 157), ('1. Habit Tracker - Goal Tracke', 155), ('84. Tasks - To Do List & Remin', 106)]
+minimal    n= 34738  7.16% paid=2.00% (0.97x) resist=1.91% (0.59x) life=1.15% ios=39% ★4.67
+     [('3. Loop Habit Tracker', 4176), ('126. To Do List', 3950), ('84. Tasks - To Do List & Remin', 3294), ('3. Days Since - Quit Habit Tra', 2046), ('10. Finch - Self-Care Pet - Da', 1819), ('24. Habit Tracker', 1481)]
+mental     n= 14140  2.91% paid=1.97% (0.96x) resist=3.94% (1.23x) life=0.28% ios=88% ★4.65
+     [('10. Finch - Self-Care Pet - Da', 10076), ('24. Fabulous - Daily Habit Tra', 1082), ('12. Fabulous Daily Routine Pla', 894), ('4. Me+ Lifestyle Routine - Dai', 663), ('4. Me+ Lifestyle Routine', 272), ('125. 21 Days Challenge', 221)]
+aesthetic  n= 24960  5.14% paid=1.95% (0.94x) resist=3.15% (0.98x) life=0.66% ios=76% ★4.56
+     [('10. Finch - Self-Care Pet - Da', 14422), ('12. Fabulous Daily Routine Pla', 1201), ('4. Me+ Lifestyle Routine', 961), ('24. Fabulous - Daily Habit Tra', 898), ('4. Me+ Lifestyle Routine - Dai', 551), ('13. Productive - Habit Tracker', 480)]
+social     n=  2111  0.44% paid=1.94% (0.94x) resist=2.46% (0.77x) life=0.47% ios=85% ★4.62
+     [('10. Finch - Self-Care Pet - Da', 1337), ('1. Habit Tracker - Goal Tracke', 123), ('24. Fabulous - Daily Habit Tra', 103), ('8. Habitica - Gamify Your Task', 95), ('12. Fabulous Daily Routine Pla', 59), ('85. Habitica - Gamified Taskma', 43)]
+quit       n=  1527  0.31% paid=1.31% (0.63x) resist=1.77% (0.55x) life=0.79% ios=80% ★4.71
+     [('3. Days Since - Quit Habit Tra', 950), ('10. Finch - Self-Care Pet - Da', 91), ('12. Fabulous Daily Routine Pla', 80), ('24. Habit Tracker', 61), ('24. Fabulous - Daily Habit Tra', 46), ('3. Loop Habit Tracker', 31)]
+game       n= 18400  3.79% paid=1.21% (0.59x) resist=2.32% (0.72x) life=0.20% ios=84% ★4.66
+     [('10. Finch - Self-Care Pet - Da', 13272), ('8. Habitica - Gamify Your Task', 1483), ('85. Habitica - Gamified Taskma', 558), ('24. Fabulous - Daily Habit Tra', 375), ('4. Me+ Lifestyle Routine - Dai', 347), ('12. Fabulous Daily Routine Pla', 315)]
+
+[exited with code 0]
