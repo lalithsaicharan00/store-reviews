@@ -70,6 +70,11 @@ Add and Save are. Its 4 copies on the page follow.
   Goal met under it; the bottom bar says Start, Pause, Resume, Next or Log. Its 25 copies were moved to it: their
   words (name, count, Yesterday, status, description, banner) were put back from the Android file's same nodes after
   the swap reset them, each ring took its copy's colour (Teal for Stretch, Orange for Read) and arc (40 %, 67 %, full).
-- **Outside the app** (frames 958:157631 and the notes 260:225, 260:231) the page still shows Android's Live Update
-  status-bar chip; on the iPhone a running clock is a Live Activity in the Dynamic Island and on the Lock Screen.
-  To do with the notifications page.
+- ~~**Outside the app**: Android's Live Update chip.~~ **Done 6 Nov 2026:** the design system's Android pictures were
+  rebuilt in place as the iPhone's (drawn, not Apple's images, D11): **Notification (iOS)** (the banner: app icon,
+  Semibold title, body, the time at the trailing edge; 12 copies keep their words and now show only the time),
+  **Live Activity (iOS)** (the habit's icon in its colour, name and goal, the clock at 34, the progress line, Pause),
+  **Home Screen (iOS)** (rounded-square icons, the Dock, and the **Dynamic Island** showing the running clock,
+  bound to the old chip properties), **Lock Screen (iOS)** and **Lock Screen · Live Activity (iOS)** (the date over the
+  large time, the card at the bottom; Android's shade and quick settings are gone). The player's frames and notes say
+  Dynamic Island, Lock Screen and Live Activity; ⋮ → ⋯.

@@ -166,3 +166,11 @@ section below is headed with the doc it belongs to; move it there once the docs 
 - **The routine player's time habit is the Timer ring** (Routine player › Screen=Time): the name, description and Day
   Details above, the ring with the clock and "of 10 min", Paused or Goal met under it; the bottom bar's word follows
   the clock (Start, Pause, Resume, Next; Log on a past day). Never a big number over a flat line.
+
+## Progress and Milestones — iOS Native · 6 Nov 2026: the timer outside the app
+
+- **A running clock outside the app is a Live Activity**: compact in the Dynamic Island (the habit's icon at the
+  leading side, the clock in the habit's colour at the trailing side) and a card on the Lock Screen (icon, name and
+  goal, the clock, the progress line, Pause). Never a status-bar chip or a notification in a shade. Figma: Live
+  Activity (iOS), Home Screen (iOS) › Live Activity in the Dynamic Island, Lock Screen · Live Activity (iOS).
+- **A notification is iOS's banner**: the app icon, the title in Semibold, the body, the time at the trailing edge.
