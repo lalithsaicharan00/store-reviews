@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.anydo",
+  "app_name": "Any.do - To do list & Calendar",
+  "extracted_at": "2026-11-07T06:09:33Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 103108,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 74430,
+    "es": 12856,
+    "pt": 7736,
+    "de": 3771,
+    "fr": 3125,
+    "nl": 1190
+  },
+  "rating_distribution": {
+    "5": 69014,
+    "4": 14175,
+    "3": 6085,
+    "2": 4266,
+    "1": 9567
+  },
+  "mean_rating": 4.249,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

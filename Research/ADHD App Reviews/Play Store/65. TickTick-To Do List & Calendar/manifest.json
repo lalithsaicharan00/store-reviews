@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.ticktick.task",
+  "app_name": "TickTick:To Do List & Calendar",
+  "extracted_at": "2026-11-07T06:03:41Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 39435,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 29087,
+    "es": 3837,
+    "pt": 3705,
+    "fr": 1427,
+    "de": 1104,
+    "nl": 275
+  },
+  "rating_distribution": {
+    "5": 30252,
+    "4": 4906,
+    "3": 1567,
+    "2": 882,
+    "1": 1828
+  },
+  "mean_rating": 4.544,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,41 @@
+{
+ "package": "com.ticktick.task",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 194,
+   "collected": 29087,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 8,
+   "collected": 1104,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 26,
+   "collected": 3837,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 10,
+   "collected": 1427,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 25,
+   "collected": 3705,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 2,
+   "collected": 275,
+   "complete": true
+  }
+ }
+}

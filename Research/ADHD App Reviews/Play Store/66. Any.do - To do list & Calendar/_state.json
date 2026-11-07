@@ -1,0 +1,41 @@
+{
+ "package": "com.anydo",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 497,
+   "collected": 74430,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 26,
+   "collected": 3771,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 86,
+   "collected": 12856,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 21,
+   "collected": 3125,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 52,
+   "collected": 7736,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 8,
+   "collected": 1190,
+   "complete": true
+  }
+ }
+}
