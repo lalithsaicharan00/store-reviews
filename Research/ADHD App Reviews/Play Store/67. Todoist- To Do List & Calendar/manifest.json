@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.todoist",
+  "app_name": "Todoist: To Do List & Calendar",
+  "extracted_at": "2026-11-07T06:11:33Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 60898,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 36918,
+    "pt": 8902,
+    "es": 7392,
+    "de": 3616,
+    "fr": 2823,
+    "nl": 1247
+  },
+  "rating_distribution": {
+    "5": 40013,
+    "4": 11983,
+    "3": 3079,
+    "2": 1863,
+    "1": 3960
+  },
+  "mean_rating": 4.35,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}
