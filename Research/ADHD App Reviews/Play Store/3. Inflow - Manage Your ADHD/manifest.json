@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "inflow.adhd.productivity",
+  "app_name": "Inflow - Manage Your ADHD",
+  "extracted_at": "2026-11-07T05:50:45Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 887,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 816,
+    "de": 22,
+    "fr": 20,
+    "nl": 17,
+    "es": 10,
+    "pt": 2
+  },
+  "rating_distribution": {
+    "5": 262,
+    "4": 69,
+    "3": 80,
+    "2": 87,
+    "1": 389
+  },
+  "mean_rating": 2.693,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

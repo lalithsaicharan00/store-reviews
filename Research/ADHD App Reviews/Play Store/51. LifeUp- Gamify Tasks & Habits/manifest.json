@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "net.sarasarasa.lifeup",
+  "app_name": "LifeUp: Gamify Tasks & Habits",
+  "extracted_at": "2026-11-07T05:53:05Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1737,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 1242,
+    "pt": 230,
+    "es": 163,
+    "de": 62,
+    "fr": 35,
+    "nl": 5
+  },
+  "rating_distribution": {
+    "5": 1316,
+    "4": 248,
+    "3": 81,
+    "2": 40,
+    "1": 52
+  },
+  "mean_rating": 4.575,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

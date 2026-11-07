@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.briliadult",
+  "app_name": "Brili Routines – Habit Tracker",
+  "extracted_at": "2026-11-07T05:52:01Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 321,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 256,
+    "de": 27,
+    "es": 12,
+    "fr": 11,
+    "nl": 9,
+    "pt": 6
+  },
+  "rating_distribution": {
+    "5": 100,
+    "4": 66,
+    "3": 53,
+    "2": 31,
+    "1": 71
+  },
+  "mean_rating": 3.29,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

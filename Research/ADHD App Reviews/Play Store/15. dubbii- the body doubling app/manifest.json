@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.gravitywell.adhdlove",
+  "app_name": "dubbii: the body doubling app",
+  "extracted_at": "2026-11-07T05:51:54Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 747,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 673,
+    "de": 40,
+    "nl": 15,
+    "es": 9,
+    "fr": 5,
+    "pt": 5
+  },
+  "rating_distribution": {
+    "5": 531,
+    "4": 58,
+    "3": 56,
+    "2": 39,
+    "1": 63
+  },
+  "mean_rating": 4.278,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,41 @@
+{
+ "package": "io.konveier.timo",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 6,
+   "collected": 868,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 26,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 131,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 73,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 2,
+   "collected": 222,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 15,
+   "complete": true
+  }
+ }
+}

@@ -1,0 +1,22 @@
+{
+  "store": "Google Play",
+  "package": "com.hyperfocusacademy.adhdeasydo",
+  "app_name": "ADHD Easy-Do your ADHD Planner",
+  "extracted_at": "2026-11-07T05:52:30Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 82,
+  "languages_with_reviews": 2,
+  "reviews_per_language": {
+    "de": 76,
+    "en": 6
+  },
+  "rating_distribution": {
+    "5": 52,
+    "4": 9,
+    "3": 6,
+    "2": 3,
+    "1": 12
+  },
+  "mean_rating": 4.049,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

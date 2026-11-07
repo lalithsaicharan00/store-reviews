@@ -1,0 +1,41 @@
+{
+ "package": "com.adiben.foco",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 1,
+   "collected": 24,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  }
+ }
+}

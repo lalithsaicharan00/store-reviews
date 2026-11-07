@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "io.mindist.well",
+  "app_name": "Numo: ADHD Brain Dump",
+  "extracted_at": "2026-11-07T05:50:47Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 464,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 338,
+    "de": 34,
+    "es": 32,
+    "fr": 25,
+    "pt": 20,
+    "nl": 15
+  },
+  "rating_distribution": {
+    "5": 90,
+    "4": 35,
+    "3": 30,
+    "2": 55,
+    "1": 254
+  },
+  "mean_rating": 2.25,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

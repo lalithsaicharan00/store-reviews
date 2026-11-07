@@ -1,0 +1,49 @@
+{
+  "app_id": "572688855",
+  "app_name": "Todoist: To Do List & Calendar",
+  "developer": "Todoist Inc.",
+  "bundle_id": "com.todoist.ios",
+  "extracted_at": "2026-11-07T05:59:44Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 13196,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 5850,
+    "de": 1054,
+    "gb": 1045,
+    "br": 736,
+    "ca": 707,
+    "fr": 551,
+    "au": 534,
+    "es": 421,
+    "nl": 350,
+    "it": 313,
+    "in": 272,
+    "mx": 250,
+    "ch": 215,
+    "se": 157,
+    "dk": 100,
+    "be": 83,
+    "at": 79,
+    "za": 79,
+    "pt": 75,
+    "no": 74,
+    "sg": 67,
+    "nz": 65,
+    "ph": 48,
+    "ie": 47,
+    "fi": 24
+  },
+  "rating_distribution": {
+    "5": 8217,
+    "4": 1949,
+    "3": 777,
+    "2": 594,
+    "1": 1659
+  },
+  "mean_rating": 4.097,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,41 @@
+{
+ "package": "com.gmail.jmartindev.timetune",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 98,
+   "collected": 14665,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 5,
+   "collected": 614,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 47,
+   "collected": 7048,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 6,
+   "collected": 811,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 35,
+   "collected": 5102,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 147,
+   "complete": true
+  }
+ }
+}

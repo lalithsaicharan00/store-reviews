@@ -1,0 +1,41 @@
+{
+ "package": "neurolist.app.neurolist",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 14,
+   "collected": 1979,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 36,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 32,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 21,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 9,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 14,
+   "complete": true
+  }
+ }
+}

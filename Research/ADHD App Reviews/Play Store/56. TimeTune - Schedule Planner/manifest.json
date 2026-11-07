@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.gmail.jmartindev.timetune",
+  "app_name": "TimeTune - Schedule Planner",
+  "extracted_at": "2026-11-07T05:54:17Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 28387,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 14665,
+    "es": 7048,
+    "pt": 5102,
+    "fr": 811,
+    "de": 614,
+    "nl": 147
+  },
+  "rating_distribution": {
+    "5": 21088,
+    "4": 4515,
+    "3": 1196,
+    "2": 530,
+    "1": 1058
+  },
+  "mean_rating": 4.552,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

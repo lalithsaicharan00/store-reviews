@@ -1,0 +1,41 @@
+{
+ "package": "at.cwiesner.android.visualtimer",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 15,
+   "collected": 2110,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 3,
+   "collected": 323,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 3,
+   "collected": 406,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 2,
+   "collected": 265,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 2,
+   "collected": 171,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 98,
+   "complete": true
+  }
+ }
+}

@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.sunsama.mobile",
+  "app_name": "Sunsama",
+  "extracted_at": "2026-11-07T05:52:07Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 179,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 154,
+    "es": 10,
+    "de": 5,
+    "pt": 5,
+    "fr": 4,
+    "nl": 1
+  },
+  "rating_distribution": {
+    "5": 39,
+    "4": 16,
+    "3": 25,
+    "2": 24,
+    "1": 75
+  },
+  "mean_rating": 2.553,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

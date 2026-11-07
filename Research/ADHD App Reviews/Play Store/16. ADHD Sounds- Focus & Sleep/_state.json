@@ -1,0 +1,41 @@
+{
+ "package": "com.adhd.focus.hz.adhd",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 1,
+   "collected": 88,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 3,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 3,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  }
+ }
+}

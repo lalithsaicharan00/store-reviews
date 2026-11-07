@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.timetimer.android",
+  "app_name": "Time Timer Visual Productivity",
+  "extracted_at": "2026-11-07T05:51:51Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 342,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 210,
+    "fr": 48,
+    "de": 38,
+    "es": 24,
+    "nl": 13,
+    "pt": 9
+  },
+  "rating_distribution": {
+    "5": 124,
+    "4": 54,
+    "3": 54,
+    "2": 45,
+    "1": 65
+  },
+  "mean_rating": 3.371,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,41 @@
+{
+ "package": "com.shikudo.focus.study.forest.pomodoro.productivity.hero.rpg.android",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 5,
+   "collected": 670,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 30,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 137,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 50,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 133,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 11,
+   "complete": true
+  }
+ }
+}

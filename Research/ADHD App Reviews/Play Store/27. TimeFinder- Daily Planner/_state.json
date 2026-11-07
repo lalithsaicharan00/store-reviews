@@ -1,0 +1,41 @@
+{
+ "package": "app.TimeFinder.TimeFinder",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 1,
+   "collected": 73,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 3,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 7,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  }
+ }
+}

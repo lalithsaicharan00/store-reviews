@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "io.konveier.timo",
+  "app_name": "Daily Planner Organizer: Brite",
+  "extracted_at": "2026-11-07T05:53:15Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1335,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 868,
+    "pt": 222,
+    "es": 131,
+    "fr": 73,
+    "de": 26,
+    "nl": 15
+  },
+  "rating_distribution": {
+    "5": 589,
+    "4": 174,
+    "3": 122,
+    "2": 94,
+    "1": 356
+  },
+  "mean_rating": 3.409,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

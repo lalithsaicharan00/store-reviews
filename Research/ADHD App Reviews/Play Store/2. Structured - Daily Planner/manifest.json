@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "io.unorderly.structured",
+  "app_name": "Structured - Daily Planner",
+  "extracted_at": "2026-11-07T05:50:42Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 2950,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 1568,
+    "es": 722,
+    "pt": 375,
+    "fr": 150,
+    "de": 116,
+    "nl": 19
+  },
+  "rating_distribution": {
+    "5": 1718,
+    "4": 469,
+    "3": 301,
+    "2": 166,
+    "1": 296
+  },
+  "mean_rating": 4.067,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

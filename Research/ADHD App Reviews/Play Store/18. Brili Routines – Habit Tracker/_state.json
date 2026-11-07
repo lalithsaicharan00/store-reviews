@@ -1,0 +1,41 @@
+{
+ "package": "com.briliadult",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 2,
+   "collected": 256,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 27,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 12,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 11,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 6,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 9,
+   "complete": true
+  }
+ }
+}

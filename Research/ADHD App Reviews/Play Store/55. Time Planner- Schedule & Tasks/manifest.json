@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.albul.timeplanner",
+  "app_name": "Time Planner: Schedule & Tasks",
+  "extracted_at": "2026-11-07T05:53:29Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 6452,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 2669,
+    "es": 1932,
+    "pt": 1178,
+    "fr": 457,
+    "de": 170,
+    "nl": 46
+  },
+  "rating_distribution": {
+    "5": 3809,
+    "4": 1031,
+    "3": 563,
+    "2": 366,
+    "1": 683
+  },
+  "mean_rating": 4.072,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

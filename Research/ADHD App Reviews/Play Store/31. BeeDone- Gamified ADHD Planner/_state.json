@@ -1,0 +1,41 @@
+{
+ "package": "com.beedone",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 1,
+   "collected": 43,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 5,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 83,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  }
+ }
+}

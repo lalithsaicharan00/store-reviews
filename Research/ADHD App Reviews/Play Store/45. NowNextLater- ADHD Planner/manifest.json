@@ -1,0 +1,21 @@
+{
+  "store": "Google Play",
+  "package": "app.nownextlater",
+  "app_name": "NowNextLater: ADHD Planner",
+  "extracted_at": "2026-11-07T05:52:44Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 27,
+  "languages_with_reviews": 1,
+  "reviews_per_language": {
+    "en": 27
+  },
+  "rating_distribution": {
+    "5": 15,
+    "4": 4,
+    "3": 3,
+    "2": 4,
+    "1": 1
+  },
+  "mean_rating": 4.037,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

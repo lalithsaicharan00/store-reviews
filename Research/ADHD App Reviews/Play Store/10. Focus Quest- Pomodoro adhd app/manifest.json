@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.shikudo.focus.study.forest.pomodoro.productivity.hero.rpg.android",
+  "app_name": "Focus Quest: Pomodoro adhd app",
+  "extracted_at": "2026-11-07T05:51:36Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1031,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 670,
+    "es": 137,
+    "pt": 133,
+    "fr": 50,
+    "de": 30,
+    "nl": 11
+  },
+  "rating_distribution": {
+    "5": 645,
+    "4": 184,
+    "3": 80,
+    "2": 64,
+    "1": 58
+  },
+  "mean_rating": 4.255,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

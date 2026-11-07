@@ -1,0 +1,41 @@
+{
+ "package": "com.hyperfocusacademy.adhdeasydo",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 1,
+   "collected": 6,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 76,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 0,
+   "complete": true
+  }
+ }
+}

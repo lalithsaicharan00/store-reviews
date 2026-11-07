@@ -1,0 +1,41 @@
+{
+ "package": "super.planner.todolist.task.reminder",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 3,
+   "collected": 314,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 120,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 59,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 82,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 3,
+   "collected": 342,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 19,
+   "complete": true
+  }
+ }
+}

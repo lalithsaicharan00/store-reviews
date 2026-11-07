@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.underthing.focus.friend",
+  "app_name": "Focus Friend by Hank Green",
+  "extracted_at": "2026-11-07T05:55:10Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 4398,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 3820,
+    "de": 193,
+    "es": 181,
+    "fr": 93,
+    "pt": 70,
+    "nl": 41
+  },
+  "rating_distribution": {
+    "5": 3086,
+    "4": 653,
+    "3": 315,
+    "2": 152,
+    "1": 192
+  },
+  "mean_rating": 4.43,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

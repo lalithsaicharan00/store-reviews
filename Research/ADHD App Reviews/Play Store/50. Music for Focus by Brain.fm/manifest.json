@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.brainfm.app",
+  "app_name": "Music for Focus by Brain.fm",
+  "extracted_at": "2026-11-07T05:52:59Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 3580,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 2849,
+    "es": 251,
+    "pt": 200,
+    "de": 154,
+    "fr": 84,
+    "nl": 42
+  },
+  "rating_distribution": {
+    "5": 2015,
+    "4": 390,
+    "3": 293,
+    "2": 242,
+    "1": 640
+  },
+  "mean_rating": 3.809,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

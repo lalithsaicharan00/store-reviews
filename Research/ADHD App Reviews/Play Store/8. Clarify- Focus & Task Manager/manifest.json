@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "co.thefab.tm",
+  "app_name": "Clarify: Focus & Task Manager",
+  "extracted_at": "2026-11-07T05:51:29Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 3491,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 2963,
+    "pt": 259,
+    "es": 110,
+    "fr": 64,
+    "de": 53,
+    "nl": 42
+  },
+  "rating_distribution": {
+    "5": 1800,
+    "4": 362,
+    "3": 219,
+    "2": 202,
+    "1": 908
+  },
+  "mean_rating": 3.557,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

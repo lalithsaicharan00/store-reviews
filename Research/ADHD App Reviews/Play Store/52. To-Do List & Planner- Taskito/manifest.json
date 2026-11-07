@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.fenchtose.reflog",
+  "app_name": "To-Do List & Planner: Taskito",
+  "extracted_at": "2026-11-07T05:53:12Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 3044,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 1918,
+    "pt": 441,
+    "es": 404,
+    "de": 134,
+    "fr": 134,
+    "nl": 13
+  },
+  "rating_distribution": {
+    "5": 2012,
+    "4": 578,
+    "3": 228,
+    "2": 69,
+    "1": 157
+  },
+  "mean_rating": 4.386,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

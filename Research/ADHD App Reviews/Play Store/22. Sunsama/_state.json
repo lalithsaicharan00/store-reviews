@@ -1,0 +1,41 @@
+{
+ "package": "com.sunsama.mobile",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 2,
+   "collected": 154,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 5,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 10,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 4,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 5,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 1,
+   "complete": true
+  }
+ }
+}

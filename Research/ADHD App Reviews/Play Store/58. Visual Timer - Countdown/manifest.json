@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "at.cwiesner.android.visualtimer",
+  "app_name": "Visual Timer - Countdown",
+  "extracted_at": "2026-11-07T05:54:56Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 3373,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 2110,
+    "es": 406,
+    "de": 323,
+    "fr": 265,
+    "pt": 171,
+    "nl": 98
+  },
+  "rating_distribution": {
+    "5": 2457,
+    "4": 492,
+    "3": 170,
+    "2": 92,
+    "1": 162
+  },
+  "mean_rating": 4.479,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

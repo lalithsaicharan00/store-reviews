@@ -1,0 +1,41 @@
+{
+ "package": "com.ziggycrane.time",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 12,
+   "collected": 1793,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 99,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 2,
+   "collected": 296,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 67,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 82,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 22,
+   "complete": true
+  }
+ }
+}

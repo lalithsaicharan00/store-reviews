@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.dottedcircle.bulletjournal",
+  "app_name": "OrganizeMe: ADHD BulletJournal",
+  "extracted_at": "2026-11-07T05:51:48Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1161,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 811,
+    "es": 164,
+    "fr": 65,
+    "pt": 53,
+    "de": 48,
+    "nl": 20
+  },
+  "rating_distribution": {
+    "5": 666,
+    "4": 278,
+    "3": 102,
+    "2": 45,
+    "1": 70
+  },
+  "mean_rating": 4.227,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

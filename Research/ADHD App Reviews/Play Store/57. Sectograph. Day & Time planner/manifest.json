@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "prox.lab.calclock",
+  "app_name": "Sectograph. Day & Time planner",
+  "extracted_at": "2026-11-07T05:54:48Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 24195,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 10003,
+    "es": 8823,
+    "pt": 2794,
+    "fr": 1289,
+    "de": 1089,
+    "nl": 197
+  },
+  "rating_distribution": {
+    "5": 18368,
+    "4": 3497,
+    "3": 1017,
+    "2": 482,
+    "1": 831
+  },
+  "mean_rating": 4.574,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

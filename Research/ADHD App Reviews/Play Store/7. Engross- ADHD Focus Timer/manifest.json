@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.engross",
+  "app_name": "Engross: ADHD Focus Timer",
+  "extracted_at": "2026-11-07T05:51:19Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 4692,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 4203,
+    "es": 158,
+    "pt": 154,
+    "fr": 83,
+    "de": 76,
+    "nl": 18
+  },
+  "rating_distribution": {
+    "5": 3289,
+    "4": 821,
+    "3": 280,
+    "2": 118,
+    "1": 184
+  },
+  "mean_rating": 4.473,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

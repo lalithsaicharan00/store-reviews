@@ -1,0 +1,24 @@
+{
+  "store": "Google Play",
+  "package": "com.thrudayapp.thruday_app",
+  "app_name": "Thruday: Visual Daily Planner",
+  "extracted_at": "2026-11-07T05:52:26Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 66,
+  "languages_with_reviews": 4,
+  "reviews_per_language": {
+    "en": 50,
+    "nl": 8,
+    "es": 5,
+    "pt": 3
+  },
+  "rating_distribution": {
+    "5": 41,
+    "4": 3,
+    "3": 3,
+    "2": 5,
+    "1": 14
+  },
+  "mean_rating": 3.788,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

@@ -1,0 +1,41 @@
+{
+ "package": "co.thefab.tm",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 20,
+   "collected": 2963,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 53,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 110,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 64,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 2,
+   "collected": 259,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 42,
+   "complete": true
+  }
+ }
+}

@@ -1,0 +1,41 @@
+{
+ "package": "com.prosper.routines.todo.productive.fabulous.habits.selfcare",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 7,
+   "collected": 1046,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 90,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 2,
+   "collected": 250,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 103,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 108,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 22,
+   "complete": true
+  }
+ }
+}

@@ -1,0 +1,21 @@
+{
+  "store": "Google Play",
+  "package": "com.akiliinteractive.t01a",
+  "app_name": "EndeavorOTC®: Outplay ADHD",
+  "extracted_at": "2026-11-07T05:52:11Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 258,
+  "languages_with_reviews": 1,
+  "reviews_per_language": {
+    "en": 258
+  },
+  "rating_distribution": {
+    "5": 36,
+    "4": 13,
+    "3": 10,
+    "2": 28,
+    "1": 171
+  },
+  "mean_rating": 1.895,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

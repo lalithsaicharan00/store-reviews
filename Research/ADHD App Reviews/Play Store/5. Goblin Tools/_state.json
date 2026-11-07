@@ -1,0 +1,41 @@
+{
+ "package": "com.goblintools",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 6,
+   "collected": 765,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 34,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 25,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 27,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 14,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 10,
+   "complete": true
+  }
+ }
+}

@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.ziggycrane.time",
+  "app_name": "Timecap care: ADHD Habit Timer",
+  "extracted_at": "2026-11-07T05:51:42Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 2359,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 1793,
+    "es": 296,
+    "de": 99,
+    "pt": 82,
+    "fr": 67,
+    "nl": 22
+  },
+  "rating_distribution": {
+    "5": 1699,
+    "4": 329,
+    "3": 120,
+    "2": 80,
+    "1": 131
+  },
+  "mean_rating": 4.435,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

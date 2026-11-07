@@ -1,0 +1,25 @@
+{
+  "store": "Google Play",
+  "package": "com.adhd.focus.hz.adhd",
+  "app_name": "ADHD Sounds: Focus & Sleep",
+  "extracted_at": "2026-11-07T05:51:56Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 98,
+  "languages_with_reviews": 5,
+  "reviews_per_language": {
+    "en": 88,
+    "fr": 3,
+    "pt": 3,
+    "de": 2,
+    "es": 2
+  },
+  "rating_distribution": {
+    "5": 70,
+    "4": 7,
+    "3": 4,
+    "2": 3,
+    "1": 14
+  },
+  "mean_rating": 4.184,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

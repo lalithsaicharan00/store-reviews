@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "super.planner.todolist.task.reminder",
+  "app_name": "Super Planner: ADHD Routine AI",
+  "extracted_at": "2026-11-07T05:51:32Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 936,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "pt": 342,
+    "en": 314,
+    "de": 120,
+    "fr": 82,
+    "es": 59,
+    "nl": 19
+  },
+  "rating_distribution": {
+    "5": 590,
+    "4": 93,
+    "3": 52,
+    "2": 64,
+    "1": 137
+  },
+  "mean_rating": 3.999,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

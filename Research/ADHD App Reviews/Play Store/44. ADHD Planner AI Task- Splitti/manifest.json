@@ -1,0 +1,25 @@
+{
+  "store": "Google Play",
+  "package": "com.nick.weiss.Decomposer",
+  "app_name": "ADHD Planner AI Task: Splitti",
+  "extracted_at": "2026-11-07T05:52:43Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 29,
+  "languages_with_reviews": 5,
+  "reviews_per_language": {
+    "en": 12,
+    "de": 6,
+    "es": 4,
+    "fr": 4,
+    "pt": 3
+  },
+  "rating_distribution": {
+    "5": 8,
+    "4": 3,
+    "3": 5,
+    "2": 3,
+    "1": 10
+  },
+  "mean_rating": 2.862,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

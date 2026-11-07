@@ -1,0 +1,41 @@
+{
+ "package": "com.dottedcircle.bulletjournal",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 6,
+   "collected": 811,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 48,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 2,
+   "collected": 164,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 65,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 53,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 20,
+   "complete": true
+  }
+ }
+}

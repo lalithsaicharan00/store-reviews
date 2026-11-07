@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.goblintools",
+  "app_name": "Goblin Tools",
+  "extracted_at": "2026-11-07T05:50:52Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 875,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 765,
+    "de": 34,
+    "fr": 27,
+    "es": 25,
+    "pt": 14,
+    "nl": 10
+  },
+  "rating_distribution": {
+    "5": 649,
+    "4": 100,
+    "3": 68,
+    "2": 18,
+    "1": 40
+  },
+  "mean_rating": 4.486,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

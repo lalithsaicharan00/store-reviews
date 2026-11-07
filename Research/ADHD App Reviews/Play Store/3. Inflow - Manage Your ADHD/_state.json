@@ -1,0 +1,41 @@
+{
+ "package": "inflow.adhd.productivity",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 6,
+   "collected": 816,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 22,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 10,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 20,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 2,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 17,
+   "complete": true
+  }
+ }
+}

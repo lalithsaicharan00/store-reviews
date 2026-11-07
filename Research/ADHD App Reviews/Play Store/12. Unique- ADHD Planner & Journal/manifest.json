@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "app.univi.prod",
+  "app_name": "Unique: ADHD Planner & Journal",
+  "extracted_at": "2026-11-07T05:51:45Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 655,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 549,
+    "de": 35,
+    "es": 31,
+    "fr": 17,
+    "pt": 14,
+    "nl": 9
+  },
+  "rating_distribution": {
+    "5": 413,
+    "4": 79,
+    "3": 38,
+    "2": 38,
+    "1": 87
+  },
+  "mean_rating": 4.058,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}
