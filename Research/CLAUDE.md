@@ -9,6 +9,7 @@
 | `PRD for App Store.md` | **Superseded — ignore.** An aggregation of the whole ledger, not a decision record. Do not cite, build from, or extend it. See "PRD for App Store" below. |
 | `Store Review Analysis Prompt.md` | The analysis spec every report must follow |
 | `Report Synthesis Prompt.md` | How to combine all reports into one feature ledger (cards → coverage check → merge → confidence → final report) |
+| `ADHD Channel Topic Research Prompt.md` | How to find 50 evergreen YouTube topics for the ADHD channel. Run it by asking an agent to follow it. |
 | `App Store Reviews/<N>. <app name>/` | Source data per app: `reviews.jsonl`, `by_country/*.jsonl`, `manifest.json`, `_state.json`. **Read-only — do not add files here.** |
 | `App Store Reports/` | Deliverables: `<N>. <app name> (REPORT).md`, one per app |
 | `Play Store Reviews/` | Play Store corpora (same shape) |
@@ -22,7 +23,7 @@
 - **Folders and documents:** Title Case with spaces — `App Store Reports/`, `Research Reports/`, `PRD for App Store.md`.
 - **Code and machine-read files (inside `Tools/`):** `snake_case` — `extract_reviews.py`, `habit_apps_ranked.json`, `keyword_scans/`.
 - **Per-app folders and reports:** `<N>. <App Store name>` and `<N>. <App Store name> (REPORT).md`. The number is the app's rank and must match between `App Store Reviews/` and `App Store Reports/`.
-- **Root folder holds only:** the PRD, the analysis prompt, the synthesis prompt, `README.md`, `CLAUDE.md`, and the folders above. Everything else goes in a folder.
+- **Root folder holds only:** the PRD, the analysis prompt, the synthesis prompt, the ADHD channel prompt, `README.md`, `CLAUDE.md`, and the folders above. Everything else goes in a folder.
 
 ## Scratch files: use `Temp/`, never `/tmp`
 
