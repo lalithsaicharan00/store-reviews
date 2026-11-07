@@ -1,0 +1,32 @@
+{
+  "app_id": "1665028057",
+  "app_name": "Remind - Daily Planner",
+  "developer": "MATRIKS GRUP, TOV",
+  "bundle_id": "org.matrix-soft.habit",
+  "extracted_at": "2026-11-07T05:56:09Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 33,
+  "storefronts_with_reviews": 8,
+  "reviews_per_country": {
+    "us": 17,
+    "br": 5,
+    "ca": 3,
+    "in": 2,
+    "mx": 2,
+    "se": 2,
+    "es": 1,
+    "gb": 1
+  },
+  "rating_distribution": {
+    "5": 4,
+    "4": 5,
+    "3": 4,
+    "2": 7,
+    "1": 13
+  },
+  "mean_rating": 2.394,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

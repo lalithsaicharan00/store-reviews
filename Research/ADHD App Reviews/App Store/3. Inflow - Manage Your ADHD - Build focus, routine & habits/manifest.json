@@ -1,0 +1,48 @@
+{
+  "app_id": "1528183849",
+  "app_name": "Inflow - Manage Your ADHD",
+  "developer": "Get Inflow Ltd.",
+  "bundle_id": "com.inflow.app",
+  "extracted_at": "2026-11-07T05:51:22Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1019,
+  "storefronts_with_reviews": 24,
+  "reviews_per_country": {
+    "us": 628,
+    "gb": 129,
+    "ca": 63,
+    "au": 58,
+    "de": 26,
+    "fr": 20,
+    "nl": 12,
+    "es": 11,
+    "mx": 8,
+    "be": 7,
+    "nz": 7,
+    "ie": 6,
+    "at": 5,
+    "ch": 5,
+    "dk": 5,
+    "no": 5,
+    "br": 4,
+    "it": 4,
+    "za": 4,
+    "in": 3,
+    "pt": 3,
+    "se": 3,
+    "ph": 2,
+    "fi": 1
+  },
+  "rating_distribution": {
+    "5": 337,
+    "4": 61,
+    "3": 88,
+    "2": 76,
+    "1": 457
+  },
+  "mean_rating": 2.75,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

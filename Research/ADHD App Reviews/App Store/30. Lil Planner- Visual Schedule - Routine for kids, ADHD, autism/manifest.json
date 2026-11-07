@@ -1,0 +1,32 @@
+{
+  "app_id": "6448482826",
+  "app_name": "Lil Planner: Visual Schedule",
+  "developer": "Space Sweater, LLC",
+  "bundle_id": "app.littleplanner",
+  "extracted_at": "2026-11-07T05:55:02Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 181,
+  "storefronts_with_reviews": 8,
+  "reviews_per_country": {
+    "us": 139,
+    "gb": 17,
+    "au": 11,
+    "ca": 8,
+    "ie": 2,
+    "nl": 2,
+    "de": 1,
+    "se": 1
+  },
+  "rating_distribution": {
+    "5": 149,
+    "4": 20,
+    "3": 6,
+    "2": 4,
+    "1": 2
+  },
+  "mean_rating": 4.713,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

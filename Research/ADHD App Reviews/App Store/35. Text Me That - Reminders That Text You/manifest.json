@@ -1,0 +1,28 @@
+{
+  "app_id": "1329223000",
+  "app_name": "Text Me That",
+  "developer": "Ethan Bonin",
+  "bundle_id": "com.ollieandfinch.unforgettable",
+  "extracted_at": "2026-11-07T05:55:38Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 113,
+  "storefronts_with_reviews": 4,
+  "reviews_per_country": {
+    "us": 109,
+    "ca": 2,
+    "fr": 1,
+    "gb": 1
+  },
+  "rating_distribution": {
+    "5": 63,
+    "4": 9,
+    "3": 9,
+    "2": 5,
+    "1": 27
+  },
+  "mean_rating": 3.673,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

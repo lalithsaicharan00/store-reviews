@@ -1,0 +1,47 @@
+{
+  "app_id": "1347447233",
+  "app_name": "TimeFinder: Daily Planner",
+  "developer": "TimeFinder, LLC",
+  "bundle_id": "com.lukememet.TimeFinder",
+  "extracted_at": "2026-11-07T05:55:33Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 553,
+  "storefronts_with_reviews": 23,
+  "reviews_per_country": {
+    "us": 366,
+    "gb": 48,
+    "de": 35,
+    "ca": 25,
+    "au": 16,
+    "in": 11,
+    "nl": 11,
+    "fr": 6,
+    "ch": 4,
+    "it": 4,
+    "nz": 4,
+    "br": 3,
+    "mx": 3,
+    "sg": 3,
+    "za": 3,
+    "at": 2,
+    "es": 2,
+    "se": 2,
+    "dk": 1,
+    "fi": 1,
+    "ie": 1,
+    "ph": 1,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 322,
+    "4": 75,
+    "3": 43,
+    "2": 35,
+    "1": 78
+  },
+  "mean_rating": 3.955,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

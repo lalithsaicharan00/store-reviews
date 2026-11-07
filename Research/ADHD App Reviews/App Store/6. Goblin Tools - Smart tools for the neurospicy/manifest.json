@@ -1,0 +1,48 @@
+{
+  "app_id": "6449003064",
+  "app_name": "Goblin Tools",
+  "developer": "Skyhook",
+  "bundle_id": "com.goblintools",
+  "extracted_at": "2026-11-07T05:51:47Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1716,
+  "storefronts_with_reviews": 24,
+  "reviews_per_country": {
+    "us": 1162,
+    "gb": 160,
+    "ca": 146,
+    "au": 100,
+    "de": 47,
+    "fr": 14,
+    "br": 11,
+    "nl": 11,
+    "nz": 10,
+    "se": 9,
+    "no": 7,
+    "za": 5,
+    "at": 4,
+    "es": 4,
+    "ie": 4,
+    "be": 3,
+    "dk": 3,
+    "fi": 3,
+    "it": 3,
+    "mx": 3,
+    "ch": 2,
+    "in": 2,
+    "pt": 2,
+    "sg": 1
+  },
+  "rating_distribution": {
+    "5": 1389,
+    "4": 127,
+    "3": 53,
+    "2": 47,
+    "1": 100
+  },
+  "mean_rating": 4.549,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

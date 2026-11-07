@@ -1,0 +1,29 @@
+{
+  "app_id": "1570668247",
+  "app_name": "Shimmer Care: ADHD Coaching",
+  "developer": "shimmer, inc.",
+  "bundle_id": "org.name.shimmerapp",
+  "extracted_at": "2026-11-07T05:53:50Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 50,
+  "storefronts_with_reviews": 5,
+  "reviews_per_country": {
+    "us": 45,
+    "au": 2,
+    "ca": 1,
+    "dk": 1,
+    "gb": 1
+  },
+  "rating_distribution": {
+    "5": 41,
+    "4": 1,
+    "3": 1,
+    "2": 3,
+    "1": 4
+  },
+  "mean_rating": 4.44,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

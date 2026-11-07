@@ -1,0 +1,41 @@
+{
+  "app_id": "6472498233",
+  "app_name": "Propel: ADHD Games for Adults",
+  "developer": "Neuron Wizard Unipessoal Lda.",
+  "bundle_id": "com.jupys.brain",
+  "extracted_at": "2026-11-07T05:55:57Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 98,
+  "storefronts_with_reviews": 17,
+  "reviews_per_country": {
+    "us": 42,
+    "gb": 11,
+    "mx": 8,
+    "ca": 6,
+    "de": 5,
+    "es": 4,
+    "pt": 4,
+    "fr": 3,
+    "ph": 3,
+    "au": 2,
+    "br": 2,
+    "in": 2,
+    "nl": 2,
+    "ch": 1,
+    "it": 1,
+    "sg": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 24,
+    "4": 11,
+    "3": 5,
+    "2": 2,
+    "1": 56
+  },
+  "mean_rating": 2.439,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

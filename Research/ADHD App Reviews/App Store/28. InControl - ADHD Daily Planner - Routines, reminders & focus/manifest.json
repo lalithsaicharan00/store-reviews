@@ -1,0 +1,26 @@
+{
+  "app_id": "6751820814",
+  "app_name": "InControl - ADHD Daily Planner",
+  "developer": "Ankur Chauhan",
+  "bundle_id": "focus.task.productivity",
+  "extracted_at": "2026-11-07T05:54:50Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 13,
+  "storefronts_with_reviews": 2,
+  "reviews_per_country": {
+    "us": 10,
+    "gb": 3
+  },
+  "rating_distribution": {
+    "5": 11,
+    "4": 0,
+    "3": 1,
+    "2": 1,
+    "1": 0
+  },
+  "mean_rating": 4.615,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "app_id": "6744512266",
+  "app_name": "priori: adhd body doubling",
+  "developer": "Priori LLC",
+  "bundle_id": "com.mobile.priori",
+  "extracted_at": "2026-11-07T05:54:08Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 48,
+  "storefronts_with_reviews": 5,
+  "reviews_per_country": {
+    "us": 43,
+    "se": 2,
+    "de": 1,
+    "nz": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 33,
+    "4": 1,
+    "3": 2,
+    "2": 0,
+    "1": 12
+  },
+  "mean_rating": 3.896,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

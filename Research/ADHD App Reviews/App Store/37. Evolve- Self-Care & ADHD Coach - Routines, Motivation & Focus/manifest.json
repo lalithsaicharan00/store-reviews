@@ -1,0 +1,34 @@
+{
+  "app_id": "1515433542",
+  "app_name": "Evolve: Self-Care & ADHD Coach",
+  "developer": "GTA Solutions LLP",
+  "bundle_id": "in.evolve.ios",
+  "extracted_at": "2026-11-07T05:55:50Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 224,
+  "storefronts_with_reviews": 10,
+  "reviews_per_country": {
+    "in": 107,
+    "us": 92,
+    "gb": 10,
+    "ca": 3,
+    "ch": 3,
+    "mx": 3,
+    "au": 2,
+    "de": 2,
+    "nl": 1,
+    "ph": 1
+  },
+  "rating_distribution": {
+    "5": 177,
+    "4": 11,
+    "3": 7,
+    "2": 9,
+    "1": 20
+  },
+  "mean_rating": 4.411,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "app_id": "6454469750",
+  "app_name": "ADHD Organizer: Llama Life",
+  "developer": "Llama Life Pty Ltd",
+  "bundle_id": "com.llamalife.app",
+  "extracted_at": "2026-11-07T05:54:26Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 114,
+  "storefronts_with_reviews": 15,
+  "reviews_per_country": {
+    "us": 61,
+    "au": 17,
+    "gb": 16,
+    "ca": 4,
+    "nz": 3,
+    "ch": 2,
+    "de": 2,
+    "in": 2,
+    "at": 1,
+    "br": 1,
+    "dk": 1,
+    "es": 1,
+    "ie": 1,
+    "nl": 1,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 86,
+    "4": 8,
+    "3": 7,
+    "2": 7,
+    "1": 6
+  },
+  "mean_rating": 4.412,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

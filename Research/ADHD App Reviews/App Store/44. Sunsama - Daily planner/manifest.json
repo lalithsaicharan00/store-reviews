@@ -1,0 +1,38 @@
+{
+  "app_id": "1475755747",
+  "app_name": "Sunsama",
+  "developer": "Summay, INC",
+  "bundle_id": "com.sunsama.mobile",
+  "extracted_at": "2026-11-07T05:56:32Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 155,
+  "storefronts_with_reviews": 14,
+  "reviews_per_country": {
+    "us": 97,
+    "de": 10,
+    "gb": 9,
+    "au": 6,
+    "br": 6,
+    "ca": 5,
+    "fr": 5,
+    "in": 4,
+    "es": 3,
+    "nl": 3,
+    "se": 3,
+    "mx": 2,
+    "it": 1,
+    "ph": 1
+  },
+  "rating_distribution": {
+    "5": 57,
+    "4": 23,
+    "3": 16,
+    "2": 17,
+    "1": 42
+  },
+  "mean_rating": 3.232,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

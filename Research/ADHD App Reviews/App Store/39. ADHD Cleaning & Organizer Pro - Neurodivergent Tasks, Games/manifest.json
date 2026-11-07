@@ -1,0 +1,36 @@
+{
+  "app_id": "1624890673",
+  "app_name": "ADHD Cleaning & Organizer Pro",
+  "developer": "Mindist, Inc.",
+  "bundle_id": "io.mindist.care",
+  "extracted_at": "2026-11-07T05:56:04Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 157,
+  "storefronts_with_reviews": 12,
+  "reviews_per_country": {
+    "us": 93,
+    "au": 19,
+    "ca": 12,
+    "de": 8,
+    "gb": 8,
+    "es": 4,
+    "dk": 3,
+    "fr": 3,
+    "br": 2,
+    "mx": 2,
+    "nl": 2,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 89,
+    "4": 19,
+    "3": 12,
+    "2": 4,
+    "1": 33
+  },
+  "mean_rating": 3.809,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

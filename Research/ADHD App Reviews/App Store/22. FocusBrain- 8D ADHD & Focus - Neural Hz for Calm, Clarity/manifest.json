@@ -1,0 +1,31 @@
+{
+  "app_id": "1569534844",
+  "app_name": "FocusBrain: 8D ADHD & Focus",
+  "developer": "iMobLife Technology Inc.",
+  "bundle_id": "com.shengyuan.braintuner",
+  "extracted_at": "2026-11-07T05:54:14Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 54,
+  "storefronts_with_reviews": 7,
+  "reviews_per_country": {
+    "us": 47,
+    "au": 2,
+    "ca": 1,
+    "nl": 1,
+    "ph": 1,
+    "pt": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 37,
+    "4": 3,
+    "3": 2,
+    "2": 2,
+    "1": 10
+  },
+  "mean_rating": 4.019,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

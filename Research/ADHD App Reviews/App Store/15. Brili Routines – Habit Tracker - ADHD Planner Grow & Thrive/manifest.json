@@ -1,0 +1,37 @@
+{
+  "app_id": "1516036620",
+  "app_name": "Brili Routines – Habit Tracker",
+  "developer": "Brili GmbH",
+  "bundle_id": "com.brili.app.adult",
+  "extracted_at": "2026-11-07T05:53:30Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 117,
+  "storefronts_with_reviews": 13,
+  "reviews_per_country": {
+    "us": 75,
+    "gb": 11,
+    "au": 9,
+    "ca": 9,
+    "de": 2,
+    "fr": 2,
+    "nl": 2,
+    "se": 2,
+    "in": 1,
+    "mx": 1,
+    "nz": 1,
+    "pt": 1,
+    "sg": 1
+  },
+  "rating_distribution": {
+    "5": 45,
+    "4": 31,
+    "3": 12,
+    "2": 9,
+    "1": 20
+  },
+  "mean_rating": 3.615,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

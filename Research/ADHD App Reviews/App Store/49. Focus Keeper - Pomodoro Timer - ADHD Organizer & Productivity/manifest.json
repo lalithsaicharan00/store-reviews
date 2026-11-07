@@ -1,0 +1,49 @@
+{
+  "app_id": "867374917",
+  "app_name": "Focus Keeper - Pomodoro Timer",
+  "developer": "PIXO Incorporation",
+  "bundle_id": "com.limepresso.pomodorofree",
+  "extracted_at": "2026-11-07T05:57:18Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 5561,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 2664,
+    "gb": 579,
+    "ca": 458,
+    "br": 430,
+    "au": 264,
+    "de": 230,
+    "in": 181,
+    "se": 106,
+    "nl": 82,
+    "it": 72,
+    "mx": 69,
+    "at": 38,
+    "dk": 38,
+    "ie": 38,
+    "za": 38,
+    "ch": 37,
+    "nz": 36,
+    "ph": 36,
+    "sg": 30,
+    "es": 29,
+    "fr": 29,
+    "fi": 26,
+    "no": 26,
+    "be": 17,
+    "pt": 8
+  },
+  "rating_distribution": {
+    "5": 3867,
+    "4": 694,
+    "3": 271,
+    "2": 213,
+    "1": 516
+  },
+  "mean_rating": 4.292,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

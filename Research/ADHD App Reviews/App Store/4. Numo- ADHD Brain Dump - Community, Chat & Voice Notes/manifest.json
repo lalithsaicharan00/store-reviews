@@ -1,0 +1,48 @@
+{
+  "app_id": "1628994767",
+  "app_name": "Numo: ADHD Brain Dump",
+  "developer": "Mindist, Inc.",
+  "bundle_id": "io.mindist.well",
+  "extracted_at": "2026-11-07T05:51:30Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 485,
+  "storefronts_with_reviews": 24,
+  "reviews_per_country": {
+    "us": 255,
+    "gb": 52,
+    "au": 36,
+    "ca": 30,
+    "de": 27,
+    "nl": 11,
+    "br": 10,
+    "fr": 9,
+    "se": 9,
+    "ch": 6,
+    "ie": 5,
+    "mx": 5,
+    "pt": 5,
+    "it": 4,
+    "nz": 4,
+    "es": 3,
+    "in": 3,
+    "be": 2,
+    "dk": 2,
+    "fi": 2,
+    "no": 2,
+    "at": 1,
+    "sg": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 205,
+    "4": 43,
+    "3": 47,
+    "2": 40,
+    "1": 150
+  },
+  "mean_rating": 3.233,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "app_id": "6754361764",
+  "app_name": "Indy: ADHD AI Coach & Planner",
+  "developer": "shimmer, inc.",
+  "bundle_id": "com.shimmer.copilot",
+  "extracted_at": "2026-11-07T05:54:19Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 77,
+  "storefronts_with_reviews": 8,
+  "reviews_per_country": {
+    "us": 56,
+    "gb": 9,
+    "au": 6,
+    "ca": 2,
+    "es": 1,
+    "nl": 1,
+    "nz": 1,
+    "sg": 1
+  },
+  "rating_distribution": {
+    "5": 64,
+    "4": 5,
+    "3": 1,
+    "2": 1,
+    "1": 6
+  },
+  "mean_rating": 4.558,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

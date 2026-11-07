@@ -1,0 +1,49 @@
+{
+  "app_id": "1482581097",
+  "app_name": "Bearable - Symptom Tracker",
+  "developer": "Bearable Ltd",
+  "bundle_id": "co.codeleap.bearable",
+  "extracted_at": "2026-11-07T05:56:59Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1103,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 692,
+    "gb": 112,
+    "ca": 110,
+    "au": 59,
+    "de": 32,
+    "nl": 11,
+    "se": 11,
+    "es": 8,
+    "br": 7,
+    "ch": 7,
+    "fr": 7,
+    "dk": 6,
+    "za": 6,
+    "it": 5,
+    "ph": 5,
+    "at": 4,
+    "ie": 4,
+    "fi": 3,
+    "in": 3,
+    "nz": 3,
+    "mx": 2,
+    "no": 2,
+    "sg": 2,
+    "be": 1,
+    "pt": 1
+  },
+  "rating_distribution": {
+    "5": 794,
+    "4": 112,
+    "3": 69,
+    "2": 38,
+    "1": 90
+  },
+  "mean_rating": 4.344,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "app_id": "1163786766",
+  "app_name": "Alarmy - Loud alarm clock",
+  "developer": "Delight Room Co., Ltd.",
+  "bundle_id": "droom.sleepIfUCanFree",
+  "extracted_at": "2026-11-07T05:52:35Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 33625,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 21213,
+    "gb": 2312,
+    "ca": 1734,
+    "br": 1305,
+    "de": 1160,
+    "mx": 980,
+    "au": 798,
+    "in": 759,
+    "fr": 502,
+    "se": 391,
+    "es": 384,
+    "no": 278,
+    "nl": 265,
+    "it": 262,
+    "ph": 219,
+    "ch": 141,
+    "sg": 134,
+    "nz": 127,
+    "ie": 113,
+    "za": 112,
+    "at": 108,
+    "dk": 99,
+    "be": 93,
+    "fi": 73,
+    "pt": 63
+  },
+  "rating_distribution": {
+    "5": 23629,
+    "4": 3382,
+    "3": 1699,
+    "2": 1478,
+    "1": 3437
+  },
+  "mean_rating": 4.258,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

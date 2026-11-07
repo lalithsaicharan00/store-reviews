@@ -1,0 +1,49 @@
+{
+  "app_id": "390017969",
+  "app_name": "Due - Reminders & Timers",
+  "developer": "Due Apps LLP",
+  "bundle_id": "com.phocusllp.due",
+  "extracted_at": "2026-11-07T05:56:42Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 5425,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 2838,
+    "gb": 519,
+    "de": 376,
+    "ca": 287,
+    "au": 258,
+    "it": 220,
+    "es": 108,
+    "fr": 92,
+    "nl": 90,
+    "br": 85,
+    "se": 69,
+    "ch": 68,
+    "mx": 59,
+    "in": 57,
+    "sg": 50,
+    "dk": 40,
+    "at": 35,
+    "nz": 32,
+    "be": 27,
+    "ie": 26,
+    "pt": 25,
+    "fi": 24,
+    "no": 22,
+    "za": 11,
+    "ph": 7
+  },
+  "rating_distribution": {
+    "5": 3769,
+    "4": 647,
+    "3": 269,
+    "2": 259,
+    "1": 481
+  },
+  "mean_rating": 4.284,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "app_id": "1623658924",
+  "app_name": "FocusGenie: ADHD Manager",
+  "developer": "ADHme LLC",
+  "bundle_id": "com.focusgenie.ahdme",
+  "extracted_at": "2026-11-07T05:54:33Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 81,
+  "storefronts_with_reviews": 8,
+  "reviews_per_country": {
+    "us": 61,
+    "ca": 8,
+    "au": 5,
+    "gb": 2,
+    "nl": 2,
+    "fr": 1,
+    "mx": 1,
+    "se": 1
+  },
+  "rating_distribution": {
+    "5": 18,
+    "4": 14,
+    "3": 10,
+    "2": 12,
+    "1": 27
+  },
+  "mean_rating": 2.802,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

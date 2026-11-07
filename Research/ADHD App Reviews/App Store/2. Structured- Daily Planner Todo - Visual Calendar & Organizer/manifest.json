@@ -1,0 +1,49 @@
+{
+  "app_id": "1499198946",
+  "app_name": "Structured: Daily Planner Todo",
+  "developer": "unorderly GmbH",
+  "bundle_id": "com.leomehlig.today",
+  "extracted_at": "2026-11-07T05:51:13Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 15767,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 6128,
+    "de": 1768,
+    "gb": 1464,
+    "ca": 1235,
+    "au": 653,
+    "fr": 593,
+    "in": 509,
+    "mx": 484,
+    "es": 456,
+    "br": 380,
+    "it": 360,
+    "nl": 318,
+    "ph": 223,
+    "za": 191,
+    "ch": 179,
+    "at": 130,
+    "se": 123,
+    "be": 110,
+    "sg": 88,
+    "no": 83,
+    "nz": 79,
+    "dk": 72,
+    "pt": 58,
+    "ie": 48,
+    "fi": 35
+  },
+  "rating_distribution": {
+    "5": 10338,
+    "4": 2157,
+    "3": 1237,
+    "2": 735,
+    "1": 1300
+  },
+  "mean_rating": 4.237,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

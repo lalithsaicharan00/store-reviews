@@ -1,0 +1,27 @@
+{
+  "app_id": "1542353302",
+  "app_name": "Sunrise: ADHD Planner & Coach",
+  "developer": "HAPDAY - FZE",
+  "bundle_id": "com.happyapps.myhappyhabits",
+  "extracted_at": "2026-11-07T05:53:23Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 11,
+  "storefronts_with_reviews": 3,
+  "reviews_per_country": {
+    "us": 9,
+    "de": 1,
+    "mx": 1
+  },
+  "rating_distribution": {
+    "5": 8,
+    "4": 2,
+    "3": 0,
+    "2": 0,
+    "1": 1
+  },
+  "mean_rating": 4.455,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

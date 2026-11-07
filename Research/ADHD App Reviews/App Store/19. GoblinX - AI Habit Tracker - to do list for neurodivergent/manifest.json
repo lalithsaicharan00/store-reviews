@@ -1,0 +1,28 @@
+{
+  "app_id": "6462700951",
+  "app_name": "GoblinX - AI Habit Tracker",
+  "developer": "ZSTACK CAPITAL LLC",
+  "bundle_id": "manny.GoblinTools",
+  "extracted_at": "2026-11-07T05:53:56Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 18,
+  "storefronts_with_reviews": 4,
+  "reviews_per_country": {
+    "us": 15,
+    "au": 1,
+    "ca": 1,
+    "ie": 1
+  },
+  "rating_distribution": {
+    "5": 5,
+    "4": 0,
+    "3": 1,
+    "2": 1,
+    "1": 11
+  },
+  "mean_rating": 2.278,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

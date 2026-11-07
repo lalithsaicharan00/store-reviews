@@ -1,0 +1,49 @@
+{
+  "app_id": "1480220328",
+  "app_name": "Tiimo: To-Do List Planner",
+  "developer": "tiimo ApS",
+  "bundle_id": "com.tiimo.app",
+  "extracted_at": "2026-11-07T05:50:49Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 3666,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 1539,
+    "gb": 433,
+    "de": 225,
+    "ca": 223,
+    "br": 192,
+    "au": 145,
+    "dk": 126,
+    "fr": 115,
+    "nl": 95,
+    "mx": 89,
+    "se": 75,
+    "es": 60,
+    "it": 59,
+    "in": 53,
+    "ch": 45,
+    "no": 32,
+    "at": 29,
+    "be": 22,
+    "fi": 22,
+    "nz": 20,
+    "pt": 17,
+    "ie": 14,
+    "za": 14,
+    "sg": 13,
+    "ph": 9
+  },
+  "rating_distribution": {
+    "5": 1298,
+    "4": 469,
+    "3": 506,
+    "2": 421,
+    "1": 972
+  },
+  "mean_rating": 3.191,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

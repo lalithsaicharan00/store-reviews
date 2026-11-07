@@ -1,0 +1,35 @@
+{
+  "app_id": "6450952644",
+  "app_name": "Kawaii Tasks: ADHD Ai Tools",
+  "developer": "Mindist, Inc.",
+  "bundle_id": "io.mindist.tasks",
+  "extracted_at": "2026-11-07T05:54:56Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 41,
+  "storefronts_with_reviews": 11,
+  "reviews_per_country": {
+    "us": 23,
+    "fr": 4,
+    "gb": 3,
+    "au": 2,
+    "ca": 2,
+    "de": 2,
+    "be": 1,
+    "br": 1,
+    "ch": 1,
+    "es": 1,
+    "nl": 1
+  },
+  "rating_distribution": {
+    "5": 7,
+    "4": 0,
+    "3": 6,
+    "2": 3,
+    "1": 25
+  },
+  "mean_rating": 2.049,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

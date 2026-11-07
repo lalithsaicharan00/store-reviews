@@ -1,0 +1,28 @@
+{
+  "app_id": "1567733655",
+  "app_name": "Routinery: Happy daily rituals",
+  "developer": "Le Nhung",
+  "bundle_id": "com.luongtsu.dailyhabit",
+  "extracted_at": "2026-11-07T05:52:46Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 12,
+  "storefronts_with_reviews": 4,
+  "reviews_per_country": {
+    "us": 8,
+    "gb": 2,
+    "ca": 1,
+    "de": 1
+  },
+  "rating_distribution": {
+    "5": 2,
+    "4": 0,
+    "3": 0,
+    "2": 1,
+    "1": 9
+  },
+  "mean_rating": 1.75,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

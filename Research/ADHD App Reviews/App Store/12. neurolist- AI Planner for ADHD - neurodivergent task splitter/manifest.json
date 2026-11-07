@@ -1,0 +1,40 @@
+{
+  "app_id": "6468689182",
+  "app_name": "neurolist: AI Planner for ADHD",
+  "developer": "System Two GmbH",
+  "bundle_id": "neurolist.app.neurolist",
+  "extracted_at": "2026-11-07T05:53:09Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 93,
+  "storefronts_with_reviews": 16,
+  "reviews_per_country": {
+    "us": 47,
+    "ca": 9,
+    "au": 7,
+    "de": 7,
+    "gb": 6,
+    "br": 3,
+    "fr": 3,
+    "nl": 2,
+    "nz": 2,
+    "be": 1,
+    "ch": 1,
+    "es": 1,
+    "in": 1,
+    "no": 1,
+    "se": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 51,
+    "4": 3,
+    "3": 10,
+    "2": 5,
+    "1": 24
+  },
+  "mean_rating": 3.559,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

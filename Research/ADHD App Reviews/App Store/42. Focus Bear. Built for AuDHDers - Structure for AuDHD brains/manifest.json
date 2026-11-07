@@ -1,0 +1,27 @@
+{
+  "app_id": "1673296334",
+  "app_name": "Focus Bear. Built for AuDHDers",
+  "developer": "Focus Bear Pty Ltd",
+  "bundle_id": "com.FocusBear.development",
+  "extracted_at": "2026-11-07T05:56:19Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 59,
+  "storefronts_with_reviews": 3,
+  "reviews_per_country": {
+    "au": 42,
+    "in": 10,
+    "us": 7
+  },
+  "rating_distribution": {
+    "5": 54,
+    "4": 3,
+    "3": 2,
+    "2": 0,
+    "1": 0
+  },
+  "mean_rating": 4.881,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

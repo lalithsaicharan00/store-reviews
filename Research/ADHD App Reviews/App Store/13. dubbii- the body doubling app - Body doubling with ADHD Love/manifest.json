@@ -1,0 +1,44 @@
+{
+  "app_id": "6450302677",
+  "app_name": "dubbii: the body doubling app",
+  "developer": "Pink Media LTD",
+  "bundle_id": "com.gravitywell.adhdlove",
+  "extracted_at": "2026-11-07T05:53:18Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 451,
+  "storefronts_with_reviews": 20,
+  "reviews_per_country": {
+    "us": 198,
+    "gb": 137,
+    "au": 35,
+    "ca": 23,
+    "de": 16,
+    "nl": 9,
+    "ie": 4,
+    "at": 3,
+    "ch": 3,
+    "dk": 3,
+    "se": 3,
+    "be": 2,
+    "es": 2,
+    "fi": 2,
+    "fr": 2,
+    "it": 2,
+    "no": 2,
+    "nz": 2,
+    "za": 2,
+    "br": 1
+  },
+  "rating_distribution": {
+    "5": 390,
+    "4": 26,
+    "3": 18,
+    "2": 6,
+    "1": 11
+  },
+  "mean_rating": 4.725,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

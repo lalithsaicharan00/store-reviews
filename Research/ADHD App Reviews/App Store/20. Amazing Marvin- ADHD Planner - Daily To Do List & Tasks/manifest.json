@@ -1,0 +1,38 @@
+{
+  "app_id": "1314511546",
+  "app_name": "Amazing Marvin: ADHD Planner",
+  "developer": "Amazing GmbH",
+  "bundle_id": "com.amazingmarvin.Marvin",
+  "extracted_at": "2026-11-07T05:54:03Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 83,
+  "storefronts_with_reviews": 14,
+  "reviews_per_country": {
+    "us": 48,
+    "ca": 8,
+    "gb": 8,
+    "au": 4,
+    "ch": 3,
+    "de": 3,
+    "fr": 2,
+    "be": 1,
+    "br": 1,
+    "in": 1,
+    "no": 1,
+    "nz": 1,
+    "ph": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 50,
+    "4": 2,
+    "3": 8,
+    "2": 12,
+    "1": 11
+  },
+  "mean_rating": 3.819,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

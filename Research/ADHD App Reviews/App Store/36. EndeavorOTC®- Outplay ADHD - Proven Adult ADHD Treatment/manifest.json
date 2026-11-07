@@ -1,0 +1,25 @@
+{
+  "app_id": "6447322997",
+  "app_name": "EndeavorOTC®: Outplay ADHD",
+  "developer": "Akili Interactive Labs, Inc.",
+  "bundle_id": "com.akiliinteractive.t01a",
+  "extracted_at": "2026-11-07T05:55:43Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 326,
+  "storefronts_with_reviews": 1,
+  "reviews_per_country": {
+    "us": 326
+  },
+  "rating_distribution": {
+    "5": 63,
+    "4": 19,
+    "3": 28,
+    "2": 43,
+    "1": 173
+  },
+  "mean_rating": 2.252,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

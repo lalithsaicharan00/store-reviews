@@ -34,3 +34,6 @@ Core/fixtures/inputs/*
 
 # Wrangler's local cache
 .wrangler/
+
+# Over GitHub's 100 MB limit: kept as reviews.part-*.jsonl beside it
+Research/ADHD App Reviews/Play Store/69. Alarmy - Alarm Clock & Sleep/reviews.jsonl

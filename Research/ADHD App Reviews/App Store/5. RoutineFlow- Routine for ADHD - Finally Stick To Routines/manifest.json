@@ -1,0 +1,47 @@
+{
+  "app_id": "1639800794",
+  "app_name": "RoutineFlow: Routine for ADHD",
+  "developer": "System Two GmbH",
+  "bundle_id": "app.routineflow.routineflow",
+  "extracted_at": "2026-11-07T05:51:39Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 282,
+  "storefronts_with_reviews": 23,
+  "reviews_per_country": {
+    "us": 150,
+    "gb": 33,
+    "ca": 21,
+    "de": 21,
+    "au": 12,
+    "nl": 6,
+    "se": 6,
+    "dk": 4,
+    "no": 3,
+    "ph": 3,
+    "at": 2,
+    "br": 2,
+    "es": 2,
+    "fi": 2,
+    "fr": 2,
+    "ie": 2,
+    "mx": 2,
+    "nz": 2,
+    "pt": 2,
+    "za": 2,
+    "be": 1,
+    "in": 1,
+    "sg": 1
+  },
+  "rating_distribution": {
+    "5": 137,
+    "4": 36,
+    "3": 22,
+    "2": 26,
+    "1": 61
+  },
+  "mean_rating": 3.574,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

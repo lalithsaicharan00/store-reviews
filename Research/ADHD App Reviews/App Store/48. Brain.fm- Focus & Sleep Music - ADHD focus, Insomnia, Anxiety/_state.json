@@ -1,0 +1,180 @@
+{
+ "app_id": "1110684238",
+ "countries": {
+  "us": {
+   "cursor": 1449,
+   "collected": 1449,
+   "total": 1449,
+   "complete": true,
+   "updated": "2026-11-07T05:57:05Z"
+  },
+  "gb": {
+   "cursor": 192,
+   "collected": 192,
+   "total": 192,
+   "complete": true,
+   "updated": "2026-11-07T05:57:03Z"
+  },
+  "ca": {
+   "cursor": 143,
+   "collected": 143,
+   "total": 143,
+   "complete": true,
+   "updated": "2026-11-07T05:57:03Z"
+  },
+  "au": {
+   "cursor": 108,
+   "collected": 108,
+   "total": 108,
+   "complete": true,
+   "updated": "2026-11-07T05:57:03Z"
+  },
+  "nz": {
+   "cursor": 16,
+   "collected": 16,
+   "total": 16,
+   "complete": true,
+   "updated": "2026-11-07T05:57:03Z"
+  },
+  "ie": {
+   "cursor": 10,
+   "collected": 10,
+   "total": 10,
+   "complete": true,
+   "updated": "2026-11-07T05:57:04Z"
+  },
+  "in": {
+   "cursor": 38,
+   "collected": 38,
+   "total": 38,
+   "complete": true,
+   "updated": "2026-11-07T05:57:04Z"
+  },
+  "za": {
+   "cursor": 26,
+   "collected": 26,
+   "total": 26,
+   "complete": true,
+   "updated": "2026-11-07T05:57:04Z"
+  },
+  "sg": {
+   "cursor": 10,
+   "collected": 10,
+   "total": 10,
+   "complete": true,
+   "updated": "2026-11-07T05:57:04Z"
+  },
+  "ph": {
+   "cursor": 8,
+   "collected": 8,
+   "total": 8,
+   "complete": true,
+   "updated": "2026-11-07T05:57:04Z"
+  },
+  "de": {
+   "cursor": 130,
+   "collected": 130,
+   "total": 130,
+   "complete": true,
+   "updated": "2026-11-07T05:57:05Z"
+  },
+  "at": {
+   "cursor": 18,
+   "collected": 18,
+   "total": 18,
+   "complete": true,
+   "updated": "2026-11-07T05:57:05Z"
+  },
+  "ch": {
+   "cursor": 14,
+   "collected": 14,
+   "total": 14,
+   "complete": true,
+   "updated": "2026-11-07T05:57:05Z"
+  },
+  "nl": {
+   "cursor": 33,
+   "collected": 33,
+   "total": 33,
+   "complete": true,
+   "updated": "2026-11-07T05:57:06Z"
+  },
+  "se": {
+   "cursor": 27,
+   "collected": 27,
+   "total": 27,
+   "complete": true,
+   "updated": "2026-11-07T05:57:06Z"
+  },
+  "no": {
+   "cursor": 17,
+   "collected": 17,
+   "total": 17,
+   "complete": true,
+   "updated": "2026-11-07T05:57:06Z"
+  },
+  "dk": {
+   "cursor": 9,
+   "collected": 9,
+   "total": 9,
+   "complete": true,
+   "updated": "2026-11-07T05:57:06Z"
+  },
+  "fi": {
+   "cursor": 7,
+   "collected": 7,
+   "total": 7,
+   "complete": true,
+   "updated": "2026-11-07T05:57:07Z"
+  },
+  "fr": {
+   "cursor": 51,
+   "collected": 51,
+   "total": 51,
+   "complete": true,
+   "updated": "2026-11-07T05:57:07Z"
+  },
+  "be": {
+   "cursor": 10,
+   "collected": 10,
+   "total": 10,
+   "complete": true,
+   "updated": "2026-11-07T05:57:07Z"
+  },
+  "es": {
+   "cursor": 26,
+   "collected": 26,
+   "total": 26,
+   "complete": true,
+   "updated": "2026-11-07T05:57:07Z"
+  },
+  "it": {
+   "cursor": 23,
+   "collected": 23,
+   "total": 23,
+   "complete": true,
+   "updated": "2026-11-07T05:57:08Z"
+  },
+  "br": {
+   "cursor": 37,
+   "collected": 37,
+   "total": 37,
+   "complete": true,
+   "updated": "2026-11-07T05:57:08Z"
+  },
+  "mx": {
+   "cursor": 33,
+   "collected": 33,
+   "total": 33,
+   "complete": true,
+   "updated": "2026-11-07T05:57:08Z"
+  },
+  "pt": {
+   "cursor": 5,
+   "collected": 5,
+   "total": 5,
+   "complete": true,
+   "updated": "2026-11-07T05:57:08Z"
+  }
+ }
+}

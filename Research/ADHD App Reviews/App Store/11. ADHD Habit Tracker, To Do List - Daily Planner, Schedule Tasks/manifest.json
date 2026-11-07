@@ -1,0 +1,49 @@
+{
+  "app_id": "1494584871",
+  "app_name": "ADHD Habit Tracker, To Do List",
+  "developer": "NOTA SYSTEMS, LLC",
+  "bundle_id": "com.ziggycrane.timecap",
+  "extracted_at": "2026-11-07T05:53:02Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 963,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 501,
+    "ca": 95,
+    "gb": 67,
+    "de": 51,
+    "au": 50,
+    "in": 38,
+    "mx": 23,
+    "ph": 19,
+    "fr": 18,
+    "nl": 18,
+    "sg": 16,
+    "se": 11,
+    "za": 10,
+    "es": 9,
+    "br": 6,
+    "dk": 6,
+    "it": 6,
+    "no": 4,
+    "nz": 4,
+    "at": 3,
+    "ch": 2,
+    "fi": 2,
+    "pt": 2,
+    "be": 1,
+    "ie": 1
+  },
+  "rating_distribution": {
+    "5": 802,
+    "4": 73,
+    "3": 32,
+    "2": 13,
+    "1": 43
+  },
+  "mean_rating": 4.639,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

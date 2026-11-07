@@ -1,0 +1,49 @@
+{
+  "app_id": "1532875441",
+  "app_name": "one sec | screen time + focus",
+  "developer": "riedel.wtf apps S.L.",
+  "bundle_id": "wtf.riedel.one-sec",
+  "extracted_at": "2026-11-07T05:57:26Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 3188,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 1018,
+    "de": 590,
+    "gb": 282,
+    "ca": 217,
+    "in": 164,
+    "au": 135,
+    "fr": 123,
+    "es": 89,
+    "br": 79,
+    "it": 72,
+    "nl": 65,
+    "ch": 58,
+    "at": 46,
+    "mx": 45,
+    "se": 41,
+    "dk": 29,
+    "no": 21,
+    "be": 20,
+    "nz": 18,
+    "ph": 16,
+    "fi": 15,
+    "pt": 13,
+    "sg": 13,
+    "ie": 10,
+    "za": 9
+  },
+  "rating_distribution": {
+    "5": 1962,
+    "4": 336,
+    "3": 270,
+    "2": 211,
+    "1": 409
+  },
+  "mean_rating": 4.013,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

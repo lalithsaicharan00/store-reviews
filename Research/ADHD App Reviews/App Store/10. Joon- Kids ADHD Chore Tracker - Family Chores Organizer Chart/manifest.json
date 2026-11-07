@@ -1,0 +1,44 @@
+{
+  "app_id": "1482225056",
+  "app_name": "Joon: Kids ADHD Chore Tracker",
+  "developer": "Joon App, Inc",
+  "bundle_id": "kbunarjo.com.iPhone",
+  "extracted_at": "2026-11-07T05:52:54Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1423,
+  "storefronts_with_reviews": 20,
+  "reviews_per_country": {
+    "us": 1069,
+    "ca": 113,
+    "au": 82,
+    "gb": 81,
+    "nz": 20,
+    "dk": 9,
+    "se": 8,
+    "no": 7,
+    "nl": 6,
+    "de": 5,
+    "za": 5,
+    "ch": 3,
+    "fr": 3,
+    "sg": 3,
+    "be": 2,
+    "fi": 2,
+    "ie": 2,
+    "es": 1,
+    "in": 1,
+    "mx": 1
+  },
+  "rating_distribution": {
+    "5": 967,
+    "4": 112,
+    "3": 72,
+    "2": 56,
+    "1": 216
+  },
+  "mean_rating": 4.095,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

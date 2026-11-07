@@ -1,0 +1,43 @@
+{
+  "app_id": "1560704848",
+  "app_name": "ADHD Schedule Planner: Weel",
+  "developer": "Executive Functioning Oy",
+  "bundle_id": "com.pical.app",
+  "extracted_at": "2026-11-07T05:53:38Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 171,
+  "storefronts_with_reviews": 19,
+  "reviews_per_country": {
+    "us": 93,
+    "gb": 16,
+    "de": 12,
+    "fi": 12,
+    "ca": 10,
+    "au": 8,
+    "nl": 4,
+    "no": 4,
+    "nz": 2,
+    "at": 1,
+    "be": 1,
+    "ch": 1,
+    "dk": 1,
+    "fr": 1,
+    "in": 1,
+    "it": 1,
+    "ph": 1,
+    "se": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 92,
+    "4": 22,
+    "3": 17,
+    "2": 19,
+    "1": 21
+  },
+  "mean_rating": 3.848,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

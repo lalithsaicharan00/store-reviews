@@ -1,0 +1,46 @@
+{
+  "app_id": "332520417",
+  "app_name": "Time Timer",
+  "developer": "Time Timer LLC",
+  "bundle_id": "com.timetimer.timetimer",
+  "extracted_at": "2026-11-07T05:56:50Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 740,
+  "storefronts_with_reviews": 22,
+  "reviews_per_country": {
+    "us": 318,
+    "ca": 69,
+    "de": 53,
+    "fr": 52,
+    "nl": 47,
+    "au": 45,
+    "se": 33,
+    "dk": 26,
+    "gb": 23,
+    "ch": 21,
+    "be": 13,
+    "es": 6,
+    "fi": 5,
+    "mx": 5,
+    "ie": 4,
+    "in": 4,
+    "it": 4,
+    "br": 3,
+    "nz": 3,
+    "ph": 2,
+    "pt": 2,
+    "sg": 2
+  },
+  "rating_distribution": {
+    "5": 315,
+    "4": 96,
+    "3": 94,
+    "2": 51,
+    "1": 184
+  },
+  "mean_rating": 3.415,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

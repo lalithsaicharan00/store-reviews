@@ -1,0 +1,49 @@
+{
+  "app_id": "1110684238",
+  "app_name": "Brain.fm: Focus & Sleep Music",
+  "developer": "BrainFM, Inc.",
+  "bundle_id": "fm.brainwave",
+  "extracted_at": "2026-11-07T05:57:08Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 2440,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 1449,
+    "gb": 192,
+    "ca": 143,
+    "de": 130,
+    "au": 108,
+    "fr": 51,
+    "in": 38,
+    "br": 37,
+    "mx": 33,
+    "nl": 33,
+    "se": 27,
+    "es": 26,
+    "za": 26,
+    "it": 23,
+    "at": 18,
+    "no": 17,
+    "nz": 16,
+    "ch": 14,
+    "be": 10,
+    "ie": 10,
+    "sg": 10,
+    "dk": 9,
+    "ph": 8,
+    "fi": 7,
+    "pt": 5
+  },
+  "rating_distribution": {
+    "5": 1461,
+    "4": 241,
+    "3": 184,
+    "2": 156,
+    "1": 398
+  },
+  "mean_rating": 3.906,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

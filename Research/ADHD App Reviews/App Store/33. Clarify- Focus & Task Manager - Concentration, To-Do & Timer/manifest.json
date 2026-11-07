@@ -1,0 +1,49 @@
+{
+  "app_id": "1670958524",
+  "app_name": "Clarify: Focus & Task Manager",
+  "developer": "Fabulous",
+  "bundle_id": "co.thefab.tm",
+  "extracted_at": "2026-11-07T05:55:25Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1153,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 770,
+    "gb": 118,
+    "ca": 54,
+    "au": 37,
+    "de": 34,
+    "br": 26,
+    "fr": 19,
+    "in": 10,
+    "it": 10,
+    "se": 9,
+    "es": 8,
+    "ie": 7,
+    "nl": 7,
+    "ch": 5,
+    "nz": 5,
+    "sg": 5,
+    "za": 5,
+    "mx": 4,
+    "be": 3,
+    "dk": 3,
+    "fi": 3,
+    "no": 3,
+    "ph": 3,
+    "pt": 3,
+    "at": 2
+  },
+  "rating_distribution": {
+    "5": 493,
+    "4": 84,
+    "3": 50,
+    "2": 65,
+    "1": 461
+  },
+  "mean_rating": 3.072,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

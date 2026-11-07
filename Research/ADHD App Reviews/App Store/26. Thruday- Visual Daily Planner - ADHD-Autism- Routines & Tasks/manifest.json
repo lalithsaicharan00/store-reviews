@@ -1,0 +1,30 @@
+{
+  "app_id": "1645552771",
+  "app_name": "Thruday: Visual Daily Planner",
+  "developer": "Thruday LTD",
+  "bundle_id": "com.thrudayapp.thrudayApp",
+  "extracted_at": "2026-11-07T05:54:38Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 46,
+  "storefronts_with_reviews": 6,
+  "reviews_per_country": {
+    "gb": 25,
+    "us": 13,
+    "au": 4,
+    "ca": 2,
+    "nl": 1,
+    "se": 1
+  },
+  "rating_distribution": {
+    "5": 29,
+    "4": 6,
+    "3": 3,
+    "2": 2,
+    "1": 6
+  },
+  "mean_rating": 4.087,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

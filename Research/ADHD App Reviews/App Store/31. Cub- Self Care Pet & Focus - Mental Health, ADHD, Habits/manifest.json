@@ -1,0 +1,43 @@
+{
+  "app_id": "6450726111",
+  "app_name": "Cub: Self Care Pet & Focus",
+  "developer": "Offbeat Apps LLC",
+  "bundle_id": "com.cubadhd.CubADHD",
+  "extracted_at": "2026-11-07T05:55:09Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 264,
+  "storefronts_with_reviews": 19,
+  "reviews_per_country": {
+    "us": 166,
+    "ca": 33,
+    "gb": 17,
+    "au": 15,
+    "de": 5,
+    "br": 3,
+    "dk": 3,
+    "no": 3,
+    "nz": 3,
+    "be": 2,
+    "es": 2,
+    "fr": 2,
+    "ie": 2,
+    "nl": 2,
+    "se": 2,
+    "fi": 1,
+    "in": 1,
+    "it": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 91,
+    "4": 29,
+    "3": 27,
+    "2": 31,
+    "1": 86
+  },
+  "mean_rating": 3.03,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

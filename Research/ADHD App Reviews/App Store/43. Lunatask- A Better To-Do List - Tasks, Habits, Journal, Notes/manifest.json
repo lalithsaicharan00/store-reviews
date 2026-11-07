@@ -1,0 +1,42 @@
+{
+  "app_id": "1583719331",
+  "app_name": "Lunatask: A Better To-Do List",
+  "developer": "Michal Krejci",
+  "bundle_id": "com.mikekreeki.tasks",
+  "extracted_at": "2026-11-07T05:56:26Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 98,
+  "storefronts_with_reviews": 18,
+  "reviews_per_country": {
+    "us": 44,
+    "ca": 7,
+    "de": 6,
+    "nl": 6,
+    "br": 5,
+    "fr": 5,
+    "gb": 5,
+    "au": 4,
+    "in": 4,
+    "ie": 2,
+    "se": 2,
+    "sg": 2,
+    "be": 1,
+    "dk": 1,
+    "mx": 1,
+    "nz": 1,
+    "pt": 1,
+    "za": 1
+  },
+  "rating_distribution": {
+    "5": 69,
+    "4": 8,
+    "3": 5,
+    "2": 4,
+    "1": 12
+  },
+  "mean_rating": 4.204,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}
