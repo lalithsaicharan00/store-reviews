@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "cc.forestapp",
+  "app_name": "Forest: Stay Focused",
+  "extracted_at": "2026-11-07T06:17:33Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 146167,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 78463,
+    "pt": 26717,
+    "es": 26676,
+    "fr": 8162,
+    "de": 4676,
+    "nl": 1473
+  },
+  "rating_distribution": {
+    "5": 105306,
+    "4": 19825,
+    "3": 7309,
+    "2": 4401,
+    "1": 9326
+  },
+  "mean_rating": 4.419,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

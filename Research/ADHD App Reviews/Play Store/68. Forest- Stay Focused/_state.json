@@ -1,0 +1,41 @@
+{
+ "package": "cc.forestapp",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 524,
+   "collected": 78463,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 32,
+   "collected": 4676,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 178,
+   "collected": 26676,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 55,
+   "collected": 8162,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 179,
+   "collected": 26717,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 10,
+   "collected": 1473,
+   "complete": true
+  }
+ }
+}
