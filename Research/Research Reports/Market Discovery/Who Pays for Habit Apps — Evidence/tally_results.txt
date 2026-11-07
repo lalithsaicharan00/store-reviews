@@ -1,0 +1,79 @@
+reviews 877278 machine payers 17646 trap 2931
+A read 1298 Counter({'P': 915, 'S': 253, 'N': 130})
+A chose 915 with real group 660
+A by store Counter({'ios': 480, 'play': 180})
+B 120 chose 102 S 1 N 17 | C 240 chose 183 S 24 N 33
+trap read 298 Counter({'S': 217, 'P': 69, 'N': 12})
+est chose: A 915 B 802 none 10347 total 12063
+nog 15357 nog no trap 12790 B notrap 925 Btrap 66
+
+Group paid surprise sur% share_of_named share_of_est ios play
+ADHD / neurodivergent                       290   83   22%  43.9%  2.40%  183 107  [('Finch - Self', 47), ('RoutineFlow ', 40), ('Fabulous - D', 35), ('Me+ Lifestyl', 26)]
+Depression / anxiety                        211   22    9%  32.0%  1.75%  180  31  [('Finch - Self', 105), ('Fabulous - D', 45), ('Fabulous Dai', 16), ('Me+ Lifestyl', 10)]
+Parent                                       44    7   14%   6.7%  0.36%   34  10  [('Finch - Self', 9), ('Fabulous - D', 7), ('Productive -', 7), ('RoutineFlow ', 5)]
+Student                                      31   10   24%   4.7%  0.26%   23   8  [('ShineDay - H', 5), ('Productive -', 4), ('Finch - Self', 4), ('Fabulous Dai', 4)]
+PTSD, bipolar, OCD, severe                   29    0    0%   4.4%  0.24%   23   6  [('Finch - Self', 11), ('Fabulous - D', 8), ('Me+ Lifestyl', 3), ('Fabulous Dai', 3)]
+Chronic illness, disability, brain injury    26    8   24%   3.9%  0.22%   22   4  [('Finch - Self', 9), ('Fabulous - D', 7), ('Fabulous Dai', 3), ('Habit Tracke', 2)]
+Autistic                                     25    4   14%   3.8%  0.21%   16   9  [('Finch - Self', 8), ('RoutineFlow ', 4), ('Me+ Lifestyl', 4), ('Routine Plan', 2)]
+Quitting / recovery                          23    3   12%   3.5%  0.19%   18   5  [('Days Since -', 5), ('Finch - Self', 4), ('Way of Life ', 3), ('Strides - Ha', 2)]
+With partner or friends                      23    1    4%   3.5%  0.19%   21   2  [('Habit Tracke', 12), ('Finch - Self', 5), ('RoutineFlow ', 2), ('Streaks - Th', 2)]
+Shift or demanding job                       19    1    5%   2.9%  0.16%   16   3  [('Fabulous - D', 5), ('Productive -', 4), ('Finch - Self', 3), ('Fabulous Dai', 2)]
+Faith                                        19    1    5%   2.9%  0.16%   16   3  [('Habit Tracke', 3), ('Fabulous Dai', 3), ('Fabulous - D', 3), ('Streaks - Th', 2)]
+Developer, designer, founder                 16    1    6%   2.4%  0.13%   10   6  [('Productive -', 4), ('Habit Tracke', 3), ('HabitNow Dai', 2), ('Finch - Self', 2)]
+Buys for a child                             15    0    0%   2.3%  0.12%    9   6  [('Habit Tracke', 3), ('Fabulous Dai', 2), ('Fabulous - D', 2), ('RoutineFlow ', 2)]
+In therapy                                   11    2   15%   1.7%  0.09%   11   0  [('Finch - Self', 9), ('Fabulous - D', 1), ('Productive -', 1)]
+Helpers (therapist, coach, teacher)           9    6   40%   1.4%  0.07%    7   2  [('Finch - Self', 4), ('Fabulous - D', 2), ('Productive -', 1), ('RoutineFlow ', 1)]
+Teenager                                      5    0    0%   0.8%  0.04%    5   0  [('Productive -', 1), ('Habit Tracke', 1), ('Me+ Lifestyl', 1), ('Finch - Self', 1)]
+Older or retired                              3    1   25%   0.5%  0.02%    2   1  [('Finch - Self', 2), ('Me+ Lifestyl', 1)]
+
+WHY by group (of chose, percent)
+ADHD / neurodivergent                      290 need: 36 worke:  4 love:  4 thank:  4 inves:  2 cheap:  1 famil:  1 last:  3 limit:  2 once:  3
+Depression / anxiety                       211 need: 43 worke: 13 love:  6 thank:  4 inves:  3 cheap:  3 famil:  1 last:  0 limit:  0 once:  0
+Parent                                      44 need: 25 worke:  5 love:  5 thank:  0 inves:  2 cheap:  0 famil: 30 last:  0 limit:  5 once:  0
+Student                                     31 need:  3 worke: 13 love:  3 thank:  0 inves:  3 cheap:  0 famil:  0 last:  0 limit:  3 once: 19
+PTSD, bipolar, OCD, severe                  29 need: 66 worke:  7 love:  7 thank:  0 inves:  0 cheap:  3 famil:  0 last:  0 limit:  3 once:  0
+Chronic illness, disability, brain injury   26 need: 62 worke:  4 love:  0 thank:  0 inves:  8 cheap:  4 famil:  0 last:  0 limit:  0 once:  0
+Autistic                                    25 need: 40 worke:  4 love:  8 thank:  4 inves:  4 cheap:  0 famil:  0 last:  0 limit:  4 once:  0
+Quitting / recovery                         23 need: 30 worke: 17 love:  0 thank:  0 inves:  0 cheap:  4 famil:  0 last:  0 limit: 13 once:  0
+With partner or friends                     23 need: 13 worke:  0 love:  0 thank:  9 inves:  0 cheap:  0 famil: 48 last:  0 limit:  0 once:  4
+Shift or demanding job                      19 need: 11 worke: 16 love:  5 thank:  0 inves:  0 cheap:  0 famil:  0 last:  0 limit:  0 once:  0
+all A 915 Counter({'need': 203, 'worked': 68, 'family': 32, 'thanks': 32, 'love': 27, 'once': 24, 'invest': 19, 'limit': 16, 'last': 10, 'cheaper': 9})
+named, no why coded 286
+
+C chose 183 said 96 no reason 87 {'fit': 47, 'worked': 11, 'need': 1, 'limit': 17, 'thanks': 5, 'love': 4, 'commit': 10, 'once': 1}
+B chose 102 said 72 no reason 30 {'fit': 28, 'worked': 10, 'need': 8, 'limit': 4, 'thanks': 5, 'love': 8, 'commit': 2, 'once': 6, 'family': 1}
+B true groups {'trait': 11, 'pet': 13, 'data': 12, 'fitness': 4, 'selfimp': 4, 'gamer': 2, 'crisis': 4}
+machine tier B payers Counter({'quantified_self': 247, 'fitness_weight': 201, 'trait_struggler': 167, 'pet_cozy': 154, 'life_crisis': 135, 'self_improver': 107, 'gamer': 70})
+
+unread payers in 4-5 stars, share who chose 0.81 116
+base positive rate 1.16 of 317778
+group                                        OR    lo    hi payers real members   rate
+Developer, designer, founder               5.49  2.56 11.80     11           58  18.8%
+Parent                                     3.21  2.16  4.75     31          447   6.9%
+Buys for a child                           1.73  0.87  3.44      9          327   2.7%
+Faith                                      1.58  0.93  2.69     16          401   4.0%
+ADHD / neurodivergent                      1.54  1.32  1.80    201         5268   3.8%
+Shift or demanding job                     1.51  0.84  2.72     13          226   5.7%
+Autistic                                   1.38  0.87  2.19     20          565   3.5%
+PTSD, bipolar, OCD, severe                 1.26  0.82  1.92     24          757   3.2%
+Depression / anxiety                       1.13  0.95  1.34    166         8533   1.9%
+In therapy                                 1.07  0.58  1.95     11          436   2.5%
+Chronic illness, disability, brain injury  0.91  0.56  1.48     18          547   3.3%
+Older or retired                           0.83  0.21  3.39      2           73   2.8%
+Helpers (therapist, coach, teacher)        0.82  0.34  2.00      5          230   2.2%
+With partner or friends                    0.57  0.33  0.97     14         1385   1.0%
+Student                                    0.54  0.35  0.84     21         1295   1.6%
+Quitting / recovery                        0.49  0.31  0.79     19         1483   1.3%
+Teenager                                   0.45  0.14  1.39      3          342   0.9%
+
+once vs sub
+ADHD / neurodivergent                      290 once  10% sub  39%
+Depression / anxiety                       211 once   2% sub  39%
+Parent                                      44 once   2% sub  20%
+Student                                     31 once  26% sub  35%
+PTSD, bipolar, OCD, severe                  29 once   3% sub  34%
+Chronic illness, disability, brain injury   26 once   0% sub  35%
+Autistic                                    25 once  20% sub  40%
+Quitting / recovery                         23 once  17% sub  22%
+With partner or friends                     23 once  30% sub  26%
+Shift or demanding job                      19 once  11% sub  32%

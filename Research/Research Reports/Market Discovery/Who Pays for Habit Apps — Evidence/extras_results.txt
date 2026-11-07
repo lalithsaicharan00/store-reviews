@@ -1,0 +1,61 @@
+mind union 486 mind+body 501
+AD&DA 32 family roles 71
+life roles 74
+B with identity 49 of 120
+overlap with N/S set()
+trait 11 85
+pet 13 100
+data 12 92
+fitness 4 31
+selfimp 4 31
+gamer 2 15
+crisis 4 31
+B est identity 378
+named need 202 660 said any 374
+why among named Counter({'need': 202, 'worked': 55, 'family': 31, 'thanks': 26, 'love': 24, 'once': 19, 'invest': 15, 'limit': 11, 'last': 9, 'cheaper': 9})
+stars named Counter({5: 462, 1: 72, 4: 51, 3: 42, 2: 33})
+app of named [('Finch - Self-Care ', 164), ('Fabulous - Daily H', 96), ('Fabulous Daily Rou', 55), ('RoutineFlow - Rout', 49), ('Productive - Habit', 41), ('Habit Tracker - Go', 41), ('Me+ Lifestyle Rout', 40), ('HabitNow Daily Rou', 24), ('Routine Planner, H', 23), ('Streaks - The habi', 15), ('Habit Tracker - Ha', 9), ('Way of Life - Habi', 8)]
+payers by app [('Fabulous Daily Rou', 1485), ('Fabulous - Daily H', 1177), ('Productive - Habit', 1066), ('HabitNow Daily Rou', 984), ('Habit Tracker - Go', 925), ('Me+ Lifestyle Rout', 828), ('Tappsk - ToDo & Ha', 774), ('Finch - Self-Care ', 703), ('ShineDay - Habit T', 697), ('Habit — Daily Trac', 660), ('Habit Tracker', 630), ('Do Habits - Get It', 585)]
+[('finch', 1700000), ('me+ li', 100000), ('habit ', 100000), ('myrout', 100000), ('produc', 70000), ('grit', 65000), ('fabulo', 58000), ('routin', 40000), ('habitk', 40000), ('habiti', 40000)]
+skip finch 0 1700000
+skip myrout 2 100000
+skip grit 0 65000
+skip habitk 0 40000
+money-weighted among named, apps covered 408000
+AD 49.1
+DA 19.5
+PA 9.7
+CF 4.9
+ST 4.6
+AU 4.5
+CH 4.1
+TF 3.9
+JB 3.7
+MH 3.6
+CI 3.1
+FA 2.7
+TN 1.4
+RQ 1.3
+PR 0.8
+OA 0.6
+TC 0.5
+{'finch': 0, 'me+ li': 40, 'habit ': 65, 'myrout': 2, 'produc': 41, 'grit': 0, 'fabulo': 151, 'routin': 72, 'habitk': 0, 'habiti': 11}
+group  OR p=1  OR p  no-Finch p=1
+AD 1.35 1.54 1.43
+AU 1.33 1.38 1.55
+DA 0.76 1.13 0.85
+MH 0.89 1.26 0.84
+TC 1.02 1.07 0.38
+PR 0.79 0.82 0.63
+CI 0.72 0.91 0.65
+RQ 0.18 0.49 0.16
+ST 0.43 0.54 0.4
+TN 0.32 0.45 0.37
+PA 1.21 3.21 1.5
+CH 1.37 1.73 2.14
+CF 0.36 0.57 0.58
+JB 0.64 1.51 0.55
+TF 0.71 5.5 0.58
+FA 0.6 1.58 0.7
+OA 0.39 0.84 0.26
+set A P rate 4-5 stars 0.8529801324503311
