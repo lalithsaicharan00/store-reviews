@@ -1,0 +1,41 @@
+{
+ "package": "todolist.scheduleplanner.dailyplanner.todo.reminders",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 325,
+   "collected": 48726,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 10,
+   "collected": 1441,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 230,
+   "collected": 34352,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 35,
+   "collected": 5184,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 192,
+   "collected": 28735,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 2,
+   "collected": 299,
+   "complete": true
+  }
+ }
+}

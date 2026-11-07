@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "todolist.scheduleplanner.dailyplanner.todo.reminders",
+  "app_name": "Todoery: To Do List & Planner",
+  "extracted_at": "2026-11-07T06:01:52Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 118737,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 48726,
+    "es": 34352,
+    "pt": 28735,
+    "fr": 5184,
+    "de": 1441,
+    "nl": 299
+  },
+  "rating_distribution": {
+    "5": 102239,
+    "4": 8209,
+    "3": 2531,
+    "2": 1351,
+    "1": 4407
+  },
+  "mean_rating": 4.706,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}
