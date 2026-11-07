@@ -1,6 +1,6 @@
 # ADHD Channel Topic Research Prompt
 
-Written by Claude (Claude Code), 7 November 2026, at the user's request. To run it, tell an agent: "Follow `Research/ADHD Channel Topic Research Prompt.md`."
+Written by Claude (Claude Code), 7 November 2026, at the user's request. To run it, tell an agent: "Pull the latest `main`, then follow `Research/ADHD Channel Topic Research Prompt.md`."
 
 ---
 
@@ -12,11 +12,36 @@ We are building one ADHD channel on YouTube, and later on TikTok and Instagram. 
 
 **The app does not exist yet.** It has no design and no feature list. So judge topics by the **problem** they are about, never by app features. Promotion must feel like help: a viewer should think "this person gets me, and this could help me", never "they're selling me another app".
 
-This is a very large job. It runs in phases, across many hours and probably several sessions. Sections 3 and 4 tell you how to run it without losing or forgetting anything. Follow them exactly.
+This is a very large job. It runs in phases, across many hours and probably several sessions. Sections 4 and 5 tell you how to run it without losing or forgetting anything. Follow them exactly.
 
 **In scope:** YouTube only, English first. TikTok and Instagram get their own passes later, with their own thresholds.
 
-## 2. Read these first
+## 2. Before anything else
+
+### Sync the repository
+
+Your local copy may be behind GitHub, because the research this prompt depends on was pushed recently. **Do this first, before reading anything else:**
+
+1. Run `git fetch origin`, then `git status`.
+2. Make sure you are on `main`, then run `git pull --ff-only origin main`.
+3. Confirm the 2 reports listed below and both of their evidence folders are there.
+
+Never discard, stash or overwrite local changes to make this work. If the pull can't go through cleanly, stop and tell the user what's in the way. Don't start on an out-of-date copy.
+
+### Use the computer, in the Chrome tab that's already open
+
+This runs on the user's own computer, not in a cloud session. Computer use is turned on. **All work on YouTube happens through the computer, in the one Chrome tab the user has already opened.** That tab is in the right Chrome profile with the right account.
+
+- **Work only in that tab.** Find it, and do everything there: search, open videos, open channels, read comments and transcripts, and go back.
+- **Never open a new tab, a new window, another Chrome profile or another browser.** Other profiles have a different Gmail and don't have the accounts. Open every link in the same tab.
+- **Don't switch or change the account.** Never sign in, sign out or change a setting.
+- **Read only.** Never like, subscribe, comment, save to a playlist or report anything. Those would also change what the account is shown.
+- **The account is signed in, so results can be personal.** Search with exact terms, and judge videos by the rules in this prompt, not by how high YouTube ranks them.
+- **If the tab is missing, signed out or in the wrong profile,** stop and tell the user. Don't try to fix it by opening another one.
+- **If your computer tool can only look at Chrome and can't click or type there,** use a Chrome control tool on that same tab. If neither works, stop and tell the user. Never move to another browser to get around it.
+- **The tab can only do one thing at a time,** so only you use it. Subagents never touch it.
+
+## 3. Read these next
 
 1. `RULEBOOK.md`: the "Starting again" section and rules W2 to W5, D11, and the W2 lessons on checking what a word match actually hit.
 2. `Research/CLAUDE.md`.
@@ -33,7 +58,7 @@ This is a very large job. It runs in phases, across many hours and probably seve
 - Understanding ADHD: 6.4%
 - Focus: 4.8%
 
-## 3. How to run this: never rely on memory
+## 4. How to run this: never rely on memory
 
 Your context will fill up and be summarised. **Every fact and decision lives in a file, never only in your head.**
 
@@ -62,11 +87,11 @@ Your context will fill up and be summarised. **Every fact and decision lives in 
 
 **Task list:** keep one task per phase on the user's task list, and give a short plain update as each phase ends.
 
-**Subagents:** you may use subagents for Phase 6 only, about 5 topics each. Give each one sections 5 and 6 of this prompt and have it write to `deep/`. Check one in every five of their topics yourself against the source.
+**Subagents:** you may use subagents for Phase 6 only, and only to analyse transcripts and comments you've already saved to `deep/`, about 5 topics each. They never use Chrome. Give each one sections 6 and 7 of this prompt and have it write to `deep/`. Check one in every five of their topics yourself against the source.
 
-**Work on your own.** Don't stop to ask questions. Stop only for the blocks listed in section 9.
+**Work on your own.** Don't stop to ask questions. Stop only for the blocks listed in section 10.
 
-## 4. The phases
+## 5. The phases
 
 | Phase | What happens | Exit check |
 |---|---|---|
@@ -79,17 +104,18 @@ Your context will fill up and be summarised. **Every fact and decision lives in 
 | 6 | Deep read | Every surviving topic has its 3 to 5 videos read |
 | 7 | Score, group and choose the 50 | 50 topics chosen, or a stated shortfall; balance checks done |
 | 8 | Problem to feature ranking | Every chosen topic maps to a problem |
-| 9 | Verify everything | Every check in section 8 passes |
+| 9 | Verify everything | Every check in section 9 passes |
 | 10 | Write the report | Files saved, index updated |
 
 ### Phase 0: Setup
 
+- Confirm section 2 is done: the repository is synced and you're in the right Chrome tab.
 - Create the folder and `STATE.md`.
-- **Tools:** use the built-in browser (or the computer) to search YouTube, read autocomplete, and spot check pages. Use a script for numbers, because clicking through thousands of pages is too slow and easy to get wrong.
-- `yt-dlp` isn't installed. Install it in a virtual environment inside the working folder. If `YOUTUBE_API_KEY` is set, prefer the official API for video, channel and comment data, and watch its daily limit. **Never write a key to any file (D11).**
-- Don't sign in to YouTube. Results shaped by a personal account mislead. Never like, subscribe or comment.
-- Go gently: pause between requests. If YouTube slows or blocks you, wait and slow down. Never try to get around a block or a CAPTCHA.
-- Test on 5 videos: read each page and compare it with what the script collected. Fix the script before going on.
+- **Reading pages efficiently:** one search results page or a channel's Videos tab sorted by Popular shows many videos with their views and age, so screen from those lists. Open a video's own page only for videos that look like they qualify, to get the exact upload date, views and comment count.
+- **Scripts are for saved data:** use them to store, grade and check what you read in the tab. Save each page's findings to a file as you go.
+- **If reading exact numbers through the tab proves too slow,** a helper such as `yt-dlp` or the YouTube API (if `YOUTUBE_API_KEY` is set) may fill in the numbers for videos you've already found. Searching and reading still happen in the tab, and you check a sample against the page. **Never write a key to any file (D11).**
+- Go gently, at a person's pace. If YouTube slows or blocks you, wait and slow down. Never try to get around a block or a CAPTCHA.
+- Test on 5 videos: read each page, save the fields, and read them back against the page. Fix your method before going on.
 
 ### Phase 1: Build the search list
 
@@ -105,7 +131,7 @@ Find **at least 40 ADHD channels** from what those searches show, across small, 
 
 ### Phase 2: Collect videos
 
-For each search term, take the top results by relevance and by view count. For each channel, take its most popular videos and its recent uploads.
+In the Chrome tab, for each search term, take the top results by relevance and by view count, using YouTube's own sort filter. For each channel, open its Videos tab and take its most popular videos and its recent uploads.
 
 Save for each video: URL, video ID, title, channel, channel ID, upload date, views, likes if shown, comment count, length, whether it's a Short, the date you read it, and the search term that found it.
 
@@ -113,7 +139,7 @@ Save for each video: URL, video ID, title, channel, channel ID, upload date, vie
 
 ### Phase 3: Grade videos and channels
 
-Apply section 5 by script. Then look through a sample of 100 kept and 100 dropped videos by hand, to catch off-topic videos and word-match mistakes. Fix the rule and rerun if needed, and note it in `decisions.md`.
+Apply section 6 by script. Get each channel's subscribers and recent uploads from its page in the Chrome tab. Then look through a sample of 100 kept and 100 dropped videos by hand, to catch off-topic videos and word-match mistakes. Fix the rule and rerun if needed, and note it in `decisions.md`.
 
 ### Phase 4: Group into topics
 
@@ -123,11 +149,11 @@ Read the titles yourself. A script may suggest groups, but you make the decision
 
 ### Phase 5: Gates and evergreen test
 
-Apply section 6 to every candidate. Record every result, including the failures. A topic that fails goes to `rejected_topics.csv` with the exact rule it failed. **Don't lower a bar to reach 50.**
+Apply section 7 to every candidate. Record every result, including the failures. A topic that fails goes to `rejected_topics.csv` with the exact rule it failed. **Don't lower a bar to reach 50.**
 
 ### Phase 6: Deep read
 
-For every topic still standing, choose the best 3 to 5 videos: the strongest by grade and channel-size proof, from different channels. For each:
+For every topic still standing, choose the best 3 to 5 videos: the strongest by grade and channel-size proof, from different channels. For each, in the Chrome tab, open the video, open its transcript from the description ("Show transcript"), and sort comments by Top, then by Newest. Save what you read to `deep/` straight away. If a video has no transcript, note it and choose another.
 
 - **Transcript:** note the first 30 seconds, the promise, the structure, where people would likely stay or leave, and any app or sponsor mention.
 - **Comments:** read the **top 100 by likes** and the **30 newest**. Record likes as a measure of agreement. Count these kinds:
@@ -145,14 +171,14 @@ Read comments yourself, in the language they're written in. A word search only f
 
 ### Phase 7: Score, group and choose
 
-Apply section 7. Choose the 50. Run the balance checks. Put up to 15 good runners-up in a reserve list.
+Apply section 8. Choose the 50. Run the balance checks. Put up to 15 good runners-up in a reserve list.
 
 ### Phase 8: Problem to feature ranking
 
 This is how the videos shape the app. For each problem behind the chosen topics, record:
 
 - How many topics and qualifying videos it has, and their median views
-- Whether people pay to solve it (from section 2), with the number
+- Whether people pay to solve it (from section 3), with the number
 - What the comments ask for and what they say has failed
 - What an app would need to do to help, in plain words
 - A ranking: **build first** (big audience and proven payers), **test** (big audience, no proof of paying), or **leave out** (an app can't really help)
@@ -161,13 +187,13 @@ Report anything that isn't in the store research as a new idea. Those are the fi
 
 ### Phase 9: Verify
 
-Run every check in section 8.
+Run every check in section 9.
 
 ### Phase 10: Write the report
 
-See section 10.
+See section 11.
 
-## 5. How to judge a video
+## 6. How to judge a video
 
 **A video can count only if all of these are true:**
 
@@ -212,7 +238,7 @@ If a channel has under 10 other long-form videos, mark the outlier score "not en
 - **Borrowed audience:** a famous guest, TED, a TV or news brand. Allowed, but at most 3 per topic, and it can't be used for the channel-size gate.
 - **Brand channel:** run by an app or company. Record it, because it may be promotion we can learn from.
 
-## 6. How to judge a topic
+## 7. How to judge a topic
 
 **A topic must pass every gate.**
 
@@ -242,12 +268,12 @@ If a channel has under 10 other long-form videos, mark the outlier score "not en
 
 **Verdict:** Pass means every test passes. Borderline means one test is unclear, and the topic may go to the reserve list only. Fail means any clear failure. **Only Pass topics can be in the 50.**
 
-## 7. Choosing the 50
+## 8. Choosing the 50
 
 ### Three questions for every topic
 
-1. **Do people watch it?** Sections 5 and 6 answer this.
-2. **Do people already pay to solve it?** Use the reports in section 2.
+1. **Do people watch it?** Sections 6 and 7 answer this.
+2. **Do people already pay to solve it?** Use the reports in section 3.
 3. **Could a phone app really help?**
 
 | Group | Means |
@@ -301,12 +327,12 @@ The final 50 must also pass these. Record them.
 - **Long-term run:** order the 50 so that promotion builds gradually.
 - **Presenter:** it isn't decided yet whether the presenter has ADHD. Tag each topic **needs lived experience**, **works either way**, or **expert style**.
 
-## 8. Verification
+## 9. Verification
 
 The work isn't finished until all of these pass:
 
-- A script confirms every example video meets section 5, and every topic meets every gate.
-- Reopen a random 30 example videos and confirm the title, date and views. Note any change.
+- A script confirms every example video meets section 6, and every topic meets every gate.
+- Reopen a random 30 example videos in the Chrome tab and confirm the title, date and views. Note any change.
 - Every URL is real and came from a page or data you read. **Never write a URL, title or number from memory.**
 - No video is the main example for two topics.
 - Every quote is checked word for word against its source by script.
@@ -314,7 +340,7 @@ The work isn't finished until all of these pass:
 - The rejected list explains every candidate not chosen.
 - Every number in the report carries its count, its base and the date.
 
-## 9. Rules
+## 10. Rules
 
 - **Plain English** in everything written for the user.
 - **Label the evidence:** keep machine counts and hand-read findings apart. Say "users show…" for evidence and "reasoned from first principles" for judgement. Follow W2.
@@ -323,11 +349,11 @@ The work isn't finished until all of these pass:
 - **Privacy:** don't store or publish commenters' names.
 - **Medical care:** never suggest a video that gives medical advice.
 - **Honesty:** if you fall short of 50, say how many passed and why. A true 41 is worth more than a padded 50.
-- **Git:** follow W3 and W4. Commit only if the user asks. Secrets never go in git (D11).
+- **Git:** follow W3 and W4. Commit only if the user asks, and when they ask for a commit to `main`, push it too and confirm it reached GitHub. Secrets never go in git (D11).
 - **Learned something?** Add it to `RULEBOOK.md` the same day (W5).
-- **When to stop and tell the user:** YouTube blocks you and waiting doesn't help, a needed tool can't be installed, or a site needs a sign-in. Save your state first.
+- **When to stop and tell the user:** the repository won't sync, the Chrome tab is missing, signed out or in the wrong profile, you can't control the tab, or YouTube blocks you and waiting doesn't help. Save your state first.
 
-## 10. What to deliver
+## 11. What to deliver
 
 Save in `Research/Research Reports/Market Discovery/`:
 
@@ -363,10 +389,11 @@ Save in `Research/Research Reports/Market Discovery/`:
 
 **The evidence folder:** `ADHD Channel Topics — Evidence/` beside the report, with `Videos.csv`, `Channels.csv`, `Topics.csv`, `Rejected Topics.csv`, `App Mentions.csv`, `Problems.csv`, your scripts, and a README. No transcripts and no commenter names.
 
-## 11. Final checklist
+## 12. Final checklist
 
 Before saying it's done, confirm each line in `STATE.md`:
 
+- [ ] Repository synced before starting, and all YouTube work done in the one Chrome tab, with no other tab, window or profile opened
 - [ ] At least 150 search terms, 40 channels and 5,000 long-form videos screened, and new finds dried up
 - [ ] Every video graded, with channel numbers for every kept video
 - [ ] Hand checks of kept and dropped videos done
@@ -378,7 +405,7 @@ Before saying it's done, confirm each line in `STATE.md`:
 - [ ] Promotion mix reported honestly
 - [ ] Balance checks done, first 10 and posting order set
 - [ ] Problem to feature ranking done, with new ideas called out
-- [ ] Every check in section 8 passed
+- [ ] Every check in section 9 passed
 - [ ] Report, evidence folder and research index done
 - [ ] Rulebook updated with anything learned
 - [ ] Nothing committed unless the user asked
