@@ -121,7 +121,7 @@ Your context will fill up and be summarised. **Every fact and decision lives in 
 
 Build **at least 150 search terms**, using all of these sources:
 
-- **Paid problems:** every problem in section 2, in the words people use ("why do I forget everything", "can't start tasks", "time blindness").
+- **Paid problems:** every problem in section 3, in the words people use ("why do I forget everything", "can't start tasks", "time blindness").
 - **ADHD life:** paralysis, executive dysfunction, procrastination, motivation, dopamine, hyperfocus, boredom, overwhelm, burnout, masking, rejection sensitivity, emotions, sleep, mornings, waking up, phones, doom scrolling, cleaning, messy rooms, laundry, food, forgetting to eat, money, impulse spending, work, studying, relationships, friendships, late diagnosis, women, men, students, adults.
 - **YouTube autocomplete:** type "ADHD" plus each letter a to z, and "why do I", "how to", "ADHD and", "living with ADHD".
 - **Formats:** "day in the life", "things I wish I knew", "signs", "tips that actually work", "what it's really like".
