@@ -1,0 +1,41 @@
+{
+ "package": "droom.sleepIfUCan",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 1482,
+   "collected": 222269,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 44,
+   "collected": 6544,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 398,
+   "collected": 59611,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 43,
+   "collected": 6374,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 170,
+   "collected": 25357,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 8,
+   "collected": 1170,
+   "complete": true
+  }
+ }
+}

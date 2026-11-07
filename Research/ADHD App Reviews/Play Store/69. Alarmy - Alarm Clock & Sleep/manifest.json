@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "droom.sleepIfUCan",
+  "app_name": "Alarmy - Alarm Clock & Sleep",
+  "extracted_at": "2026-11-07T06:41:06Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 321325,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 222269,
+    "es": 59611,
+    "pt": 25357,
+    "de": 6544,
+    "fr": 6374,
+    "nl": 1170
+  },
+  "rating_distribution": {
+    "5": 251005,
+    "4": 36494,
+    "3": 9545,
+    "2": 5777,
+    "1": 18504
+  },
+  "mean_rating": 4.543,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}
