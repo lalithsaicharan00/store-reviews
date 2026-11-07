@@ -1,0 +1,41 @@
+{
+ "package": "com.superelement.pomodoro",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 182,
+   "collected": 27273,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 6,
+   "collected": 761,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 103,
+   "collected": 15358,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 15,
+   "collected": 2180,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 56,
+   "collected": 8269,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 2,
+   "collected": 268,
+   "complete": true
+  }
+ }
+}

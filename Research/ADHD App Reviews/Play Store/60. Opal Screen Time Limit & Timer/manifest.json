@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.withopal.opal",
+  "app_name": "Opal Screen Time Limit & Timer",
+  "extracted_at": "2026-11-07T05:55:14Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 1495,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 1101,
+    "fr": 147,
+    "es": 139,
+    "pt": 82,
+    "de": 20,
+    "nl": 6
+  },
+  "rating_distribution": {
+    "5": 671,
+    "4": 190,
+    "3": 165,
+    "2": 141,
+    "1": 328
+  },
+  "mean_rating": 3.492,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

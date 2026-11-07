@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.superelement.pomodoro",
+  "app_name": "Focus To-Do: Pomodoro & Tasks",
+  "extracted_at": "2026-11-07T05:56:52Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 54109,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 27273,
+    "es": 15358,
+    "pt": 8269,
+    "fr": 2180,
+    "de": 761,
+    "nl": 268
+  },
+  "rating_distribution": {
+    "5": 40286,
+    "4": 8362,
+    "3": 2332,
+    "2": 984,
+    "1": 2145
+  },
+  "mean_rating": 4.546,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

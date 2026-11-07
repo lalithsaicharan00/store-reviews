@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.planner.journal",
+  "app_name": "Daily Planner, To Do List",
+  "extracted_at": "2026-11-07T05:58:01Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 15208,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 14442,
+    "fr": 386,
+    "es": 174,
+    "pt": 118,
+    "de": 61,
+    "nl": 27
+  },
+  "rating_distribution": {
+    "5": 11510,
+    "4": 1243,
+    "3": 493,
+    "2": 313,
+    "1": 1649
+  },
+  "mean_rating": 4.358,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

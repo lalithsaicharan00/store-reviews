@@ -1,0 +1,26 @@
+{
+  "store": "Google Play",
+  "package": "com.shikudo.focus.google",
+  "app_name": "Focus Plant: Pomodoro Forest",
+  "extracted_at": "2026-11-07T05:57:06Z",
+  "source": "play.google.com batchexecute UsvDTd",
+  "total_reviews": 8239,
+  "languages_with_reviews": 6,
+  "reviews_per_language": {
+    "en": 3885,
+    "es": 2625,
+    "pt": 1296,
+    "fr": 176,
+    "de": 149,
+    "nl": 108
+  },
+  "rating_distribution": {
+    "5": 5677,
+    "4": 1381,
+    "3": 464,
+    "2": 270,
+    "1": 447
+  },
+  "mean_rating": 4.404,
+  "note": "Play exposes no total written-review count, so completeness means every language was paginated until Play stopped returning a continuation token."
+}

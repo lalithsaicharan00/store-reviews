@@ -1,0 +1,41 @@
+{
+ "package": "com.withopal.opal",
+ "languages": {
+  "en": {
+   "token": null,
+   "pages": 8,
+   "collected": 1101,
+   "complete": true
+  },
+  "de": {
+   "token": null,
+   "pages": 1,
+   "collected": 20,
+   "complete": true
+  },
+  "es": {
+   "token": null,
+   "pages": 1,
+   "collected": 139,
+   "complete": true
+  },
+  "fr": {
+   "token": null,
+   "pages": 1,
+   "collected": 147,
+   "complete": true
+  },
+  "pt": {
+   "token": null,
+   "pages": 1,
+   "collected": 82,
+   "complete": true
+  },
+  "nl": {
+   "token": null,
+   "pages": 1,
+   "collected": 6,
+   "complete": true
+  }
+ }
+}
