@@ -1,0 +1,12 @@
+# Why each fully read payer quit or regretted. Hand coded from the review text, 7 Nov 2026.
+# rmv removed/changed what they relied on; bug bugs, crashes, lost data, login; ntf reminders failed or missing;
+# ovw overwhelming, confusing, too much setup; ups ads/upsell/pay again after paying; price too dear;
+# unused stopped using, forgot, novelty; thin not what was promised, too basic, knew it already;
+# shame punishes misses, no rollover, assumes done; rigid doesn't fit real life; bill billing, cancel, refund; supp no support; oth other
+Q={27:'thin',41:'unused',46:'thin',68:'bug supp',69:'bug supp',88:'unused',96:'ntf',120:'ovw supp',126:'unused bill',134:'unused price',
+155:'ovw ups',166:'ovw',189:'ovw ups',198:'bug ovw price',199:'ovw',218:'ovw ups',226:'ovw ups',230:'ovw',241:'ovw',249:'ovw thin',252:'ovw',253:'oth',257:'ovw',263:'ovw bill supp',283:'ovw',286:'ups',289:'ovw',295:'ups',317:'ntf bug',333:'bill',
+549:'bug supp',554:'thin',557:'thin',578:'bug',599:'thin',635:'bug',643:'ntf',649:'thin',650:'ups',693:'thin',712:'bug supp',716:'thin',729:'thin price',748:'rmv ovw',771:'unused',774:'price thin',779:'thin',825:'ovw',834:'thin',837:'ovw',838:'thin',868:'rmv thin',872:'ups',882:'thin',888:'rmv bug',904:'ovw supp',911:'bug ntf',922:'ovw',925:'thin',926:'ovw',935:'ntf',942:'ovw',965:'ups',
+1009:'bug',1011:'bug',1013:'bug',1014:'unused',1026:'ntf rmv',1030:'bug',1039:'rmv ups',1069:'ntf',1081:'rigid',1095:'thin',1112:'ntf',1130:'ntf supp',1162:'rmv ntf',1197:'bug',1224:'price',1229:'rmv thin',1236:'ovw shame',1254:'thin',1291:'thin shame',
+1324:'rmv',1328:'rmv',1329:'rmv',1330:'rmv',1331:'shame',1334:'bug supp',1335:'ntf shame unused',1338:'ovw thin',1342:'rmv',1343:'rmv shame',1344:'rmv',1351:'ntf',1352:'thin',1358:'bug ntf',1367:'bug',1368:'price',1370:'rmv',1374:'thin',1375:'rmv',1376:'rmv',1378:'rmv',1381:'ovw',1383:'bug ntf',1384:'bug',1391:'thin ntf',1394:'ntf',
+1422:'thin',1436:'ntf supp',1457:'bug',1471:'thin',1486:'bug',1487:'thin bug',1498:'thin',1523:'ovw',1525:'bug',1545:'thin',1568:'thin',1579:'ntf',1581:'ntf',1584:'ntf rmv',1593:'thin',1606:'bug',1621:'ups',1645:'bug',1656:'bug ups',1663:'bug',1736:'rmv',1742:'price',
+1763:'ovw',1796:'bug supp',51:'bill',113:'rmv bill',137:'bill',187:'bill',688:'ovw bill',692:'thin bill',857:'thin',865:'thin bill',875:'bill',1164:'bug',1377:'rmv ovw',1389:'shame thin',1489:'thin',1496:'bill supp',1504:'bill',1528:'bug supp',1603:'bill',1755:'bug ups'}

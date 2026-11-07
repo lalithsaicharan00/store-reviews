@@ -12,6 +12,7 @@
 | `App Store Reviews/<N>. <app name>/` | Source data per app: `reviews.jsonl`, `by_country/*.jsonl`, `manifest.json`, `_state.json`. **Read-only — do not add files here.** |
 | `App Store Reports/` | Deliverables: `<N>. <app name> (REPORT).md`, one per app |
 | `Play Store Reviews/` | Play Store corpora (same shape) |
+| `ADHD App Reviews/App Store/`, `ADHD App Reviews/Play Store/` | Reviews of the ADHD apps and the wider apps ADHD users name (Tiimo, Structured, Alarmy and others), collected 7 Nov 2026 with `Tools/extract_reviews.py` and `Tools/play_extract.py`. Same shape as the folders above. **Read-only.** |
 | `Research Reports/` | Standalone research and decision documents (not per-app), grouped into topic folders. `Research Reports/README.md` indexes every report and records its author. A report Claude writes must open with a "Written by Claude (Claude Code), <date>" line and be added to that index. The Feature Ledger, its Card Index, Quit Habit Decision and Feature Gating stay at the top level because `Tools/prd_ledger/` links to those exact paths. |
 | `Tools/` | Extractors, keyword scanners, ranking scripts, their caches and how-to docs. Run them from inside `Tools/`. |
 | `Temp/` | Working scratch, gitignored |
