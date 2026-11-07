@@ -1,0 +1,49 @@
+{
+  "app_id": "626144601",
+  "app_name": "TickTick:To-Do List & Calendar",
+  "developer": "Appest Limited",
+  "bundle_id": "com.TickTick.task",
+  "extracted_at": "2026-11-07T05:59:29Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 10776,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 4909,
+    "br": 1108,
+    "gb": 674,
+    "ca": 628,
+    "in": 563,
+    "de": 509,
+    "au": 340,
+    "mx": 302,
+    "fr": 251,
+    "es": 235,
+    "nl": 220,
+    "ph": 175,
+    "it": 151,
+    "se": 85,
+    "sg": 85,
+    "ch": 83,
+    "pt": 71,
+    "za": 67,
+    "be": 65,
+    "dk": 64,
+    "at": 59,
+    "nz": 46,
+    "no": 33,
+    "ie": 30,
+    "fi": 23
+  },
+  "rating_distribution": {
+    "5": 8765,
+    "4": 1047,
+    "3": 325,
+    "2": 212,
+    "1": 427
+  },
+  "mean_rating": 4.625,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

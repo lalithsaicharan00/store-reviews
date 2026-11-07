@@ -1,0 +1,49 @@
+{
+  "app_id": "866450515",
+  "app_name": "Forest: Focus for Productivity",
+  "developer": "SEEKRTECH CO., LTD.",
+  "bundle_id": "com.forestapp.Forest",
+  "extracted_at": "2026-11-07T05:58:20Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 80649,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 22655,
+    "gb": 9792,
+    "de": 7203,
+    "br": 6074,
+    "au": 4351,
+    "fr": 4250,
+    "ca": 3930,
+    "it": 3183,
+    "es": 2766,
+    "nl": 2247,
+    "mx": 2033,
+    "ph": 1842,
+    "sg": 1556,
+    "be": 1520,
+    "in": 1455,
+    "ch": 1045,
+    "ie": 859,
+    "at": 763,
+    "se": 669,
+    "nz": 537,
+    "za": 536,
+    "no": 500,
+    "dk": 325,
+    "pt": 282,
+    "fi": 276
+  },
+  "rating_distribution": {
+    "5": 65204,
+    "4": 10384,
+    "3": 1842,
+    "2": 877,
+    "1": 2342
+  },
+  "mean_rating": 4.677,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

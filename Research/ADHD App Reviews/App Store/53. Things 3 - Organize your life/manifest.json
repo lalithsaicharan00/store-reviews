@@ -1,0 +1,49 @@
+{
+  "app_id": "904237743",
+  "app_name": "Things 3",
+  "developer": "Cultured Code GmbH & Co. KG",
+  "bundle_id": "com.culturedcode.ThingsiPhone",
+  "extracted_at": "2026-11-07T05:58:47Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 6277,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 2710,
+    "de": 731,
+    "gb": 511,
+    "ca": 353,
+    "fr": 261,
+    "au": 246,
+    "es": 240,
+    "it": 179,
+    "nl": 156,
+    "br": 118,
+    "in": 114,
+    "ch": 100,
+    "mx": 95,
+    "se": 91,
+    "at": 72,
+    "no": 53,
+    "sg": 45,
+    "be": 40,
+    "nz": 34,
+    "dk": 32,
+    "pt": 27,
+    "za": 23,
+    "ph": 19,
+    "ie": 16,
+    "fi": 11
+  },
+  "rating_distribution": {
+    "5": 3935,
+    "4": 1014,
+    "3": 495,
+    "2": 308,
+    "1": 525
+  },
+  "mean_rating": 4.199,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

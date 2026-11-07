@@ -1,0 +1,49 @@
+{
+  "app_id": "497328576",
+  "app_name": "Any.do: To do list & Planner",
+  "developer": "Any.DO inc.",
+  "bundle_id": "com.anydo.AnyDO",
+  "extracted_at": "2026-11-07T05:59:15Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 29881,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "us": 15549,
+    "gb": 2124,
+    "ca": 1745,
+    "au": 1119,
+    "br": 1090,
+    "de": 1046,
+    "in": 1042,
+    "fr": 842,
+    "mx": 753,
+    "es": 738,
+    "nl": 616,
+    "it": 605,
+    "sg": 429,
+    "se": 319,
+    "ch": 262,
+    "ph": 247,
+    "pt": 231,
+    "nz": 211,
+    "be": 205,
+    "za": 169,
+    "dk": 138,
+    "no": 132,
+    "at": 109,
+    "ie": 106,
+    "fi": 54
+  },
+  "rating_distribution": {
+    "5": 19566,
+    "4": 5400,
+    "3": 1435,
+    "2": 1000,
+    "1": 2480
+  },
+  "mean_rating": 4.291,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}

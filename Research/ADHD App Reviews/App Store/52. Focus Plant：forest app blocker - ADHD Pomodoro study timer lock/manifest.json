@@ -1,0 +1,49 @@
+{
+  "app_id": "1459096306",
+  "app_name": "Focus Plant：forest app blocker",
+  "developer": "Shikudo Co., Ltd.",
+  "bundle_id": "com.shikudo.focus",
+  "extracted_at": "2026-11-07T05:58:28Z",
+  "source": "itunes MZStore userReviewsRow",
+  "total_reviews": 1915,
+  "storefronts_with_reviews": 25,
+  "reviews_per_country": {
+    "br": 615,
+    "us": 232,
+    "es": 173,
+    "mx": 124,
+    "ph": 107,
+    "de": 105,
+    "in": 85,
+    "sg": 75,
+    "nl": 69,
+    "gb": 66,
+    "it": 63,
+    "fr": 43,
+    "ca": 40,
+    "be": 24,
+    "au": 16,
+    "se": 15,
+    "ch": 13,
+    "at": 12,
+    "nz": 8,
+    "pt": 7,
+    "za": 6,
+    "fi": 5,
+    "ie": 5,
+    "no": 4,
+    "dk": 3
+  },
+  "rating_distribution": {
+    "5": 1222,
+    "4": 281,
+    "3": 159,
+    "2": 88,
+    "1": 165
+  },
+  "mean_rating": 4.205,
+  "files": {
+    "merged": "reviews.jsonl",
+    "per_country": "by_country/<cc>.jsonl"
+  }
+}
