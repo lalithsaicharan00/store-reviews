@@ -24,7 +24,7 @@ Figma: file `zLgBjb7M7Fp6UN0pg7J3a8`, section `09 · Menus, sheets & feedback` (
 | **Banner** (`778:444`) | Snackbar | The routine player's banner | Capsule, min 44, 16 at the sides, 12 between, Subheadline, actions Semibold |
 | **Placeholder** (`1030:2`) | Skeleton | `.redacted(reason: .placeholder)` | 13 tall for Body, radius 2, black at 16 % |
 | **Card notice** (`795:499`) | Card notice | `BackupIssueSection`, in TipView's anatomy | Radius 26, symbol in a 32 box, Headline and Subheadline, one Regular Bordered fix, ✕ (`4198:2551`) only on what can wait, 4 pt `ProgressView` |
-| **Alert** (`702:618`) | Dialog | `.alert` | 319 wide, radius 35, two 48 capsules 8 apart |
+| **Alert** (`702:618`) | Dialog | `.alert` | 319 wide, radius 35, two 48 capsules 8 apart; surface `#ECECEC` at 95 %, as a Medium sheet (9 Nov 2026) |
 
 ## Menu
 
@@ -48,6 +48,7 @@ Figma: file `zLgBjb7M7Fp6UN0pg7J3a8`, section `09 · Menus, sheets & feedback` (
 | **Medium** | Floats on glass, 8 in from the sides and bottom, radius 38. Its surface reads 236 grey with what's behind barely showing, so the paint is `#ECECEC` at 95 %, not the kit's 60 % |
 | **Large** | Reaches the sides, opaque System Grouped Background, radius 38 at the top only, top at y 62 |
 
+- **Colours (audit, 9 Nov 2026):** a Medium sheet is the component's glass and nothing else, never a fill on the copy (Your routine had System Grouped Background laid under it, and the player's description sheet was stretched to the edges). A Large sheet is System Grouped Background when it holds grouped rows (measured: `#F2F2F7` with white rows on the Simulator) and System Background when it doesn't (the Timer). Every sheet paint is a colour style; the glass recipe inside Medium (`#262626`, `#ECECEC` at 95 %, its shadow) is the one exception, copied from Apple's kit, which has no style for it. The Medium specimen looks grey only because it sits on the white canvas: over a dimmed screen it reads near white.
 - The ✕ is a 44 glass button at 16, 16, and the title is truly centred. **The header is the Navigation bar,** so a sheet's title and a page's are one component.
 - **A sheet never has both a ✕ and a Close button.** The description sheet in the player had both; the button went.
 - **Your routine and Change order** are Close and Save with Edit or Done, as in the app's own toolbar. Android's left-aligned title went.
@@ -76,7 +77,7 @@ Why, and the five layouts tried on the Simulator: [Today on iPhone — Notice Ca
 
 ## Alert
 
-iOS's alert replaces Android's dialog. Left-aligned title and message, two capsules, Cancel in Label, the destructive one in System Red (Rulebook D9: two choices only). `.confirmationDialog` on iPhone is a small centred panel with one red action and no visible Cancel; the app's delete questions stay alerts, because D9 wants Cancel in view.
+iOS's alert replaces Android's dialog. **Its surface is near solid** (9 Nov 2026): the Simulator's `.alert` reads 238 grey over a dimmed list, and the rows behind don't show through; the kit's 60 % let a habit row's Start capsule and fills show behind the title, so the glass is `#ECECEC` at 95 %, the Medium sheet's recipe. Left-aligned title and message, two capsules, Cancel in Label, the destructive one in System Red (Rulebook D9: two choices only). `.confirmationDialog` on iPhone is a small centred panel with one red action and no visible Cancel; the app's delete questions stay alerts, because D9 wants Cancel in view.
 
 ## Other pages
 

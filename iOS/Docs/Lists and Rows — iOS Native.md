@@ -17,7 +17,7 @@ Figma: file `zLgBjb7M7Fp6UN0pg7J3a8`, section `08 · Lists & rows` (node `1299:2
 | **List item** (`528:85`) | 16 | A row of an inset-grouped `List` | One line 52, two lines 72, card radius 26, symbol column 24, text at 56 |
 | **Habit row** (`571:277`) | 9 | Today's row | 70 tall, icon 32, text at 60, right side 16 |
 | **Step row** (`575:136`) | 2 | A step of a checklist habit | 44 tall, tick circle 22, text at 60 |
-| **Habit row · Swipe** (`763:273`) | 4 (was 5) | `swipeActions` on iOS 26 | Slide 70, circle 50, full-swipe capsule 197 × 50 |
+| **Habit row · Swipe** (`763:273`) | 4 (was 5) | `swipeActions` on iOS 26, in a 70 row | Slide 80, capsule 60 × 40, full-swipe capsule 197 × 40, caption Footnote; hugs its row, so a 106 row (Undo · Note under it) takes a 60 × 50 capsule by padding 13 (9 Nov 2026) |
 | **Section header** (`562:48`) | 4 | Today's time of day (`PartHeader`) | 64 tall, radii 26 |
 | **Run row, Comparison row** | | Progress's data bars | Unchanged: not progress controls, and their text was already iOS's |
 
@@ -71,14 +71,16 @@ The Done circle is drawn as a shape holding `checkmark`, not the single symbol, 
 
 **iOS has both directions, so the Android behaviour stays: left Skip, right Note, one action a side, and a full swipe acts.** That's what `allowsFullSwipe` does, and what Android's past-halfway does (A16).
 
-| | iOS 26, in a row our height |
+| | iOS 26, in a 70 row (ours) |
 |---|---|
-| The row | Slides whole with its fill, showing System Grouped Background behind it |
-| Revealed | A 50 circle holding a white symbol, a small grey caption under it |
-| Full swipe | The circle stretches into a capsule, 197 × 50 |
+| The row | Slides whole with its fill, 80, showing System Grouped Background behind it |
+| Revealed | **A 60 × 40 capsule**, System Gray, its white symbol inside, 10 in from each side of the strip; *Skip* under it in Footnote, Secondary Label, 2 below; the two centred as one in the row |
+| Full swipe | The capsule stretches across the strip, still 40 tall and **the same grey** (it doesn't turn darker); the caption stays under its middle |
 | A row with no action | **Doesn't move at all** |
 
+- **Measured again on 9 Nov 2026** (iPhone 17 Simulator, iOS 26.5, `Research/Temp/ios-lists/`, rows 81 and 70 tall, the full swipe read from a screen recording while the finger was held): **the shape follows the row's height.** In an 81 row iOS draws a 50 circle; in a 70 row, Today's, a 60 × 40 capsule. The component had the 81 row's circle squeezed into 70 with an 11 caption 2 below it, which read as off-centre. The symbol inside is filled where the symbol has a fill (`forward.fill`, U+10028C); `square.and.pencil` has none.
 - **Nudge is deleted,** with its example. Android's "gives a little and springs back" (A35) doesn't exist on iOS. The 3 flows that showed it now show a plain row, and the first says so.
+- **A taller row (9 Nov 2026, 104 on the Simulator; Today's skipped or just-logged row is 106):** iOS keeps the 60 width and makes the capsule **50 tall** (radius 25), and a full swipe stretches it at that height; the caption sits the same distance under it as in a 70 row, and the group stays centred. In Figma the component hugs the row inside it (its strip is absolute and stretches), so a copy holding a 106 row is 106 and nothing under it moves; the capsule's height is its padding, so such a copy sets the Circle's top and bottom padding to 13 and its radius to 25.
 - **Every label is one word or phrase:** Skip, Note, Undo skip, Log a slip. iOS has no second label for a full swipe, so Skip today and Add note went.
 - **System Gray, not Ink:** SwiftUI keeps a swipe's symbol white, and Ink turns near-white in dark mode. Reminders' Details is grey too. Reasoned, not tried in dark.
 - **Symbols:** `forward`, `square.and.pencil`, `arrow.uturn.backward`, all as the app has them. `note.text` is the app's other Note symbol. Its code in SF Pro wasn't found.
