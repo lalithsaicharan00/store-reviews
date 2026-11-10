@@ -1,0 +1,82 @@
+# Routine Player Flows — iPhone Review — 10 November 2026
+
+Written by Claude (Claude Code), 10 November 2026, from the user's request the same day. Figma: file
+`zLgBjb7M7Fp6UN0pg7J3a8`, page **routine player** (`234:2`). Done the same way as the
+[Today flows](<Today Flows — iPhone Review — 9 November 2026.md>) and the
+[Day details flows](<Day Details Flows — iPhone Review — 10 November 2026.md>).
+
+**The user (10 Nov 2026):** "Next, I want you to work on the routine player screens. So yeah, update the flow numbers
+and go through each and every screen. Thoroughly … work on the flows step by step on each flow … we need to complete
+this."
+
+## The user's points
+
+- [x] **1. Number the flows.** They had no numbers. Now 132–155, after Day details' 131, top to bottom. Six
+  headers were copies of "✕ with a timer running" that didn't match their flows; each now says what its flow shows
+  (150 A timer on its own, from Today's ▶ · 151 A time limit's timer, and Log manually · 152 The timer outside the
+  app: the Live Activity · 153 A milestone in the player: the ribbon · 154 A big milestone in the player: its pop-up
+  at the end · 155 A long name, a description and large text in the player).
+- [x] **2. Every screen of every flow, one flow at a time:** the idea stays, the drawing is fixed; the components are
+  right, so flows follow them. All 24 flows (132–155) done on 10 Nov 2026, each below; two questions are left open
+  for the user, marked *Open, not changed*.
+
+## Carried over from the Today and Day details reviews
+
+- One today, Mon 9 Nov; the week starts on Sunday. Today's default count is 4/13 with Meds not done, and Water done.
+- The day's title is Today or the date ("8 Nov"), never Yesterday or Tomorrow (A119).
+- Cut-down rows say "max" and "mins"; the limit's state is a band, not words in the goal line.
+- No streak on a day that ended unmet (A113); the day bar's count follows every change.
+- An Undo banner sits just above the bottom bar.
+
+## Flow by flow
+
+- **Page-wide: layer names follow the words** (found at 132). 101 of the 104 step labels were named after another label ("Label · Tap Water" over "Start"), and 32 arrows too; each now carries its own words.
+- [x] **132 · Start a routine.** Right as drawn: Today at 4/13 with Morning's Start filled; the player on Meds, 1 of 3 (Morning ⌄ as a title menu, ⋯, Day Details under the name, Not done, ‹ greyed, Mark Done, ›); ✕ back to Today as it was.
+- **Page-wide: the day bar's count** (found at 133). Every Today screen on this page read 4/13, whatever was done. Twelve now follow their rows: Meds or Stretch done → 5/13 (133, 147, 148's last screen, 149, 150, 151), Morning all done → 7/13 (137). 138, 139 and the Water-first and task routines are checked in their flows.
+- [x] **133 · A check in the player: Mark done, then Next.** After the routine, Today read 4/13 with Meds done; now 5/13. The rest is right: Done with the line full in Meds' red, Saved · Undo · Add note above the bar, Next; Stretch at 4:00 of 10 min waiting for ▶ (the symbol alone); Meds 🔥58 on Today with no Undo · Note after a routine (A33).
+- [x] **134 · The Saved banner: Undo, and Add Note.** The Add Note page's button is Add (a new note). The last step's label, screen name and note said "Save"; they now say Add. The rest is right: Undo puts Meds back to Not done and the player stays; Add Note over the player shows Meds and 9 Nov; back on Meds, the banner says "Note saved · Undo".
+
+- [x] **135 · A time habit in the player: Start, Pause, the goal.** The name and the ring jumped 16 pt between running (no status line) and Paused or Goal met: the status line was its own row under the progress, so the centred card grew when it showed. Fixed in the design system: Routine player's Status line now sits in the fixed slot the milestone ribbon already kept (renamed "Status or milestone"; Habit, Habit · 200% text and Time), since the two never show together (92 copies checked, none with both). Every copy kept its status words and icon. Screens 3–7 now hold the ring still. The rest is right as drawn.
+
+- [x] **136 · A checklist in the player: tick the steps.** Right as drawn: Skincare opens at 1 of 4 (as Today's 1/4), each tick fills the line, all four bring Finish back, unticking one takes Finish away again; the title says 3 of 3 throughout.
+
+- [x] **137 · The end of the routine: everything done.** Right as drawn: Finish on the last habit, the end page lists all three with their values, Done returns to Today with Morning done, streaks 58, 5 and 13, and the day bar at 7/13.
+
+- [x] **138 · The end of the routine, with some left.** Right as drawn: Meds marked done, › past Stretch (4:00 of 10, as on Today) and Skincare (1 of 4), the end page says 1 of 3 done with Stretch and Skincare under Left for later (chevrons, as they go back into the player) and Meds under Done, which scrolls under the Done button; Stretch reopens at 2 of 3; Done returns to Today with Meds done (58), Morning 2 left and the day bar at 5/13.
+
+- [x] **139 · Day details from the player, and skipping.** The screens are right: Day details over the player, Skip Today greys Mark Done and becomes Undo Skip in its place, the player says Skipped and Your streak stays safe, and Next goes to Stretch at 2 of 3. Two labels fixed: "Swipe down" became "✕", since a Day details sheet has one height and no handle and the screen is named for ✕; "Skip today" became "Skip Today", the button's words.
+- [x] **Page-wide: button words in labels.** Ten labels (and their arrows) said "Mark done" where the player's button says "Mark Done"; all now match the button.
+
+- [x] **140 · Your routine: jump to a habit, change the order.** Fixed: (1) after Done put Skincare above Stretch, the player on Stretch still said 2 of 3; it now says 3 of 3. (2) Your routine sheet's Skincare row said "Not done" though Skincare is 1/4 steps (as Today and the end page show): changed in the design system (both modes), so all four copies on the page now say 1/4 steps. (3) In Change order, the main component drew Meds' "Done" in Semibold, unlike every other row; now Regular. (4) Screen 5's note sent people to "Edit Today (✏)"; Today's Edit is a word, never a pencil, so it now says "Today's own order changes with Edit on Today." The rest is right as drawn.
+
+- [x] **141 · The ⋯ menu in the player.** Fixed: (1) the menu's rows were sentence case ("Go to first unfinished", "Change order", "End routine") while the screen is named for Go to First Unfinished, Change Order, End Routine, and iPhone menus use title case: now title case (the first wraps to two lines in the 249-wide menu, as an iPhone menu does); the label matches. (2) Change order, opened from Skincare at 3 of 3, was a copy of flow 140's reordered sheet (Meds, Skincare, Stretch "Here now"); it now shows this run: Meds Done, Stretch 4/10 min, Skincare Here now. The rest is right as drawn: Go to First Unfinished lands on Stretch at 2 of 3, End Routine shows the end page with Stretch and Skincare left.
+- [ ] **Open, not changed: sheet titles' case.** "Your routine" and "Change order" are sentence case; iPhone navigation titles are usually title case. Left as drawn until the user decides, since every sheet in the file would follow.
+
+- [x] **142 · An amount in the player: +1, the goal, Log manually.** Fixed on screen 1 (Today, Morning with Water first): Meds was Done but its round button drew ⌄ (`chevron.down`) instead of ✓; now ✓, as on every done row. The same screen also held a second Water row (8/8, done) in Anytime, below the screen's edge; a habit sits in one time of day (A118), so it's hidden. The day bar's 4/13 is right: Water part done here takes one away and Meds done adds one. The rest is right as drawn: +1 (never the unit), Saved · Undo · Add note, Goal met with Next at 8 of 8, Day details over the player, Add Log with 2 typed, and 10 of 8 back in the player.
+
+- [x] **143 · An amount typed each time: Log.** Fixed: Today (screen 1) shows Water 8/8 and done, but the player's Water (screen 6, 3 of 3) said 5 of 8 with +1. It now matches: 8 of 8, the line full, Goal met, and Finish, since Water is the last of three (renamed "6 · ›: Water, 3 of 3, already done; Finish"). The rest is right as drawn: Log as the word alone for Savings, $250 then $300 of $500 This month, Add Log with $50 and the number pad, Saved · Undo · Add note on return.
+
+- [x] **144 · Several checks a day in the player.** Right as drawn: Stretch breaks keeps ✓ on Today (a check habit always shows ✓), Add a Check counts 1, 2, 3 of 3 with Saved · Undo · Add note, Goal met with Next, then Skincare at 3 of 3. Fixed the words only: three labels (and their arrows) and the note said "Add a check" where the button says "Add a Check"; all now match.
+
+- [x] **145 · A week goal in the player.** Fixed the same mismatch as 143: Today shows Water 8/8 and done, but the player's last screen said 5 of 8 with +1; now 8 of 8, full line, Goal met, Finish (renamed "4 · Next: Water, 3 of 3, already done; Finish"). Every other Water player copy on the page was checked and fits its flow. The rest is right as drawn: Call family 2 of 3 this week, Add a Check to 3 of 3 with "Goal met this week" and Next.
+
+- [x] **146 · A task in the player.** Fixed the Today screen's numbers: here Water is part done (5/8) and Pick up parcel is added to Anytime, so Anytime has four left (Read, Call family, Water, Pick up parcel), not three, and the day bar is 3/14 (Water not done takes one away; the task adds one to the total), not 4/13. The rest is right as drawn: tasks after the habits with no streak, Mark Done then Finish on the last item, and an end page that says 1 of 4 done with Read, Call family and Water left.
+
+- [x] **147 · Start on a routine that's partly done.** Right as drawn: Today has Meds done (58), Morning 2 left and the day bar at 5/13; Start opens on Stretch at 2 of 3 with "1 done earlier today. Starting at Stretch." in the banner's place; ‹ shows Meds done at 1 of 3 with ‹ greyed.
+
+- [x] **148 · A routine on another day (yesterday).** Fixed: (1) the player's subtitle said "Yesterday · 1 of 3" and the banner "Saved to yesterday"; a day is named by its date, never Yesterday (A119), so they now say "8 Nov · 1 of 3", "8 Nov · 2 of 3" and "Saved to 8 Nov" (the note and screen names follow; the flow's title and Who note keep "yesterday" as plain description). (2) Morning's Start was filled on 8 Nov; only the time of day it is now has a filled Start (A104), so it's the neutral one on both Today screens. (3) Stretch (4/10 min) and Read (12/20 min) ended 8 Nov unmet but showed streaks; a row for a day that ended unmet shows none (A113), so both are gone on both screens (Call family's week is still going and keeps 4 wk). (4) The player's Stretch said 0:00 with an empty ring while Today shows 4/10 min on that day; now 4:00 with the ring at 40%. The rest is right as drawn: Log instead of ▶ on a past day, Back to Today, and Morning 2 left with 5/13 after Meds.
+
+- [x] **149 · ✕ with a timer running.** Fixed: (1) Today's Stretch row kept the 4/10 fill (40 %) while it read 6:42 of 10 min running and then 7/10 min after ⏸; the fill is now 67 % and 70 %. (2) The first label said "Start, ›", but Meds goes from not done (screen 1) to done (screen 3); the label now says "Start, Mark Done, Next, ▶" and screen 2 is named for it. The rest is right as drawn: ✕ leaves the clock running with ⏸ on the row, the row opens the timer on its own (Log Time Bordered, ⏸ Prominent), and ⏸ on the row saves with Undo · Note.
+
+- [x] **150 · A timer on its own, from Today's ▶.** Fixed: (1) the Timer screen's Goal met line had a filled-circle ✓ (`checkmark.circle.fill`) where the player's Goal met has a plain ✓; changed in the design system (Timer screen, Running and Paused), so every copy now matches the player. (2) The labels said "Pause" and "Resume", but the buttons are the symbols alone (A69); the labels and screen names now say ⏸ and ▶. (3) Screen 2's note still described "Clock's round buttons", which were deleted; it now says Log Time and ⏸, the app's Large capsules. The rest is right as drawn: Paused, Goal met at 10:12 with the clock counting on, Today's row filled with ⏸ in the habit's colour, then ▶ and Undo · Note after ⏸ on the row, and the day bar 4/13 then 5/13.
+- [ ] **Open, not changed: the main button at the goal.** On the Timer screen at Goal met, ⏸ turns the habit's colour (as Today's round button does); in the player at Goal met (flow 135) it stays Ink. One of the two should change; left for the user.
+
+- [x] **151 · A time limit's timer, and Log manually.** Fixed: (1) Add Log, opened from Social media's timer, named Stretch (its icon and teal colour too); it now names Social media with its own icon and colour. (2) The label "Log time" now says "Log Time", the button's words. The rest is right as drawn: "of 30 min max" on a grey ring, Over the limit in grey past 30:00, the How long wheel, "8 min added to Social media · Undo" at 39:24, and Today's row keeping the clock and Over the limit with ⏸, then Undo · Note.
+
+- [x] **152 · The timer outside the app: the Live Activity.** Screen 5 was a different, older Lock Screen frame with its card lower than the others: swapped to Lock Screen · Live Activity (iOS) so all four cards sit in one place. The cards' lines were all full or half by eye: the design system's Live Activity card now fills its line by padding (304 wide, 68 % by default), and the copies show 6:50 and 6:52 at 68 %, 7:30 at 75 % and 10:04 full. In the card the name touched the icon (space-between with a fill child gave no gap): now 12, as in its own setting. Lock Screen dates now Mon, 9 Nov, and the big clocks follow the timer (9:41, 9:41, 9:42, 9:45) instead of jumping minutes while the timer moved seconds. The Live Activity keeps the words Pause and Resume: the symbol-only rule (A69) is for the Timer screen and the player.
+
+- [x] **153 · A milestone in the player: the ribbon.** Right as drawn: Today at 9:41 with Morning's filled Start and Meds at 2 days, Not done then Done with the ribbon "3 days in a row" under the progress and Saved · Undo · Add note above the bar, Stretch at 4:00 with no ribbon, ‹ back to Meds keeping its ribbon (‹ greyed on the first page), and the end page listing the milestone once under Reached in this routine, with Meds, Stretch and Skincare under Done (Skincare scrolls under the Done button).
+
+- [x] **154 · A big milestone in the player: its pop-up at the end.** Right as drawn: Meds Not done then Done with the same ribbon as any milestone ("30 days in a row") and no pop-up yet; at the end the design system's Milestone pop-up (a Medium sheet, glass ✕, no handle, the 30 medal, Next 60 days in a row · 30 to go, one Large Prominent All milestones) rises over the dimmed end page; Close leaves the end page listing it under Reached in this routine.
+
+- [x] **155 · A long name, a description and large text in the player.** Fixed: (1) Today, the flow's first screen, still called the habit Stretch; its row now says Morning stretch and yoga, cut with … on one line as Today's names are. (2) The description sheet had a drag handle as well as ✕, but it has one height: iOS draws a handle only with two, so it's now the design system's Close sheet. (3) Screen 2 said the name takes two lines, but a name is at most 24 letters and this one fits on one line at the usual size; its name now says so (two lines, then …, is what 200 % shows). The rest is right as drawn: two quiet lines of description then …, the sheet with the whole of it, and at 200 % the 96 icon, two-line name and description, larger Day Details and count, and the buttons at their height.
