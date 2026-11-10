@@ -22,7 +22,7 @@ Every Material icon in the file is now an SF Symbol, drawn as a character of SF 
 
 Figma keeps each Material text's fill setting (`fontName.variationSettings.FILL`), so the screens follow what Android's file drew, with two rules on top:
 
-- **A habit's or task's own icon is always `.fill`,** as in the app's `IconLibrary`, even where Android's lists drew it outlined (Edit Today, the icon picker). A habit looks the same everywhere.
+- **Replaced 10 Nov 2026 (the user; Rulebook, the Icon picker): the Icon picker offers filled and outlined symbols, and a habit keeps the one picked.** Was: **A habit's or task's own icon is always `.fill`,** as in the app's `IconLibrary`, even where Android's lists drew it outlined (Edit Today, the icon picker). A habit looks the same everywhere.
 - **▶ and ⏸ are always filled** (Rulebook, A101).
 
 | Android, where it was filled | SF Symbol | Code |
