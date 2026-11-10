@@ -305,3 +305,7 @@ Labels: "OK" became "Turn to 10 PM, tap outside", "Tap Starts" became "Tap 6:00 
   - Flows 47 (screens 2, 3, 4) and 48 (screens 4, 5) use it. **Consistency fix:** past the limit both rows hide the streak (the day can't end within max, A113); flow 48 had kept 🔥7 while flow 47 hid it. At the limit the streak stays (a day at the max is within max, A23).
   - Review evidence (`Research/Temp/limit-indicator/`): users want going over shown plainly and never treated as success (Grit #12778092747 "200%", Loop `05abe6c1-13db-4234-8299-9eac9d0d6e65`, Habitify `432e23c9-c1d1-4eca-8baf-6322aae86520`), and the day not counted when over (Do Habits #1920668030, Today #1448646478, HabitNow `300a2b80-105d-43b9-950c-a333a431d1cc`). Where to put the indicator was reasoned from first principles and the user's band idea.
   - Not changed: Day details still says "Limit 2 cups · Over the limit" in its card (another surface).
+- **Water's streak below its goal** (the user, 10 Nov 2026, found while reviewing Day details): Water's done default is
+  🔥23, which counts today, so a Water under 8 of 8 on today says **🔥22**. 28 rows on today's screens; the 10 Nov
+  screens left as they were.
+
