@@ -78,7 +78,7 @@ struct TodayView: View {
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
             .navigationDestination(for: HelpLink.self) { HelpView(open: $0.topic).analyticsScreen(.help) }
             // Open Habit Page from a row's touch-and-hold menu: the page on Today's own stack, Back returns to Today.
-            .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id) }
+            .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id, milestones: $0.milestones) }
             .perfBlankDestination()
             .toolbar { if !covered && !arranging && store.isLoaded && !store.habits.isEmpty { dayBar } }
             .sheet(isPresented: $showCalendar) {
@@ -649,6 +649,8 @@ struct TodayView: View {
                 }
                 .padding(.bottom, 6)
             }
+            // A milestone a tap just reached rises over the bottom of the list, above the day bar, for 5 seconds.
+            .overlay(alignment: .bottom) { TodayMilestoneBar() }
             // Today is rebuilt as the player closes; it comes back at the section the routine started from.
             .onAppear {
                 guard let part = returnToPart else { return }

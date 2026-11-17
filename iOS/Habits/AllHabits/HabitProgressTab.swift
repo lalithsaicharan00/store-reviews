@@ -167,9 +167,10 @@ private struct RecordBox: View {
 
 // MARK: - Milestones
 
-/// Milestones as awards (spec §3): the newest on a plate, the rest on a shelf, and the one thing to aim for next on
-/// each track. Only reached milestones are medals; later ones aren't listed (U5: the row of grey squares read as a
-/// to-do list of locked items).
+/// Figma's Milestones card (Progress and milestones): the newest medal on a plate in the habit's Fill, up to three
+/// earlier ones as badges, and the one thing to aim for next on each track. Only reached milestones are medals; later
+/// ones aren't listed (U5: a row of grey squares read as a to-do list of locked items). Everything else is on All
+/// Milestones, behind See All.
 private struct MilestonesCard: View {
     let habitID: UUID
     let milestones: HabitMilestones
@@ -178,26 +179,18 @@ private struct MilestonesCard: View {
 
     var body: some View {
         let reached = milestones.reached
-        VStack(alignment: .leading, spacing: WeekSpacing.card) {
-            HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.tight) {
-                Text("Milestones").font(.headline).accessibilityAddTraits(.isHeader)
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .center, spacing: WeekSpacing.tight) {
+                Text("Milestones").font(.body).accessibilityAddTraits(.isHeader)
                 Spacer(minLength: WeekSpacing.tight)
                 if reached.count >= 2 {
-                    Button(action: seeAll) {
-                        HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.pair) {
-                            Text("See all \(reached.count)")
-                            Image(systemName: "chevron.right").font(.footnote.weight(.semibold))
-                        }
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
-                        .frame(minHeight: 44)
-                        .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    // A 44-point target that reaches into the card's padding without moving the title.
-                    .padding(.vertical, -12)
-                    .accessibilityLabel("See all \(reached.count) milestones")
-                    .accessibilityIdentifier("habit-milestones-see-all")
+                    Button("See All \(reached.count)", action: seeAll)
+                        .buttonStyle(.bordered)
+                        .buttonBorderShape(.capsule)
+                        .controlSize(.small)
+                        .tint(Color.ink)
+                        .accessibilityLabel("See all \(reached.count) milestones")
+                        .accessibilityIdentifier("habit-milestones-see-all")
                 } else if reached.count == 1 {
                     Text("1 reached").font(.subheadline).foregroundStyle(.secondary)
                 }
@@ -207,15 +200,23 @@ private struct MilestonesCard: View {
             }
             if reached.count > 1 {
                 VStack(alignment: .leading, spacing: WeekSpacing.tight) {
-                    Text("Earlier").font(.footnote).foregroundStyle(.secondary)
-                    MilestoneShelf(milestones: reached.dropFirst(), color: color)
+                    MilestoneLabel("Earlier")
+                    HStack(alignment: .top, spacing: WeekSpacing.pair) {
+                        ForEach(reached.dropFirst().prefix(3)) { milestone in
+                            MilestoneBadge(milestone: milestone, color: color)
+                        }
+                    }
+                    .accessibilityElement(children: .contain)
+                    .accessibilityIdentifier("habit-milestone-shelf")
                 }
             }
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Next").font(.footnote).foregroundStyle(.secondary)
-                ForEach(milestones.next) { next in
-                    MilestoneNextRow(next: next, color: color, onPage: false)
-                        .accessibilityIdentifier("habit-milestone-next-" + next.track.rawValue)
+            VStack(alignment: .leading, spacing: WeekSpacing.tight) {
+                MilestoneLabel("Next")
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(milestones.next) { next in
+                        NextMilestone(next: next, color: color)
+                            .accessibilityIdentifier("habit-milestone-next-" + next.track.rawValue)
+                    }
                 }
             }
         }
@@ -227,8 +228,18 @@ private struct MilestonesCard: View {
     }
 }
 
-/// The newest medal on a plate tinted with the habit's colour. The first time it's shown it scales in once with a
-/// light haptic; with Reduce Motion it simply appears (spec §3.1, the reward moment).
+/// A part's label inside the card: Caption 1 Semibold, Secondary Label ("Earlier", "Next").
+private struct MilestoneLabel: View {
+    let text: String
+    init(_ text: String) { self.text = text }
+
+    var body: some View {
+        Text(text).font(.caption.weight(.semibold)).foregroundStyle(.secondary).accessibilityAddTraits(.isHeader)
+    }
+}
+
+/// The newest medal (Medium, 72) on a plate in the habit's Fill. The first time it's shown it scales in once with a
+/// success haptic; with Reduce Motion it simply appears (spec §3.1, the reward moment).
 private struct LatestPlate: View {
     let milestone: Milestone
     let isLatest: Bool
@@ -245,23 +256,23 @@ private struct LatestPlate: View {
     }
 
     var body: some View {
-        HStack(spacing: 14) {
-            MilestoneMedal(number: milestone.number, size: 64, color: color)
+        HStack(spacing: 16) {
+            Medal(number: milestone.number, size: 72, color: color)
                 .scaleEffect(shown ? 1 : 0.3)
                 .opacity(shown ? 1 : 0)
             VStack(alignment: .leading, spacing: WeekSpacing.label) {
                 if isLatest {
-                    Text("Latest").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+                    Text("Latest").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
                 }
-                Text(milestone.title).font(.headline)
+                Text(milestone.title).font(.body)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(milestone.reachedText).font(.subheadline).foregroundStyle(.secondary)
             }
             Spacer(minLength: 0)
         }
-        .padding(12)
+        .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(color.color.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(color.fill, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel((isLatest ? "Latest: " : "") + milestone.spoken)
         .accessibilityIdentifier("habit-milestone-latest")
@@ -274,98 +285,56 @@ private struct LatestPlate: View {
     }
 }
 
-/// The earlier medals, newest first, sideways; the fifth peeks at the card's edge.
-private struct MilestoneShelf: View {
-    let milestones: ArraySlice<Milestone>
+/// Figma's Milestone badge: a medal (52), what was reached in Caption 1 Semibold and when in Footnote. 96 wide, so
+/// three sit in a card on the smallest iPhone; longer words wrap rather than shrink.
+struct MilestoneBadge: View {
+    let milestone: Milestone
     let color: HabitColor
 
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack(alignment: .top, spacing: WeekSpacing.tight) {
-                ForEach(milestones) { milestone in
-                    VStack(spacing: 6) {
-                        MilestoneMedal(number: milestone.number, size: 44, color: color)
-                        VStack(spacing: 0) {
-                            Text(milestone.shelfTop).font(.caption.weight(.semibold))
-                            Text(milestone.shelfBottom).font(.caption2).foregroundStyle(.secondary)
-                        }
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.75)
-                    }
-                    .frame(width: 64)
-                    .accessibilityElement(children: .ignore)
-                    .accessibilityLabel(milestone.spoken)
-                }
+        VStack(spacing: WeekSpacing.pair) {
+            Medal(number: milestone.number, size: 52, color: color)
+            VStack(spacing: 0) {
+                Text(milestone.shelfTop).font(.caption.weight(.semibold))
+                Text(milestone.shelfBottom).font(.footnote).foregroundStyle(.secondary)
             }
-            .padding(.vertical, 2)
+            .multilineTextAlignment(.center)
+            .fixedSize(horizontal: false, vertical: true)
         }
-        .scrollIndicators(.hidden)
-        .contentMargins(.horizontal, WeekSpacing.card, for: .scrollContent)
-        .padding(.horizontal, -WeekSpacing.card)
-        .accessibilityIdentifier("habit-milestone-shelf")
+        .frame(width: 96)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(milestone.spoken)
     }
 }
 
-/// A milestone reached: a circle in the habit's colour, lighter at the top, with a fine white inner ring and the number
-/// in white. Nothing else on the page looks like one. The colours are the habit's mark (the same in light and dark mode,
-/// where white reaches 3:1 on every colour), so the number reads in both.
-struct MilestoneMedal: View {
-    let number: String
-    let size: CGFloat
-    let color: HabitColor
+/// The ring's middle: the next milestone's number in Body Semibold, or a check once the track has none left.
+struct NextNumber: View {
+    let next: MilestoneNext
 
     var body: some View {
-        let mark = color.color
-        let share: CGFloat = number.count >= 4 ? 0.28 : number.count == 3 ? 0.34 : 0.40
-        ZStack {
-            Circle()
-                .fill(LinearGradient(colors: [mark.mix(with: .white, by: 0.12), mark.mix(with: .black, by: 0.28)],
-                                     startPoint: .top, endPoint: .bottom))
-                .shadow(color: mark.mix(with: .black, by: 0.5).opacity(0.35), radius: 3, y: 2)
-            Circle()
-                .strokeBorder(Color.white.opacity(0.55), lineWidth: size >= 56 ? 1.5 : 1)
-                .padding(size * 0.09)
-            Text(number)
-                .font(.system(size: size * share, weight: .bold))
+        if next.target == nil {
+            Image(systemName: "checkmark").font(.body.weight(.semibold))
+        } else {
+            Text(next.number)
+                .font(.body.weight(.semibold))
                 .monospacedDigit()
-                .foregroundStyle(.white)
                 .lineLimit(1)
                 .minimumScaleFactor(0.6)
-                .padding(.horizontal, size * 0.12)
+                .padding(.horizontal, 7)
         }
-        .frame(width: size, height: size)
-        .accessibilityHidden(true)
     }
 }
 
-/// A track's next milestone: a ring filling clockwise from the top (current ÷ target), the target inside, and what's
-/// left. No `GeometryReader`: the ring is a trimmed circle.
-private struct MilestoneNextRow: View {
+/// Figma's Next milestone: a Progress ring (current ÷ target) with the target in it, then what it is and what's left.
+struct NextMilestone: View {
     let next: MilestoneNext
     let color: HabitColor
-    let onPage: Bool
 
     var body: some View {
         HStack(spacing: 12) {
-            ZStack {
-                Circle().inset(by: 2.5).stroke(Color(.tertiarySystemFill), lineWidth: 5)
-                Circle().inset(by: 2.5).trim(from: 0, to: next.fraction)
-                    .stroke(color.color, style: StrokeStyle(lineWidth: 5, lineCap: .round))
-                    .rotationEffect(.degrees(-90))
-                if next.target == nil {
-                    Image(systemName: "checkmark").font(.body.weight(.bold))
-                } else {
-                    Text(next.number)
-                        .font(.system(size: next.number.count >= 3 ? 15 : 17, weight: .bold))
-                        .monospacedDigit()
-                        .lineLimit(1)
-                        .minimumScaleFactor(0.6)
-                        .padding(.horizontal, 7)
-                }
-            }
-            .frame(width: 48, height: 48)
-            VStack(alignment: .leading, spacing: WeekSpacing.label) {
-                Text(onPage ? next.pageTitle : next.title).font(.body.weight(.semibold))
+            ProgressRing(fraction: next.fraction, tint: color.color) { NextNumber(next: next) }
+            VStack(alignment: .leading, spacing: 0) {
+                Text(next.title).font(.body.weight(.semibold))
                     .fixedSize(horizontal: false, vertical: true)
                 if let detail = next.detail {
                     Text(detail).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
@@ -379,72 +348,78 @@ private struct MilestoneNextRow: View {
     }
 }
 
-/// All milestones (spec §3.2), pushed from "See all N ›": one card per track with its Next row and every medal
-/// reached, newest first, in a three-column grid (two at accessibility text sizes).
-struct AllMilestonesPage: View {
-    let model: HabitPageModel
-    let color: HabitColor
-    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
-    @Environment(\.dynamicTypeSize) private var typeSize
+/// Figma's Milestone row, a row of the All Milestones list: a Small medal (40) for one reached, or the Progress ring
+/// for the next, in a 48 slot; what it is in Body and when (or what's left) under it. 72 tall; its line starts at the
+/// words, as every list row's does.
+private struct MilestoneRow<Badge: View>: View {
+    let headline: String
+    let supporting: String?
+    @ViewBuilder var badge: Badge
 
     var body: some View {
-        let milestones = model.milestones.shown(streaks: showStreaks)
-        let columns = typeSize.isAccessibilitySize ? 2 : 3
+        HStack(spacing: 12) {
+            badge.frame(width: 48, height: 48)
+            VStack(alignment: .leading, spacing: 1) {
+                Text(headline).font(.body)
+                if let supporting {
+                    Text(supporting).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                }
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+            Spacer(minLength: 0)
+        }
+        .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
+        .accessibilityElement(children: .ignore)
+    }
+}
+
+/// All Milestones (spec §3.2), pushed from See All: an inset-grouped list with a section per track, its next milestone
+/// first and then every one reached, newest first.
+struct AllMilestonesPage: View {
+    let model: HabitPageModel
+    let name: String
+    let color: HabitColor
+    @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
+
+    var body: some View {
         if PerfSwitches.blankMilestonesPage {
             ScrollView { Color.clear.frame(height: 2000) }
-                .navigationTitle("Milestones")
+                .navigationTitle("All Milestones")
                 .navigationBarTitleDisplayMode(.inline)
         } else {
-            page(milestones, columns: columns)
+            page(model.milestones.shown(streaks: showStreaks))
         }
     }
 
-    private func page(_ milestones: HabitMilestones, columns: Int) -> some View {
-        ScrollView {
-            VStack(alignment: .leading, spacing: WeekSpacing.card) {
-                ForEach(milestones.next) { next in
-                    let reached = milestones.reached.filter { $0.track == next.track }
-                    VStack(alignment: .leading, spacing: WeekSpacing.card) {
-                        HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.tight) {
-                            Text(Self.title(next.track)).font(.headline).accessibilityAddTraits(.isHeader)
-                            Spacer(minLength: WeekSpacing.tight)
-                            Text("\(reached.count) reached").font(.subheadline).foregroundStyle(.secondary)
-                        }
-                        MilestoneNextRow(next: next, color: color, onPage: true)
-                        if !reached.isEmpty {
-                            Divider()
-                            Grid(horizontalSpacing: WeekSpacing.tight, verticalSpacing: WeekSpacing.card) {
-                                ForEach(Array(stride(from: 0, to: reached.count, by: columns)), id: \.self) { first in
-                                    GridRow {
-                                        ForEach(reached[first..<min(first + columns, reached.count)]) { milestone in
-                                            VStack(spacing: 6) {
-                                                MilestoneMedal(number: milestone.number, size: 56, color: color)
-                                                Text(milestone.pageCaption).font(.subheadline.weight(.semibold))
-                                                Text(milestone.pageDate).font(.footnote).foregroundStyle(.secondary)
-                                            }
-                                            .multilineTextAlignment(.center)
-                                            .frame(maxWidth: .infinity)
-                                            .accessibilityElement(children: .ignore)
-                                            .accessibilityLabel(milestone.spoken)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    .pageCard()
-                    .accessibilityElement(children: .contain)
-                    .accessibilityIdentifier("all-milestones-" + next.track.rawValue)
-                }
-                Text("Milestones you reach stay here, even when a run starts again.")
-                    .font(.footnote).foregroundStyle(.secondary)
-                    .padding(.horizontal, WeekSpacing.card)
+    private func page(_ milestones: HabitMilestones) -> some View {
+        List {
+            Section {
+            } header: {
+                Text("\(name) · \(milestones.reached.count) reached")
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+                    .textCase(nil)
             }
-            .padding(WeekSpacing.card)
+            ForEach(milestones.next) { next in
+                Section(Self.title(next.track)) {
+                    MilestoneRow(headline: next.title, supporting: next.detail.map { "Next · " + $0 }) {
+                        ProgressRing(fraction: next.fraction, tint: color.color) { NextNumber(next: next) }
+                    }
+                    .accessibilityLabel(next.spoken)
+                    .accessibilityIdentifier("all-milestones-" + next.track.rawValue)
+                    ForEach(milestones.reached.filter { $0.track == next.track }) { milestone in
+                        MilestoneRow(headline: milestone.title, supporting: milestone.reachedText) {
+                            Medal(number: milestone.number, size: 40, color: color)
+                        }
+                        .accessibilityLabel(milestone.spoken)
+                    }
+                }
+            }
         }
-        .background(Color(.systemGroupedBackground))
+        .listStyle(.insetGrouped)
         .accessibilityIdentifier("all-milestones")
-        .navigationTitle("Milestones")
+        .navigationTitle("All Milestones")
         .navigationBarTitleDisplayMode(.inline)
     }
 

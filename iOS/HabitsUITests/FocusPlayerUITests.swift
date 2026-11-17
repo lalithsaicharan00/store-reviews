@@ -56,10 +56,10 @@ final class FocusPlayerUITests: XCTestCase {
     }
 
     /// A timed habit's clock is a button (tapping it logs time manually), so its text is read from the button:
-    /// "0:06 / 20 min", with the period ("Today") as its value.
+    /// "0:06 of 20 min", with the period ("Today") as its value.
     private var clock: XCUIElement { app.buttons["focus-clock"] }
 
-    /// The seconds on the clock: "1:05 / 20 min" is 65.
+    /// The seconds on the clock: "1:05 of 20 min" is 65.
     private func clockSeconds() -> Int {
         let time = clock.label.components(separatedBy: " ").first ?? ""
         return time.split(separator: ":").reduce(0) { $0 * 60 + (Int($1) ?? 0) }
@@ -358,11 +358,11 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "This week")
         shot("compact-03-weekly-check")
         jump("Read a little")
-        XCTAssertTrue(clock.label.contains(" / 20 min"), clock.label)
+        XCTAssertTrue(clock.label.contains(" of 20 min"), clock.label)
         XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "Today")
         shot("compact-04-timer")
         jump("Monthly reading")
-        XCTAssertTrue(clock.label.contains(" / 1 h"), clock.label)
+        XCTAssertTrue(clock.label.contains(" of 1 h"), clock.label)
         XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "This month")
         shot("compact-05-monthly-timer")
         jump("Yearly distance")

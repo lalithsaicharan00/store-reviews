@@ -181,7 +181,14 @@ final class HabitStore {
     private(set) var dayFinishedAt: Date?
     /// What the last tap reached: "30 days in a row", "All 5 done today". Shown beside that row's Undo while it lasts.
     private(set) var milestoneOffer: MilestoneOffer?
-    struct MilestoneOffer: Equatable { let entry: UUID; let habit: UUID; let day: LocalDay; let text: String }
+    struct MilestoneOffer: Equatable {
+        let entry: UUID; let habit: UUID; let day: LocalDay; let text: String
+        /// A streak milestone's length and unit (the bar and the pop-up on Today); nil for "All 5 done today".
+        var value: Int? = nil
+        var unit: StreakUnit? = nil
+        /// An earlier run already reached it (the pop-up says "again").
+        var again = false
+    }
     /// Only writes what changes: every row reads these, and an observed write redraws them even when it's nil to nil.
     func clearLogOffer() {
         if undoOffer != nil { undoOffer = nil }
@@ -2693,7 +2700,9 @@ final class HabitStore {
             let unit = rule(habit, on: today()).frequency.streakUnit
             let now = streak(of: habit, asOf: today())
             if now > before, unit.isMilestone(now) {
-                mark = MilestoneOffer(entry: entry.id, habit: habit.id, day: entry.day, text: unit.inARow(now))
+                // Only on the rare tap that reaches one: the best run is remembered by the store (S5).
+                mark = MilestoneOffer(entry: entry.id, habit: habit.id, day: entry.day, text: unit.inARow(now),
+                                      value: now, unit: unit, again: bestStreak(of: habit) > now)
             }
         }
         if mark == nil, let score, !wasFull, score.isFull, score.planned > 1 {

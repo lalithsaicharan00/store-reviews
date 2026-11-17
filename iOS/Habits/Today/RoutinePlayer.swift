@@ -308,6 +308,9 @@ struct RoutinePlayer: View {
                         }
                         hero(habit, diameter: min(max(geometry.size.width - 72, 200), habit.kind == .checklist ? 236 : 272))
                     }
+                    // A milestone this habit just reached: the ribbon, under the progress, its place kept so nothing
+                    // moves when it appears.
+                    PlayerMilestone(habit: habit, day: session.day)
                     // Its place is kept while there's nothing to undo, so the circle never jumps when it appears.
                     ZStack {
                         if done(habit), let entry = latestEntry(habit) {
@@ -339,11 +342,10 @@ struct RoutinePlayer: View {
         let goal = store.goal(of: habit)
         let big = CustomText.clock(numberSize)
         if habit.kind == .duration && !skipped(habit) {
-            FocusClock(habit: habit, day: session.day, font: big,
-                       diameter: diameter) { openLog() }
+            FocusClock(habit: habit, day: session.day, diameter: diameter) { openLog() }
         } else {
             FocusProgressCircle(progress: progress, goal: goal, color: habit.color.color,
-                                overLimit: habit.atMost && progress > goal, diameter: diameter) {
+                                limit: habit.atMost, diameter: diameter) {
                 HabitIcon(symbol: habit.symbol, color: habit.color, size: 44)
                     .accessibilityHidden(true)
                 FocusProgressValue(value: HabitCopy.number(progress), target: progressTarget(habit, goal: goal),
@@ -352,7 +354,7 @@ struct RoutinePlayer: View {
                 if skipped(habit) {
                     Text("Skipped").font(.caption).foregroundStyle(.secondary)
                 } else if habit.atMost && progress > goal {
-                    Text("Over limit").font(.caption).foregroundStyle(.red)
+                    Text("Over limit").font(.caption).foregroundStyle(.secondary)
                 }
             }
         }
@@ -882,15 +884,39 @@ struct FocusPrimaryLabel: LabelStyle {
     }
 }
 
-/// The timed habit's clock, status and bar. Only this ticks, once a second, and only while its timer runs;
-/// the rest of the player stays still (a full-screen timeline made the buttons flicker, found by hand 29 Sep).
+/// The milestone ribbon under the player's progress (Figma's Milestone ribbon): what this habit's last tap reached,
+/// for as long as the store offers it. Only this reads the store's milestone, so the page doesn't redraw for it (S6).
+/// Its 32 points are kept while there's none, so the page never jumps.
+private struct PlayerMilestone: View {
+    let habit: Habit
+    let day: LocalDay
+    @Environment(HabitStore.self) private var store
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    var body: some View {
+        ZStack {
+            if let mark = store.milestoneOffer, mark.habit == habit.id, mark.day == day {
+                MilestoneRibbon(text: mark.text, color: habit.color)
+                    .id(mark.entry)
+                    .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 10)))
+            }
+        }
+        .frame(minHeight: 32)
+        .animation(.snappy(duration: 0.25), value: store.milestoneOffer?.entry)
+    }
+}
+
+/// The timed habit's clock: Figma's Timer ring. Only this ticks, once a second, and only while its timer runs; the
+/// rest of the screen stays still (a full-screen timeline made the buttons flicker, found by hand 29 Sep). Inside the
+/// ring: the habit's icon (28, its colour), the clock (`CustomText.timer`, SF Pro Light 64, tabular figures) and its
+/// goal ("of 10 min", Body, Secondary Label). A tap on the clock types time.
 struct FocusClock: View {
     let habit: Habit
     let day: LocalDay
-    let font: Font
     let diameter: CGFloat
     let onTapClock: () -> Void
     @Environment(HabitStore.self) private var store
+    @ScaledMetric(relativeTo: .largeTitle) private var clockSize = CustomText.timerSize
 
     /// Paused: a schedule whose first tick never comes, so the clock stands still.
     private static let never = Date.distantFuture
@@ -907,17 +933,30 @@ struct FocusClock: View {
     private func content(now: Date, running: Bool) -> some View {
         let progress = store.progress(of: habit, on: day, now: now)
         let goal = store.goal(of: habit)
-        return FocusProgressCircle(progress: progress, goal: goal, color: habit.color.color,
-                                   overLimit: habit.atMost && progress > goal, diameter: diameter) {
-            HabitIcon(symbol: habit.symbol, color: habit.color, size: 44)
+        let value = Format.clock(progress)
+        let target = Format.minutes(goal) + (habit.atMost ? " max" : "")
+        return FocusProgressCircle(progress: progress, goal: goal, color: habit.color.color, limit: habit.atMost,
+                                   diameter: diameter) {
+            Image(systemName: habit.symbol)
+                .font(.system(size: 28))
+                .foregroundStyle(habit.color.color)
                 .accessibilityHidden(true)
             // A time habit always shows its clock (the user, 7 Oct 2026: "Show clock" was removed). A tap types time.
             Button(action: onTapClock) {
-                FocusProgressValue(value: Format.clock(progress),
-                                   target: Format.minutes(goal) + (habit.atMost ? " max" : ""),
-                                   period: FocusProgressValue.period(habit), font: font, identifier: "focus-clock-value")
+                VStack(spacing: 0) {
+                    Text(value)
+                        .font(CustomText.timer(clockSize))
+                        .foregroundStyle(.primary)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                    Text("of " + target)
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                }
             }
             .buttonStyle(.plain)
+            .accessibilityLabel(value + " of " + target)
+            .accessibilityValue(FocusProgressValue.period(habit))
             .accessibilityHint("Logs time manually")
             .accessibilityIdentifier("focus-clock")
             // Always there, invisible while running, so Pause doesn't push the icon and clock up.
@@ -926,7 +965,8 @@ struct FocusClock: View {
                 .opacity(running ? 0 : 1)
                 .accessibilityHidden(running)
             if habit.atMost && progress > goal {
-                Text("Over limit").font(.caption).foregroundStyle(.red)
+                // Never red (U3): over a limit is said in words, in the same grey as the ring.
+                Text("Over limit").font(.caption).foregroundStyle(.secondary)
             }
         }
         .transaction { $0.animation = nil }
@@ -967,26 +1007,24 @@ struct FocusProgressValue: View {
     }
 }
 
-/// The ring encodes exactly the same current/target shown inside it, across every tracking type.
+/// The ring round the player's and the timer's middle (Figma's Timer ring): the same current ÷ goal as the words
+/// inside it, for every kind of habit. A `ProgressRing`, 10 thick on System Fill (the Progress bar's track, never the
+/// habit's Fill), filling clockwise from the top in the habit's colour. A limit (cut-down) is System Gray, never the
+/// habit's colour or red (A41, U3).
 struct FocusProgressCircle<Content: View>: View {
     let progress: Double
     let goal: Double
     let color: Color
-    let overLimit: Bool
+    let limit: Bool
     let diameter: CGFloat
     @ViewBuilder var content: Content
 
     var body: some View {
         ZStack {
-            Circle().fill(color.opacity(0.035))
-            Circle().strokeBorder(color.opacity(0.12), lineWidth: 7)
-            Circle()
-                .trim(from: 0, to: min(max(progress / max(goal, 0.001), 0), 1))
-                .stroke(overLimit ? Color.red : color, style: StrokeStyle(lineWidth: 7, lineCap: .round))
-                .rotationEffect(.degrees(-90))
-                .padding(3.5)
+            ProgressRing(fraction: progress / max(goal, 0.001), tint: limit ? Color(.systemGray) : color,
+                         size: diameter, lineWidth: 10, track: Color(.systemFill))
                 .accessibilityHidden(true)
-            VStack(spacing: 14) { content }
+            VStack(spacing: 8) { content }
                 .frame(width: diameter * 0.72)
                 .multilineTextAlignment(.center)
         }

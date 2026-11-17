@@ -11,9 +11,14 @@ import SwiftUI
 // person's text size like the Apple style it follows, up to a cap that keeps it on the screen.
 
 enum CustomText {
-    /// `iOS/Custom/Clock`: SF Pro Rounded Medium 36 (the timer screen and the routine player). Grows with Title.
+    /// `iOS/Custom/Clock`: SF Pro Rounded Medium 36 (an amount in the routine player). Grows with Title.
     static let clockSize: CGFloat = 36
     static let clockMaxSize: CGFloat = 52
+
+    /// Figma's Timer ring: SF Pro Light 64, tabular figures, the timer's elapsed time. Grows with Large Title, never
+    /// past `timerMaxSize`; an hour-long clock shrinks to fit the ring.
+    static let timerSize: CGFloat = 64
+    static let timerMaxSize: CGFloat = 80
 
     /// `iOS/Custom/Amount`: SF Pro Bold 56, the typed amount on Log, How Much and Limit. Grows with Large Title;
     /// a screen may cap it lower where room is short (`RecordParts.Gaps.numberSize`).
@@ -22,6 +27,11 @@ enum CustomText {
     /// The clock at `scaled` (an `@ScaledMetric` of `clockSize`), never past `clockMaxSize`.
     static func clock(_ scaled: CGFloat) -> Font {
         .system(size: min(scaled, clockMaxSize), weight: .medium, design: .rounded).monospacedDigit()
+    }
+
+    /// The timer's clock at `scaled` (an `@ScaledMetric` of `timerSize`), never past `timerMaxSize`.
+    static func timer(_ scaled: CGFloat) -> Font {
+        .system(size: min(scaled, timerMaxSize), weight: .light).monospacedDigit()
     }
 
     /// The amount's face at `size`; How long's Hours, Minutes and Seconds boxes use it at their own, smaller size.

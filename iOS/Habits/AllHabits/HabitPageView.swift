@@ -30,10 +30,12 @@ struct HabitPageView: View {
     /// Progress tab redraws under it (U27).
     @State private var showMilestones = false
 
-    init(id: UUID, overTime: OverTimeStart? = nil) {
+    /// `milestones` opens it on its Progress tab with All Milestones pushed on top (the milestone pop-up's button).
+    init(id: UUID, overTime: OverTimeStart? = nil, milestones: Bool = false) {
         self.id = id
         self.overTime = overTime
-        _tab = State(initialValue: overTime == nil ? .history : .progress)
+        _tab = State(initialValue: overTime == nil && !milestones ? .history : .progress)
+        _showMilestones = State(initialValue: milestones)
     }
 
     var body: some View {
@@ -82,7 +84,7 @@ struct HabitPageView: View {
         .onAppear { model.load(key, tab: tab, store: store) }
         .onChange(of: key) { model.load(key, tab: tab, store: store) }
         .onChange(of: tab) { model.load(key, tab: tab, store: store) }
-        .navigationDestination(isPresented: $showMilestones) { AllMilestonesPage(model: model, color: habit.color) }
+        .navigationDestination(isPresented: $showMilestones) { AllMilestonesPage(model: model, name: habit.name, color: habit.color) }
         .analyticsScreen(.habitDetail)
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)

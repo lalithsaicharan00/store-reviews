@@ -895,7 +895,58 @@ struct NoteTargetFlash: View {
 
 
 /// A habit's page pushed on Today's own stack (Open Habit Page in a row's touch-and-hold menu).
-struct HabitPageRoute: Hashable { let id: UUID }
+struct HabitPageRoute: Hashable {
+    let id: UUID
+    /// Opens straight on to its All Milestones (the milestone pop-up's button).
+    var milestones = false
+}
+
+/// The milestone bar on Today (Figma's Milestone bar): a streak milestone a tap just reached, rising over the bottom of
+/// the list for 5 seconds, and its pop-up behind See. Only this reads the store's milestone, so reaching one redraws
+/// this and the row's band, never the list (S6). The row's band stays after the bar has gone.
+struct TodayMilestoneBar: View {
+    @Environment(HabitStore.self) private var store
+    @Environment(MenuModel.self) private var menu
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var shown: MilestoneMoment?
+    @State private var popup: MilestoneMoment?
+    /// The last tap's milestone already shown, so a redraw never brings the bar back.
+    @State private var seen: UUID?
+
+    var body: some View {
+        ZStack {
+            if let shown {
+                MilestoneBar(moment: shown, onSee: { popup = shown; hide() }, onGone: hide)
+                    .id(shown.id)
+                    .transition(reduceMotion ? .opacity : .asymmetric(
+                        insertion: .opacity.combined(with: .offset(y: 24)),
+                        removal: .opacity.combined(with: .offset(y: -16))))
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.bottom, 8)
+        .onChange(of: store.milestoneOffer) { show(store.milestoneOffer) }
+        .sheet(item: $popup) { moment in
+            MilestonePopup(moment: moment) {
+                menu.path.append(HabitPageRoute(id: moment.habitID, milestones: true))
+            }
+        }
+    }
+
+    private func show(_ offer: HabitStore.MilestoneOffer?) {
+        guard let offer else { hide(); return }
+        guard offer.entry != seen, let value = offer.value, let unit = offer.unit,
+              let habit = store.habits.first(where: { $0.id == offer.habit }) else { return }
+        seen = offer.entry
+        let moment = MilestoneMoment(entry: offer.entry, habit: habit, value: value, unit: unit, again: offer.again)
+        withAnimation(.snappy(duration: 0.25)) { shown = moment }
+    }
+
+    private func hide() {
+        guard shown != nil else { return }
+        withAnimation(.snappy(duration: 0.25)) { shown = nil }
+    }
+}
 
 /// Swipe left → Skip or Undo Skip, for the day the row shows (Figma's Habit row · Swipe: forward.fill and
 /// arrow.uturn.backward, grey). Reads only that habit's day, so other rows don't redraw.
@@ -982,9 +1033,7 @@ struct RowFoot: View {
     var body: some View {
         if let mark = store.milestoneOffer, mark.habit == habit.id, mark.day == day {
             band(fill: habit.color.milestoneBand) {
-                Image(systemName: "seal.fill")
-                    .font(.system(size: 15))
-                    .foregroundStyle(habit.color.medal)
+                Medal(size: 16, color: habit.color)
                 Text(mark.text).foregroundStyle(habit.color.deep)
             }
             .accessibilityIdentifier("today-milestone")
