@@ -400,7 +400,7 @@ private struct HabitIconsRow: View {
                 .font(.system(size: 18, weight: .medium))
                 .foregroundStyle(.secondary)
                 .frame(width: 44, height: 44)
-                .overlay(RoundedRectangle(cornerRadius: 44 * 0.28, style: .continuous)
+                .overlay(Circle()
                     .strokeBorder(Color.secondary, style: StrokeStyle(lineWidth: 1.5, dash: [4, 3])))
         }
         .padding(.top, 8)

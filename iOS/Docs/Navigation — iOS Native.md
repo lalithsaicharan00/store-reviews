@@ -109,6 +109,17 @@ iOS has search but draws it differently, so both components were changed, not de
 - **Flow names and notes still say "tabs"** in places ("the top bar, the tabs and the period row stay"). Those are labels, and they weren't rewritten.
 - **The screens are still 360 × 800.**
 
+## In the app (17 Nov 2026)
+
+**Nothing to build: every part is iOS's own.**
+
+| Figma | In the app |
+|---|---|
+| Navigation bar | `NavigationStack` with `.toolbar` items: iOS 26 draws the glass, the centred title and the spacing. Edit apart from + is `ToolbarSpacer(.fixed)` (Today) |
+| Bar segmented control | A `Picker` with `.pickerStyle(.segmented)` in `ToolbarItem(placement: .bottomBar)`: iOS draws the glass capsule and the pill |
+| Menu row | The app's side menu, already built (`Menu/SideMenu.swift`). Figma's description still describes Android's drawer item |
+| Search field, Active search | `.searchable`, iOS's own field and its active state (Help, the icon picker). The notes tab's `NoteSearchField` is its own and changes when that screen does. Figma's descriptions still describe Material's search bar |
+
 ## Checked
 
 Looked at by eye: section 06, Habits & Tasks (Habits and Tasks), Today, the menu, New habit, Details, Day details, Search with text, the icon picker with its field, and Keep reminders coming.

@@ -90,6 +90,24 @@ The user expected these, since those pages are copies of Android. They wait for 
 - **The stepper's − and +** are Round buttons, where iOS has its own Stepper.
 - **The bottom toolbar on 360 wide:** the middle piece is 184 where the phone's is 217, because the screens are still Android's 360 × 800. "Yesterday" fits tightly.
 
+## In the app (17 Nov 2026)
+
+**Almost nothing here is ours to build: SwiftUI draws it.** The app sets `.tint(.ink)` once at its root (`HabitsApp.swift`), and each part is Apple's own control:
+
+| Figma | In the app |
+|---|---|
+| Button: Prominent, Bordered, Borderless | `.buttonStyle(.borderedProminent)`, `.bordered`, `.borderless`; Small, Regular, Large are `.controlSize(.small)`, `.regular`, `.large`. A capsule is iOS 26's default |
+| Button: Destructive | `.bordered` with a red word, `RecordDeleteButton` (`Today/RecordParts.swift`) |
+| Glass button (top and bottom bars) | A `Button` in `.toolbar`: iOS 26 draws the glass. Prominent is `ToolbarItem(placement: .confirmationAction)` |
+| Symbol button | `Button(…, systemImage:)` with `.labelStyle(.iconOnly)` |
+| Segmented control | `Picker` with `.pickerStyle(.segmented)`; Large adds `.controlSize(.large)` |
+| Bottom toolbar, Period bar | Pieces in `ToolbarItem(placement: .bottomBar)` (Today's is `DayBar`); the Period bar's drop-down is a `Menu`. Nothing to build until the Habits page gets its new bottom bar |
+| More button, Close button | `Image(systemName: "ellipsis.circle.fill")` with `.symbolRenderingMode(.hierarchical)`, and `xmark`, each in a `Menu` or `Button` |
+| Round button, Start button | Ours, already built: `RoundActionButton` (`Components/Components.swift`), `StartButton` (`Today/TodayRows.swift`) |
+| Floating button, Style=Glass | **The one thing added:** `.floatingGlass()` (`Components/Components.swift`): `.glassEffect(.regular.interactive(), in: .capsule)` on iOS 26, a capsule of `.regularMaterial` on iOS 18, which the app still supports. Back to Today on Today uses it, as Figma draws it: Body Medium, Ink, 16 at the sides, 44 tall. It was an Ink capsule with white words and a shadow until 17 Nov 2026 |
+
+**Not changed yet, because they're screens, not parts:** Floating button's Prominent style (Add on History, Add Note, Add Routine, Back to This Week) isn't reviewed in Figma; the habit page's ⋯ (`HabitPageView.swift:208`) and Arrange's (`ArrangeDay.swift:141`) still draw `ellipsis.circle`, not the filled one. Each changes when its screen does.
+
 ## Checked
 
 Looked at by eye: section 05, Today, Back to Today, Habits & Tasks, the routine player, History, Day details, the icon picker, New habit, a widget's setup and Plus. Read for all copies: none left on a deleted component, no Material ligature left in a Button, Glass, Symbol or Floating symbol.

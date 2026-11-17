@@ -152,30 +152,15 @@ private struct TimerIcon: View {
 
     var body: some View {
         Image(systemName: symbol)
-            .font(.system(size: size * 0.48, weight: .semibold))
+            .font(.system(size: size * 0.48, weight: .regular))
             .foregroundStyle(.white)
             .frame(width: size, height: size)
-            .background(RoundedRectangle(cornerRadius: size * 0.28, style: .continuous).fill(color.gradient))
+            // The app's Habit icon: a solid circle in the habit's colour (Figma, 17 Nov 2026).
+            .background(Circle().fill(color))
     }
 }
 
 /// The app's habit colours (`HabitColor`), by name.
 private enum TimerColor {
-    static func named(_ name: String) -> Color {
-        switch name {
-        case "red": .red
-        case "orange": .orange
-        case "yellow": .yellow
-        case "green": .green
-        case "mint": .mint
-        case "teal": .teal
-        case "cyan": .cyan
-        case "indigo": .indigo
-        case "purple": .purple
-        case "pink": .pink
-        case "brown": .brown
-        case "gray": .gray
-        default: .blue
-        }
-    }
+    static func named(_ name: String) -> Color { (HabitColor(rawValue: name) ?? .blue).color }
 }

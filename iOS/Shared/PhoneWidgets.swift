@@ -992,7 +992,7 @@ struct WidgetRowContent: View {
     private var identity: some View {
         HStack(spacing: 10) {
             Image(systemName: item.symbol).font(.system(size: 20, weight: .medium))
-                .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
+                .foregroundStyle(WidgetPalette.main(item.color)).widgetAccentable()
                 .frame(width: 28, height: 28)
             VStack(alignment: .leading, spacing: 1) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
@@ -1068,7 +1068,7 @@ struct SmallWidget: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
                 Image(systemName: item.symbol).font(.system(size: 24, weight: .medium))
-                    .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
+                    .foregroundStyle(WidgetPalette.main(item.color)).widgetAccentable()
                 Spacer(minLength: 0)
                 if live {
                     WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample, small: true)
@@ -1187,7 +1187,7 @@ struct WeekWidget: View {
         VStack(spacing: 4) {
             Spacer(minLength: 0)
             Image(systemName: item.symbol).font(.system(size: 34, weight: .medium))
-                .foregroundStyle(WidgetPalette.mark(item.color)).widgetAccentable()
+                .foregroundStyle(WidgetPalette.main(item.color)).widgetAccentable()
                 .frame(height: 44)
             if !item.name.isEmpty {
                 Text(item.name).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center).lineLimit(2)

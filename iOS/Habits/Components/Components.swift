@@ -1,56 +1,39 @@
 import SwiftUI
 
 // MARK: - Colours
+//
+// The colour system (Ink, On Ink, a habit's colour and shades) is in Shared/Palette.swift.
 
 extension Color {
-    /// Charcoal in light mode, off-white in dark mode: the app's only system colour.
-    static let ink = Color(UIColor { $0.userInterfaceStyle == .dark
-        ? UIColor(red: 0.925, green: 0.925, blue: 0.935, alpha: 1)
-        : UIColor(red: 0.153, green: 0.153, blue: 0.165, alpha: 1) })
-    /// Text and icons on an ink fill.
-    static let onInk = Color(UIColor { $0.userInterfaceStyle == .dark
-        ? UIColor(red: 0.11, green: 0.11, blue: 0.12, alpha: 1)
-        : .white })
+    /// A card or row on a grouped page: `iOS/Grouped Background/Secondary System Grouped Background`.
     static let card = Color(.secondarySystemGroupedBackground)
 }
 
 extension HabitColor {
-    var color: Color {
-        switch self {
-        case .red: .red
-        case .orange: .orange
-        case .yellow: .yellow
-        case .green: .green
-        case .mint: .mint
-        case .teal: .teal
-        case .cyan: .cyan
-        case .blue: .blue
-        case .indigo: .indigo
-        case .purple: .purple
-        case .pink: .pink
-        case .brown: .brown
-        case .gray: .gray
-        }
-    }
-
     var name: String { rawValue.capitalized }
 }
 
 // MARK: - Habit icon
 
-/// The habit's symbol, white on a rounded tile in the habit's colour.
+/// The habit's symbol, white on a circle in the habit's colour: Figma's Habit icon (32 on a row, 28 folded), the symbol
+/// SF Pro Regular at 0.48 of the circle. The habit's iOS colour, solid (`iOS/Standard/System <Hue>`; 17 Nov 2026).
 struct HabitIcon: View {
     let symbol: String
     let color: HabitColor
     var size: CGFloat = 32
+    /// A ring in the card's colour, so overlapping icons stay apart (Figma's folded header: 2 pt).
+    var ring: CGFloat = 0
 
     var body: some View {
         Image(systemName: symbol)
-            .font(.system(size: size * 0.48, weight: .semibold))
+            .font(.system(size: size * 0.48, weight: .regular))
             .foregroundStyle(.white)
             .frame(width: size, height: size)
-            // The shared-lightness colour (`HabitColor.mark`), so a white symbol reads on every colour (2 Oct 2026).
-            .background(RoundedRectangle(cornerRadius: size * 0.28, style: .continuous).fill(color.mark.gradient))
+            .background {
+                // Plain shapes, no shadow or blend: two layers per icon at most (S10).
+                Circle().fill(color.color)
+                if ring > 0 { Circle().strokeBorder(Color.card, lineWidth: ring) }
+            }
             .accessibilityHidden(true)
     }
 }
@@ -154,14 +137,14 @@ struct RoundActionButton: View {
 ///
 /// The colour layer is the row's full width, scaled from the leading edge: a change in progress is a transform the GPU
 /// animates (the sweep after a tick), not a new layout or a geometry read on every row.
+/// The colour is the habit's `Fill` (Shared/Palette.swift), opaque, so every hue fills as strongly as the others.
 struct ProgressFill: View {
     let progress: Double
     let color: HabitColor
-    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
         Color.card.overlay {
-            color.color.opacity(scheme == .dark ? 0.26 : 0.15)
+            color.fill
                 .scaleEffect(x: min(1, max(0, progress)), y: 1, anchor: .leading)
         }
     }
@@ -174,6 +157,128 @@ struct NowChip: View {
             .foregroundStyle(Color.ink)
             .padding(.horizontal, 8).padding(.vertical, 3)
             .background(Capsule().fill(Color.ink.opacity(0.10)))
+    }
+}
+
+extension View {
+    /// Figma's Floating button, Style=Glass: a button that floats over content on plain Liquid Glass, the same material as
+    /// the toolbar under it (iOS has no floating action button). iOS 26 draws the glass; iOS 18 gets the nearest it has,
+    /// a capsule of regular material.
+    func floatingGlass() -> some View {
+        modifier(FloatingGlass())
+    }
+}
+
+private struct FloatingGlass: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 26, *) {
+            content.glassEffect(.regular.interactive(), in: .capsule)
+        } else {
+            content
+                .background(.regularMaterial, in: Capsule())
+                .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
+        }
+    }
+}
+
+// MARK: - Banner and card notice
+//
+// iOS has neither: no snack bar or toast, and no notice card (TipKit's TipView decides by itself when a tip stops
+// showing, and a problem must stay until it's fixed). So these two are ours, drawn once here from Figma's section 09.
+// Menus, sheets, alerts, `ContentUnavailableView` and `.redacted(reason: .placeholder)` are iOS's own: nothing of ours.
+
+/// Figma's Banner: a short message floating where the person is, with at most two actions ("Note saved · Undo").
+/// Subheadline in Label, its symbol 6 before the words, the actions Semibold 12 after them; 16 at the sides and 12 above
+/// and below, so one line is 44 tall and a capsule. Two lines at most, then "…"; never wider than 328, hugging its words
+/// below that. Solid card colour with a soft shadow: glass or material vanished on a light page (29 Sep). The shadow is on
+/// the background shape alone, never the text (S10). Place it in an overlay so nothing under it moves when it comes.
+struct Banner<Actions: View>: View {
+    let text: String
+    var symbol = "checkmark.circle"
+    @ViewBuilder var actions: Actions
+
+    var body: some View {
+        HStack(spacing: 12) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Image(systemName: symbol).accessibilityHidden(true)
+                Text(text).lineLimit(2).fixedSize(horizontal: false, vertical: true)
+            }
+            .font(.subheadline)
+            actions.font(.subheadline.weight(.semibold))
+        }
+        .foregroundStyle(.primary)
+        .tint(.primary)
+        .padding(.horizontal, 16).padding(.vertical, 12)
+        .frame(minHeight: 44)
+        .background {
+            RoundedRectangle(cornerRadius: 22, style: .continuous).fill(Color.card)
+                .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
+        }
+        // After the background, so the banner hugs its words and this only caps the room it's offered.
+        .frame(maxWidth: 328)
+    }
+}
+
+/// Figma's Card notice: a list card at the top of a page when something needs the person, in TipView's anatomy and our
+/// neutral colours. A filled symbol at Title 2 in a 32 column (System Red for a problem, Secondary Label otherwise),
+/// the title in Headline, the line in Subheadline, Secondary Label, 2 under it, and at most one fix, a Regular Bordered
+/// button 10 under the words. The ✕ is Not Now, only on what can wait. It's the list's own row (Secondary System Grouped
+/// Background, the list's corners), 15 above and below and 16 at the sides, so its words line up with the rows under it.
+struct CardNotice<Fix: View>: View {
+    let symbol: String
+    let title: String
+    let message: String
+    var problem = true
+    /// What VoiceOver and the UI tests find the words by.
+    var id = ""
+    /// Not Now: hides a notice that can wait. Nil for one that can't.
+    var onClose: (() -> Void)? = nil
+    var closeID = ""
+    @ViewBuilder var fix: Fix
+
+    var body: some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: symbol)
+                .symbolVariant(.fill)
+                .font(.title2)
+                .foregroundStyle(problem ? Color(.systemRed) : Color.secondary)
+                .frame(width: 32)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 10) {
+                VStack(alignment: .leading, spacing: 2) {
+                    // Room kept for the ✕, so the title never runs under it.
+                    Text(title).font(.headline).padding(.trailing, onClose == nil ? 0 : 34)
+                    Text(message).font(.subheadline).foregroundStyle(.secondary)
+                }
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier(id)
+                fix
+                    .buttonStyle(.bordered)
+                    .tint(.ink)
+                    .controlSize(.regular)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .overlay(alignment: .topTrailing) {
+            if let onClose {
+                Button(action: onClose) {
+                    // Figma's Close button: Ink at 25 % behind an Ink ✕, as the More button is drawn.
+                    Image(systemName: "xmark.circle.fill")
+                        .symbolRenderingMode(.palette)
+                        .foregroundStyle(Color.ink, Color.ink.opacity(0.25))
+                        .font(.system(size: 26))
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                // The circle sits in the corner; its 44 target reaches past it into the card's padding.
+                .padding(.top, -9).padding(.trailing, -9)
+                .accessibilityLabel("Not Now")
+                .accessibilityIdentifier(closeID)
+            }
+        }
+        .listRowInsets(EdgeInsets(top: 15, leading: 16, bottom: 15, trailing: 16))
     }
 }
 

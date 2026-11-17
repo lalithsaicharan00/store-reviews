@@ -58,7 +58,10 @@ struct HabitRow: View {
         let goal = store.goal(of: store.rule(habit, on: day))
         // A cut-back habit is "met" while under its maximum, but never shown as finished.
         let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
-        let streak = showStreaks ? store.streak(of: habit, asOf: day) : 0
+        // A cut-down habit at or past its most: a neutral band says so (Figma's Limit band), and past it the streak
+        // steps aside. Worked out from the two numbers the row already has, nothing more is read.
+        let limit = habit.atMost && goal > 0 && progress >= goal ? (progress > goal ? LimitBand.over : .reached) : nil
+        let streak = showStreaks && limit != .over ? store.streak(of: habit, asOf: day) : 0
         // One shape for every row (report "Today's Rows — The Line Under the Name", 3 Oct 2026): the icon, the name with
         // its one line, the streak and the button centred on one 44-pt band; after a log, one line of small buttons
         // under the text. Nothing else stacks up, so no row runs past three lines and icons line up down the list.
@@ -68,7 +71,9 @@ struct HabitRow: View {
               HabitIcon(symbol: habit.symbol, color: habit.color)
               VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
                   // One line: the name uses the row's width and ends in "…" only when it runs out (U6 allows 24).
-                  Text(habit.name).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
+                  // Label whether done or not (Figma, 17 Nov 2026): the fill and the button say it's done.
+                  Text(habit.name).font(.body).foregroundStyle(.primary).lineLimit(1)
+                      .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
                   // What today asks of it, the same kind of fact on every row: how much and how far along, or how
                   // often; then its time. Exactly one line.
                   Text(lineOverride ?? rowLine(progress: progress, goal: goal))
@@ -99,7 +104,15 @@ struct HabitRow: View {
           // Undo and Add Note after a log, in their own small view so a tap redraws that line, not every row (L16).
           if lineOverride == nil { RowAfterLog(habit: habit, day: day) }
         }
-        .padding(.vertical, RowSpace.rowPadding)
+        .padding(.leading, RowSpace.edge)
+        .padding(.trailing, RowSpace.buttonEdge)
+        .padding(.vertical, RowSpace.bodyVertical)
+        // Under the body, across the card's whole width: a milestone this habit just reached, or its limit.
+        .rowFoot(habit: habit, day: day, limit: lineOverride == nil ? limit : nil)
+        // The row draws its own edges, so the band can reach the card's; the line under it starts at the name (iOS
+        // finds it) and stops 16 before the edge, as every list row's does on the phone.
+        .listRowInsets(EdgeInsets())
+        .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
         .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
             .overlay(NoteTargetFlash(habit: habit, day: day, highlighted: highlighted)))
         // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
@@ -114,23 +127,17 @@ struct HabitRow: View {
             case .pause: PauseSheet(habit: habit)
             }
         }
-        // Swipe left reveals Skip (at the edge) and Note; a swipe never acts by itself, however far it goes (the user,
-        // 4 Oct 2026: a long swipe opened Note; report "Swipe Actions — Reveal, Never Act"). Two buttons, so both are easy
-        // to reach; Pause lives in the long-press menu and the Day sheet.
-        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            if day <= store.today() && lineOverride == nil {
-                if habit.kind != .task { RowSkipButton(habit: habit, day: day) }
-                Button { startWriting() } label: { Label(store.note(of: habit, on: day) == nil ? "Note" : "Edit Note", systemImage: "note.text") }
-                    .tint(.indigo)
-                    .accessibilityIdentifier("row-swipe-note")
+        // Figma's Habit row · Swipe (17 Nov 2026): one action a side, as Mail and Reminders do. Swipe left: Skip, or
+        // Undo Skip on a skipped day. Swipe right: Note. The row slides whole, a grey capsule shows, and a full swipe
+        // acts (the Rulebook, 5 Nov 2026). Undo isn't a swipe: it's named under the row after a log, and in the menu.
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            if day <= store.today() && lineOverride == nil && habit.kind != .task {
+                RowSkipButton(habit: habit, day: day)
             }
         }
-        // Swipe right: Undo, saying what it takes back ("Undo +1 glass"), when this day has an entry. No full swipe.
-        .swipeActions(edge: .leading, allowsFullSwipe: false) {
-            if lineOverride == nil, day <= store.today(), let entry = store.entries(of: habit.id, on: day).last {
-                Button { undo(entry) } label: { Label(entry.undoLabel(for: store.rule(habit, on: day)), systemImage: "arrow.uturn.backward") }
-                    .tint(.gray)
-                    .accessibilityIdentifier("row-swipe-undo")
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            if day <= store.today() && lineOverride == nil {
+                RowNoteButton(habit: habit, day: day)
             }
         }
         .contextMenu {
@@ -285,6 +292,9 @@ struct HabitRow: View {
     }
 }
 
+/// One step of a checklist, under its habit on Today: Figma's Step row (17 Nov 2026), as a reminder in Reminders. A tick
+/// circle leads (an empty Tertiary Label ring, or the habit's colour with a white ✓), then the step in Body; a done step
+/// reads in Secondary Label. 44 tall; the line under it starts at the step's words.
 struct StepRow: View {
     let step: Step
     let habit: Habit
@@ -293,24 +303,57 @@ struct StepRow: View {
     @Environment(TodayLayout.self) private var layout: TodayLayout?
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    /// Figma: the circle sits in a 24-wide column 16 from the card's edge, and the words 16 after it. The tap target
+    /// reaches 10 past the column each side, so it's Apple's 44 without moving anything.
+    private static let reach: CGFloat = 10
+
     var body: some View {
         let done = store.isStepDone(step, of: habit, on: day)
-        HStack(spacing: 12) {
-            Text(step.name).font(.subheadline).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
-            Spacer(minLength: 8)
-            RoundActionButton(symbol: "checkmark", done: done, color: habit.color,
-                              label: done ? "Undo \(step.name)" : "Mark \(step.name) done") {
-                if !done { store.noteOffer = .init(habit: habit.id, day: day) }
-                layout?.hold(reduceMotion: reduceMotion)
-                // A tick's tap, or the completion on the last step, comes from the store (`HabitStore+Feedback`).
-                if done { TickFeedback.undone() }
-                withAnimation(Motion.tick(reduceMotion)) { store.toggleStep(step, of: habit, on: day) }
+        HStack(spacing: 16 - Self.reach) {
+            Button(action: { toggle(done: done) }) {
+                StepTick(done: done, color: habit.color)
+                    .frame(width: 24, height: 22)
+                    .padding(.horizontal, Self.reach)
+                    .frame(minHeight: 44)
+                    .contentShape(Rectangle())
             }
+            .buttonStyle(.plain)
+            .accessibilityLabel(done ? "Undo \(step.name)" : "Mark \(step.name) done")
+            Text(step.name).font(.body).foregroundStyle(done ? .secondary : .primary).lineLimit(1)
+                .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .disabled(day > store.today())
-        // Step names start where row names do; a step has no line of its own (it's part of the row above).
-        .padding(.leading, RowSpace.textLeading)
-        .padding(.vertical, -6)
+        .padding(.leading, RowSpace.edge - Self.reach)
+        .padding(.trailing, RowSpace.edge)
+        .listRowInsets(EdgeInsets())
+        .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
+    }
+
+    private func toggle(done: Bool) {
+        if !done { store.noteOffer = .init(habit: habit.id, day: day) }
+        layout?.hold(reduceMotion: reduceMotion)
+        // A tick's tap, or the completion on the last step, comes from the store (`HabitStore+Feedback`).
+        if done { TickFeedback.undone() }
+        withAnimation(Motion.tick(reduceMotion)) { store.toggleStep(step, of: habit, on: day) }
+    }
+}
+
+/// A step's tick: a 22-pt ring in Tertiary Label (1.5 pt), or a circle in the habit's colour with a white ✓ (Semibold 12).
+private struct StepTick: View {
+    let done: Bool
+    let color: HabitColor
+
+    var body: some View {
+        ZStack {
+            if done {
+                Circle().fill(color.color)
+                Image(systemName: "checkmark").font(.system(size: 12, weight: .semibold)).foregroundStyle(.white)
+            } else {
+                Circle().strokeBorder(Color(.tertiaryLabel), lineWidth: 1.5)
+            }
+        }
+        .frame(width: 22, height: 22)
     }
 }
 
@@ -354,6 +397,7 @@ struct QuitRow: View {
                 HabitIcon(symbol: habit.symbol, color: habit.color)
                 VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
                     Text(habit.name).font(.body).lineLimit(1)
+                        .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
                     if showStreaks {
                         RowClock(start: tick) { now in
                             Text("Best \(Format.days(max(pastBest, current(now))))")
@@ -387,20 +431,24 @@ struct QuitRow: View {
                 QuitAfterSlip(habit: habit, day: today, slip: id) { withAnimation { lastSlip = nil } }
             }
         }
-        .padding(.vertical, RowSpace.rowPadding)
+        // The same edges as every habit row; its count on the right is words, not a button, so 16 from the edge.
+        .padding(.horizontal, RowSpace.edge)
+        .padding(.vertical, RowSpace.bodyVertical)
+        .listRowInsets(EdgeInsets())
+        .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
         .listRowBackground(Color(.secondarySystemGroupedBackground).overlay(HighlightFlash(on: highlighted, color: habit.color)))
-        // Swipe left reveals Log Slip (at the edge, where the "Slipped" button was: U5) and Note; it never acts by itself
-        // (4 Oct 2026). Pause is in the long-press menu.
-        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            Button { sheet = .slip } label: { Label("Log Slip", systemImage: "arrow.uturn.backward.circle") }
-                .tint(.gray)
-                .disabled(store.isPaused(habit, on: today))
-                .accessibilityIdentifier("row-swipe-slip")
-            Button { store.noteTarget = .init(habit: habit.id, day: today) } label: {
-                Label(store.note(of: habit, on: today) == nil ? "Note" : "Edit Note", systemImage: "note.text")
+        // Figma's Habit row · Swipe: swipe left is Log a Slip (where the "Slipped" button was: U5), swipe right is Note;
+        // a full swipe acts. While paused there's no slip to log, so nothing is offered (a full swipe can't reach a
+        // switched-off button). Pause is in the long-press menu.
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            if !store.isPaused(habit, on: today) {
+                Button { sheet = .slip } label: { Label("Log a Slip", systemImage: "arrow.uturn.backward") }
+                    .tint(Color(.systemGray))
+                    .accessibilityIdentifier("row-swipe-slip")
             }
-            .tint(.indigo)
-            .accessibilityIdentifier("row-swipe-note")
+        }
+        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+            RowNoteButton(habit: habit, day: today)
         }
         .contextMenu {
             if let menu {
@@ -488,6 +536,12 @@ struct PartHeader: View {
             controls
         }
         .frame(minHeight: 44)
+        // Figma's Section header: 16 at the sides on every phone (the system's own inset is 20 on the larger ones),
+        // and 10 + 44 + 10 is its 64. The same edges as the rows under it.
+        .padding(.vertical, 10)
+        .padding(.horizontal, RowSpace.edge)
+        .listRowInsets(EdgeInsets())
+        .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
     }
 
     private var titleArea: some View {
@@ -551,11 +605,10 @@ struct PartHeader: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundStyle(.secondary)
                             .rotationEffect(.degrees(isOpen ? 90 : 0))
-                            .frame(width: 36, height: 44)
+                            .frame(width: 34, height: 44)
                             .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
-                    .padding(.trailing, -8)
                     .accessibilityLabel("\(isOpen ? "Fold" : "Open") \(title)")
                 }
             }
@@ -598,30 +651,37 @@ struct FoldedIcons: View {
     let habits: [Habit]
     var max = 4
 
-    /// Each icon, and the "+N" square, is 22 pt plus 4 pt spacing.
-    private static let step: CGFloat = 26
+    /// Figma's folded header: 28-pt circles, each overlapping the one before by 6, ringed in the card's colour (2 pt).
+    private static let size: CGFloat = 28
+    private static let overlap: CGFloat = 6
+    /// What each circle after the first adds to the width.
+    private static let step: CGFloat = size - overlap
 
-    /// How many icons fit in `width`, leaving room for a "+N" square for the rest; nil when not even that fits.
+    /// How many icons fit in `width`, leaving room for a "+N" circle for the rest; nil when not even that fits.
     static func fitting(_ count: Int, in width: CGFloat, limit: Int = 6) -> Int? {
         for n in stride(from: min(limit, count), through: 0, by: -1) {
-            let squares = CGFloat(n + (count > n ? 1 : 0))
-            if squares * step - 4 <= width + 1 { return n } // 1 pt for rounding
+            let circles = CGFloat(n + (count > n ? 1 : 0))
+            if circles * step + overlap <= width + 1 { return n } // 1 pt for rounding
         }
         return nil
     }
 
     var body: some View {
-        HStack(spacing: 4) {
-            ForEach(habits.prefix(max)) { HabitIcon(symbol: $0.symbol, color: $0.color, size: 22) }
+        HStack(spacing: -Self.overlap) {
+            ForEach(habits.prefix(max)) { HabitIcon(symbol: $0.symbol, color: $0.color, size: Self.size, ring: 2) }
             if habits.count > max {
-                // The rest, as a square the same shape as the icons.
+                // The rest, as a circle the same size as the icons: Caption 1 Semibold in Label on Tertiary System Fill.
                 Text("+\(habits.count - max)")
-                    .font(.system(size: 11, weight: .bold).monospacedDigit())
-                    .foregroundStyle(.secondary)
+                    .font(.caption.weight(.semibold).monospacedDigit())
+                    .foregroundStyle(.primary)
                     .lineLimit(1).fixedSize()
-                    .padding(.horizontal, 2)
-                    .frame(minWidth: 22, minHeight: 22)
-                    .background(RoundedRectangle(cornerRadius: 22 * 0.28, style: .continuous).fill(Color(.tertiarySystemFill)))
+                    .padding(.horizontal, 4)
+                    .frame(minWidth: Self.size, minHeight: Self.size)
+                    .background {
+                        Capsule().fill(Color.card)
+                        Capsule().fill(Color(.tertiarySystemFill))
+                        Capsule().strokeBorder(Color.card, lineWidth: 2)
+                    }
             }
         }
     }
@@ -707,18 +767,25 @@ enum RowSpace {
     /// Between the after-log buttons: wide enough that Undo and Add Note aren't tapped by mistake (the user, 6 Oct
     /// 2026: "very close… there is a chance of misclick"; Current Work 55).
     static let betweenButtons: CGFloat = 16
-    /// Above and below each row, inside the list's own row spacing.
+    /// Above and below a row that keeps the list's own insets (onboarding's habit rows).
     static let rowPadding: CGFloat = 2
+    /// From the card's edge to the row's icon or words (Figma's Habit row and Step row: 16).
+    static let edge: CGFloat = 16
+    /// From the card's edge to the round button's 44-pt frame, so its 34-pt circle sits 16 from the edge as in Figma.
+    static let buttonEdge: CGFloat = edge - (44 - 34) / 2
+    /// Above and below the 44-pt band: 13 + 44 + 13 is Figma's 70; with the after-log line, + 6 + 30 is its 106.
+    static let bodyVertical: CGFloat = 13
     /// Where text starts: the icon's width plus its gap, so the after-log buttons and step rows line up with names.
     static let textLeading: CGFloat = 32 + iconToText
+    /// The milestone or limit band under a row, across the card (Figma: 32 tall, its words where the name starts).
+    static let footBand: CGFloat = 32
 }
 
-/// After a log on this row: the named Undo, the note (Add Note, or Edit Note once there is one) and a milestone the
-/// tap reached, as small capsule buttons on one line under the text (the user, 3 Oct 2026: nothing wraps, even
-/// spacing, never typed in the row). The line never runs past the row (the user, 9 Oct 2026: a long step name in Undo
-/// pushed Add Note off the screen): Add Note keeps its size, Undo shortens with "…" if it must, and a milestone
-/// shortens first. Only while the offer lasts. Only this reads the store's offers, so a log redraws
-/// this line, not each row's whole body (lesson L16, 2 Oct 2026).
+/// After a log on this row: Undo and Note, Figma's after-log capsules on one line under the name (the words the user
+/// approved, 5 Nov 2026: never the habit's or a step's name, which once pushed Note off the screen; VoiceOver still hears
+/// what Undo takes back and whether the note is new). A milestone the tap reached is the band under the row
+/// (`RowFoot`). Only while the offer lasts. Only this reads the store's offers, so a log redraws this line, not each
+/// row's whole body (lesson L16, 2 Oct 2026).
 struct RowAfterLog: View {
     let habit: Habit
     let day: LocalDay
@@ -729,52 +796,32 @@ struct RowAfterLog: View {
         let undo = store.undoOffer.flatMap { $0.habitID == habit.id && $0.day == day ? $0 : nil }
         let offered = undo != nil || store.noteOffer == .init(habit: habit.id, day: day)
         if offered {
-            let mark = undo.flatMap { entry in store.milestoneOffer.flatMap { $0.entry == entry.id ? $0 : nil } }
             let note = store.note(of: habit, on: day) != nil
             // One layout, never measured twice: at the accessibility text sizes the buttons show their icons (their
-            // words stay for VoiceOver); a milestone shortens with "…" before anything wraps. `ViewThatFits` measured
-            // three layouts each time the line appeared and doubled the cost of changing days (speed bisect, 4 Oct 2026).
-            buttons(undo: undo, note: note, mark: mark?.text, icons: typeSize.isAccessibilitySize)
+            // words stay for VoiceOver). `ViewThatFits` measured three layouts each time the line appeared and doubled
+            // the cost of changing days (speed bisect, 4 Oct 2026).
+            buttons(undo: undo, note: note, icons: typeSize.isAccessibilitySize)
                 .padding(.leading, RowSpace.textLeading)
                 .padding(.top, RowSpace.afterBand)
         }
     }
 
-    private func buttons(undo: Entry?, note: Bool, mark: String?, icons: Bool) -> some View {
+    private func buttons(undo: Entry?, note: Bool, icons: Bool) -> some View {
         HStack(spacing: RowSpace.betweenButtons) {
             if let undo {
-                Button { store.undoEntry(undo.id) } label: {
-                    Label(undo.undoLabel(for: habit), systemImage: "arrow.uturn.backward")
-                }
-                .layoutPriority(1)
-                .accessibilityIdentifier("habit-inline-undo")
+                // Figma's words, short so the line always fits; VoiceOver hears what it takes back ("Undo +1 glass").
+                Button { store.undoEntry(undo.id) } label: { Label("Undo", systemImage: "arrow.uturn.backward") }
+                    .accessibilityLabel(undo.undoLabel(for: habit))
+                    .accessibilityIdentifier("habit-inline-undo")
             }
             if day <= store.today() {
-                Button { writeNote() } label: {
-                    Label(note ? "Edit Note" : "Add Note", systemImage: note ? "note.text" : "square.and.pencil")
-                }
-                .fixedSize()
-                // At the largest text that still shows words, the note gives up its words before Undo does: on the SE
-                // Undo read "Undo La…" beside a whole "Add Note" (run 37902708954). Its words stay for VoiceOver.
-                .labelStyle(AfterLogLabel(iconOnly: icons || (undo != nil && typeSize >= .xxxLarge)))
-                .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
-            }
-            if let mark {
-                // A milestone this tap reached, beside its Undo and only while that lasts: words, never a pop-up
-                // (report "Milestones — Marking Progress Without Noise").
-                Label(mark, systemImage: "checkmark.seal.fill")
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(habit.color.color)
-                    .lineLimit(1)
-                    .accessibilityIdentifier("today-milestone")
+                Button { writeNote() } label: { Label("Note", systemImage: "plus") }
+                    .accessibilityLabel(note ? "Edit Note" : "Add Note")
+                    .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
             }
         }
         .labelStyle(AfterLogLabel(iconOnly: icons))
-        .buttonStyle(.bordered)
-        .buttonBorderShape(.capsule)
-        .controlSize(.small)
-        .tint(.secondary)
-        .font(.caption.weight(.medium))
+        .buttonStyle(AfterLogButtonStyle())
         .lineLimit(1)
         .truncationMode(.tail)
         // Offered the row's width, not its own: the line fits it instead of running off the screen.
@@ -787,7 +834,7 @@ struct RowAfterLog: View {
     }
 }
 
-/// After a slip on a quit row: Undo Slip and the note, the same small buttons as every row; gone after 8 seconds.
+/// After a slip on a quit row: Undo and Note, the same capsules as every row; gone after 8 seconds.
 struct QuitAfterSlip: View {
     let habit: Habit
     let day: LocalDay
@@ -799,21 +846,17 @@ struct QuitAfterSlip: View {
     var body: some View {
         let note = store.note(of: habit, on: day) != nil
         HStack(spacing: RowSpace.betweenButtons) {
-            Button { store.undoEntry(slip); onDone() } label: { Label("Undo Slip", systemImage: "arrow.uturn.backward") }
+            Button { store.undoEntry(slip); onDone() } label: { Label("Undo", systemImage: "arrow.uturn.backward") }
+                .accessibilityLabel("Undo Slip")
                 .accessibilityIdentifier("habit-inline-undo")
-            Button { store.noteTarget = .init(habit: habit.id, day: day) } label: {
-                Label(note ? "Edit Note" : "Add Note", systemImage: note ? "note.text" : "square.and.pencil")
-            }
-            .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
+            Button { store.noteTarget = .init(habit: habit.id, day: day) } label: { Label("Note", systemImage: "plus") }
+                .accessibilityLabel(note ? "Edit Note" : "Add Note")
+                .accessibilityIdentifier(note ? "habit-edit-note" : "habit-add-note")
         }
         // As every row's after-log line: icons at the accessibility sizes (the words stay for VoiceOver), and never
         // wider than the row.
         .labelStyle(AfterLogLabel(iconOnly: typeSize.isAccessibilitySize))
-        .buttonStyle(.bordered)
-        .buttonBorderShape(.capsule)
-        .controlSize(.small)
-        .tint(.secondary)
-        .font(.caption.weight(.medium))
+        .buttonStyle(AfterLogButtonStyle())
         .lineLimit(1)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.leading, RowSpace.textLeading)
@@ -833,7 +876,7 @@ private struct AfterLogLabel: LabelStyle {
         if iconOnly {
             configuration.icon
         } else {
-            HStack(spacing: 4) { configuration.icon.imageScale(.small); configuration.title }
+            HStack(spacing: 4) { configuration.icon; configuration.title }
         }
     }
 }
@@ -854,7 +897,8 @@ struct NoteTargetFlash: View {
 /// A habit's page pushed on Today's own stack (Open Habit Page in a row's touch-and-hold menu).
 struct HabitPageRoute: Hashable { let id: UUID }
 
-/// Swipe left → Skip or Undo Skip, for the day the row shows. Reads only that habit's day, so other rows don't redraw.
+/// Swipe left → Skip or Undo Skip, for the day the row shows (Figma's Habit row · Swipe: forward.fill and
+/// arrow.uturn.backward, grey). Reads only that habit's day, so other rows don't redraw.
 struct RowSkipButton: View {
     let habit: Habit
     let day: LocalDay
@@ -863,12 +907,105 @@ struct RowSkipButton: View {
     var body: some View {
         if store.isSkipped(habit, on: day) {
             Button { store.setSkipped(habit, on: day, false) } label: { Label("Undo Skip", systemImage: "arrow.uturn.backward") }
-                .tint(.gray)
+                .tint(Color(.systemGray))
         } else if store.canSkip(store.rule(habit, on: day)) && !store.isPaused(habit, on: day) {
-            Button { store.setSkipped(habit, on: day, true) } label: { Label("Skip", systemImage: "forward") }
-                .tint(.gray)
+            Button { store.setSkipped(habit, on: day, true) } label: { Label("Skip", systemImage: "forward.fill") }
+                .tint(Color(.systemGray))
                 .accessibilityIdentifier("row-swipe-skip")
         }
     }
 }
 
+/// Swipe right → Note (Edit Note once the day has one), grey, opening the note sheet. Reads only this habit's note,
+/// so the row's own body never does.
+struct RowNoteButton: View {
+    let habit: Habit
+    let day: LocalDay
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        Button { store.noteTarget = .init(habit: habit.id, day: day) } label: {
+            Label(store.note(of: habit, on: day) == nil ? "Note" : "Edit Note", systemImage: "square.and.pencil")
+        }
+        .tint(Color(.systemGray))
+        .accessibilityIdentifier("row-swipe-note")
+    }
+}
+
+/// Figma's after-log capsule: 30 tall, a solid card-coloured capsule with a 1-pt Separator outline (anything
+/// see-through splits in two where a progress fill ends, the Rulebook, 5 Nov 2026), the symbol and the words in
+/// Subheadline, Label. Plain shapes, no shadow and no material (S10).
+struct AfterLogButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.subheadline)
+            .foregroundStyle(.primary)
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .frame(minHeight: 30)
+            .background {
+                Capsule().fill(Color.card)
+                Capsule().strokeBorder(Color(.separator), lineWidth: 1)
+            }
+            .contentShape(Capsule())
+            .opacity(configuration.isPressed ? 0.5 : 1)
+    }
+}
+
+/// A cut-down habit at its most, or past it: Figma's Limit band. Neutral, never red (U3).
+enum LimitBand {
+    case reached, over
+    var words: String { self == .reached ? "Limit reached" : "Over the limit" }
+}
+
+extension View {
+    /// The band under a habit row (`RowFoot`).
+    func rowFoot(habit: Habit, day: LocalDay, limit: LimitBand?) -> some View {
+        VStack(spacing: 0) {
+            self
+            RowFoot(habit: habit, day: day, limit: limit)
+        }
+    }
+}
+
+/// The band under a row, across the card's whole width, 32 tall, its words where the name starts (Figma, 17 Nov
+/// 2026): a milestone this habit's log just reached (its Milestone Band, the Medal and the words in Deep), or else a
+/// cut-down habit's limit (Tertiary System Fill, hourglass, Label). Only this reads the store's milestone, so reaching
+/// one redraws this band, not the row (L16). It stays while the store offers it: until the next log anywhere, or until
+/// its own log is undone or deleted.
+struct RowFoot: View {
+    let habit: Habit
+    let day: LocalDay
+    let limit: LimitBand?
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        if let mark = store.milestoneOffer, mark.habit == habit.id, mark.day == day {
+            band(fill: habit.color.milestoneBand) {
+                Image(systemName: "seal.fill")
+                    .font(.system(size: 15))
+                    .foregroundStyle(habit.color.medal)
+                Text(mark.text).foregroundStyle(habit.color.deep)
+            }
+            .accessibilityIdentifier("today-milestone")
+        } else if let limit {
+            band(fill: Color(.tertiarySystemFill)) {
+                Image(systemName: "hourglass").font(.footnote.weight(.semibold))
+                Text(limit.words)
+            }
+            .foregroundStyle(.primary)
+            .accessibilityIdentifier("today-limit")
+        }
+    }
+
+    private func band<Content: View>(fill: Color, @ViewBuilder _ content: () -> Content) -> some View {
+        HStack(spacing: 6) { content() }
+            .font(.subheadline.weight(.semibold))
+            .lineLimit(1)
+            .padding(.leading, RowSpace.edge + RowSpace.textLeading)
+            .padding(.trailing, RowSpace.edge)
+            .frame(maxWidth: .infinity, minHeight: RowSpace.footBand, alignment: .leading)
+            .background(fill)
+            .accessibilityElement(children: .combine)
+    }
+}

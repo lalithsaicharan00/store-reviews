@@ -155,7 +155,7 @@ struct AmountNumberField: View {
             }
             .frame(minWidth: size * 0.7)
         }
-        .font(.system(size: size, weight: .bold).monospacedDigit())
+        .font(CustomText.amount(size))
         .lineLimit(1)
         .frame(maxWidth: .infinity)
     }
@@ -196,7 +196,7 @@ struct DurationFields: View {
         VStack(spacing: 4) {
             DraftTextField(draft: draft, key: key, placeholder: "0", keyboard: keyboard)
                 .multilineTextAlignment(.center)
-                .font(.system(size: size, weight: .bold).monospacedDigit())
+                .font(CustomText.amount(size))
                 .lineLimit(1)
                 .focused(focus, equals: field)
                 .padding(.vertical, 8)
@@ -229,7 +229,7 @@ struct DurationBoxes: View {
     private func box(_ value: String, _ title: String) -> some View {
         VStack(spacing: 4) {
             Text(value)
-                .font(.system(size: size, weight: .bold).monospacedDigit())
+                .font(CustomText.amount(size))
                 .lineLimit(1).minimumScaleFactor(0.5)
                 .padding(.vertical, 8)
                 .frame(maxWidth: .infinity)

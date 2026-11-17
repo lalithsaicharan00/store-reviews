@@ -174,10 +174,8 @@ struct Step: Identifiable, Codable, Hashable, Sendable {
     var name: String
 }
 
-/// Palette names map to system colours so they adapt to light and dark mode.
-enum HabitColor: String, CaseIterable, Codable, Sendable {
-    case red, orange, yellow, green, mint, teal, cyan, blue, indigo, purple, pink, brown, gray
-}
+// `HabitColor` (a habit's colour and its shades) is in Shared/Palette.swift, with the rest of the colour system, so the
+// widgets and the Live Activity use the same one.
 
 struct Habit: Identifiable, Codable, Hashable, Sendable {
     var id: UUID = UUID()

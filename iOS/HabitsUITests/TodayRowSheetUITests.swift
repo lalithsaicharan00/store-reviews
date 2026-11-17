@@ -143,38 +143,41 @@ final class TodayRowSheetUITests: XCTestCase {
         closeSheet()
     }
 
-    /// Swipe right: Undo, naming what it takes back, removes exactly one entry. Swipe left: Skip and Note, revealed with
-    /// their labels, never performed by the swipe however far it goes (4 Oct 2026); Skip turns into Undo Skip.
+    /// Figma's Habit row · Swipe (17 Nov 2026): one action a side. Swipe left: Skip, which turns into Undo Skip; swipe
+    /// right: Note. A short swipe reveals, a full swipe acts. Undo isn't a swipe: it's named under the row after a log.
     func testSwipeActions() {
         launch()
         let water = app.staticTexts["Water"].firstMatch
         app.reveal(water, clear: true)
-        let before = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '8/8 glasses'")).firstMatch
-        XCTAssertTrue(before.exists, "Water starts at 8/8")
-        swipe(water, right: true)
-        let undo = app.buttons["row-swipe-undo"]
-        XCTAssertTrue(undo.waitForExistence(timeout: 3), "Swipe right offers Undo")
-        XCTAssertEqual(undo.label, "Undo +1 glass", "Undo says what it takes back")
-        shot("r07-swipe-undo")
-        undo.tap()
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '7/8 glasses'")).firstMatch.waitForExistence(timeout: 3),
-                      "Exactly one glass taken back")
-        // A swipe all the way across only reveals: it never opens the note (the user, 4 Oct 2026).
-        swipe(water, right: false, distance: 360)
-        XCTAssertTrue(app.buttons["row-swipe-skip"].waitForExistence(timeout: 3), "Swipe left: Skip")
-        XCTAssertTrue(app.buttons["row-swipe-note"].exists, "Swipe left: Note")
+        // A short swipe only reveals: well under the full swipe, which would act.
+        swipe(water, right: false, distance: 120)
+        let skip = app.buttons["row-swipe-skip"]
+        XCTAssertTrue(skip.waitForExistence(timeout: 3), "Swipe left: Skip")
+        XCTAssertFalse(app.buttons["row-swipe-note"].exists, "Note is on the other side")
         XCTAssertFalse(app.buttons["row-swipe-pause"].exists, "Pause is in the long-press menu and the Day sheet, not the swipe")
-        XCTAssertFalse(app.descendants(matching: .any)["note-field"].firstMatch.waitForExistence(timeout: 1.5), "A long swipe doesn't open the note sheet")
-        let skip = app.buttons["row-swipe-skip"].frame, note = app.buttons["row-swipe-note"].frame
-        XCTAssertGreaterThan(skip.minX, note.minX, "Skip sits at the edge, Note beside it")
-        XCTAssertGreaterThanOrEqual(min(skip.width, note.width), 44, "Both buttons are at least Apple's 44-point target (iOS draws them 50 wide)")
+        XCTAssertGreaterThanOrEqual(skip.frame.width, 44, "At least Apple's 44-point target")
         shot("r08-swipe-left")
-        app.buttons["row-swipe-skip"].tap()
+        skip.tap()
         sleep(1)
-        swipe(water, right: false)
+        swipe(water, right: false, distance: 120)
         let undoSkip = app.buttons["Undo Skip"]
         XCTAssertTrue(undoSkip.waitForExistence(timeout: 3), "Skipped: the same swipe offers Undo Skip")
         undoSkip.tap()
+        sleep(1)
+        // A full swipe acts: all the way across skips the day, so the next swipe offers Undo Skip.
+        swipe(water, right: false, distance: 360)
+        sleep(1)
+        swipe(water, right: false, distance: 120)
+        XCTAssertTrue(undoSkip.waitForExistence(timeout: 3), "A full swipe left skipped the day")
+        undoSkip.tap()
+        sleep(1)
+        swipe(water, right: true, distance: 120)
+        let note = app.buttons["row-swipe-note"]
+        XCTAssertTrue(note.waitForExistence(timeout: 3), "Swipe right: Note")
+        XCTAssertFalse(app.buttons["row-swipe-undo"].exists, "Undo isn't a swipe any more")
+        shot("r07-swipe-note")
+        note.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["note-field"].firstMatch.waitForExistence(timeout: 3), "Note opens the note sheet")
     }
 
     /// + always adds, past the goal, and never takes one back; a week count is a + too (Current Work 54: every tap counts,

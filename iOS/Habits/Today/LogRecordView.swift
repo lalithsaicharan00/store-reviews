@@ -22,7 +22,7 @@ struct LogRecordView: View {
     @State private var confirmingDiscard = false
     @State private var room = ScreenRoom()
     @FocusState private var focus: RecordField?
-    @ScaledMetric(relativeTo: .largeTitle) private var numberSize: CGFloat = 48
+    @ScaledMetric(relativeTo: .largeTitle) private var numberSize = CustomText.amountSize
     @ScaledMetric(relativeTo: .title) private var durationSize: CGFloat = 32
 
     init(habit: Habit, entry: Entry) {
@@ -166,7 +166,7 @@ struct LogRecordView: View {
                         if currency == nil && !raw.isEmpty { AmountUnitLine(draft: draft, unit: raw, compact: gaps.cardPadding == 0) }
                     } else {
                         Text((currency ?? "") + HabitCopy.number(entry.value))
-                            .font(.system(size: min(numberSize, gaps.numberSize), weight: .bold).monospacedDigit())
+                            .font(CustomText.amount(min(numberSize, gaps.numberSize)))
                             .lineLimit(1).minimumScaleFactor(0.5)
                             .accessibilityLabel(check ? HabitCopy.amount(entry.value, raw) : entry.description(for: ruled))
                             .accessibilityIdentifier("record-value")

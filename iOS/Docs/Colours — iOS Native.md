@@ -89,6 +89,68 @@ Both are stored in Figma as solid colours, because they sit on a white card.
 
 Increased Contrast and Deep have no dark value yet: iOS's Increase Contrast value goes lighter in dark mode, so white wouldn't stay readable on it. Decide this when dark mode is built.
 
+## In the app (17 Nov 2026)
+
+Written by Claude (Claude Code), 17 November 2026, on the branch `ios-update`, at the user's request: "first of all, create the color system properly … If iOS is providing all of that by default from its design system … then don't create that color. Use the existing color itself … as a production ready application, whichever is the best decision, you can choose it."
+
+**One file holds the colour system: [`iOS/Shared/Palette.swift`](../Shared/Palette.swift).** It's in `Shared/`, so the app, the widgets and the Live Activity all compile the same one. Before, the habit colours were mapped three times (`Components.swift`, `WidgetPalette.main`, the Live Activity's `TimerColor`) and Ink twice; each now reads `Palette.swift`.
+
+- **Apple's colours have no copy in the app.** Every `iOS/Label`, `Separator`, `Fill`, `Background`, `Grouped Background` and `Standard` style is called by Apple's own name (`Color(.secondarySystemGroupedBackground)`, `.secondary`, `.red`), and the file's header maps each Figma style to its Swift call. No wrapper was made for them: iOS already gives their dark mode, Increase Contrast and any change in a later iOS, and a wrapper of our own would only hide that. Dimming isn't in the code at all, because iOS draws it.
+- **Ours are only what iOS lacks:** `Color.ink`, `Color.onInk`, and on `HabitColor` the shades `increasedContrast`, `deep`, `gradientTop`, `fill`, `milestoneBand`, `bar` and `medal`. `HabitColor.color` stays the system colour.
+- **Increased Contrast is read from iOS, not typed in:** each `UIColor.system<Hue>` resolved for light mode with Increase Contrast on, once, and kept. It doesn't change in dark mode, so white on it stays 4.5:1 or more there (iOS's own dark Increase Contrast values are lighter, and white wouldn't be readable).
+- **Deep, Gradient Top, Fill and Milestone Band are Figma's values** (Deep and Gradient Top the same in light and dark). The OKLCH recipe above was checked again: it gives Figma's Fill and Band exactly for 10 hues, and within one step of rounding for the rest, so Figma's numbers were kept.
+- **Bar and Medal are gradients built from those:** Bar runs Deep → Increased Contrast from leading to trailing, Medal Gradient Top → Increased Contrast from top to bottom, as Figma's styles do.
+- **`HabitColor` moved from `Habits/Model/Habit.swift` to `Palette.swift`,** unchanged (same cases, same raw values, still `Codable`), so stored habits and backup files read exactly as before.
+
+**Changed on screen:**
+
+- **Ink is Figma's `#303030`** (dark `#F2F2F5`); the code had `#27272A` (dark `#ECECEE`), the difference noted under "For the user to judge" below. On Ink's dark value is `#1C1C1E`, as in Figma's description.
+- **Today's progress fill is the habit's Fill,** opaque, in place of the hue at 15 % (26 % in dark). The green looks the same; the other hues now match Figma (blue `#E7F1FF` where it was `#D9EDFF`).
+
+- **A habit's icon, its progress marks and charts, and the widgets' icons are its iOS colour (`HabitColor.color`), solid,** as Figma's Today component draws the icon (`iOS/Standard/System <Hue>`; the user, 17 Nov 2026: "whatever we have in Figma, you can use that"). The app's own darker set at one lightness (`HabitColor.mark`, `WidgetPalette.markHex`, OKLCH 0.64, 2 Oct 2026) and the icon tile's gradient are gone.
+
+**The iOS colours aren't at one lightness (measured 17 Nov 2026, for the user to judge).** Only Fill and Milestone Band were made in OKLCH; the Standard colours are Apple's as they are, from OKLCH L 0.56 (Indigo) to 0.87 (Yellow), so they don't look equally strong. A white symbol on them:
+
+| Hue | Standard | OKLCH L | White on it |
+|---|---|---|---|
+| Red | #FF383C | 0.65 | 3.57 : 1 |
+| Orange | #FF8D28 | 0.75 | 2.31 : 1 |
+| Yellow | #FFCC00 | 0.87 | 1.51 : 1 |
+| Green | #34C759 | 0.73 | 2.22 : 1 |
+| Mint | #00C8B3 | 0.75 | 2.12 : 1 |
+| Teal | #00C3D0 | 0.74 | 2.16 : 1 |
+| Cyan | #00C0E8 | 0.75 | 2.16 : 1 |
+| Blue | #0088FF | 0.63 | 3.52 : 1 |
+| Indigo | #6155F5 | 0.56 | 5.09 : 1 |
+| Purple | #CB30E0 | 0.62 | 4.17 : 1 |
+| Pink | #FF2D55 | 0.65 | 3.65 : 1 |
+| Brown | #AC7F5E | 0.63 | 3.53 : 1 |
+| Gray | #8E8E93 | 0.65 | 3.26 : 1 |
+
+Seven hues fall under the 3 : 1 that WCAG 1.4.11 asks of an icon's shape, Yellow far under. Figma's own **Increased Contrast** shade is the one meant to carry white (4.5 : 1 or more on all 13), but the Today component's icons use Standard.
+
+**Dark mode, decided here (Figma has none).** Fill and Milestone Band follow the light rule: the app's dark green fill as drawn until now (green at 26 % on the card `#1C1C1E`, `#214B2D`) gives Fill L 0.374, C 0.070, and the Band is one step stronger, L 0.430, C 0.085, each on its hue, with chroma lowered only where sRGB can't hold it. The fill is 1.6–1.7 : 1 against the card, and white text on it 9.9 : 1 or more.
+
+| Hue | Dark Fill | Dark Milestone Band |
+|---|---|---|
+| Red | #60312D | #783B37 |
+| Orange | #5C3618 | #72421B |
+| Yellow | #4C400B | #5F4F07 |
+| Green | #254B2A | #2C5C33 |
+| Mint | #014C43 | #015D53 |
+| Teal | #014A50 | #015B62 |
+| Cyan | #00485B | #01596F |
+| Blue | #234264 | #29527D |
+| Indigo | #363D65 | #424B7E |
+| Purple | #523356 | #663F6B |
+| Pink | #603034 | #773A40 |
+| Brown | #4D3D31 | #5F4B3C |
+| Gray | #414141 | #505050 |
+
+**Checked:** `Palette.swift` type-checks against the iOS 27.2 SDK in Swift 6 with MainActor default isolation, in Swift 6 and in Swift 5, with no warnings. **Building UITraitCollection with `init(mutations:)` is main-actor only** (UIKit's mutable traits are `@MainActor`), so `increasedContrast`, `bar` and `medal` are read on the main actor, as a view's body is; the older `init(traitsFrom:)` works anywhere but is deprecated since iOS 17. **Not checked yet:** the whole app hasn't been built (that's GitHub's job, Rulebook T1), and nothing has been looked at on the iPhone, in light or dark (U9).
+
+**Still to move onto the system, screen by screen** (each has its own colours, decided before this): the heat map's palettes and greys (`Progress/HeatMap.swift`), the widgets' greys (`WidgetPalette`), and the habit colour at a percentage in the progress charts and tiles (`DayMarks`, `LightBarChart`, `HabitProgressTab`, the routine player's ring, the Live Activity's icon). Figma has a shade for some of these (Fill, Milestone Band) and not for others, so each is for its screen's own work.
+
 ## What happened to Material's roles
 
 They weren't renamed one for one. Each use went to the colour for its job, and whatever iOS doesn't have was deleted.
@@ -119,13 +181,13 @@ They weren't renamed one for one. Each use went to the colour for its job, and w
 
 1. **Label is pure black,** where Android stopped at `#1B1B1B`.
 2. **Tertiary System Fill is see-through,** as iOS defines it: a round button on a coloured progress fill picks up a little of that colour.
-3. **Ink differs between Figma and the code.** Figma and this page use the charcoal the user asked for, `#303030` and `#F2F2F5` in dark. `Color.ink` in the existing iPhone code is about `#27272A` and `#ECECEE`. The app wasn't changed.
+3. **Ink differs between Figma and the code.** Figma and this page use the charcoal the user asked for, `#303030` and `#F2F2F5` in dark. `Color.ink` in the existing iPhone code is about `#27272A` and `#ECECEE`. The app wasn't changed. **Settled 17 Nov 2026: the app now uses Figma's `#303030` and `#F2F2F5`** (see "In the app").
 
 ## Not done
 
 - **548 colours on the screens are typed in, not styles,** so they keep their old values: Day details 185, Today 106, Onboarding 77, Routine player 74, Settings 60, Details pages 16, Design system 16, Notifications 10, Habits & Tasks 4. Some are probably the Google logo or other deliberate colours, so each needs looking at.
 - **The component shapes are still Material's:** the floating action button, snackbar, the date picker's "Select date" header, switch, dropdown, drawer, and the icons. So a screen has iOS's colours and text on a Material shape until those are redone.
-- **Nothing has been checked in the app:** the iOS app doesn't use this until it is rebuilt.
+- ~~**Nothing has been checked in the app:** the iOS app doesn't use this until it is rebuilt.~~ The app has the colour system since 17 Nov 2026 (`Shared/Palette.swift`, "In the app"); it hasn't been looked at on the iPhone yet.
 
 ## Checking this in Figma
 

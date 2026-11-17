@@ -10,7 +10,7 @@ struct TimerScreen: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric(relativeTo: .title) private var numberSize = 36.0
+    @ScaledMetric(relativeTo: .title) private var numberSize = CustomText.clockSize
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
     @ScaledMetric(relativeTo: .body) private var buttonGap = 16.0
     @State private var showLog = false
@@ -67,7 +67,7 @@ struct TimerScreen: View {
                 .padding(.horizontal, 24)
                 Spacer(minLength: 24)
                 FocusClock(habit: habit, day: day,
-                           font: .system(size: min(numberSize, 52), weight: .medium, design: .rounded).monospacedDigit(),
+                           font: CustomText.clock(numberSize),
                            diameter: min(max(geometry.size.width - 72, 200), 300)) { openLog(habit) }
                 Spacer(minLength: 24)
                 VStack(spacing: buttonGap) {

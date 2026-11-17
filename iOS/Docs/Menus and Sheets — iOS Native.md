@@ -129,3 +129,20 @@ Still Android's, on purpose, for later sections:
 - **An earlier Button swap had reset words** on Card notice and Dialog to "Manage storage": restore from the Android file. A word in a hidden row isn't a fault, so check a parent's visibility before calling it one.
 - **Absolute children of auto-layout frames** need `layoutPositioning === 'ABSOLUTE'` checked, not only `layoutMode === 'NONE'`.
 - **A section doesn't grow with its content:** resize it and move what's below.
+
+## In the app (17 Nov 2026)
+
+The user: "in iOS they will be available by default, right? So only if they are not available then only create them … follow the performance optimization rules." So each part of Figma's section 09 is either iOS's own, left alone, or one component of ours in `Components/Components.swift`.
+
+| Figma | In the code |
+|---|---|
+| Menu item, Menu divider, Menu section title, Menu | iOS's own `Menu` with `Button`, `Divider`, `Section("…")`, `Picker` for a choice (the checkmark column) and `role: .destructive`. Nothing built |
+| Sheet drag handle, Sheet | iOS's own `.sheet` with `.presentationDetents`; iOS draws the handle only with two heights. Close and Save are toolbar items on iOS 26's glass. Nothing built |
+| Placeholder | iOS's own `.redacted(reason: .placeholder)` (Plus's price while it loads) |
+| ContentUnavailableView | iOS's own, on every empty or waiting page |
+| Banner | **Ours, `Banner`** (iOS has no snack bar or toast). Subheadline in Label, its symbol 6 before the words, up to two Semibold actions 12 after them; 16 and 12 inside, so one line is a 44 capsule; two lines at most, then …; never wider than 328, hugging its words below that; the card colour with Figma's soft shadow (black 12 %, 16 blur, 2 down), on the shape only (S10). The routine player's "Saved · Undo · Add Note" now draws with it (it was its own capsule: one line only, no width cap) |
+| Card notice | **Ours, `CardNotice`** (iOS has no notice; TipKit hides a tip by itself, and a problem must stay until it's fixed). TipView's anatomy: a filled symbol at Title 2 in a 32 column (System Red for a problem, Secondary Label otherwise), Headline title, Subheadline line in Secondary Label, at most one Regular Bordered fix in Ink, and the ✕ (Not Now) only on what can wait. It's the list's own row, 15 and 16 inside. Today's `BackupIssueSection` now draws with it: **a backup problem** gets a title of its own (Backup Is Paused, Backup Is Off, Backup Moved to a New iCloud), the line says what's still safe, its fix is the bordered button, and Not Now became the ✕; **iCloud sync waiting on the person** gets the status's own symbol, title and line, Open iCloud & Backup, and no ✕ (it can't wait). It was a Label, a black prominent button and a Not Now word |
+
+**Speed:** neither reads the store; the card's state is still read only inside `BackupIssueSection`, so Today never redraws for it (S6). Plain shapes only, one shadow on the banner's shape and none on text (S10). The banner sits in an overlay, so nothing under it moves (U4). `Tools/perf/check_rules.sh` passes, and both type-check against the iOS 18 SDK in Swift 5 and 6.
+
+**Not built, because the app has no such state yet:** Figma's Progress and Done notices (Backing Up to iCloud…, Backed Up), Reminders Can't Come and Plus Is Waiting. `CardNotice` draws them once the app has something to say; none is invented here. The iCloud status titles ("iCloud is full") stay in sentence case because the iCloud page shows the same words as rows; Figma's title case for a notice's headline waits for the user. Not yet built or tested on GitHub, and not looked at on the iPhone (U9).

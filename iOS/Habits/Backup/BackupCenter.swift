@@ -27,6 +27,9 @@ final class BackupCenter {
     struct Issue: Equatable {
         enum Fix: Equatable { case tryNow, openSettings, backUpNow, manageStorage }
         let id: String
+        /// The card's headline, in title case (Figma's Card notice: "Backup Is Paused").
+        let title: String
+        /// What happened and what is still safe: the card's line under the title, and the notification's body.
         let text: String
         let fix: Fix
 
@@ -395,10 +398,17 @@ final class BackupCenter {
 
         var issue: BackupCenter.Issue {
             switch self {
-            case .full: .init(id: "icloud-full", text: "Your habits can't be backed up: your iCloud is full. They're safe on this iPhone.", fix: .manageStorage)
-            case .signedOut: .init(id: "icloud-signed-out", text: "Your habits aren't being backed up: this iPhone isn't signed in to iCloud, or iCloud Drive is off.", fix: .openSettings)
-            case .offForApp: .init(id: "icloud-off", text: "Backup to iCloud is turned off for Often Enough in your iPhone's iCloud settings.", fix: .openSettings)
-            case .accountChanged: .init(id: "icloud-changed", text: "This iPhone now uses a different Apple Account, so your backup moved to a new iCloud. Your old backup is still in the other account.", fix: .backUpNow)
+            case .full: .init(id: "icloud-full", title: "Backup Is Paused",
+                              text: "Your iCloud is full. Your habits are safe on this iPhone.", fix: .manageStorage)
+            case .signedOut: .init(id: "icloud-signed-out", title: "Backup Is Off",
+                                   text: "This iPhone isn't signed in to iCloud, or iCloud Drive is off. Your habits are safe on this iPhone.",
+                                   fix: .openSettings)
+            case .offForApp: .init(id: "icloud-off", title: "Backup Is Off",
+                                   text: "Backup to iCloud is turned off for Often Enough in Settings. Your habits are safe on this iPhone.",
+                                   fix: .openSettings)
+            case .accountChanged: .init(id: "icloud-changed", title: "Backup Moved to a New iCloud",
+                                        text: "This iPhone now uses a different Apple Account. Your old backup is still in the other account.",
+                                        fix: .backUpNow)
             }
         }
 

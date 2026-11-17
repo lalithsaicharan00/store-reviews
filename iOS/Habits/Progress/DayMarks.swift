@@ -187,7 +187,7 @@ struct DayDetailRow: View {
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             DayMarkView(mark: row.mark, fraction: row.fraction, over: row.atMost && row.mark == .missed,
-                        color: row.habit.color.mark, size: 16)
+                        color: row.habit.color.color, size: 16)
                 .frame(width: 22, height: 22)
             VStack(alignment: .leading, spacing: 2) {
                 Text(row.habit.name).lineLimit(2)

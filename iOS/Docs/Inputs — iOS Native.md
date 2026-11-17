@@ -108,6 +108,25 @@ Android's page, and our first version of it, had two levels: Anytime or At set t
 **Checkmark row:** it was fixed at 52, so a supporting line had no room. It now hugs: 52 with one line, 72 with two.
 
 
+## In the app (17 Nov 2026)
+
+**One part is new; the rest is iOS's own or already built.**
+
+| Figma | In the app |
+|---|---|
+| Text field | `TextField` in a `Form` row |
+| Stepper | `Stepper` (`NumberStepper` puts its value in words) |
+| Number pad | `.keyboardType(.decimalPad)`: iOS's keyboard |
+| Checkmark row, Checkmark | `CheckRow` (`AddHabit/NewHabitView.swift`), as `Picker(.inline)` draws it; a disabled one is `.disabled` |
+| Pop-up button | `Picker` with `.pickerStyle(.menu)` |
+| Switch | `Toggle` in `.appSwitch` (iOS's green, `Components/Components.swift`) |
+| Compact date picker, Date and time picker | `DatePicker`, whose default style on the iPhone is compact: iOS draws the capsules |
+| Day toggle, Colour swatch | Ours, already built: `WeekdayPicker`, `MonthDatePicker`, `ColorGrid` (`AddHabit/NewHabitView.swift`) |
+| Amount field | `AmountNumberField` (`Today/RecordParts.swift`) in `CustomText.amount` |
+| Wheel picker | **New: `WheelPicker` (`Components/WheelPicker.swift`).** SwiftUI's `Picker(.wheel)` draws a band per wheel, so two side by side read as two controls; this is UIKit's `UIPickerView` with two components, which draws one band across both, with iOS's own rows, sounds and VoiceOver wheels. It takes two lists of values and titles, a binding for each, and a VoiceOver name for each wheel; a second list that depends on the first (the days a month has) is passed new, and the caller clamps the day |
+
+**Not wired into a screen yet:** How Often still asks "The [first ▾] [Saturday ▾] of the month" with two pop-ups and the year's date with Month and Date pop-ups (`AddHabit/HowOftenEditor.swift`). Figma's Repeat On row with the wheel under it replaces them when that screen is updated.
+
 ## Checked
 
 Looked at by eye: section 07; How often in six states; Limit; How long, also after its ring went; How much; Steps; Unit; New habit; Time of day; New day starts at; History, with and without the filter on; the routine player; Widget setup; Pause; the Colour sheet, also after its gap changed.

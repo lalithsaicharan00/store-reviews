@@ -36,6 +36,10 @@ The status bar grew by 18 and the bottom bar by 10, so a screen has 28 less room
 
 Looked at by eye: Today, Day details, a keyboard screen, the drawer, New habit, Home screen, Lock screen, Notification shade, the widget search. Not every screen was looked at.
 
+## In the app (17 Nov 2026)
+
+**Nothing to set up.** The status bar, Dynamic Island and Home Indicator are drawn by iOS; the app only keeps its content in the safe area, which SwiftUI does by itself. The iCloud logo is `Image(systemName: "icloud")`, Apple's symbol as it is. Every icon is an SF Symbol called by name. The section's *Icon* component still describes Material (Android's code), and *Plus label* is left from before every feature was made free on the iPhone (10 Nov 2026): neither has anything to build in the app.
+
 ## Still open
 
 - **The screens are Android's 360 × 800; the iPhone 16 is 393 × 852.** The 52 points of extra height would more than cover the 28 these bars took, and every width would become true. The components are built to stretch (time left, island centred, signal right), so they'd follow.

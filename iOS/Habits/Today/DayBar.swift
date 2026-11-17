@@ -172,8 +172,9 @@ struct CalendarSheet: View {
     }
 }
 
-/// "Back to Today": primary (filled) above the day bar on Today, secondary (bordered) in the calendar sheet
-/// (the user, 29 Sep). Shown only while another day is open; where it sits, its space is always kept.
+/// "Back to Today": floating on glass above the day bar on Today, bordered in the calendar sheet (the user, 29 Sep).
+/// Shown only while another day is open; where it sits, its space is always kept. On Today it's Figma's Floating button,
+/// Style=Glass: a way back isn't a main action, so it's never prominent (6 Nov 2026).
 struct BackToTodayButton: View {
     var id = "back-to-today"
     var primary = true
@@ -183,11 +184,12 @@ struct BackToTodayButton: View {
         if primary {
             Button(action: action) {
                 Label("Back to Today", systemImage: "arrow.uturn.backward")
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color.onInk)
-                    .padding(.horizontal, 18)
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(Color.ink)
+                    .padding(.horizontal, 16)
                     .frame(height: 44)
-                    .background(Capsule().fill(Color.ink).shadow(color: .black.opacity(0.15), radius: 6, y: 2))
+                    .contentShape(Capsule())
+                    .floatingGlass()
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier(id)

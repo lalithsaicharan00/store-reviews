@@ -157,7 +157,7 @@ private struct RecordBox: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(box.tinted ? AnyShapeStyle(color.mark.opacity(0.15)) : AnyShapeStyle(Color(.tertiarySystemFill)),
+        .background(box.tinted ? AnyShapeStyle(color.color.opacity(0.15)) : AnyShapeStyle(Color(.tertiarySystemFill)),
                     in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(box.spoken)
@@ -261,7 +261,7 @@ private struct LatestPlate: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(color.mark.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(color.color.opacity(0.12), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel((isLatest ? "Latest: " : "") + milestone.spoken)
         .accessibilityIdentifier("habit-milestone-latest")
@@ -315,7 +315,7 @@ struct MilestoneMedal: View {
     let color: HabitColor
 
     var body: some View {
-        let mark = color.mark
+        let mark = color.color
         let share: CGFloat = number.count >= 4 ? 0.28 : number.count == 3 ? 0.34 : 0.40
         ZStack {
             Circle()
@@ -350,7 +350,7 @@ private struct MilestoneNextRow: View {
             ZStack {
                 Circle().inset(by: 2.5).stroke(Color(.tertiarySystemFill), lineWidth: 5)
                 Circle().inset(by: 2.5).trim(from: 0, to: next.fraction)
-                    .stroke(color.mark, style: StrokeStyle(lineWidth: 5, lineCap: .round))
+                    .stroke(color.color, style: StrokeStyle(lineWidth: 5, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                 if next.target == nil {
                     Image(systemName: "checkmark").font(.body.weight(.bold))
@@ -558,7 +558,7 @@ private struct HabitPeriodCard: View {
                     VStack(alignment: .leading, spacing: WeekSpacing.tight) {
                         Text("Recorded each day").font(.subheadline.weight(.semibold))
                         LightBarChart(title: "Recorded each day", bars: data.bars, goals: data.goals, dashedGoals: true,
-                                      xLabels: data.xLabels, color: habit.color.mark,
+                                      xLabels: data.xLabels, color: habit.color.color,
                                       yLabel: { store.progressValue($0, data.rule) })
                             .frame(height: 140)
                     }
@@ -673,7 +673,7 @@ private struct ComparisonView: View {
                 Text(note).font(.subheadline).foregroundStyle(.secondary)
             } else {
                 let top = max(comparison.thisValue ?? 0, comparison.previousValue ?? 0, 0.0001)
-                row(comparison.thisLabel, comparison.thisText, (comparison.thisValue ?? 0) / top, color.mark)
+                row(comparison.thisLabel, comparison.thisText, (comparison.thisValue ?? 0) / top, color.color)
                 row(comparison.previousLabel, comparison.previousText, (comparison.previousValue ?? 0) / top,
                     HeatPalette.color(2, color, dark: scheme == .dark))
             }

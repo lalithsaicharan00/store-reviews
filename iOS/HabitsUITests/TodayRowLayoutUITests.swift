@@ -141,16 +141,18 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Old task"].waitForNonExistence(timeout: 5), "The task moved to tomorrow")
     }
 
-    /// A quit row: one line (its best run), the live count on the right, and Log Slip on the swipe where the "Slipped"
-    /// button was.
+    /// A quit row: one line (its best run), the live count on the right, and Log a Slip on the swipe left, where the
+    /// "Slipped" button was (Note is on the swipe right: Figma, 17 Nov 2026).
     func testQuitRowSwipeLogsASlip() {
         launch()
         let smoking = app.staticTexts["Smoking"].firstMatch
         app.reveal(smoking, clear: true)
-        smoking.swipeLeft()
+        // A short drag only reveals (a full swipe would log the slip at once).
+        let start = smoking.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+        start.press(forDuration: 0.05, thenDragTo: start.withOffset(CGVector(dx: -120, dy: 0)))
         let slip = app.buttons["row-swipe-slip"]
-        XCTAssertTrue(slip.waitForExistence(timeout: 3), "Swipe left: Log Slip")
-        XCTAssertTrue(app.buttons["row-swipe-note"].exists, "…and Note beside it (4 Oct 2026: two buttons, no full swipe)")
+        XCTAssertTrue(slip.waitForExistence(timeout: 3), "Swipe left: Log a Slip")
+        XCTAssertFalse(app.buttons["row-swipe-note"].exists, "One action a side: Note is on the swipe right")
         shot("l06-quit-swipe")
         slip.tap()
         XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 3), "Log Slip opens Add slip")

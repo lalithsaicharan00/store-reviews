@@ -471,6 +471,9 @@ enum ProgressCheck {
             await tick(s, read, on: friday)
             same(s.milestoneOffer?.text, "All 2 done today", "G19 finishing the day")
             expect(s.dayFinishedAt != nil, "G19 the finishing tap is noted for the review prompt")
+            // Undoing the tap that reached it takes the band under the row away (17 Nov 2026, Figma's Milestone band).
+            if let id = s.undoOffer?.id { s.undoEntry(id) }
+            same(s.milestoneOffer?.text, nil, "G19 undoing the tap takes its milestone away")
             // The 11 Oct 2026 ladders (spec "Habit Progress" §4): every earlier value kept, more between them.
             same(StreakUnit.days.milestones(upTo: 400), [3, 7, 10, 14, 30, 50, 75, 100, 150, 200, 250, 365], "G19 day milestones (11 Oct 2026 ladder)")
             same(StreakUnit.weeks.nextMilestone(after: 4), 6, "G19 next week milestone")

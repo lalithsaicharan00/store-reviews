@@ -1,47 +1,19 @@
 import SwiftUI
 import UIKit
 
-/// The widgets' colours (Implementation Spec §2), shared with the app where they are the same thing: the habit icon's
-/// colour (`HabitColor.mark` reads `markHex`), so a widget's icon is exactly the app's.
+/// The widgets' colours (Implementation Spec §2). A habit's colour is the app's own (`HabitColor`, Shared/Palette.swift),
+/// so a widget's icon is exactly the app's.
 nonisolated enum WidgetPalette {
-    /// Each habit colour at one lightness (OKLCH 0.64): see `HabitColor.mark`.
-    static let markHex: [String: Int] = [
-        "red": 0xFA352B, "orange": 0xC97505, "yellow": 0xAA8809, "green": 0x07A941,
-        "mint": 0x09A19A, "teal": 0x079DB4, "cyan": 0x0698D0, "blue": 0x3289FF,
-        "indigo": 0x7679FC, "purple": 0xB75AE7, "pink": 0xFB2852, "brown": 0xA48660,
-        "gray": 0x8B8B90,
-    ]
-
     static func hex(_ v: Int) -> Color {
         Color(.sRGB, red: Double(v >> 16 & 0xFF) / 255, green: Double(v >> 8 & 0xFF) / 255, blue: Double(v & 0xFF) / 255)
     }
 
-    /// The habit's icon colour.
-    static func mark(_ name: String) -> Color { hex(markHex[name] ?? markHex["blue"]!) }
+    /// The habit's colour, for its icon and its done button: the iOS system colour (`HabitColor.color`), as in Figma.
+    /// The icons' own darker set (OKLCH 0.64, 2 Oct 2026) was retired on 17 Nov 2026 for Figma's colours.
+    static func main(_ name: String) -> Color { (HabitColor(rawValue: name) ?? .blue).color }
 
-    /// The habit's main colour: the system colour the app uses for a done button and row fills (`HabitColor.color`).
-    static func main(_ name: String) -> Color {
-        switch name {
-        case "red": .red
-        case "orange": .orange
-        case "yellow": .yellow
-        case "green": .green
-        case "mint": .mint
-        case "teal": .teal
-        case "cyan": .cyan
-        case "indigo": .indigo
-        case "purple": .purple
-        case "pink": .pink
-        case "brown": .brown
-        case "gray": .gray
-        default: .blue
-        }
-    }
-
-    /// Charcoal in light mode, off-white in dark: the app's ink (`Color.ink`).
-    static let ink = Color(UIColor { $0.userInterfaceStyle == .dark
-        ? UIColor(red: 0.925, green: 0.925, blue: 0.935, alpha: 1)
-        : UIColor(red: 0.153, green: 0.153, blue: 0.165, alpha: 1) })
+    /// The app's ink (`Palette.ink`, Shared/Palette.swift).
+    static let ink = Palette.ink
     /// A limit's fill: neutral grey, never the habit's colour and never red (the user, 6 Oct 2026).
     static let limitFill = Color(UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0x63 / 255, green: 0x63 / 255, blue: 0x66 / 255, alpha: 1)

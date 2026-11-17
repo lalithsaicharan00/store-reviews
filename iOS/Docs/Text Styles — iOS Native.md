@@ -57,7 +57,18 @@ The app sets these two sizes itself, so **these names are ours; Apple has no nam
 | `iOS/Custom/Clock` | `.system(size: 36, weight: .medium, design: .rounded)` | SF Pro Rounded Medium | 36/43 | +0.37 |
 | `iOS/Custom/Amount` | `.system(size: 56, weight: .bold)` (`AmountNumberField` while typing) | SF Pro Bold | 56/67 | +0.35 |
 
-The amount's line is 57.33 on the phone; the style rounds it to 57. Code: `Today/RoutinePlayer.swift:340`, `Today/AddLogView.swift:35`, `Today/LogRecordView.swift:169`.
+The amount's line is 57.33 on the phone; the style rounds it to 57.
+
+### In the app (17 Nov 2026)
+
+**Every Apple style is used by name and nothing is defined for it** (`.font(.body)`, `.font(.subheadline.weight(.semibold))`): iOS gives the size, line height, tracking and Dynamic Type, and Accessibility 1 is the same style at a larger text size. Only the two Custom styles are ours, in one place, `Habits/Components/Typography.swift` (`CustomText`):
+
+| Style | Code | Grows with | Cap |
+|---|---|---|---|
+| Clock | `CustomText.clock(numberSize)`, `@ScaledMetric(relativeTo: .title) numberSize = CustomText.clockSize` (36) | Title | 52 (`clockMaxSize`) |
+| Amount | `CustomText.amount(size)`, `@ScaledMetric(relativeTo: .largeTitle) numberSize = CustomText.amountSize` (56) | Large Title | the screen's room, `RecordParts.Gaps.numberSize` (40 or 48 on a small phone, 56 typing, 64) |
+
+Used by `TimerScreen`, `RoutinePlayer` (Clock) and `AddLogView`, `LogRecordView`, `AmountNumberField` (Amount). How long's Hours, Minutes and Seconds boxes use the Amount's face at their own size (32, up to 44), which Figma has no style for. **The Amount was 48 in the code until 17 Nov 2026**; it's now Figma's 56, so a regular phone shows 56 where it showed 48, and small phones keep their caps. Figma's Amount style's description still says 48/57: the style's own values (56/67) are right, the description is stale.
 
 ## Accessibility 1
 

@@ -183,14 +183,5 @@ struct WeekCardStrip: View {
     }
 }
 
-extension HabitColor {
-    /// The habit's colour for marks and icons, all at one lightness (the user, 2 Oct 2026: every colour should feel
-    /// equally strong; orange and green looked darker than purple). Each system colour is moved to OKLCH lightness 0.64,
-    /// keeping its hue and as much of its saturation as fits the screen, so none turns muddy (mixing in black did).
-    /// 0.64 is the lightest level at which a white check still reaches 3:1 (WCAG 1.4.11) on every colour; light and
-    /// dark mode land on nearly the same values, so one table serves both. Worked out once (Research/Temp, 2 Oct 2026),
-    /// never while drawing. Yellow at this lightness is a mustard: that's yellow at the same strength as the rest.
-    /// The table is shared with the widgets (`WidgetPalette.markHex`), so a widget's icon is exactly the app's.
-    var mark: Color { WidgetPalette.mark(rawValue) }
-
-}
+// Marks and icons are drawn in the habit's iOS colour (`HabitColor.color`), as in Figma (the user, 17 Nov 2026). The
+// darker set at one lightness (`HabitColor.mark`, OKLCH 0.64, 2 Oct 2026) was retired.

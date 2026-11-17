@@ -171,7 +171,11 @@ struct PausedRow: View {
             }
         }
         .frame(minHeight: RowBand.height)
-        .padding(.vertical, RowSpace.rowPadding)
+        // The same edges and height as every row in a Today card (Figma's Habit row: 16 at the sides, 70 tall).
+        .padding(.horizontal, RowSpace.edge)
+        .padding(.vertical, RowSpace.bodyVertical)
+        .listRowInsets(EdgeInsets())
+        .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
         .contextMenu {
             if running { Button("Resume", systemImage: "play.circle") { store.resume(habit) } }
             Button(habit.kind == .task ? "Edit Task" : "Edit Habit", systemImage: "pencil") { showEdit = true }

@@ -14,7 +14,7 @@ struct RoutinePlayer: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric(relativeTo: .title) private var numberSize = 36.0
+    @ScaledMetric(relativeTo: .title) private var numberSize = CustomText.clockSize
     @ScaledMetric(relativeTo: .body) private var breathingRoom = 24.0
     @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
     /// Between the main button and the bottom bar: room enough that neither is tapped for the other.
@@ -337,7 +337,7 @@ struct RoutinePlayer: View {
     @ViewBuilder private func hero(_ habit: Habit, diameter: CGFloat) -> some View {
         let progress = store.progress(of: habit, on: session.day)
         let goal = store.goal(of: habit)
-        let big = Font.system(size: min(numberSize, 52), weight: .medium, design: .rounded).monospacedDigit()
+        let big = CustomText.clock(numberSize)
         if habit.kind == .duration && !skipped(habit) {
             FocusClock(habit: habit, day: session.day, font: big,
                        diameter: diameter) { openLog() }
@@ -421,31 +421,24 @@ struct RoutinePlayer: View {
         .padding(.horizontal, 28)
     }
 
-    /// "Amount saved · Undo", floating above the controls.
+    /// "Amount saved · Undo · Add Note", floating above the controls: Figma's Banner (`Banner`).
     @ViewBuilder private var feedbackBanner: some View {
         if let feedback {
-            HStack(spacing: 12) {
-                Label(feedback, systemImage: "checkmark.circle").font(.subheadline)
+            Banner(text: feedback) {
                 if let id = undoSkipID, let habit = order.first(where: { $0.id == id }) {
                     Button("Undo") { unskip(habit, stay: false) }
-                        .font(.subheadline.weight(.semibold))
                     // Why it was skipped, if the person wants to say (users show: Way of Life); never asked.
                     Button("Add Note") { noteHabitID = id; showNote = true }
-                        .font(.subheadline.weight(.semibold))
                         .accessibilityIdentifier("focus-skip-note")
                 } else if let id = undoID {
                     Button("Undo") { change("Undone", captureUndo: false) { store.undoEntry(id) } }
-                        .font(.subheadline.weight(.semibold))
                         .accessibilityIdentifier("focus-undo")
                     // The note belongs right after logging, next to Undo; never asked for (notes UX report).
                     Button("Add Note") { noteHabitID = current?.id; showNote = true }
-                        .font(.subheadline.weight(.semibold))
                         .accessibilityIdentifier("focus-banner-note")
                 }
             }
-            .padding(.horizontal, 16).frame(minHeight: 44)
-            // A solid pill with a soft shadow: a material one vanished on the light background.
-            .background(Capsule().fill(Color(.secondarySystemGroupedBackground)).shadow(color: .black.opacity(0.12), radius: 8, y: 2))
+            .padding(.horizontal, 16)
             .padding(.bottom, 8)
             .transition(.opacity.combined(with: .move(edge: .bottom)))
         }

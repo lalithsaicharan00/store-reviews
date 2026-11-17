@@ -406,6 +406,8 @@ final class HabitStore {
         changedHabits.insert(entry.habitID)
         forget(entry.habitID)
         if undoOffer?.id == entry.id { undoOffer = nil }
+        // The log that reached a milestone is gone, so its band goes too (written only then: RowFoot alone reads it).
+        if milestoneOffer?.entry == entry.id { milestoneOffer = nil }
     }
 
     /// An edit keeps the same row, indexes and position, with one value replacement.
@@ -2684,18 +2686,21 @@ final class HabitStore {
         if let habit { logFeedback(habit, on: entry.day, wasComplete: wasComplete) }
         let score = isToday ? todayScore(on: entry.day) : nil
         if let score, !wasFull, score.isFull { dayFinishedAt = .now }
-        milestoneOffer = nil
+        // Worked out first and written only when it changes: every Today row's band reads it (`RowFoot`), and
+        // Observation counts a write as a change even when the value is the same (17 Nov 2026).
+        var mark: MilestoneOffer?
         if let habit, let before = streakBefore, habit.kind != .quit, habit.kind != .task {
             let unit = rule(habit, on: today()).frequency.streakUnit
             let now = streak(of: habit, asOf: today())
             if now > before, unit.isMilestone(now) {
-                milestoneOffer = MilestoneOffer(entry: entry.id, habit: habit.id, day: entry.day, text: unit.inARow(now))
+                mark = MilestoneOffer(entry: entry.id, habit: habit.id, day: entry.day, text: unit.inARow(now))
             }
         }
-        if milestoneOffer == nil, let score, !wasFull, score.isFull, score.planned > 1 {
-            milestoneOffer = MilestoneOffer(entry: entry.id, habit: entry.habitID, day: entry.day, text: "All \(score.planned) done today")
+        if mark == nil, let score, !wasFull, score.isFull, score.planned > 1 {
+            mark = MilestoneOffer(entry: entry.id, habit: entry.habitID, day: entry.day, text: "All \(score.planned) done today")
         }
-        if let mark = milestoneOffer, Self.voiceOverRunning {
+        if milestoneOffer != mark { milestoneOffer = mark }
+        if let mark, Self.voiceOverRunning {
             AccessibilityNotification.Announcement(mark.text).post()
         }
         perform { [self] telemetry in

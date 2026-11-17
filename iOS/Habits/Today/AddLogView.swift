@@ -32,7 +32,7 @@ struct AddLogView: View {
     @State private var focusedOnce = false
     @State private var room = ScreenRoom()
     @FocusState private var focus: RecordField?
-    @ScaledMetric(relativeTo: .largeTitle) private var numberSize: CGFloat = 48
+    @ScaledMetric(relativeTo: .largeTitle) private var numberSize = CustomText.amountSize
     @ScaledMetric(relativeTo: .title) private var durationSize: CGFloat = 32
 
     init(habit: Habit, day: LocalDay, at time: Date? = nil, source: EntrySource = .manual,

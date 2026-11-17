@@ -151,3 +151,31 @@ No change was made to the iPhone app.
 - **The Step row (`575:136`) lines up with a list row:** a 24 tick column and a 16 gap, so its text and separator start at 56 and the separator stretches to 16 before the edge. Never override a step's padding to fit it into a padded frame: put the steps in the section as full-width rows. The last step has no separator.
 - **The logs take First, Middle, Last or Single by how many show,** so one log has no separator under it.
 - Why: [Day Details on iPhone](<../../Research/Research Reports/Day Structure and Organization/Day Details on iPhone — The Sheet, the Buttons and the Note.md>).
+
+## In the app (17 Nov 2026)
+
+The user: "if something is inbuilt … leave them … if we already have it, update them … only update the core component … follow the performance optimization" rules. So each part below is either iOS's own, left as it is, or the one component that draws it everywhere.
+
+| Figma | In the code |
+|---|---|
+| List item | iOS's own: a `List` or `Form` row. Nothing built |
+| Run row, Comparison row | Progress's bars, unchanged (see the table above) |
+| Habit icon (in every row) | `HabitIcon` (`Components/Components.swift`): now a **circle**, the symbol **Regular** at 0.48 of it (it was a rounded square, Semibold). The Live Activity's `TimerIcon` and Plus's empty slot follow |
+| Habit row | `HabitRow` (`Today/TodayRows.swift`). The row draws its own edges (`listRowInsets(EdgeInsets())`): 16 to the icon, 11 to the round button's 44 frame so its 34 circle is 16 from the edge, 13 above and below. So 13 + 44 + 13 is Figma's 70, + 6 + 30 its 106 after a log, + 32 its 102 with a band and 138 with both. **The name stays Label when done.** The line under it starts at the name (60) and stops 16 from the edge |
+| Undo and Note | `RowAfterLog`, `QuitAfterSlip`, `AfterLogButtonStyle`: Figma's capsule (30 tall, card colour, 1 pt Separator outline, Subheadline, Label, 10 at the sides). The words are **Undo** and **Note** (`plus`); VoiceOver still hears "Undo +1 glass" and "Add Note" or "Edit Note", which is also what the UI tests read |
+| Milestone band, Limit band | `RowFoot`, new: 32 tall across the card under the row, its words at 60. A milestone the log reached: Milestone Band, `seal.fill` in the Medal gradient (Figma's 12-point star is that symbol), words Subheadline Semibold in Deep. Otherwise a cut-down habit at its most, **Limit reached**, or past it, **Over the limit** (which hides the streak): Tertiary System Fill, `hourglass`, Label. The milestone moved here from the after-log line |
+| Habit row · Swipe | Swipe left: **Skip** (`forward.fill`), **Undo Skip** on a skipped day, **Log a Slip** on a quit row. Swipe right: **Note** (`square.and.pencil`). One a side, System Gray, and a full swipe acts (`allowsFullSwipe: true`). **The Undo swipe is gone**: Undo is under the row after a log, and in the touch-and-hold menu. A paused quit row offers no slip, so a full swipe never reaches a switched-off button |
+| Step row | `StepRow`: a **leading tick circle** (22, a 1.5 pt Tertiary Label ring, or the habit's colour with a white ✓), the step in Body at 56, Secondary Label when done, 44 tall. The circle's tap target is 44 wide without moving anything. It was a trailing round button |
+| Section header | `PartHeader`: the same edges as the rows (16 on every phone; the system's own is 20 on the larger iPhones), 10 + 44 + 10 = 64, the chevron's 34 frame ending 16 from the edge so it's centred over the round buttons |
+| Folded icons | `FoldedIcons`: 28 circles overlapping by 6, each ringed 2 pt in the card's colour; "+N" a circle of Tertiary System Fill, Caption 1 Semibold, Label |
+| Paused rows | `PausedRow`: the same edges and height as a habit row |
+
+**Speed (the S rules), checked for this and everything earlier today:**
+
+- **Only small views read what changes.** The band (`RowFoot`) alone reads the store's milestone, the swipe's `RowNoteButton` alone reads the day's note (the row's own body used to), and the limit is worked out from the two numbers the row already has (S6, L16).
+- **A shared value is written only when it changes.** Every log used to set the milestone to nothing and then maybe to one; Observation counts each write as a change even when the value is the same, and every row's band now reads it, so `addLogged` works it out first and writes once, only if different. Removing a log (`removeEntry`) drops its milestone, and a self-check (G19) says so.
+- **Rows stay light (S10):** plain shapes only, no shadow, no material, no `GeometryReader`, no `ViewThatFits`. A folded icon is two layers.
+- **The colour shades** (`Shared/Palette.swift`) were dictionaries keyed by the hue, which hash its name on every read; they're arrays read by the hue's place now, checked once at launch.
+- `Tools/perf/check_rules.sh` passes. Not yet built, tested or measured on GitHub, and not looked at on the iPhone (U9).
+
+**Not done:** the milestone band lasts until the next log anywhere, or until its log is undone; Android keeps it for the rest of the day. That needs the store to remember milestones per habit and day, a change to how milestones are kept, so it waits for the user's say.
