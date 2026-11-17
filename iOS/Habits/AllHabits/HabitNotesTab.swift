@@ -165,7 +165,7 @@ private struct NoteMonthCard: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Color.card, in: CardShape.shape)
+        .clipShape(CardShape.shape)
     }
 }

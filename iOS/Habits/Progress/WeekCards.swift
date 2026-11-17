@@ -59,7 +59,10 @@ struct WeekPeriodBar: View {
     }
 }
 
-/// One habit's card: icon, name on one line, the goal; the headline and at most one more fact; the week's strip.
+/// Figma's Habit history card (978:1598), one per habit or task on Week, Month and Year: the header (a 32 icon, the
+/// name in Headline on one line, the goal under it, and room on the right for the card's More button, which the page
+/// lays over it), then the summary (Title 3 Semibold) with one more fact (Subheadline), then the days as Day cells.
+/// 16 inside and between, corners 26. The whole card opens Habit details.
 struct WeekCardView: View {
     let card: ProgressWeekCard
     let columns: [WeekColumn]
@@ -67,27 +70,28 @@ struct WeekCardView: View {
     var month: MonthLayout? = nil
     /// Year: the heat map's layout; nil on Week and Month.
     var year: YearLayout? = nil
+    /// Room for the More button laid over the header's end.
+    var moreRoom: CGFloat = 0
     @Environment(\.dynamicTypeSize) private var typeSize
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: WeekSpacing.card) {
             HStack(alignment: .center, spacing: 12) {
-                HabitIcon(symbol: card.habit.symbol, color: card.habit.color, size: 40)
-                VStack(alignment: .leading, spacing: WeekSpacing.label) {
+                HabitIcon(symbol: card.habit.symbol, color: card.habit.color, size: 32)
+                VStack(alignment: .leading, spacing: 0) {
                     // One line: a long name ends in "…" (the user, 2 Oct 2026).
                     Text(card.habit.name).font(.headline).foregroundStyle(.primary)
                         .lineLimit(1).truncationMode(.tail)
                     Text(card.goal).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
                 }
-                Spacer(minLength: WeekSpacing.tight)
-                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
-                    .accessibilityHidden(true)
+                Spacer(minLength: moreRoom)
             }
-            VStack(alignment: .leading, spacing: WeekSpacing.pair) {
+            VStack(alignment: .leading, spacing: WeekSpacing.label) {
                 if let start = card.runStart {
                     QuitRunClock(start: start)
                 } else {
                     Text(card.headline).font(.title3.weight(.semibold)).monospacedDigit()
+                        .foregroundStyle(card.isQuit ? Color(.systemGray) : Color.primary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
                 if let detail = card.detail {
@@ -95,25 +99,21 @@ struct WeekCardView: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(.top, WeekSpacing.card)
-            // From the accessibility sizes up, the strip gives way to the words, which carry the meaning (report §9).
+            // From the accessibility sizes up, the days give way to the words, which carry the meaning (report §9).
             if let year, !typeSize.isAccessibilitySize, card.days.count >= year.shown {
                 HeatYear(layout: year, cells: card.days.prefix(year.shown).map(\.heat), color: card.habit.color)
-                    .padding(.top, WeekSpacing.card)
             } else if !typeSize.isAccessibilitySize && columns.count == card.days.count {
                 if let month {
                     MonthCardGrid(layout: month, columns: columns, days: card.days, color: card.habit.color)
-                        .padding(.top, WeekSpacing.card)
                 } else {
                     WeekCardStrip(columns: columns, days: card.days, color: card.habit.color)
-                        .padding(.top, WeekSpacing.card)
                 }
             }
         }
         .padding(WeekSpacing.card)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Color.card, in: CardShape.shape)
+        .contentShape(CardShape.shape)
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(card.accessibility)
         .accessibilityHint("Opens the habit")
@@ -127,9 +127,9 @@ struct MonthLayout: Hashable {
     let letters: [String]
 }
 
-/// A month on a card (the user, 2 Oct 2026: for seeing patterns): rows of squares under the weekday letters (today's
-/// underlined). No dates inside (the user, 3 Oct 2026): the sign says what happened; the habit's page has the dated
-/// calendar. One `Canvas`, never a lazy grid (Design Rules).
+/// A month on a card (the user, 2 Oct 2026: for seeing patterns; Figma's Month): the weekday letters, then the
+/// month's weeks as Day cells of 36, edge to edge, 6 between rows; days outside the month are empty. No dates inside
+/// (the user, 3 Oct 2026): the sign says what happened; the habit's page has the dated calendar. One `Canvas`.
 struct MonthCardGrid: View {
     let layout: MonthLayout
     let columns: [WeekColumn]
@@ -140,15 +140,8 @@ struct MonthCardGrid: View {
         let todayIndex = columns.firstIndex { $0.isToday }
         let todayColumn = todayIndex.map { (layout.lead + $0) % 7 }
         VStack(spacing: WeekSpacing.tight) {
-            HStack(spacing: 0) {
-                ForEach(0..<7, id: \.self) { i in
-                    let isToday = i == todayColumn
-                    Text(i < layout.letters.count ? layout.letters[i] : "")
-                        .font(.caption.weight(isToday ? .semibold : .medium))
-                        .foregroundStyle(isToday ? Color.primary : Color.secondary)
-                        .underline(isToday)
-                        .frame(maxWidth: .infinity)
-                }
+            HeatColumns(count: 7) { i in
+                DayName(text: i < layout.letters.count ? layout.letters[i] : "", isToday: i == todayColumn)
             }
             HeatMonth(lead: layout.lead, cells: days.map(\.heat), todayIndex: todayIndex, color: color)
                 .equatable()
@@ -157,8 +150,8 @@ struct MonthCardGrid: View {
     }
 }
 
-/// Sun–Sat (in the person's order): the weekday, then the day's square. The day's own amount is in the card's words
-/// and the habit's page, not on the square (the user, 3 Oct 2026).
+/// Sun–Sat (in the person's order), Figma's Week: the weekday names, then seven Day cells of 36, edge to edge. The day's
+/// own amount is in the card's words and the habit's page, not on the cell (the user, 3 Oct 2026).
 struct WeekCardStrip: View {
     let columns: [WeekColumn]
     let days: [WeekCardDay]
@@ -166,15 +159,8 @@ struct WeekCardStrip: View {
 
     var body: some View {
         VStack(spacing: WeekSpacing.tight) {
-            HStack(spacing: 0) {
-                ForEach(columns) { column in
-                    Text(column.short)
-                        .font(.caption.weight(column.isToday ? .semibold : .regular))
-                        .foregroundStyle(column.isToday ? Color.primary : Color.secondary)
-                        .underline(column.isToday)
-                        .lineLimit(1).minimumScaleFactor(0.8)
-                        .frame(maxWidth: .infinity)
-                }
+            HeatColumns(count: columns.count) { i in
+                DayName(text: columns[i].short, isToday: columns[i].isToday)
             }
             HeatRow(cells: days.map(\.heat), todayIndex: columns.firstIndex { $0.isToday }, color: color)
                 .equatable()
@@ -183,5 +169,69 @@ struct WeekCardStrip: View {
     }
 }
 
+/// A weekday over its cells: Footnote in Secondary Label; today's Caption 1 Semibold in Label (Figma's day names).
+private struct DayName: View {
+    let text: String
+    let isToday: Bool
+
+    var body: some View {
+        Text(text)
+            .font(isToday ? .caption.weight(.semibold) : .footnote)
+            .foregroundStyle(isToday ? Color.primary : Color.secondary)
+            .lineLimit(1).minimumScaleFactor(0.8)
+            .fixedSize(horizontal: true, vertical: false)
+            .frame(height: 16)
+    }
+}
+
 // Marks and icons are drawn in the habit's iOS colour (`HabitColor.color`), as in Figma (the user, 17 Nov 2026). The
 // darker set at one lightness (`HabitColor.mark`, OKLCH 0.64, 2 Oct 2026) was retired.
+
+/// The history card's More button (Figma: Edit habit, Pause…, Archive, Delete). Its sheets and its question belong to
+/// it, so the page around it keeps no state for them (S6); one sheet for all of them (S10). Delete asks with Cancel and
+/// Delete only, and says that archiving keeps the history (D9).
+struct HistoryCardMore: View {
+    let habit: Habit
+    @Environment(HabitStore.self) private var store
+    @State private var sheet: Sheet?
+    @State private var deleting = false
+
+    /// The button's square: a 44-point target round the symbol.
+    static let size: CGFloat = 44
+
+    enum Sheet: String, Identifiable { case edit, pause; var id: String { rawValue } }
+
+    var body: some View {
+        let noun = habit.kind == .task ? "Task" : "Habit"
+        Menu {
+            Button("Edit \(noun)", systemImage: "pencil") { sheet = .edit }
+            if !habit.archived && store.canPause(habit) {
+                Button("Pause…", systemImage: "pause.circle") { sheet = .pause }
+            }
+            if !habit.archived {
+                Button("Archive", systemImage: "archivebox") { store.archive([habit]) }
+            }
+            Button("Delete", systemImage: "trash", role: .destructive) { deleting = true }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.body)
+                .foregroundStyle(.secondary)
+                .frame(width: Self.size, height: Self.size)
+                .contentShape(Rectangle())
+        }
+        .accessibilityLabel("More")
+        .accessibilityIdentifier("progress-more-\(habit.name)")
+        .sheet(item: $sheet) { sheet in
+            switch sheet {
+            case .edit: EditHabitSheet(habit: habit)
+            case .pause: PauseSheet(habit: habit)
+            }
+        }
+        .alert("Delete \(habit.name)?", isPresented: $deleting) {
+            Button("Cancel", role: .cancel) {}
+            Button("Delete", role: .destructive) { store.delete([habit]) }
+        } message: {
+            Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.")
+        }
+    }
+}

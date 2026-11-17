@@ -33,7 +33,7 @@ struct HabitProgressTab: View {
             .accessibilityElement(children: .contain)
             .accessibilityIdentifier("habit-progress-record")
         } else if let record = model.record {
-            HabitRecordCard(record: record, color: habit.color, showStreaks: showStreaks, showPercentages: showPercentages)
+            HabitRecordCard(habit: habit, record: record, showStreaks: showStreaks, showPercentages: showPercentages)
                 .pageItem()
         }
         // Show Streaks off hides the runs in a row; a total a break can't take away stays (report §7.6, E9).
@@ -54,37 +54,31 @@ struct HabitProgressTab: View {
 
 // MARK: - Overall record
 
-/// What's been recorded since the habit began, the streaks, and how many goals were met out of how many there were
-/// (spec §2): a title line, the headline, then a 2 × 2 grid of boxes (one column at accessibility text sizes).
+/// Figma's Overall record card (1158:119643): what's been recorded since the habit began, then four Stat tiles (current
+/// streak on the habit's Fill, best streak, goal met, best day) and See All Streaks. 16 inside, 12 between its parts;
+/// the title (Body) with "Since …" (Subheadline) beside it, the total (Title 1 Bold, its words in Body) under them.
+/// At the accessibility text sizes (Figma's Accessibility 1) the title and its date stack and the tiles take a row each.
 private struct HabitRecordCard: View {
+    let habit: Habit
     let record: HabitOverall
-    let color: HabitColor
     let showStreaks: Bool
     let showPercentages: Bool
     @Environment(\.dynamicTypeSize) private var typeSize
 
-    struct Box: Identifiable {
-        let id: String
-        let fact: RecordFact
-        let detail: String?
-        let spoken: String
-        let tinted: Bool
-    }
-
     var body: some View {
         let large = typeSize.isAccessibilitySize
-        let grid = rows(columns: large ? 1 : 2)
-        VStack(alignment: .leading, spacing: WeekSpacing.card) {
+        let tiles = tiles()
+        VStack(alignment: .leading, spacing: 12) {
             Group {
                 if large {
                     VStack(alignment: .leading, spacing: WeekSpacing.label) {
-                        Text("Overall record").font(.headline)
+                        Text("Overall record").font(.body)
                         Text(record.since).font(.subheadline).foregroundStyle(.secondary)
                     }
                 } else {
                     HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.tight) {
-                        Text("Overall record").font(.headline)
-                        Spacer(minLength: WeekSpacing.tight)
+                        Text("Overall record").font(.body)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         Text(record.since).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
                     }
                 }
@@ -96,16 +90,32 @@ private struct HabitRecordCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityLabel(record.headline)
                 .accessibilityIdentifier("habit-record-headline")
-            if !grid.isEmpty {
+            if !tiles.isEmpty {
+                let columns = large ? 1 : 2
                 Grid(horizontalSpacing: WeekSpacing.tight, verticalSpacing: WeekSpacing.tight) {
-                    ForEach(grid.indices, id: \.self) { index in
+                    ForEach(Array(stride(from: 0, to: tiles.count, by: columns)), id: \.self) { start in
+                        let row = tiles[start..<min(start + columns, tiles.count)]
                         GridRow {
-                            ForEach(grid[index]) { box in
-                                RecordBox(box: box, color: color)
-                                    .gridCellColumns(grid[index].count == 1 && !large ? 2 : 1)
+                            ForEach(row) { tile in
+                                // A tile with no partner takes the row (§8.1).
+                                tile.gridCellColumns(row.count == 1 && columns == 2 ? 2 : 1)
                             }
                         }
                     }
+                }
+            }
+            if showStreaks && record.best != nil {
+                HStack {
+                    Spacer(minLength: 0)
+                    NavigationLink {
+                        StreaksPage(habit: habit)
+                    } label: {
+                        Text("See All Streaks")
+                    }
+                    .buttonStyle(.borderless)
+                    .controlSize(.small)
+                    .foregroundStyle(Color.ink)
+                    .accessibilityIdentifier("habit-see-all-streaks")
                 }
             }
         }
@@ -114,54 +124,62 @@ private struct HabitRecordCard: View {
         .accessibilityIdentifier("habit-progress-record")
     }
 
-    /// Current and Best streak (unless Show Streaks is off), then Goal met and Best day; a box with no partner takes the
-    /// row (§8.1).
-    private func rows(columns: Int) -> [[Box]] {
-        var boxes: [Box] = []
+    /// Current and Best streak (unless Show Streaks is off), then Goal met and Best day.
+    private func tiles() -> [StatTile] {
+        var tiles: [StatTile] = []
         if showStreaks, let current = record.current, let best = record.best {
-            boxes.append(Box(id: "habit-streak-current", fact: current, detail: current.detail, spoken: current.spoken, tinted: true))
-            boxes.append(Box(id: "habit-streak-best", fact: best, detail: best.detail, spoken: best.spoken, tinted: false))
+            tiles.append(StatTile(fact: current, caption: current.detail, spoken: current.spoken, id: "habit-streak-current",
+                                  streak: true, color: habit.color))
+            tiles.append(StatTile(fact: best, caption: best.detail, spoken: best.spoken, id: "habit-streak-best"))
         }
         if let goal = record.goalMet {
             // The percentage follows Progress's "Show percentages".
             let percent = showPercentages && record.eligible > 0
                 ? Int((Double(record.met) / Double(record.eligible) * 100).rounded()) : nil
-            let detail = percent.map { "\($0)% \(record.percentNoun)" }
-            boxes.append(Box(id: "habit-record-goal-met", fact: goal, detail: detail,
-                             spoken: goal.spoken + (percent.map { ", \($0) percent \(record.percentNoun)" } ?? ""), tinted: false))
+            tiles.append(StatTile(fact: goal, caption: percent.map { "\($0)% \(record.percentNoun)" },
+                                  spoken: goal.spoken + (percent.map { ", \($0) percent \(record.percentNoun)" } ?? ""),
+                                  id: "habit-record-goal-met"))
         }
         if let best = record.bestPeriod {
-            boxes.append(Box(id: "habit-record-best-period", fact: best, detail: best.detail, spoken: best.spoken, tinted: false))
+            tiles.append(StatTile(fact: best, caption: best.detail, spoken: best.spoken, id: "habit-record-best-period"))
         }
-        return stride(from: 0, to: boxes.count, by: columns).map { Array(boxes[$0..<min($0 + columns, boxes.count)]) }
+        return tiles
     }
 }
 
-/// One box: its label, the number with its unit, and a line under it. Current streak is tinted with the habit's colour
-/// and has Today's 🔥.
-private struct RecordBox: View {
-    let box: HabitRecordCard.Box
-    let color: HabitColor
+/// Figma's Stat tile (1005:2): one fact, as a label (Footnote, Secondary Label), the number (Title 2 Semibold) with its
+/// unit (Subheadline), and a caption (Footnote, Secondary Label). 14 inside, 4 between, corners 16, on Tertiary System
+/// Fill; the current streak is on the habit's Fill, with Today's 🔥. Tiles in a row share the tallest one's height.
+struct StatTile: View, Identifiable {
+    let fact: RecordFact
+    let caption: String?
+    let spoken: String
+    let id: String
+    var streak = false
+    var color: HabitColor = .green
 
     var body: some View {
-        let fact = box.fact
-        VStack(alignment: .leading, spacing: WeekSpacing.label) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(fact.title).font(.footnote).foregroundStyle(.secondary)
-            Text("\(box.tinted ? "🔥 " : "")\(Text(fact.number).font(.title2.weight(.semibold)))\(fact.unit.isEmpty ? "" : " ")\(Text(fact.unit).font(.subheadline))")
-                .monospacedDigit()
-                .fixedSize(horizontal: false, vertical: true)
-            if let detail = box.detail {
-                Text(detail).font(.footnote).foregroundStyle(.secondary).monospacedDigit()
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                if streak { Text("🔥").font(.body) }
+                Text(fact.number).font(.title2.weight(.semibold))
+                if !fact.unit.isEmpty { Text(fact.unit).font(.subheadline) }
+            }
+            .monospacedDigit()
+            .fixedSize(horizontal: false, vertical: true)
+            if let caption {
+                Text(caption).font(.footnote).foregroundStyle(.secondary).monospacedDigit()
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .padding(12)
+        .padding(14)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(box.tinted ? AnyShapeStyle(color.color.opacity(0.15)) : AnyShapeStyle(Color(.tertiarySystemFill)),
-                    in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .background(streak ? AnyShapeStyle(color.fill) : AnyShapeStyle(Color(.tertiarySystemFill)),
+                    in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(box.spoken)
-        .accessibilityIdentifier(box.id)
+        .accessibilityLabel(spoken)
+        .accessibilityIdentifier(id)
     }
 }
 
@@ -513,7 +531,7 @@ private struct HabitPeriodCard: View {
                 anchor = day
             }
             if let data, let card = data.card {
-                VStack(alignment: .leading, spacing: WeekSpacing.pair) {
+                VStack(alignment: .leading, spacing: WeekSpacing.label) {
                     Text(card.headline).font(.title3.weight(.semibold)).monospacedDigit()
                         .fixedSize(horizontal: false, vertical: true)
                     if let detail = card.detail {
@@ -634,39 +652,39 @@ private struct PeriodHeader: View {
     }
 }
 
-/// This period and the one before, on the same footing, as two labelled bars with exact values. The habit's colour for
-/// this period, a lighter step for the one before: no arrows, no better or worse.
+/// This period and the one before, on the same footing, as Figma's Comparison rows: the label and its value on one
+/// line (Subheadline, the value Semibold), an 8-point bar under them. The larger value fills its track and the other its
+/// share; this period in the habit's colour, the one before in its Fill. No arrows, no better or worse.
 private struct ComparisonView: View {
     let comparison: PeriodComparison
     let color: HabitColor
-    @Environment(\.colorScheme) private var scheme
 
     var body: some View {
-        VStack(alignment: .leading, spacing: WeekSpacing.tight) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(comparison.title).font(.subheadline.weight(.semibold))
             if let note = comparison.note {
                 Text(note).font(.subheadline).foregroundStyle(.secondary)
             } else {
                 let top = max(comparison.thisValue ?? 0, comparison.previousValue ?? 0, 0.0001)
                 row(comparison.thisLabel, comparison.thisText, (comparison.thisValue ?? 0) / top, color.color)
-                row(comparison.previousLabel, comparison.previousText, (comparison.previousValue ?? 0) / top,
-                    HeatPalette.color(2, color, dark: scheme == .dark))
+                row(comparison.previousLabel, comparison.previousText, (comparison.previousValue ?? 0) / top, color.fill)
             }
         }
         .accessibilityElement(children: .combine)
     }
 
     private func row(_ label: String, _ text: String, _ fraction: Double, _ fill: Color) -> some View {
-        HStack(spacing: WeekSpacing.tight) {
-            Text(label).font(.subheadline).foregroundStyle(.secondary)
-                .lineLimit(1).frame(width: 92, alignment: .leading)
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .firstTextBaseline, spacing: WeekSpacing.tight) {
+                Text(label).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
+                Spacer(minLength: WeekSpacing.tight)
+                Text(text).font(.subheadline.weight(.semibold)).monospacedDigit().lineLimit(1)
+            }
             ZStack(alignment: .leading) {
                 Capsule().fill(Color(.tertiarySystemFill))
                 Capsule().fill(fill).scaleEffect(x: max(0.02, min(1, fraction)), y: 1, anchor: .leading)
             }
-            .frame(height: 10)
-            Text(text).font(.subheadline.weight(.semibold)).monospacedDigit()
-                .lineLimit(1).frame(minWidth: 64, alignment: .trailing)
+            .frame(height: 8)
         }
     }
 }
@@ -712,7 +730,8 @@ private struct HabitYearCard: View {
         let today = store.today()
         let shown = year ?? today.year
         let key = Key(year: shown, version: store.dataVersion, today: today, habit: habit)
-        VStack(alignment: .leading, spacing: WeekSpacing.card) {
+        // Figma's Year in Pixels card: 16 inside, 12 between the header, the summary, the grid and the footnote.
+        VStack(alignment: .leading, spacing: 12) {
             PeriodHeader(title: "Year in Pixels", subtitle: shown == today.year ? "\(shown) · This year" : "\(shown)", noun: "year",
                          canGoBack: shown > (data?.earliestYear ?? shown), canGoForward: shown < today.year) { step in
                 selected = nil
@@ -720,8 +739,8 @@ private struct HabitYearCard: View {
             }
             if let data {
                 if let headline = data.headline {
-                    VStack(alignment: .leading, spacing: WeekSpacing.pair) {
-                        Text(headline).font(.title3.weight(.semibold)).monospacedDigit()
+                    VStack(alignment: .leading, spacing: WeekSpacing.label) {
+                        Text(headline).font(.headline).monospacedDigit()
                             .fixedSize(horizontal: false, vertical: true)
                         if let detail = data.detail {
                             Text(detail).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
@@ -730,7 +749,7 @@ private struct HabitYearCard: View {
                     }
                 }
                 HeatYearPixels(cells: data.cells, monthStarts: data.starts, monthLengths: data.lengths,
-                               monthNames: store.calendar.shortStandaloneMonthSymbols, todayIndex: data.todayIndex,
+                               monthNames: store.calendar.veryShortStandaloneMonthSymbols, todayIndex: data.todayIndex,
                                selected: selected, color: habit.color) { index in
                     let day = data.first.adding(days: index, calendar: store.calendar)
                     guard day <= today else { return }
@@ -740,8 +759,7 @@ private struct HabitYearCard: View {
                 selection(data, today: today)
             }
         }
-        // 12 at the sides so twelve month columns fit the iPhone SE; 16 above and below, as the Week and Month cards.
-        .pageCard(padding: 12, vertical: WeekSpacing.card)
+        .pageCard()
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("habit-year-grid")
         .onAppear { load(key) }
@@ -764,8 +782,8 @@ private struct HabitYearCard: View {
                     .controlSize(.small)
                     .accessibilityIdentifier("year-open-day")
             }
-            .padding(12)
-            .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .padding(14)
+            .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
         } else {
             Text("Tap a square to see its day.").font(.footnote).foregroundStyle(.secondary)
         }

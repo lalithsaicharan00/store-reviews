@@ -113,7 +113,7 @@ extension View {
         self.padding(.horizontal, padding)
             .padding(.vertical, vertical ?? padding)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+            .background(Color.card, in: CardShape.shape)
     }
 
     /// One item of the page's lazy stack: the page's side margins and the gap under it.
@@ -129,7 +129,8 @@ struct CardTitle: View {
     var subtitle: String? = nil
 
     var body: some View {
-        VStack(alignment: .leading, spacing: WeekSpacing.label) {
+        // Figma's Period header: Headline over Subheadline, nothing between.
+        VStack(alignment: .leading, spacing: 0) {
             Text(title).font(.headline).foregroundStyle(.primary)
             if let subtitle {
                 Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
@@ -246,8 +247,8 @@ struct HistoryMonthCard: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.card, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Color.card, in: CardShape.shape)
+        .clipShape(CardShape.shape)
     }
 }
 

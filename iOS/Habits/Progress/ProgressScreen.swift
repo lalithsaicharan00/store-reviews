@@ -235,9 +235,15 @@ struct ProgressScreen: View {
         Button { open(card.habit, snapshot) } label: {
             WeekCardView(card: card, columns: snapshot.columns,
                          month: snapshot.range == .month ? MonthLayout(lead: snapshot.monthLead, letters: snapshot.letters) : nil,
-                         year: snapshot.year)
+                         year: snapshot.year, moreRoom: HistoryCardMore.size)
         }
         .buttonStyle(.plain)
+        // Over the header's end, outside the card's button, so it takes its own taps (Figma's More button).
+        .overlay(alignment: .topTrailing) {
+            HistoryCardMore(habit: card.habit)
+                .padding(.top, WeekSpacing.card - (HistoryCardMore.size - 32) / 2)
+                .padding(.trailing, WeekSpacing.card - 12)
+        }
         .padding(.horizontal, 16)
         .padding(.bottom, WeekSpacing.card)
         .accessibilityIdentifier(card.isQuit ? "progress-quit-\(card.habit.name)" : "progress-row-\(card.habit.name)")
@@ -618,7 +624,7 @@ struct ProgressCard<Content: View>: View {
             .padding(.horizontal, 16)
             .padding(.vertical, 10)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.card, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .background(Color.card, in: CardShape.shape)
     }
 }
 

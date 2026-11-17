@@ -1,61 +1,29 @@
 import SwiftUI
 
-// Progress's heat map (the user, 2–3 Oct 2026): one square per day, the same in Week, Month, Year and on the habit's
-// page; only the size changes, and never below `HeatSize.smallest`. No dates or numbers inside: the colour says how
-// much, the sign says what happened (`HeatCell`, worked out in the store):
-//   three lighter steps 1–33 %, 34–66 %, 67–99 % of the day's goal: no sign (✓ means done; a part day isn't)
-//   colour with ✓       the goal met (the habit's own colour)
-//   darkest with ✓      more than the goal: the same ✓, only the colour is deeper
-//   grey with ✕ ⏩ ⏸     the day had something asked of it: not done, skipped, paused (grey = the day was due)
-//   plain grey          due, not over yet: today before anything is logged, a due day still to come
-//   dashed outline      nothing asked that day: not scheduled (the only dashed square)
-//   thin grey outline   today (square, like every cell; light, so it never outweighs the day itself)
-//   nothing             before the habit began
-// Every sign is one size everywhere (`HeatDraw.sign`), whatever the square's size or step (the user, 3 Oct 2026).
-// Research behind it (report "Day Marks — Heat Map, Rule and Palette", 2 Oct 2026): heat maps are the most praised way
-// to show days across 1.2 million reviews in every language. Every square is drawn by `HeatDraw` from the store's
-// numbers only, batched into one fill or stroke per look (PERFORMANCE.md rules 5, 8 and 12).
+// The day cells (Figma's Day cell, section 11, 17 Nov 2026): one cell per day, the same in Week, Month, Year, Year in
+// Pixels and on the habit's page; only the size changes. No dates or numbers inside: the fill says how much, the sign
+// what happened (`HeatCell`, worked out in the store; `HeatDraw` lists the looks). Every cell is drawn by `HeatDraw`
+// from the store's numbers only, batched into one fill or stroke per look (S5, S8, S12). Research behind the cells:
+// report "Day Marks — Heat Map, Rule and Palette" (2 Oct 2026).
 
-/// Square sizes (the user, 3 Oct 2026: "the cells shouldn't be smaller … always legible clearly, easy to read … even
-/// in the yearly"). The year scrolls sideways rather than shrink its squares.
+/// Figma's cell sizes: Week 36 (Week and Month), Small 28, Year 24, with 6 between Week's and Month's and 4 between
+/// Year's. The year scrolls sideways rather than shrink its cells (the user, 3 Oct 2026: "always legible clearly").
 enum HeatSize {
-    static let week: CGFloat = 40
-    static let month: CGFloat = 32
+    static let week: CGFloat = 36
+    static let month: CGFloat = 36
+    static let small: CGFloat = 28
     static let year: CGFloat = 24
+    static let gap: CGFloat = 6
     static let yearGap: CGFloat = 4
-    /// No square is ever drawn smaller: below it the signs stop being easy to read.
+    /// No cell is ever drawn smaller: below it the signs stop being easy to read.
     static let smallest: CGFloat = 24
 }
 
-/// Grey, the five steps of every habit colour (light and dark), and the signs' colours. Each step sits at one OKLCH
-/// lightness for every hue (light: 0.855, 0.78, 0.71, 0.64 = the habit's own colour, 0.52; dark: 0.415, 0.49, 0.565,
-/// 0.64, 0.76), so no colour's steps look stronger than another's. Measured (the report's
-/// `Day Marks Evidence/scripts/make.py`): neighbouring steps differ by at least 0.07 in OKLab, about 3.5 times the
-/// smallest visible difference, and by at least 0.043 under every colour-vision deficiency. "Gray" habits get a cool
-/// slate tint so their steps never read as the not-done grey.
-/// Signs, measured on every colour (3 Oct 2026; WCAG 1.4.11 asks 3:1). The ✓ is one colour on both ✓ steps in a mode
-/// (the user, 3 Oct 2026: never black on one and white on the other): white in light mode (≥ 3.11:1 on the goal step,
-/// ≥ 5.14:1 on "more"); in dark mode, where "more" is the brightest step and white reaches only 2:1, a deep shade of the
-/// habit's own colour (OKLCH 0.24, chroma 0.05, the step's hue): ≥ 4.41:1 on the goal step, ≥ 7.27:1 on "more". ✕, ⏩ and ⏸ are a grey at ≥ 4.4:1 on the grey square and the card; the dashed outline
-/// ≥ 3.2:1 on the card.
+/// The widgets' day squares only (U28, locked): five steps per habit colour, light and dark, which the widgets draw
+/// themselves from the snapshot (`widgetSteps`). The app's own cells are Figma's Day cell (`HeatInk`, `HeatDraw`).
+/// Each step sits at one OKLCH lightness for every hue (light 0.855, 0.78, 0.71, 0.64, 0.52; dark 0.415, 0.49, 0.565,
+/// 0.64, 0.76), and dark mode's ✓ is a deep shade of the habit's colour (2–3 Oct 2026).
 enum HeatPalette {
-    static func color(_ level: Int, _ habit: HabitColor, dark: Bool) -> Color {
-        guard level > 0 else { return grey(dark) }
-        let steps = table[habit] ?? table[.green]!
-        return hex((dark ? steps.dark : steps.light)[min(5, level) - 1])
-    }
-
-    static func grey(_ dark: Bool) -> Color { dark ? greyDark : greyLight }
-    /// ✕, ⏩, ⏸.
-    static func sign(_ dark: Bool) -> Color { dark ? signDark : signLight }
-    static func dash(_ dark: Bool) -> Color { dark ? dashDark : dashLight }
-    static func today(_ dark: Bool) -> Color { dark ? todayDark : todayLight }
-    /// The ✓, the same on the goal step and the "more" step.
-    static func check(_ habit: HabitColor, dark: Bool) -> Color {
-        guard dark else { return .white }
-        return hex(darkChecks[habit] ?? darkChecks[.green]!)
-    }
-
     /// Dark mode's ✓ per colour, with its contrast on the goal step / the "more" step.
     private static let darkChecks: [HabitColor: Int] = [
         .red: 0x331511,     // 4.47 / 7.37
@@ -73,20 +41,11 @@ enum HeatPalette {
         .gray: 0x131E37,    // 4.90 / 7.73
     ]
 
-    private static let greyLight = hex(0xEBEBF0), greyDark = hex(0x2C2C2E)
-    private static let signLight = hex(0x6C6C70), signDark = hex(0x98989F)
-    private static let dashLight = hex(0x8E8E93), dashDark = hex(0x7C7C80)
-    private static let todayLight = hex(0x8E8E93), todayDark = hex(0x8E8E93)
-
     /// The habit's five steps (light, then dark) and dark mode's ✓, as 0xRRGGBB: the widgets draw the same squares as
     /// Progress (Implementation Spec §2, "Day squares") without the app's colour tables.
     static func widgetSteps(_ habit: HabitColor) -> [Int] {
         let steps = table[habit] ?? table[.green]!
         return steps.light + steps.dark + [darkChecks[habit] ?? darkChecks[.green]!]
-    }
-
-    static func hex(_ v: Int) -> Color {
-        Color(.sRGB, red: Double(v >> 16 & 0xFF) / 255, green: Double(v >> 8 & 0xFF) / 255, blue: Double(v & 0xFF) / 255)
     }
 
     private static let table: [HabitColor: (light: [Int], dark: [Int])] = [
@@ -120,102 +79,123 @@ enum HeatPalette {
 }
 
 
-/// Draws heat squares into a `Canvas`: every look batched into one fill or stroke (one fill per step, one stroke for
-/// the dashes, one per kind of sign), never one call per day. Every heat view draws through it, so a square looks the
-/// same at every size. One size per drawing: line widths follow it.
+/// The colours of a habit's day cells (Figma's Day cell, 17 Nov 2026): Done is the habit's own colour, More than the
+/// goal its Increased Contrast shade, Part the colour at 50 %. Everything else is Apple's: Tertiary System Fill for a day
+/// that was asked, Secondary Label for its sign, Separator for the dashed outline, Label for today's ring. Made on the
+/// main actor once per drawing, never per cell.
+struct HeatInk {
+    let done: Color
+    let more: Color
+    let part: Color
+
+    init(_ habit: HabitColor) {
+        done = habit.color
+        more = habit.increasedContrast
+        part = habit.color.opacity(0.5)
+    }
+}
+
+/// Draws day cells into a `Canvas`, as Figma's Day cell (977:635): every look batched into one fill or stroke, and each
+/// sign resolved once and stamped where it goes, never one view per day. Every heat view draws through it, so a cell
+/// looks the same everywhere. One size per drawing: its corner and its signs follow Figma's three sizes (Week 36,
+/// Small 28, Year 24; a Year in Pixels square keeps Year's look at whatever size fills the card).
+///   Done                the habit's colour, white ✓
+///   More than the goal  Increased Contrast, white ✓
+///   Part                the colour at 50 %, no sign (✓ means done; a part day isn't)
+///   Not done            Tertiary System Fill, ✕ in Secondary Label
+///   Skipped · Paused    Tertiary System Fill, forward.fill · pause.fill in Secondary Label
+///   To come             Tertiary System Fill, nothing
+///   No goal             a dashed Separator outline, 1.5 inside, dashes of 3 (2.33 on Small)
+///   Empty               nothing (before the habit began, days outside the month)
+///   Today               a 2-pt Label ring 3 outside the cell, on any state
 struct HeatDraw {
     let size: CGFloat
-    private var fills: [Int: Path] = [:]
+    private var grey = Path()
+    private var part = Path()
+    private var done = Path()
+    private var more = Path()
     private var dashes = Path()
-    private var crosses = Path()
-    private var signs = Path()
-    private var checks = Path()
     private var today = Path()
-
-    /// Every sign's size and line, the same on every square (the user, 3 Oct 2026): ✓ 12 pt with a 2.4-pt line, ✕ 9.5 pt
-    /// with a 2-pt line, ⏩ and ⏸ 11 pt. Half of Year's 24-pt square; clear on Month's 32 and Week's 40.
-    static let sign: CGFloat = 12
+    private var checks: [CGPoint] = []
+    private var crosses: [CGPoint] = []
+    private var skips: [CGPoint] = []
+    private var pauses: [CGPoint] = []
 
     init(size: CGFloat) { self.size = size }
 
-    /// Room a square's today outline needs around it.
+    /// Room a cell's today ring needs around it.
     static let outline: CGFloat = 3
-    var radius: CGFloat { size * 0.22 }
+    var radius: CGFloat { Self.radius(size) }
+
+    /// Figma's corners: 8 on Week, 7 on Small, 6 on Year.
+    static func radius(_ size: CGFloat) -> CGFloat { size >= 34 ? 8 : size >= 27 ? 7 : 6 }
+
+    /// Figma's signs, in points of SF Pro Regular: ✓, ✕, then ⏩ and ⏸.
+    private var signs: (check: CGFloat, cross: CGFloat, mark: CGFloat) {
+        size >= 34 ? (18, 15, 13) : size >= 27 ? (14, 12, 10) : (13, 10, 10)
+    }
 
     mutating func add(_ cell: HeatCell, in rect: CGRect, isToday: Bool = false) {
         let corner = CGSize(width: radius, height: radius)
+        let centre = CGPoint(x: rect.midX, y: rect.midY)
         switch cell {
         case .blank:
-            return
+            break
         case .upcoming:
-            fills[0, default: Path()].addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+            grey.addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
         case .level(let n):
-            let step = max(0, min(5, n))
-            fills[step, default: Path()].addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
-            if step == 0 { cross(rect) }
-            if step >= 4 { Self.check(rect, into: &checks) }
+            switch n {
+            case ...0:
+                grey.addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+                crosses.append(centre)
+            case 1...3:
+                part.addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+            case 4:
+                done.addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+                checks.append(centre)
+            default:
+                more.addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+                checks.append(centre)
+            }
         case .off(.notScheduled):
-            let inset = dashWidth / 2
+            let inset = Self.dashWidth / 2
             dashes.addRoundedRect(in: rect.insetBy(dx: inset, dy: inset),
                                   cornerSize: CGSize(width: radius - inset, height: radius - inset), style: .continuous)
         case .off(let why):
-            // Skipped and paused days were due: grey, like not done, with their sign.
-            fills[0, default: Path()].addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
-            if why == .skipped { skip(rect) } else { pause(rect) }
+            // Skipped and paused days were asked of: grey, like not done, with their own sign.
+            grey.addRoundedRect(in: rect, cornerSize: corner, style: .continuous)
+            if why == .skipped { skips.append(centre) } else { pauses.append(centre) }
         }
         if isToday {
-            let ring = rect.insetBy(dx: -2.5, dy: -2.5)
-            today.addRoundedRect(in: ring, cornerSize: CGSize(width: radius + 2.5, height: radius + 2.5), style: .continuous)
+            // The ring's 2-pt line runs from 1 to 3 outside the cell, as Figma's 3-outside rectangle with an inside stroke.
+            today.addRoundedRect(in: rect.insetBy(dx: -2, dy: -2), cornerSize: CGSize(width: radius + 2, height: radius + 2),
+                                 style: .continuous)
         }
     }
 
-    func draw(in context: GraphicsContext, color: HabitColor, dark: Bool) {
-        for (n, path) in fills { context.fill(path, with: .color(HeatPalette.color(n, color, dark: dark))) }
-        context.stroke(dashes, with: .color(HeatPalette.dash(dark)),
-                       style: StrokeStyle(lineWidth: dashWidth, dash: [size * 0.12, size * 0.09]))
-        let rounded = { (width: CGFloat) in StrokeStyle(lineWidth: width, lineCap: .round, lineJoin: .round) }
-        context.stroke(crosses, with: .color(HeatPalette.sign(dark)), style: rounded(2))
-        context.fill(signs, with: .color(HeatPalette.sign(dark)))
-        context.stroke(checks, with: .color(HeatPalette.check(color, dark: dark)), style: rounded(2.4))
-        context.stroke(today, with: .color(HeatPalette.today(dark)), lineWidth: 1.5)
+    func draw(in context: GraphicsContext, ink: HeatInk) {
+        context.fill(grey, with: .color(Color(.tertiarySystemFill)))
+        context.fill(part, with: .color(ink.part))
+        context.fill(done, with: .color(ink.done))
+        context.fill(more, with: .color(ink.more))
+        let dash: CGFloat = size >= 34 || size < 27 ? 3 : 7.0 / 3
+        context.stroke(dashes, with: .color(Color(.separator)), style: StrokeStyle(lineWidth: Self.dashWidth, dash: [dash, dash]))
+        let signs = signs
+        stamp(checks, "checkmark", signs.check, .white, in: context)
+        stamp(crosses, "xmark", signs.cross, Color(.secondaryLabel), in: context)
+        stamp(skips, "forward.fill", signs.mark, Color(.secondaryLabel), in: context)
+        stamp(pauses, "pause.fill", signs.mark, Color(.secondaryLabel), in: context)
+        context.stroke(today, with: .color(Color(.label)), lineWidth: 2)
     }
 
-    private var dashWidth: CGFloat { max(1.2, size * 0.045) }
+    private static let dashWidth: CGFloat = 1.5
 
-    /// A point in a sign's box of `side` points, centred on the square.
-    private static func point(_ rect: CGRect, _ side: CGFloat, _ x: CGFloat, _ y: CGFloat) -> CGPoint {
-        CGPoint(x: rect.midX + (x - 0.5) * side, y: rect.midY + (y - 0.5) * side)
-    }
-
-    private static func check(_ rect: CGRect, into path: inout Path) {
-        let side = sign
-        path.move(to: point(rect, side, 0.04, 0.54))
-        path.addLine(to: point(rect, side, 0.37, 0.86))
-        path.addLine(to: point(rect, side, 0.96, 0.16))
-    }
-
-    private mutating func cross(_ rect: CGRect) {
-        let side: CGFloat = 9.5
-        crosses.move(to: Self.point(rect, side, 0, 0)); crosses.addLine(to: Self.point(rect, side, 1, 1))
-        crosses.move(to: Self.point(rect, side, 1, 0)); crosses.addLine(to: Self.point(rect, side, 0, 1))
-    }
-
-    private mutating func skip(_ rect: CGRect) {
-        let side: CGFloat = 11
-        for x in [0, 0.5] as [CGFloat] {
-            signs.move(to: Self.point(rect, side, x, 0.18))
-            signs.addLine(to: Self.point(rect, side, x + 0.5, 0.5))
-            signs.addLine(to: Self.point(rect, side, x, 0.82))
-            signs.closeSubpath()
-        }
-    }
-
-    private mutating func pause(_ rect: CGRect) {
-        let side: CGFloat = 11
-        for x in [0.16, 0.6] as [CGFloat] {
-            let bar = CGRect(origin: Self.point(rect, side, x, 0.08), size: CGSize(width: side * 0.24, height: side * 0.84))
-            signs.addRoundedRect(in: bar, cornerSize: CGSize(width: 0.8, height: 0.8))
-        }
+    /// One SF Symbol, resolved once, drawn centred on every point.
+    private func stamp(_ points: [CGPoint], _ symbol: String, _ size: CGFloat, _ color: Color,
+                       in context: GraphicsContext) {
+        guard !points.isEmpty else { return }
+        let sign = context.resolve(Text(Image(systemName: symbol)).font(.system(size: size)).foregroundColor(color))
+        for point in points { context.draw(sign, at: point, anchor: .center) }
     }
 }
 
@@ -232,12 +212,14 @@ struct HeatSquare: View, Equatable {
     }
 
     var body: some View {
-        let dark = scheme == .dark
+        // Read so a change of appearance redraws: the cells' colours are Apple's, resolved by the canvas.
+        let _ = scheme
+        let ink = HeatInk(color)
         let pad = HeatDraw.outline
         Canvas { context, _ in
             var draw = HeatDraw(size: size)
             draw.add(cell, in: CGRect(x: pad, y: pad, width: size, height: size), isToday: isToday)
-            draw.draw(in: context, color: color, dark: dark)
+            draw.draw(in: context, ink: ink)
         }
         .frame(width: size + 2 * pad, height: size + 2 * pad)
         .padding(-pad)
@@ -245,7 +227,8 @@ struct HeatSquare: View, Equatable {
     }
 }
 
-/// A row of squares, each centred in its column (Week's strip). One `Canvas`.
+/// A row of cells spread edge to edge, the first at the leading edge and the last at the trailing one (Figma's Week:
+/// seven 36s, space between). One `Canvas`; the today ring may reach past the edges, so the canvas does too.
 struct HeatRow: View, Equatable {
     let cells: [HeatCell]
     let todayIndex: Int?
@@ -258,23 +241,41 @@ struct HeatRow: View, Equatable {
     }
 
     var body: some View {
-        let dark = scheme == .dark
+        // Read so a change of appearance redraws: the cells' colours are Apple's, resolved by the canvas.
+        let _ = scheme
+        let ink = HeatInk(color)
         let pad = HeatDraw.outline
         Canvas { context, canvas in
-            let column = canvas.width / CGFloat(max(cells.count, 1))
+            let pitch = (canvas.width - 2 * pad - size) / CGFloat(max(cells.count - 1, 1))
             var draw = HeatDraw(size: size)
             for (i, cell) in cells.enumerated() {
-                let x = column * (CGFloat(i) + 0.5) - size / 2
-                draw.add(cell, in: CGRect(x: x, y: pad, width: size, height: size), isToday: i == todayIndex)
+                draw.add(cell, in: CGRect(x: pad + pitch * CGFloat(i), y: pad, width: size, height: size), isToday: i == todayIndex)
             }
-            draw.draw(in: context, color: color, dark: dark)
+            draw.draw(in: context, ink: ink)
         }
         .frame(height: size + 2 * pad)
+        .padding(-pad)
         .accessibilityHidden(true)
     }
 }
 
-/// A month of squares in rows of seven, each centred in its weekday's column (Month's card). One `Canvas`.
+/// Labels over a row of cells, each centred over its cell (`HeatRow`'s spacing): the weekday names and letters.
+struct HeatColumns<Label: View>: View {
+    let count: Int
+    var size: CGFloat = HeatSize.week
+    @ViewBuilder let label: (Int) -> Label
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(0..<count, id: \.self) { i in
+                if i > 0 { Spacer(minLength: 0) }
+                label(i).frame(width: size)
+            }
+        }
+    }
+}
+
+/// A month in rows of seven, spread edge to edge as Week's row (Figma's Month: 36s, 6 between rows). One `Canvas`.
 struct HeatMonth: View, Equatable {
     /// Empty places before the 1st.
     let lead: Int
@@ -282,7 +283,7 @@ struct HeatMonth: View, Equatable {
     let todayIndex: Int?
     let color: HabitColor
     var size: CGFloat = HeatSize.month
-    var rowGap: CGFloat = 8
+    var rowGap: CGFloat = HeatSize.gap
     @Environment(\.colorScheme) private var scheme
 
     static func == (a: Self, b: Self) -> Bool {
@@ -293,27 +294,30 @@ struct HeatMonth: View, Equatable {
     var rows: Int { (lead + cells.count + 6) / 7 }
 
     var body: some View {
-        let dark = scheme == .dark
+        // Read so a change of appearance redraws: the cells' colours are Apple's, resolved by the canvas.
+        let _ = scheme
+        let ink = HeatInk(color)
         let pad = HeatDraw.outline
         Canvas { context, canvas in
-            let column = canvas.width / 7
+            let pitch = (canvas.width - 2 * pad - size) / 6
             var draw = HeatDraw(size: size)
             for (i, cell) in cells.enumerated() {
                 let place = lead + i
-                let x = column * (CGFloat(place % 7) + 0.5) - size / 2
+                let x = pad + CGFloat(place % 7) * pitch
                 let y = pad + CGFloat(place / 7) * (size + rowGap)
                 draw.add(cell, in: CGRect(x: x, y: y, width: size, height: size), isToday: i == todayIndex)
             }
-            draw.draw(in: context, color: color, dark: dark)
+            draw.draw(in: context, ink: ink)
         }
         .frame(height: CGFloat(rows) * size + CGFloat(max(rows - 1, 0)) * rowGap + 2 * pad)
+        .padding(-pad)
         .accessibilityHidden(true)
     }
 }
 
-/// What the squares mean, always at the top of Progress and under the habit page's month (the user, 2–3 Oct 2026),
-/// in three rows: how much was done (the habit's colour), days that were due with nothing done (grey), and the other
-/// days. The squares are the real ones, in green as the example; each habit uses its own colour.
+/// What the cells mean, always at the top of Progress and under the habit page's month (the user, 2–3 Oct 2026), in
+/// three rows: how much was done (the habit's colour), days that were asked of with nothing done (grey), and the other
+/// days. The cells are the real ones (Figma's Day cell), in green as the example; each habit uses its own colour.
 struct HeatKey: View {
     /// On its own card (Progress); false inside a list row (the habit's page, under its month).
     var boxed = true
@@ -323,18 +327,10 @@ struct HeatKey: View {
         VStack(alignment: .leading, spacing: WeekSpacing.card) {
             VStack(alignment: .leading, spacing: WeekSpacing.tight) {
                 heading("Progress", note: "Shown in green; each habit uses its own colour")
-                // The five steps in one drawing, their names under them in the same columns (3 Oct 2026: the key
-                // rebuilt on every scroll back into the habit page; one `Canvas` instead of five).
-                VStack(spacing: WeekSpacing.pair) {
-                    HeatRow(cells: Self.stepCells, todayIndex: nil, color: .green, size: HeatSize.smallest)
-                        .equatable()
-                    HStack(alignment: .top, spacing: 0) {
-                        ForEach(0..<5, id: \.self) { n in
-                            Text(Self.steps[n]).font(.caption2).foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center).lineLimit(2).fixedSize()
-                                .frame(maxWidth: .infinity)
-                        }
-                    }
+                row {
+                    entry(.level(2), "Part done")
+                    entry(.level(4), "Goal met")
+                    entry(.level(5), "More than the goal")
                 }
             }
             VStack(alignment: .leading, spacing: WeekSpacing.tight) {
@@ -356,10 +352,9 @@ struct HeatKey: View {
         }
         .padding(boxed ? WeekSpacing.card : 0)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: CardShape.radius, style: .continuous))
         .accessibilityElement(children: .ignore)
-        // "%", not the word: the key names the steps; it isn't a progress percentage, which Show Percentages hides.
-        .accessibilityLabel("Key. Progress, lighter to darker in the habit's colour: 1 to 33%, 34 to 66%, 67 to 99%, goal met with a check, more than the goal with a check. Planned that day, grey: not done with a cross, skipped, paused. Other days: plain grey still to come, dashed not scheduled, an outline for today.")
+        .accessibilityLabel("Key. Progress, in the habit's colour: part done lighter, goal met with a check, more than the goal deeper with a check. Planned that day, grey: not done with a cross, skipped, paused. Other days: plain grey still to come, dashed not scheduled, a ring for today.")
         .accessibilityIdentifier("progress-key")
     }
 
@@ -370,14 +365,14 @@ struct HeatKey: View {
         }
     }
 
-    /// One line; from the accessibility text sizes up, one entry per line. Chosen by the text size, not by measuring
-    /// both layouts (`ViewThatFits` laid the row out twice each time the key came back into view).
+    /// One line, wrapping where a word needs it; from the accessibility text sizes up, one entry per line. Chosen by the
+    /// text size, not by measuring both layouts (`ViewThatFits` laid the row out twice each time the key came back).
     @ViewBuilder private func row(@ViewBuilder _ entries: () -> some View) -> some View {
         if typeSize.isAccessibilitySize {
             VStack(alignment: .leading, spacing: WeekSpacing.tight) { entries() }
                 .font(.caption).foregroundStyle(.secondary)
         } else {
-            HStack(spacing: WeekSpacing.card) { entries() }
+            HStack(alignment: .center, spacing: WeekSpacing.card) { entries() }
                 .font(.caption).foregroundStyle(.secondary)
         }
     }
@@ -385,14 +380,11 @@ struct HeatKey: View {
     private func entry(_ cell: HeatCell, _ title: String, isToday: Bool = false) -> some View {
         HStack(spacing: 6) {
             HeatSquare(cell: cell, color: .green, size: HeatSize.smallest, isToday: isToday)
-                // Today's outline sits outside the square: room for it before the words.
+                // Today's ring sits outside the cell: room for it before the words.
                 .padding(.horizontal, isToday ? HeatDraw.outline : 0)
-            Text(title).lineLimit(1).fixedSize()
+            Text(title).fixedSize(horizontal: false, vertical: true)
         }
     }
-
-    static let steps = ["1–33%", "34–66%", "67–99%", "Goal met\n100%", "More\nover 100%"]
-    static let stepCells: [HeatCell] = (1...5).map { .level($0) }
 }
 
 /// Whether "What the squares mean" starts open: one answer for the whole app (the user, 6 Oct 2026, Current Work 57:
@@ -487,37 +479,40 @@ struct HeatKeySection: View {
         }
         .padding(boxed ? WeekSpacing.card : 0)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(boxed ? Color.card : .clear, in: RoundedRectangle(cornerRadius: CardShape.radius, style: .continuous))
         .onPerfCommand { action in
             if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { visit.toggle() } }
         }
     }
 }
 
-/// A habit's year as GitHub's grid (the user, 2–3 Oct 2026): weeks left to right, weekdays top to bottom, months on
-/// top. Squares stay `HeatSize.year`, large enough to read every sign; the year scrolls sideways instead of shrinking
-/// ("even if it shows two or three months, that is fine; clarity is more important"). The weekday letters stay put;
-/// it opens on the latest weeks. `onDay`, where given, receives the first day (its index) of the tapped column.
+/// A habit's year as GitHub's grid (the user, 2–3 Oct 2026; Figma's history card, Year): weeks left to right, weekdays
+/// top to bottom, months on top. Cells stay `HeatSize.year`, large enough to read every sign; the year scrolls sideways
+/// instead of shrinking, opening on the latest weeks and going back to January. The weekday letters stay put (12 wide,
+/// Footnote; today's Caption 1 Semibold in Label). `onDay`, where given, receives the first day (its index) of the
+/// tapped column.
 struct HeatYear: View {
     let layout: YearLayout
     let cells: [HeatCell]
     let color: HabitColor
     var onDay: ((Int) -> Void)? = nil
 
-    static let labels: CGFloat = 18
+    /// The month names' row, and the gap under it.
+    static let labels: CGFloat = 16 + HeatSize.yearGap
 
     var body: some View {
-        HStack(alignment: .top, spacing: 4) {
+        HStack(alignment: .top, spacing: 6) {
             VStack(spacing: HeatSize.yearGap) {
                 ForEach(0..<7, id: \.self) { row in
                     let isToday = row == layout.todayRow
                     Text(row < layout.letters.count ? layout.letters[row] : "")
-                        .font(.caption2.weight(isToday ? .bold : .medium))
+                        .font(isToday ? .caption.weight(.semibold) : .footnote)
                         .foregroundStyle(isToday ? Color.primary : Color.secondary)
-                        .frame(width: 14, height: HeatSize.year)
+                        .frame(width: 12, height: HeatSize.year)
                 }
             }
-            .padding(.top, Self.labels + HeatDraw.outline)
+            .padding(.top, Self.labels)
+            .dynamicTypeSize(...DynamicTypeSize.xLarge)
             ScrollView(.horizontal) {
                 let squares = HeatYearSquares(layout: layout, cells: cells, color: color).equatable()
                 if let onDay {
@@ -539,7 +534,7 @@ struct HeatYear: View {
     }
 }
 
-/// The year's squares and month names, drawn in one pass. Rendered off the main thread: a year is about 1,300 points
+/// The year's cells and month names, drawn in one pass. Rendered off the main thread: a year is about 1,300 points
 /// wide, and drawing it is the one cost of a card that grows with the screen's width rather than the data.
 private struct HeatYearSquares: View, Equatable {
     let layout: YearLayout
@@ -550,21 +545,23 @@ private struct HeatYearSquares: View, Equatable {
     static func == (a: Self, b: Self) -> Bool { a.layout == b.layout && a.cells == b.cells && a.color == b.color }
 
     var body: some View {
-        let dark = scheme == .dark
+        // Read so a change of appearance redraws: the cells' colours are Apple's, resolved by the canvas.
+        let _ = scheme
+        let ink = HeatInk(color)
         let pad = HeatDraw.outline
         let pitch = HeatSize.year + HeatSize.yearGap
         let columns = max(layout.columns, 1)
         // Room after the last column for a month name that starts there.
         let width = 2 * pad + CGFloat(columns) * pitch - HeatSize.yearGap + 24
-        let height = HeatYear.labels + 2 * pad + 7 * pitch - HeatSize.yearGap
+        let height = HeatYear.labels + 7 * pitch - HeatSize.yearGap + pad
         Canvas(rendersAsynchronously: true) { context, _ in
-            let label = dark ? Color(white: 0.62) : Color(white: 0.4)
+            let label = Color(.secondaryLabel)
             for month in layout.months {
-                context.draw(Text(month.name).font(.caption.weight(.medium)).foregroundColor(label),
-                             at: CGPoint(x: pad + CGFloat(month.column) * pitch, y: 0), anchor: .topLeading)
+                context.draw(Text(month.name).font(.footnote).foregroundColor(label),
+                             at: CGPoint(x: pad + CGFloat(month.column) * pitch, y: 8), anchor: .leading)
             }
             var draw = HeatDraw(size: HeatSize.year)
-            let top = HeatYear.labels + pad
+            let top = HeatYear.labels
             let todayPlace = layout.todayRow == nil ? -1 : layout.lead + layout.shown - 1
             for (i, cell) in cells.prefix(layout.shown).enumerated() {
                 let place = layout.lead + i
@@ -572,23 +569,26 @@ private struct HeatYearSquares: View, Equatable {
                                   width: HeatSize.year, height: HeatSize.year)
                 draw.add(cell, in: rect, isToday: place == todayPlace)
             }
-            draw.draw(in: context, color: color, dark: dark)
+            draw.draw(in: context, ink: ink)
         }
         .frame(width: width, height: height)
+        // The month names keep to their 16-point row at every text size; the words carry the meaning beyond it.
+        .dynamicTypeSize(...DynamicTypeSize.xLarge)
     }
 }
 
-/// Year in Pixels (the user, 3 Oct 2026: "year is really important … a beautiful thing"; research Progress: twelve month
-/// columns by 31 day rows, the whole year at once). Squares are always `HeatSize.year`: only the gap between columns
-/// adjusts so twelve fit every iPhone. Days a month doesn't have (30 February) stay empty. A tap selects a day; it never
-/// logs anything. One `Canvas`.
+/// Year in Pixels (the user, 3 Oct 2026: "year is really important … a beautiful thing"; Figma's Year in Pixels card,
+/// 17 Nov 2026): twelve month columns by 31 day rows, the whole year at once. The squares fill the card's width and it
+/// never scrolls sideways: (width − 18 − 12 × 3) ÷ 12, about 20 on a 6.1-inch iPhone, drawn in Day cell's Year look.
+/// The month letters on top (today's month in Label, semibold), every fifth day's number down the side (1, 6, 11 … 31).
+/// Days a month doesn't have (30 February) stay empty. A tap selects a day; it never logs anything. One `Canvas`.
 struct HeatYearPixels: View, Equatable {
     /// Every day of the year, from 1 January.
     let cells: [HeatCell]
     /// Each month's 1st, as an index into `cells`, and its length.
     let monthStarts: [Int]
     let monthLengths: [Int]
-    /// "Jan", "Feb"…
+    /// "J", "F"…
     let monthNames: [String]
     let todayIndex: Int?
     let selected: Int?
@@ -602,59 +602,72 @@ struct HeatYearPixels: View, Equatable {
             && a.color == b.color && a.monthNames == b.monthNames
     }
 
-    static let gutter: CGFloat = 20
-    static let header: CGFloat = 22
-    static let rowGap: CGFloat = 3
-    static var height: CGFloat { header + 31 * HeatSize.year + 30 * rowGap + HeatDraw.outline }
-    static func columnGap(for width: CGFloat) -> CGFloat { min(4, max(1, (width - gutter - 12 * HeatSize.year) / 11)) }
+    /// The day numbers' column, the month letters' row, and the gap between everything (Figma: 18, 18, 3).
+    static let gutter: CGFloat = 18
+    static let header: CGFloat = 18
+    static let gap: CGFloat = 3
+    /// Days with their number beside them.
+    static let labelled: Set<Int> = [1, 6, 11, 16, 21, 26, 31]
+
+    /// A square's side for the grid's width; until the width is known, the 6.1-inch iPhone's card.
+    static func square(for width: CGFloat) -> CGFloat {
+        max(HeatSize.smallest * 0.6, ((width > 0 ? width : 296) - gutter - 12 * gap) / 12)
+    }
+
+    static func height(for width: CGFloat) -> CGFloat {
+        let side = square(for: width)
+        return header + gap + 31 * side + 30 * gap + HeatDraw.outline
+    }
 
     var body: some View {
-        let dark = scheme == .dark
+        // Read so a change of appearance redraws: the cells' colours are Apple's, resolved by the canvas.
+        let _ = scheme
+        let ink = HeatInk(color)
+        let todayMonth = todayIndex.flatMap { index in monthStarts.lastIndex { $0 <= index } }
         Canvas { context, size in
-            let gap = Self.columnGap(for: size.width)
-            let pitchX = HeatSize.year + gap, pitchY = HeatSize.year + Self.rowGap
-            let label = dark ? Color(white: 0.62) : Color(white: 0.4)
+            let side = Self.square(for: size.width)
+            let pitch = side + Self.gap
+            let left = Self.gutter + Self.gap, top = Self.header + Self.gap
             for m in 0..<min(12, monthNames.count) {
-                context.draw(Text(monthNames[m]).font(.caption2.weight(.semibold)).foregroundColor(label),
-                             at: CGPoint(x: Self.gutter + CGFloat(m) * pitchX + HeatSize.year / 2, y: Self.header / 2), anchor: .center)
+                let isNow = m == todayMonth
+                let name = Text(monthNames[m]).font(isNow ? .footnote.weight(.semibold) : .footnote)
+                    .foregroundColor(isNow ? Color(.label) : Color(.secondaryLabel))
+                context.draw(name, at: CGPoint(x: left + CGFloat(m) * pitch + side / 2, y: Self.header / 2), anchor: .center)
             }
-            // Every day's number, 1 to 31, beside its row (Current Work 32, the user, 4 Oct 2026: not only 1, 5, 10 …):
-            // right-aligned 4 pt before the squares, one per 27-pt row, so each sits on its own row with room between.
-            for d in 1...31 {
-                context.draw(Text("\(d)").font(.caption2.monospacedDigit()).foregroundColor(label),
-                             at: CGPoint(x: Self.gutter - 4, y: Self.header + CGFloat(d - 1) * pitchY + HeatSize.year / 2),
-                             anchor: .trailing)
+            for d in Self.labelled.sorted() {
+                context.draw(Text("\(d)").font(.footnote.monospacedDigit()).foregroundColor(Color(.secondaryLabel)),
+                             at: CGPoint(x: 0, y: top + CGFloat(d - 1) * pitch + side / 2), anchor: .leading)
             }
-            var draw = HeatDraw(size: HeatSize.year)
+            var draw = HeatDraw(size: side)
             var picked: CGRect?
             for m in 0..<min(12, monthStarts.count) {
                 for d in 0..<monthLengths[m] {
                     let i = monthStarts[m] + d
                     guard i < cells.count else { continue }
-                    let rect = CGRect(x: Self.gutter + CGFloat(m) * pitchX, y: Self.header + CGFloat(d) * pitchY,
-                                      width: HeatSize.year, height: HeatSize.year)
+                    let rect = CGRect(x: left + CGFloat(m) * pitch, y: top + CGFloat(d) * pitch, width: side, height: side)
                     draw.add(cells[i], in: rect, isToday: i == todayIndex)
                     if i == selected { picked = rect }
                 }
             }
-            draw.draw(in: context, color: color, dark: dark)
+            draw.draw(in: context, ink: ink)
             if let picked {
+                // The tapped day: a ring in the habit's colour, so it never reads as today's Label ring.
                 let ring = picked.insetBy(dx: -2, dy: -2)
-                context.stroke(Path(roundedRect: ring, cornerRadius: HeatSize.year * 0.22 + 2, style: .continuous),
-                               with: .color(dark ? .white : .black), lineWidth: 2)
+                context.stroke(Path(roundedRect: ring, cornerRadius: HeatDraw.radius(side) + 2, style: .continuous),
+                               with: .color(ink.done), lineWidth: 2)
             }
         }
-        .frame(height: Self.height)
-        // The squares keep their size at every text size, so the labels stop growing where "31" still fits the gutter
-        // and a month name its column.
-        .dynamicTypeSize(...DynamicTypeSize.xLarge)
+        .frame(height: Self.height(for: width))
+        // The squares follow the card's width, not the text size, so the labels stop growing where "31" still fits
+        // its 18-point column and a month letter its square.
+        .dynamicTypeSize(...DynamicTypeSize.large)
         .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { width = $0 }
         .contentShape(Rectangle())
         .onTapGesture(coordinateSpace: .local) { location in
             // The same geometry as the drawing: which column (month) and row (day) the finger is in.
-            let gap = Self.columnGap(for: width)
-            let column = Int(floor((location.x - Self.gutter + gap / 2) / (HeatSize.year + gap)))
-            let row = Int(floor((location.y - Self.header + Self.rowGap / 2) / (HeatSize.year + Self.rowGap)))
+            let side = Self.square(for: width), pitch = side + Self.gap
+            let column = Int(floor((location.x - Self.gutter - Self.gap / 2) / pitch))
+            let row = Int(floor((location.y - Self.header - Self.gap / 2) / pitch))
             guard column >= 0, column < min(12, monthStarts.count), row >= 0, row < monthLengths[column] else { return }
             let index = monthStarts[column] + row
             if index < cells.count { select(index) }

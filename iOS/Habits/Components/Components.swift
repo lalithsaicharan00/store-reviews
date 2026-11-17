@@ -9,6 +9,13 @@ extension Color {
     static let card = Color(.secondarySystemGroupedBackground)
 }
 
+/// A card's corner (Figma's cards, sections 10 and 11: radius 26, 16 inside), the one value every card on Progress and
+/// a habit's page uses.
+enum CardShape {
+    static let radius: CGFloat = 26
+    static var shape: RoundedRectangle { RoundedRectangle(cornerRadius: radius, style: .continuous) }
+}
+
 extension HabitColor {
     var name: String { rawValue.capitalized }
 }

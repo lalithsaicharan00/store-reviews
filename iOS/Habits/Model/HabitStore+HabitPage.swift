@@ -461,7 +461,7 @@ extension HabitStore {
     }
 
     /// "26 September to 1 October", for VoiceOver.
-    private func spokenSpan(_ range: ClosedRange<LocalDay>, today: LocalDay) -> String {
+    func spokenSpan(_ range: ClosedRange<LocalDay>, today: LocalDay) -> String {
         range.lowerBound == range.upperBound ? spokenDate(range.lowerBound, today: today)
             : spokenDate(range.lowerBound, today: today) + " to " + spokenDate(range.upperBound, today: today)
     }
