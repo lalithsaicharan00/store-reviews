@@ -252,11 +252,13 @@ struct SettingsPage: View {
 /// Tasks is always in view; then that list. The bar is ☰ and + with no title: the control says where you are. A place
 /// the menu opens stands in for Today, so ☰ opens the menu again rather than Back.
 struct HabitsAndTasksPage: View {
+    @Environment(HabitStore.self) private var store
     @Environment(MenuModel.self) private var menu
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var kind: AllHabitsView.Kind = .habits
     @State private var adding = false
     @State private var added: UUID?
+    @State private var searching = false
 
     var body: some View {
         Group {
@@ -284,12 +286,21 @@ struct HabitsAndTasksPage: View {
                 Button("Menu", systemImage: "line.3.horizontal") { menu.setOpen(true, reduceMotion: reduceMotion) }
                     .accessibilityIdentifier("habits-menu")
             }
-            ToolbarItem(placement: .topBarTrailing) {
+            // Search and + share one glass capsule (Figma's Navigation bar).
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                Button("Search", systemImage: "magnifyingglass") { searching = true }
+                    .accessibilityIdentifier("habits-search")
                 Button(kind == .tasks ? "New Task" : "New Habit", systemImage: "plus") { adding = true }
                     .accessibilityIdentifier("habits-add")
             }
         }
         .navigationDestination(for: ArchivedHabitsLink.self) { _ in ArchivedPage(kind: .habits) }
+        .fullScreenCover(isPresented: $searching) {
+            HabitsSearch { id in
+                added = id
+                if let item = store.habits.first(where: { $0.id == id }) { kind = item.kind == .task ? .tasks : .habits }
+            }
+        }
         .sheet(isPresented: $adding) {
             if kind == .tasks {
                 NavigationStack { HabitForm(type: .task, onSaved: { _ in adding = false }) }

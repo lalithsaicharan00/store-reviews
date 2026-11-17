@@ -74,4 +74,33 @@ final class HabitsPageUITests: XCTestCase {
         alert.buttons["Cancel"].tap()
         XCTAssertTrue(row.exists, "Cancel keeps it")
     }
+
+    /// Search (Figma's Search page 991:8050): the field is active from the start; habits first under a count, a row
+    /// opens its page; no match offers Add “yoga”, which opens Create New with the name filled in.
+    func testSearch() {
+        app.buttons["habits-search"].tap()
+        let field = app.searchFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 5), "The search field")
+        field.typeText("wa")
+        let water = app.buttons["search-Water"]
+        XCTAssertTrue(water.waitForExistence(timeout: 3), "Water matches")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ENDSWITH ' habits' OR label ENDSWITH ' habit'")).firstMatch.exists,
+                      "A count over the habits")
+        shot("search-01-results")
+        water.tap()
+        XCTAssertTrue(app.navigationBars["Water"].waitForExistence(timeout: 5), "Its page opens")
+        app.navigationBars["Water"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(water.waitForExistence(timeout: 5), "Back on the results")
+        field.tap()
+        field.typeText(XCUIKeyboardKey.delete.rawValue + XCUIKeyboardKey.delete.rawValue + "yoga")
+        let add = app.buttons["search-add"]
+        XCTAssertTrue(add.waitForExistence(timeout: 3), "No match: Add “yoga”")
+        XCTAssertTrue(app.staticTexts["No Results for “yoga”"].exists)
+        shot("search-02-no-match")
+        add.tap()
+        app.staticTexts["Build or maintain"].tap()
+        app.staticTexts["Check it off"].tap()
+        XCTAssertTrue(app.textFields["yoga"].waitForExistence(timeout: 5) || app.staticTexts["yoga"].waitForExistence(timeout: 1),
+                      "The name is filled in")
+    }
 }

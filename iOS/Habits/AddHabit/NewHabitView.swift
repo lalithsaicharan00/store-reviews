@@ -83,13 +83,15 @@ enum ItemType: String, CaseIterable, Identifiable {
 /// form. Each question is its own list, pushed in the same sheet, so every step looks and moves
 /// the same way (spec: iOS/Docs/Specs/New Habit Goal and Time of Day.md §1).
 struct NewItemView: View {
+    /// A name already chosen: Search's Add “yoga” (Figma's Search page, No match), filled into the form.
+    var name = ""
     /// Called with the new habit's ID, so Today can show where it went.
     var onAdded: (UUID) -> Void = { _ in }
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            NewItemChoices(onAdded: { onAdded($0); dismiss() })
+            NewItemChoices(name: name, onAdded: { onAdded($0); dismiss() })
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 }
@@ -102,6 +104,8 @@ struct NewItemView: View {
 /// exactly as they will every other time. The stack needs a `NavigationPath` (or none), as its pages push their own
 /// values.
 struct NewItemChoices: View {
+    /// The name the form starts with (empty but for Search's Add “yoga”).
+    var name = ""
     /// Called with the new item's ID once it's saved. The caller closes whatever the flow is in.
     let onAdded: (UUID) -> Void
     @Environment(HabitStore.self) private var store
@@ -199,7 +203,7 @@ struct NewItemChoices: View {
     }
 
     private func form(_ type: ItemType) -> some View {
-        HabitForm(type: type, onSaved: onAdded)
+        HabitForm(type: type, name: name, onSaved: onAdded)
     }
 }
 
@@ -341,18 +345,19 @@ struct HabitForm: View {
     @FocusState private var focus: Field?
 
     /// A new habit or task: nothing is saved until Add, and amounts stay empty (C203, C292).
-    init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
+    init(type: ItemType, name: String = "", onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
+        let name = TextLimit.clean(name, TextLimit.name)
         _color = State(initialValue: .blue)
         let plainSymbol = type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill"
         _symbol = State(initialValue: plainSymbol)
-        _typed = State(initialValue: TypedName(""))
-        _shownName = State(initialValue: "")
+        _typed = State(initialValue: TypedName(name))
+        _shownName = State(initialValue: name)
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
         // as every day and Time of Day as Anytime (the user, 29 Sep).
-        let start = HabitDefaults.suggest(type, name: "")
+        let start = HabitDefaults.suggest(type, name: name)
         _amountText = State(initialValue: "")
         _unit = State(initialValue: "")
         _hours = State(initialValue: "0")
