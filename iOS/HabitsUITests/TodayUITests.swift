@@ -52,15 +52,20 @@ final class TodayUITests: XCTestCase {
 
         // Previous day, then back to today through the calendar. The bar's buttons stay put.
         let before = (app.buttons["Previous day"].frame, app.buttons["Next day"].frame)
+        // Another day is its date, "8 Nov", yesterday too: never "Yesterday" (Rulebook, 9 Nov 2026).
+        let dated = DateFormatter()
+        dated.dateFormat = "d MMM"
+        let yesterdayTitle = dated.string(from: Calendar.current.date(byAdding: .day, value: -1, to: Date())!) + ","
         app.buttons["Previous day"].tap()
-        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday,'")).firstMatch.waitForExistence(timeout: 2))
+        XCTAssertTrue(app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", yesterdayTitle)).firstMatch.waitForExistence(timeout: 2))
+        XCTAssertFalse(app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday'")).firstMatch.exists)
         shot("04-yesterday")
         XCTAssertEqual(app.buttons["Previous day"].frame, before.0, "‹ doesn't move")
         XCTAssertEqual(app.buttons["Next day"].frame, before.1, "› doesn't move")
         app.buttons["Previous day"].tap()
         XCTAssertEqual(app.buttons["Next day"].frame, before.1, "› doesn't move for a dated label")
         // Step forward one day at a time, waiting for each change.
-        let yesterday = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Yesterday,'")).firstMatch
+        let yesterday = app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", yesterdayTitle)).firstMatch
         app.buttons["Next day"].tap()
         XCTAssertTrue(yesterday.waitForExistence(timeout: 3))
         app.buttons["Next day"].tap()
@@ -90,17 +95,16 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(app.buttons["New Habit"].exists)
 
         menu.tap()
-        let rows = ["today", "progress", "habits", "tasks", "timesOfDay", "dayAndWeek", "reminders", "appearance",
-                    "backup", "privacy", "plus", "help", "about"]
+        let rows = ["today", "habitsAndTasks", "plus", "settings", "contact", "feedback"]
         for row in rows {
             // The last rows can sit below a small screen's edge: scroll the menu (not Today) to reach them.
-            if !app.buttons["menu-" + row].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
+            if !app.buttons["menu-" + row].waitForExistence(timeout: 3) { app.buttons["menu-today"].swipeUp() }
             XCTAssertTrue(app.buttons["menu-" + row].waitForExistence(timeout: 3), row)
         }
-        if !app.buttons["menu-today"].isHittable { app.buttons["menu-appearance"].swipeDown() }
-        // Most used first: Today, Progress, Habits, Tasks at the top.
-        let tops = rows.prefix(4).map { app.buttons["menu-" + $0].frame.minY }
-        XCTAssertEqual(tops, tops.sorted(), "Today, Progress, Habits, Tasks in that order")
+        if !app.buttons["menu-today"].isHittable { app.buttons["menu-today"].swipeDown() }
+        // Figma's order (17 Nov 2026): Today, Habits & Tasks; Plus, Settings, Contact Us, Send Feedback.
+        let tops = rows.map { app.buttons["menu-" + $0].frame.minY }
+        XCTAssertEqual(tops, tops.sorted(), "The menu's rows in Figma's order")
         shot("m01-menu")
 
         // Today closes the menu: the rows are gone and Today's buttons work again.
@@ -146,7 +150,7 @@ final class TodayUITests: XCTestCase {
 
     private func openFromMenu(_ row: String, title: String) {
         app.buttons["menu-button"].tap()
-        let button = app.buttons["menu-" + row]
+        let button = app.menuRow(row)
         XCTAssertTrue(button.waitForExistence(timeout: 3), row)
         button.tap()
         XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "\(title) opens")

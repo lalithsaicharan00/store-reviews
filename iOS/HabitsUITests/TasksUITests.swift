@@ -4,7 +4,7 @@ final class TasksUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
     private func openTasks(_ app: XCUIApplication) {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        app.buttons["menu-button"].tap(); app.buttons["menu-tasks"].tap()
+        app.buttons["menu-button"].tap(); app.openTasksFromMenu()
         XCTAssertTrue(app.navigationBars["Tasks"].waitForExistence(timeout: 5))
     }
     private func row(_ app: XCUIApplication, _ name: String) -> XCUIElement {

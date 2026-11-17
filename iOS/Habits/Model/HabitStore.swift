@@ -808,6 +808,23 @@ final class HabitStore {
         }
     }
 
+    /// Anytime or Quitting dropped among the cards in Edit Today: it goes just before `next` (the end when nil). The
+    /// timed routines keep their time order around it.
+    func placeCard(_ id: String, before next: String?) {
+        guard id == .anytime || id == .quittingCard, next != id else { return }
+        var cards = todayCards
+        guard let from = cards.firstIndex(of: id) else { return }
+        cards.remove(at: from)
+        let to = next.flatMap { cards.firstIndex(of: $0) } ?? cards.count
+        cards.insert(id, at: to)
+        guard cards != todayCards else { return }
+        perform { [self] _ in
+            let json = String(decoding: try JSONEncoder().encode(cards), as: UTF8.self)
+            try await repository.saveSetting(key: Keys.cardOrder, value: json)
+            withAnimation(.snappy) { cardOrder = cards }
+        }
+    }
+
     /// Every habit and task each card holds, whatever the day: Arrange Your Day shows them all (the user, 3 Oct 2026).
     /// Not archived, and not one-time tasks already done. In the person's own order, habits and tasks together (tasks
     /// research, 3 Oct 2026: people want one order for the day and to drag one-time tasks too; nobody asked for habits

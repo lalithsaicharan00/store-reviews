@@ -35,8 +35,10 @@ struct PartSection: View {
     var body: some View {
         let done = Dictionary(items.map { ($0.id, Self.isDone($0, on: day, store: store)) }, uniquingKeysWith: { a, _ in a })
         let left = done.values.filter { !$0 }.count
-        // Default: the Now part and Anytime are open while anything is left; finished parts fold (after the pause).
-        let open = alwaysOpen || layout.isOpen(part, rule: left > 0 && (isNow || part == .anytime || !isToday))
+        // Default: the Now part and Anytime are open while anything is left; finished parts fold (after the pause). A day
+        // ahead keeps its routines folded, with what's planned in each, and only Anytime open (Figma's Tomorrow).
+        let ahead = day > store.today()
+        let open = alwaysOpen || layout.isOpen(part, rule: left > 0 && (part == .anytime || (!ahead && (isNow || !isToday))))
         // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it offers
         // "Add note" (or its note is being written), so the offer is where the person is looking.
         let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
@@ -48,7 +50,7 @@ struct PartSection: View {
             PartHeader(title: title, habits: items.map(\.habit), left: left, isNow: isNow, isOpen: open,
                        onStart: isToday && items.contains(where: { done[$0.id] != true }) ? onStart : nil,
                        onToggle: { if !alwaysOpen { layout.setOpen(part, !open, reduceMotion: reduceMotion) } },
-                       subtitle: store.section(part).start.map(DaySection.startsText), folds: !alwaysOpen)
+                       subtitle: store.section(part).start.map(DaySection.startsText), folds: !alwaysOpen, planned: ahead)
                 .id(TodayView.headerKey(part))
                 .contextMenu {
                     Button("Arrange Your Day", systemImage: "arrow.up.arrow.down", action: onArrange)

@@ -28,8 +28,8 @@ final class AnalyticsUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-privacy"].waitForExistence(timeout: 5))
-        app.buttons["menu-privacy"].tap()
+        XCTAssertTrue(app.menuRow("privacy").waitForExistence(timeout: 5))
+        app.menuRow("privacy").tap()
         let usage = app.switches["privacy-usage"]
         XCTAssertTrue(usage.waitForExistence(timeout: 5))
         XCTAssertEqual(usage.value as? String, "0")

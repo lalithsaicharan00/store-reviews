@@ -60,7 +60,7 @@ final class BackupUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        app.buttons["menu-backup"].tap()
+        app.menuRow("backup").tap()
         XCTAssertTrue(app.buttons["backup-export-csv"].waitForExistence(timeout: 5))
         app.buttons["backup-export-csv"].tap()
         // The remote share container appears before its buttons. Wait for Close instead of
@@ -203,10 +203,11 @@ final class BackupUITests: XCTestCase {
 
     /// ≡ → iCloud & Backup.
     private func openBackup(_ app: XCUIApplication) {
-        let menuButton = app.buttons["menu-button"], row = app.buttons["menu-backup"]
+        let menuButton = app.buttons["menu-button"]
         XCTAssertTrue(menuButton.waitForExistence(timeout: 10))
         XCTAssertTrue(waitUntil(5) { menuButton.isHittable }, "≡ on Today: \(labels(app))")
         menuButton.tap()
+        let row = app.menuRow("backup")
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         XCTAssertTrue(waitUntil(5) { row.isHittable }, "The menu open: \(labels(app))")
         row.tap()

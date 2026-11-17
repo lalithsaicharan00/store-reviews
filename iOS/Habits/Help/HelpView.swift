@@ -111,6 +111,13 @@ enum Support {
         ]
         return parts.url
     }
+
+    /// Send Feedback: the same mail, titled as feedback.
+    @MainActor static func feedbackURL() -> URL? {
+        guard let url = mailURL(), var parts = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
+        parts.queryItems = parts.queryItems?.map { $0.name == "subject" ? URLQueryItem(name: "subject", value: "Feedback on \(Onboarding.appName) \(appVersion)") : $0 }
+        return parts.url
+    }
 }
 
 /// "Widget updates": widgets couldn't be updated, and Try again (spec §1; shown only while there's a problem).

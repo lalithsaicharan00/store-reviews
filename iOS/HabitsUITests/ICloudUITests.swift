@@ -169,10 +169,11 @@ final class ICloudUITests: XCTestCase {
 
     /// ≡ → iCloud & Backup.
     private func openICloud(_ app: XCUIApplication) {
-        let menuButton = app.buttons["menu-button"], row = app.buttons["menu-backup"]
+        let menuButton = app.buttons["menu-button"]
         XCTAssertTrue(menuButton.waitForExistence(timeout: 10))
         XCTAssertTrue(waitUntil(5) { menuButton.isHittable }, "≡ on Today: \(labels(app))")
         menuButton.tap()
+        let row = app.menuRow("backup")
         XCTAssertTrue(row.waitForExistence(timeout: 5))
         XCTAssertTrue(waitUntil(5) { row.isHittable }, "The menu open: \(labels(app))")
         XCTAssertTrue(row.label.contains("iCloud & Backup"), row.label)

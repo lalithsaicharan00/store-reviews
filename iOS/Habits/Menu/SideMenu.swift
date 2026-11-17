@@ -121,11 +121,14 @@ private struct MenuLayer: View {
     }
 }
 
-/// The menu's rows: where you are, then the places people visit most, then settings, Plus and help.
+/// The menu (Figma's Side menu, 17 Nov 2026): the app's mark and name, then where you are and Habits & Tasks, then Plus,
+/// Settings and two ways to write to us. Rows are 50 tall, Body, the page you're on in Semibold.
 private struct SideMenu: View {
     let menu: MenuModel
     @Environment(HabitStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.openURL) private var openURL
+    @State private var showAddress = false
 
     var body: some View {
         List {
@@ -133,18 +136,49 @@ private struct SideMenu: View {
                 row("Today", symbol: "sun.max", detail: nil, id: "menu-today", current: true) {
                     menu.setOpen(false, reduceMotion: reduceMotion)
                 }
-                ForEach(MenuPlace.groups[0]) { place($0) }
+                place(.habitsAndTasks)
             }
-            ForEach(MenuPlace.groups.dropFirst(), id: \.self) { group in
-                Section { ForEach(group) { place($0) } }
+            Section {
+                place(.plus)
+                place(.settings)
+                row("Contact Us", symbol: "envelope", detail: nil, id: "menu-contact", current: false) {
+                    write(Support.mailURL())
+                }
+                row("Send Feedback", symbol: "bubble.left", detail: nil, id: "menu-feedback", current: false) {
+                    write(Support.feedbackURL())
+                }
             }
         }
         .listStyle(.insetGrouped)
-        .listSectionSpacing(.compact)
-        .environment(\.defaultMinListRowHeight, 46)
+        .listSectionSpacing(12)
+        .environment(\.defaultMinListRowHeight, 50)
         .scrollContentBackground(.hidden)
         .scrollBounceBehavior(.basedOnSize)
-        .contentMargins(.top, 12, for: .scrollContent)
+        .contentMargins(.top, 4, for: .scrollContent)
+        .safeAreaInset(edge: .top, spacing: 0) { header }
+        .alert("Write to Us", isPresented: $showAddress) {
+            Button("Copy Address") { UIPasteboard.general.string = Support.email }
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Email \(Support.email). Say what happened and when, and which iPhone you use.")
+        }
+    }
+
+    /// The app's mark (the approved tonal stack, tilted 12°; its dark set in dark mode, Logo Guide) and its name.
+    private var header: some View {
+        HStack(spacing: 12) {
+            Image("BrandMark")
+                .resizable()
+                .frame(width: 31.2, height: 31.2)
+                .rotationEffect(.degrees(12))
+                .frame(width: 36, height: 36)
+                .accessibilityHidden(true)
+            Text(Onboarding.appName).font(.headline)
+            Spacer(minLength: 0)
+        }
+        .padding(16)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(.isHeader)
     }
 
     private func place(_ place: MenuPlace) -> some View {
@@ -153,13 +187,17 @@ private struct SideMenu: View {
         }
     }
 
-    /// A count where it helps choose: how many habits and tasks, and how much of the free plan is used.
+    /// Habits & Tasks says how many there are; nothing else needs a number to choose it.
     private func detail(_ place: MenuPlace) -> String? {
-        switch place {
-        case .habits: String(store.habits.filter { !$0.archived && $0.kind != .task }.count)
-        case .tasks: String(store.habits.filter { !$0.archived && $0.kind == .task }.count)
-        case .plus: store.isPlus ? nil : "\(store.activeHabitCount) of \(HabitStore.freeHabitLimit)"
-        default: nil
+        place == .habitsAndTasks ? String(store.habits.filter { !$0.archived }.count) : nil
+    }
+
+    /// The phone's mail app; with none, the address to copy. The menu stays open behind it.
+    private func write(_ url: URL?) {
+        Analytics.shared.count(.contactSupport, ticket: Analytics.shared.ticket)
+        guard let url else { showAddress = true; return }
+        openURL(url) { opened in
+            if !opened { showAddress = true }
         }
     }
 
@@ -167,9 +205,9 @@ private struct SideMenu: View {
                      action: @escaping () -> Void) -> some View {
         Button(action: action) {
             HStack(spacing: 14) {
-                Image(systemName: current ? symbol + ".fill" : symbol)
+                Image(systemName: symbol)
                     .font(.body)
-                    .foregroundStyle(Color.ink)
+                    .foregroundStyle(Color.primary)
                     .frame(width: 26)
                 Text(title)
                     .fontWeight(current ? .semibold : .regular)
@@ -187,6 +225,48 @@ private struct SideMenu: View {
     }
 }
 
+/// Settings, until it's built from its own Figma page: every page the menu used to list, so none is out of reach.
+struct SettingsPage: View {
+    var body: some View {
+        List {
+            ForEach(MenuPlace.settingsGroups, id: \.self) { group in
+                Section {
+                    ForEach(group) { place in
+                        NavigationLink(value: place) {
+                            Label(place.title, systemImage: place.symbol)
+                        }
+                        .accessibilityIdentifier("menu-" + place.rawValue)
+                    }
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+        .navigationTitle("Settings")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+}
+
+/// Habits & Tasks, until it's built from its own Figma page: Habits | Tasks on top, then that list.
+struct HabitsAndTasksPage: View {
+    @State private var kind: AllHabitsView.Kind = .habits
+
+    var body: some View {
+        AllHabitsView(kind: kind)
+            .id(kind)
+            .safeAreaInset(edge: .top, spacing: 0) {
+                Picker("Show", selection: $kind) {
+                    Text("Habits").tag(AllHabitsView.Kind.habits)
+                    Text("Tasks").tag(AllHabitsView.Kind.tasks)
+                }
+                .pickerStyle(.segmented)
+                .controlSize(.large)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 8)
+                .accessibilityIdentifier("habits-tasks-picker")
+            }
+    }
+}
+
 /// Help & Feedback opened on one topic (a widget's Choose a habit: Help → Widgets → "Choose a habit for a widget").
 struct HelpLink: Hashable {
     let topic: String
@@ -198,6 +278,8 @@ struct MenuPage: View {
 
     var body: some View {
         switch place {
+        case .habitsAndTasks: HabitsAndTasksPage()
+        case .settings: SettingsPage()
         case .progress: ProgressScreen()
         case .habits: AllHabitsView(kind: .habits)
         case .tasks: AllHabitsView(kind: .tasks)

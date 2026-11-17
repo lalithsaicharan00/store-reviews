@@ -48,7 +48,7 @@ final class PlusUITests: XCTestCase {
     private func openPlus(_ app: XCUIApplication) {
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
-        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
+        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-today"].swipeUp() }
         XCTAssertTrue(row.waitForExistence(timeout: 3), labels(app))
         XCTAssertTrue(row.label.contains("5 of 5"), "The free count, in plain words: \(row.label)")
         row.tap()
@@ -102,7 +102,7 @@ final class PlusUITests: XCTestCase {
         // Plus now: the menu row has no count, and the page says it's yours.
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
-        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
+        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-today"].swipeUp() }
         XCTAssertFalse(row.label.contains("of 5"), row.label)
         row.tap()
         XCTAssertTrue(app.staticTexts["Plus is yours"].waitForExistence(timeout: 5), labels(app))
@@ -187,7 +187,7 @@ final class PlusUITests: XCTestCase {
         var app = launch(["-plus-owned"])
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
-        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
+        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-today"].swipeUp() }
         XCTAssertFalse(row.label.contains("of 5"), "Someone with Plus sees no count: \(row.label)")
         row.tap()
         XCTAssertTrue(app.staticTexts["Plus is yours"].waitForExistence(timeout: 5), labels(app))
@@ -219,8 +219,8 @@ final class PlusUITests: XCTestCase {
     func testBringingBackAnArchivedHabit() {
         let app = launch()
         app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-habits"].waitForExistence(timeout: 5))
-        app.buttons["menu-habits"].tap()
+        XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 5))
+        app.buttons["menu-habitsAndTasks"].tap()
         XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), labels(app))
         let stretch = button(startingWith: "Stretch", app)
         XCTAssertTrue(stretch.waitForExistence(timeout: 5), labels(app))
@@ -263,7 +263,7 @@ final class PlusUITests: XCTestCase {
     private func openPlusPageWithPlus(_ app: XCUIApplication) {
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
-        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
+        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-today"].swipeUp() }
         row.tap()
         XCTAssertTrue(app.navigationBars["Plus"].waitForExistence(timeout: 5), labels(app))
     }

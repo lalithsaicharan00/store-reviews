@@ -27,7 +27,7 @@ final class TestLaunchIsolationUITests: XCTestCase {
     private func openDoneOrder() -> XCUIElement {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 30))
         app.buttons["menu-button"].tap()
-        app.buttons["menu-appearance"].tap()
+        app.menuRow("appearance").tap()
         let order = app.buttons["appearance-done-order"]
         XCTAssertTrue(order.waitForExistence(timeout: 5))
         return order

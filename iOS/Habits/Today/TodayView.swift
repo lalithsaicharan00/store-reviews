@@ -497,6 +497,16 @@ struct TodayView: View {
             ScrollViewReader { proxy in
             List {
                 if isToday && AppModel.shared.backup != nil { BackupIssueSection() }
+                if shown > store.today() && !(restraint.isEmpty && paused.isEmpty && tracked.isEmpty) {
+                    // A day ahead says so above its routines (Figma's Tomorrow): its habits are logged on the day.
+                    Section {
+                        Text("Planned for \(DayWords.short(shown, calendar: store.calendar)). Habits are logged on their day.")
+                            .font(.subheadline).foregroundStyle(.secondary)
+                            .listRowBackground(Color.clear)
+                            .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+                            .accessibilityIdentifier("planned-line")
+                    }
+                }
                 // Anytime and Quit or Cut Down sit where the person put them; the times of day follow their times.
                 ForEach(store.todayCards, id: \.self) { card in
                     if card == .quittingCard {
@@ -522,6 +532,12 @@ struct TodayView: View {
                 }
             }
             .listStyle(.insetGrouped)
+            .overlay {
+                // Habits, but none on this day: say so, centred, over the empty list (Figma's Nothing planned).
+                if restraint.isEmpty && paused.isEmpty && tracked.isEmpty {
+                    NothingPlanned(isToday: isToday) { showNewHabit = true }
+                }
+            }
             // Rows hold their place after a log, and read their checklist's open state, through this (#58, #59).
             .environment(layout)
             .listSectionSpacing(14)
@@ -633,13 +649,17 @@ struct TodayView: View {
     }
 
     private func dayLabel(_ day: LocalDay, today: LocalDay) -> String {
-        switch day {
-        case today: return "Today"
-        case today.adding(days: -1, calendar: store.calendar): return "Yesterday"
-        case today.adding(days: 1, calendar: store.calendar): return "Tomorrow"
-        default: return day.date(calendar: store.calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
-        }
+        // "Today" for today, and the date for every other day, yesterday and tomorrow too: "8 Nov" (Rulebook, 9 Nov
+        // 2026; Figma's Back to today and Tomorrow).
+        day == today ? "Today" : Self.dayTitle.string(from: day.date(calendar: store.calendar))
     }
+
+    /// "8 Nov": the day's number, a space and the month's three letters.
+    private static let dayTitle: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "d MMM" // the day first in every region, as decided
+        return formatter
+    }()
 
     /// The standard bottom toolbar: ‹ · Today ⌄ 6/15 · ›. On iOS 26 each part is its own
     /// Liquid Glass element (Figma 193:6); before iOS 26 it is a plain bottom bar.
@@ -677,9 +697,9 @@ struct TodayView: View {
     @ToolbarContentBuilder
     private var topBar: some ToolbarContent {
         if arranging {
-            ToolbarItem(placement: .confirmationAction) {
-                Button("Done") { arrange(false) }
-                    .fontWeight(.semibold)
+            // Figma's Edit Today: Back, as a pushed page has; every change is saved as it's made.
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Back", systemImage: "chevron.left") { arrange(false) }
                     .accessibilityIdentifier("arrange-done")
             }
         } else {

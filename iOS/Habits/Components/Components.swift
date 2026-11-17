@@ -121,15 +121,16 @@ struct RoundActionButton: View {
                 .foregroundStyle(done ? Color.white : Color.ink)
                 .frame(width: 34, height: 34)
                 .background(Circle().fill(done ? AnyShapeStyle(color.color) : AnyShapeStyle(Color(.tertiarySystemFill))))
-                // The tick (research "Ticking Off…", §1): a quick press-in and spring back, about a third of a second,
-                // on this 34-pt circle only. A transform, so nothing around it is laid out again.
+                // The tick (Figma's Milestone · Motion, Row band: Action): pressed in to 0.86 (80 ms, ease-out), out to
+                // 1.12 (220 ms, ease-out), back to 1 (220 ms, ease-in-out), on this 34-pt circle only. A transform, so
+                // nothing around it is laid out again.
                 .keyframeAnimator(initialValue: 1.0, trigger: pops) { content, scale in
                     content.scaleEffect(scale)
                 } keyframes: { _ in
                     KeyframeTrack {
-                        CubicKeyframe(0.84, duration: 0.07)
-                        SpringKeyframe(1.1, duration: 0.13, spring: .snappy)
-                        SpringKeyframe(1.0, duration: 0.18, spring: .smooth)
+                        CubicKeyframe(0.86, duration: 0.08)
+                        CubicKeyframe(1.12, duration: 0.22)
+                        CubicKeyframe(1.0, duration: 0.22)
                     }
                 }
                 .frame(width: 44, height: 44)
@@ -154,16 +155,6 @@ struct ProgressFill: View {
             color.fill
                 .scaleEffect(x: min(1, max(0, progress)), y: 1, anchor: .leading)
         }
-    }
-}
-
-struct NowChip: View {
-    var body: some View {
-        Text("Now")
-            .font(.caption.weight(.semibold))
-            .foregroundStyle(Color.ink)
-            .padding(.horizontal, 8).padding(.vertical, 3)
-            .background(Capsule().fill(Color.ink.opacity(0.10)))
     }
 }
 
@@ -246,7 +237,7 @@ struct CardNotice<Fix: View>: View {
         HStack(alignment: .top, spacing: 12) {
             Image(systemName: symbol)
                 .symbolVariant(.fill)
-                .font(.title2)
+                .font(.title3)
                 .foregroundStyle(problem ? Color(.systemRed) : Color.secondary)
                 .frame(width: 32)
                 .accessibilityHidden(true)

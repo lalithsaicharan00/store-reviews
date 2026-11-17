@@ -33,88 +33,21 @@ struct HabitRow: View {
 
     var body: some View {
         let _ = perfTimed("Count: a Today row drawn") { () }
-        if habit.kind == .duration {
-            // Keep the same host when a running timer stops, and on every day: replacing TimelineView with a plain row
-            // could dismiss a sheet opened from that row, and switching the day rebuilt every duration row twice
-            // (rule 4). A stopped, covered or other day's clock simply has no ticks.
-            RowClock(start: isToday && sheet == nil && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil) { now in
-                row(now: now)
+        Group {
+            if habit.kind == .duration {
+                // Keep the same host when a running timer stops, and on every day: replacing TimelineView with a plain
+                // row could dismiss a sheet opened from that row, and switching the day rebuilt every duration row twice
+                // (rule 4). A stopped, covered or other day's clock simply has no ticks.
+                RowClock(start: clockStart) { now in row(now: now) }
+            } else {
+                row(now: .now)
             }
-        } else {
-            row(now: .now)
         }
-    }
-
-    private func showing(_ kind: RowSheet) -> Binding<Bool> {
-        Binding(get: { sheet == kind }, set: { if $0 { sheet = kind } else if sheet == kind { sheet = nil } })
-    }
-
-    private var isRunning: Bool { isToday && store.timers[habit.id] != nil }
-
-    @ViewBuilder
-    private func row(now: Date) -> some View {
-        let progress = store.progress(of: habit, on: day, now: now)
-        // Past days show the goal they had (goal history, spec §8.2).
-        let goal = store.goal(of: store.rule(habit, on: day))
-        // A cut-back habit is "met" while under its maximum, but never shown as finished.
-        let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
-        // A cut-down habit at or past its most: a neutral band says so (Figma's Limit band), and past it the streak
-        // steps aside. Worked out from the two numbers the row already has, nothing more is read.
-        let limit = habit.atMost && goal > 0 && progress >= goal ? (progress > goal ? LimitBand.over : .reached) : nil
-        let streak = showStreaks && limit != .over ? store.streak(of: habit, asOf: day) : 0
-        // One shape for every row (report "Today's Rows — The Line Under the Name", 3 Oct 2026): the icon, the name with
-        // its one line, the streak and the button centred on one 44-pt band; after a log, one line of small buttons
-        // under the text. Nothing else stacks up, so no row runs past three lines and icons line up down the list.
-        VStack(alignment: .leading, spacing: 0) {
-          HStack(alignment: .center, spacing: RowSpace.iconToText) {
-            HStack(alignment: .center, spacing: RowSpace.iconToText) {
-              HabitIcon(symbol: habit.symbol, color: habit.color)
-              VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
-                  // One line: the name uses the row's width and ends in "…" only when it runs out (U6 allows 24).
-                  // Label whether done or not (Figma, 17 Nov 2026): the fill and the button say it's done.
-                  Text(habit.name).font(.body).foregroundStyle(.primary).lineLimit(1)
-                      .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
-                  // What today asks of it, the same kind of fact on every row: how much and how far along, or how
-                  // often; then its time. Exactly one line.
-                  Text(lineOverride ?? rowLine(progress: progress, goal: goal))
-                      .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
-                      .monospacedDigit()
-                      .lineLimit(1)
-                      .accessibilityIdentifier("habit-line")
-              }
-              Spacer(minLength: RowSpace.textToTrailing)
-              if streak > 0 {
-                  StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7)
-              }
-            }
-            .contentShape(Rectangle())
-            // The row opens its Day sheet for the day Today shows; the round button logs (the user, 3 Oct 2026; report
-            // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control). A named
-            // action only: a button trait, a default action or a hint on this container merges its texts into one
-            // element, so names stop reading as text (CI, 3 Oct 2026; Rulebook T9).
-            .onTapGesture { openDay() }
-            .accessibilityAction(named: "Show Day") { openDay() }
-            .accessibilityAction(named: "Undo last log") {
-                if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
-            }
-            actionButton(done: done, progress: progress, goal: goal)
-                .disabled(habit.kind != .checklist && day > store.today())
-          }
-          .frame(minHeight: RowBand.height)
-          // Undo and Add Note after a log, in their own small view so a tap redraws that line, not every row (L16).
-          if lineOverride == nil { RowAfterLog(habit: habit, day: day) }
-        }
-        .padding(.leading, RowSpace.edge)
-        .padding(.trailing, RowSpace.buttonEdge)
-        .padding(.vertical, RowSpace.bodyVertical)
-        // Under the body, across the card's whole width: a milestone this habit just reached, or its limit.
-        .rowFoot(habit: habit, day: day, limit: lineOverride == nil ? limit : nil)
-        // The row draws its own edges, so the band can reach the card's; the line under it starts at the name (iOS
-        // finds it) and stops 16 before the edge, as every list row's does on the phone.
+        // The list's own modifiers go outside the clock: a TimelineView doesn't pass them to the List, so a timer row
+        // lost its edges and its fill (17 Nov 2026, the Simulator against Figma's Read row).
         .listRowInsets(EdgeInsets())
         .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
-        .listRowBackground(ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
-            .overlay(NoteTargetFlash(habit: habit, day: day, highlighted: highlighted)))
+        .listRowBackground(rowBackground)
         // Logged from the sheet: the row stays where it is until the person pauses, as after a tap (#58). The day's own
         // rule, so a past day is logged against the goal it had then.
         .sheet(item: $sheet, onDismiss: {
@@ -173,6 +106,97 @@ struct HabitRow: View {
                 }
             }
         }
+    }
+
+    /// A running timer's clock start, nil when the row's clock shouldn't tick.
+    private var clockStart: Date? {
+        isToday && sheet == nil && store.dayTarget?.habitID != habit.id ? store.timers[habit.id] : nil
+    }
+
+    /// The progress fill behind the row, ticking with a running timer.
+    @ViewBuilder private var rowBackground: some View {
+        if habit.kind == .duration {
+            RowClock(start: clockStart) { now in fill(now: now) }
+        } else {
+            fill(now: .now)
+        }
+    }
+
+    private func fill(now: Date) -> some View {
+        let progress = store.progress(of: habit, on: day, now: now)
+        let goal = store.goal(of: store.rule(habit, on: day))
+        return ProgressFill(progress: habit.atMost ? 0 : progress / max(goal, 1), color: habit.color)
+            .overlay(NoteTargetFlash(habit: habit, day: day, highlighted: highlighted))
+    }
+
+
+    private func showing(_ kind: RowSheet) -> Binding<Bool> {
+        Binding(get: { sheet == kind }, set: { if $0 { sheet = kind } else if sheet == kind { sheet = nil } })
+    }
+
+    private var isRunning: Bool { isToday && store.timers[habit.id] != nil }
+
+    @ViewBuilder
+    private func row(now: Date) -> some View {
+        let progress = store.progress(of: habit, on: day, now: now)
+        // Past days show the goal they had (goal history, spec §8.2).
+        let goal = store.goal(of: store.rule(habit, on: day))
+        // A cut-back habit is "met" while under its maximum, but never shown as finished.
+        let done = slot.map { store.isSlotDone(habit, slot: $0, on: day) } ?? (store.isDone(habit, on: day) && !habit.atMost)
+        // A cut-down habit at or past its most: a neutral band says so (Figma's Limit band), and past it the streak
+        // steps aside. Worked out from the two numbers the row already has, nothing more is read.
+        let limit = habit.atMost && goal > 0 && progress >= goal ? (progress > goal ? LimitBand.over : .reached) : nil
+        let streak = showStreaks && limit != .over ? store.streak(of: habit, asOf: day) : 0
+        // One shape for every row (report "Today's Rows — The Line Under the Name", 3 Oct 2026): the icon, the name with
+        // its one line, the streak and the button centred on one 44-pt band; after a log, one line of small buttons
+        // under the text. Nothing else stacks up, so no row runs past three lines and icons line up down the list.
+        VStack(alignment: .leading, spacing: 0) {
+          HStack(alignment: .center, spacing: RowSpace.iconToText) {
+            HStack(alignment: .center, spacing: RowSpace.iconToText) {
+              HabitIcon(symbol: habit.symbol, color: habit.color)
+              VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
+                  // One line: the name uses the row's width and ends in "…" only when it runs out (U6 allows 24).
+                  // Label whether done or not (Figma, 17 Nov 2026): the fill and the button say it's done.
+                  Text(habit.name).font(.body).foregroundStyle(.primary).lineLimit(1)
+                      .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                  // What today asks of it, the same kind of fact on every row: how much and how far along, or how
+                  // often; then its time. Exactly one line.
+                  Text(lineOverride ?? rowLine(progress: progress, goal: goal))
+                      .font(.subheadline).foregroundStyle(isRunning ? .primary : .secondary)
+                      .monospacedDigit()
+                      .lineLimit(1)
+                      .accessibilityIdentifier("habit-line")
+              }
+              Spacer(minLength: RowSpace.textToTrailing)
+              if streak > 0 {
+                  StreakLabel(count: streak, unit: habit.frequency.streakUnit, onFill: progress / max(goal, 1) >= 0.7)
+              }
+            }
+            .contentShape(Rectangle())
+            // The row opens its Day sheet for the day Today shows; the round button logs (the user, 3 Oct 2026; report
+            // "Today's Rows": Reminders, Mail and Health open the item from its row and act from its control). A named
+            // action only: a button trait, a default action or a hint on this container merges its texts into one
+            // element, so names stop reading as text (CI, 3 Oct 2026; Rulebook T9).
+            .onTapGesture { openDay() }
+            .accessibilityAction(named: "Show Day") { openDay() }
+            .accessibilityAction(named: "Undo last log") {
+                if let entry = store.undoOffer, entry.habitID == habit.id, entry.day == day { store.undoEntry(entry.id) }
+            }
+            actionButton(done: done, progress: progress, goal: goal)
+                .disabled(habit.kind != .checklist && day > store.today())
+                // A milestone this tap reached bursts round the button (its own small view reads the store's
+                // milestone, so the row doesn't: S6).
+                .overlay { MilestoneBurst(habit: habit, day: day) }
+          }
+          .frame(minHeight: RowBand.height)
+          // Undo and Add Note after a log, in their own small view so a tap redraws that line, not every row (L16).
+          if lineOverride == nil { RowAfterLog(habit: habit, day: day) }
+        }
+        .padding(.leading, RowSpace.edge)
+        .padding(.trailing, RowSpace.buttonEdge)
+        .padding(.vertical, RowSpace.bodyVertical)
+        // Under the body, across the card's whole width: a milestone this habit just reached, or its limit.
+        .rowFoot(habit: habit, day: day, limit: lineOverride == nil ? limit : nil)
     }
 
     /// The Day sheet for this habit or task on the day Today shows (one sheet for every row; a task's is shaped for a
@@ -375,6 +399,7 @@ struct QuitRow: View {
     @State private var lastSlip: UUID?
     /// Progress's "Show Streaks": off hides the best run too (report "Today's Rows — The Line Under the Name").
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
+    @Environment(\.dynamicTypeSize) private var typeSize
     private var today: LocalDay { store.today() }
     /// Set once, on a whole second, so every quit clock ticks together.
     private static let anchor = Date(timeIntervalSinceReferenceDate: Date.now.timeIntervalSinceReferenceDate.rounded(.down))
@@ -398,6 +423,11 @@ struct QuitRow: View {
                 VStack(alignment: .leading, spacing: RowSpace.nameToLine) {
                     Text(habit.name).font(.body).lineLimit(1)
                         .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                    // At the accessibility sizes the count goes under the name, so the name isn't cut to "Smo…" (the
+                    // Rulebook, 31 Oct 2026: what sits beside a label gives way first).
+                    if typeSize.isAccessibilitySize {
+                        RowClock(start: tick) { now in elapsed(current(now)) }
+                    }
                     if showStreaks {
                         RowClock(start: tick) { now in
                             Text("Best \(Format.days(max(pastBest, current(now))))")
@@ -412,12 +442,8 @@ struct QuitRow: View {
                     }
                 }
                 Spacer(minLength: RowSpace.textToTrailing)
-                RowClock(start: tick) { now in
-                    Text(Format.elapsed(current(now)))
-                        .font(.body.monospacedDigit().weight(.semibold))
-                        .foregroundStyle(.primary)
-                        .lineLimit(1)
-                        .fixedSize()
+                if !typeSize.isAccessibilitySize {
+                    RowClock(start: tick) { now in elapsed(current(now)) }
                 }
             }
             .frame(minHeight: RowBand.height)
@@ -471,6 +497,14 @@ struct QuitRow: View {
             }
         }
     }
+
+    private func elapsed(_ seconds: TimeInterval) -> some View {
+        Text(Format.elapsed(seconds))
+            .font(.body.monospacedDigit().weight(.semibold))
+            .foregroundStyle(.primary)
+            .lineLimit(1)
+            .fixedSize()
+    }
 }
 
 /// The first row of every card: name, Now, folded icons, then "N left" (or ✓), Start and the fold chevron.
@@ -497,6 +531,8 @@ struct PartHeader: View {
     var foldsTitle = true
     /// The iPad's Columns view: a column never folds (it has its own room), so no chevron (Design Notes §6).
     var folds = true
+    /// A day ahead: nothing can be logged yet, so the count says what's planned ("3 planned"), not what's left.
+    var planned = false
 
     /// The width for the name, Now and the icons, and the width of the name block (the name with Now, or its "Starts
     /// 6 AM" line, whichever is wider).
@@ -510,8 +546,9 @@ struct PartHeader: View {
     /// At least this much space between the icons and "2 left" / ✓.
     static let statusGap: CGFloat = 12
 
-    /// The caller provides Start for unfinished habits today; folded only in Now.
-    private var showsStart: Bool { onStart != nil && (isOpen || isNow) }
+    /// The caller provides Start for unfinished habits today; Figma's Section header shows it only open (folded, the
+    /// icons, "N left" and › say what's inside).
+    private var showsStart: Bool { onStart != nil && isOpen }
 
     private var iconCount: Int? {
         guard !isOpen, room > 0 else { return nil }
@@ -527,13 +564,24 @@ struct PartHeader: View {
 
     private var status: String? {
         guard let left else { return nil }
-        return left == 0 ? "All done" : "\(left) left"
+        return left == 0 ? "All done" : planned ? "\(left) planned" : "\(left) left"
     }
 
+    @Environment(\.dynamicTypeSize) private var typeSize
+
     var body: some View {
-        HStack(spacing: Self.statusGap) {
-            titleArea
-            controls
+        Group {
+            // Figma's Today, Large text: at the accessibility sizes the header stacks (name and chevron, then the time
+            // with the count or the folded icons, then Start on a line of its own), so no word is cut (S10: chosen
+            // from the text size, never `ViewThatFits`).
+            if typeSize.isAccessibilitySize {
+                stacked
+            } else {
+                HStack(spacing: Self.statusGap) {
+                    titleArea
+                    controls
+                }
+            }
         }
         .frame(minHeight: 44)
         // Figma's Section header: 16 at the sides on every phone (the system's own inset is 20 on the larger ones),
@@ -544,15 +592,68 @@ struct PartHeader: View {
         .alignmentGuide(.listRowSeparatorTrailing) { $0[.trailing] - RowSpace.edge }
     }
 
+    private var stacked: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title).font(.headline).fixedSize(horizontal: false, vertical: true)
+                    HStack(spacing: 10) {
+                        if let subtitle { Text(subtitle).font(.footnote).foregroundStyle(.secondary) }
+                        if !isOpen, !habits.isEmpty {
+                            FoldedIcons(habits: habits, max: 3).fixedSize()
+                                .transition(.opacity.combined(with: .scale(scale: 0.9, anchor: .leading)))
+                        } else {
+                            statusView
+                        }
+                    }
+                    if !isOpen && !habits.isEmpty { statusView }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .modifier(HeaderTap(label: accessibilityText, isOpen: isOpen, onToggle: onToggle))
+                if folds { chevron }
+            }
+            if showsStart, let onStart {
+                StartButton(compact: false, primary: isNow, title: title, action: onStart)
+            }
+        }
+    }
+
+    @ViewBuilder private var statusView: some View {
+        if left == 0 {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 18))
+                .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+                .transition(.scale(scale: 0.4).combined(with: .opacity))
+        } else if let status {
+            Text(status).font(.subheadline).monospacedDigit().foregroundStyle(.secondary).accessibilityHidden(true)
+        }
+    }
+
+    private var chevron: some View {
+        Button(action: onToggle) {
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.secondary)
+                .rotationEffect(.degrees(isOpen ? 90 : 0))
+                .frame(width: 34, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(isOpen ? "Fold" : "Open") \(title)")
+    }
+
+    private var accessibilityText: String {
+        [title, subtitle, isNow ? "Now" : nil, status ?? "\(habits.count) habits"].compactMap { $0 }.joined(separator: ", ")
+    }
+
     private var titleArea: some View {
         // Folded, the icons sit beside the whole name block, centred on the header, not on the name's line, with clear
         // room between (the user, 4 Oct 2026: "they should be centre aligned vertically in the card, not to the title").
         HStack(alignment: .center, spacing: shownIconGap) {
             VStack(alignment: .leading, spacing: 1) {
-                HStack(spacing: 8) {
-                    Text(shownTitle).font(.headline).lineLimit(1)
-                    if isNow { NowChip().fixedSize() }
-                }
+                // Figma's Section header has no Now chip: the routine it is now is the one whose Start is filled.
+                Text(shownTitle).font(.headline).lineLimit(1)
                 if let subtitle {
                     Text(subtitle).font(.footnote).foregroundStyle(.secondary).lineLimit(1)
                 }
@@ -571,52 +672,44 @@ struct PartHeader: View {
         }
             .frame(maxWidth: .infinity, alignment: .leading)
             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { room = $0 }
-            // VoiceOver reads the header as one button; Start stays its own button.
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel([title, subtitle, isNow ? "Now" : nil, status ?? "\(habits.count) habits"].compactMap { $0 }.joined(separator: ", "))
-            .accessibilityValue(isOpen ? "Open" : "Folded")
-            .accessibilityAddTraits(.isButton)
-            .accessibilityHint(isOpen ? "Folds this part" : "Opens this part")
-            .contentShape(Rectangle())
-            .onTapGesture(perform: onToggle)
-            .accessibilityAction { onToggle() }
+            .modifier(HeaderTap(label: accessibilityText, isOpen: isOpen, onToggle: onToggle))
 
     }
 
     private var controls: some View {
             HStack(spacing: 8) {
-                if left == 0 {
-                    // Done: a ✓ in about 20 pt, where "✓ All done" took about 78. VoiceOver says "All done".
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 18))
-                        .foregroundStyle(.secondary)
-                        .accessibilityHidden(true)
-                        // The last habit of the part: the ✓ grows in with the row's own tick (#58).
-                        .transition(.scale(scale: 0.4).combined(with: .opacity))
-                } else if let status {
-                    Text(status).font(.subheadline).monospacedDigit().foregroundStyle(.secondary).accessibilityHidden(true)
-                }
+                // Done: a ✓ in about 20 pt, where "✓ All done" took about 78; VoiceOver says "All done". It grows in with
+                // the row's own tick (#58).
+                statusView
                 if showsStart, let onStart {
                     StartButton(compact: !isOpen, primary: isNow, title: title, action: onStart)
                 }
-                if folds {
-                    Button(action: onToggle) {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundStyle(.secondary)
-                            .rotationEffect(.degrees(isOpen ? 90 : 0))
-                            .frame(width: 34, height: 44)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("\(isOpen ? "Fold" : "Open") \(title)")
-                }
+                if folds { chevron }
             }
             .lineLimit(1)
             // Never squeezed: the name gives way instead.
             .fixedSize()
     }
 
+}
+
+/// A section header's name block: VoiceOver reads it as one button that folds or opens the part; Start stays its own.
+private struct HeaderTap: ViewModifier {
+    let label: String
+    let isOpen: Bool
+    let onToggle: () -> Void
+
+    func body(content: Content) -> some View {
+        content
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(label)
+            .accessibilityValue(isOpen ? "Open" : "Folded")
+            .accessibilityAddTraits(.isButton)
+            .accessibilityHint(isOpen ? "Folds this part" : "Opens this part")
+            .contentShape(Rectangle())
+            .onTapGesture(perform: onToggle)
+            .accessibilityAction { onToggle() }
+    }
 }
 
 /// Starts a section's routine. Open: "▶ Start"; folded: ▶ alone. Primary (filled ink) in the Now section,
@@ -912,6 +1005,9 @@ struct TodayMilestoneBar: View {
     @State private var popup: MilestoneMoment?
     /// The last tap's milestone already shown, so a redraw never brings the bar back.
     @State private var seen: UUID?
+    /// Figma's Milestone · Motion: the bar rises 0.3 s after the taps stop, so a run of taps never moves it in and
+    /// out; a newer tap starts the wait again.
+    @State private var waiting: Task<Void, Never>?
 
     var body: some View {
         ZStack {
@@ -939,10 +1035,17 @@ struct TodayMilestoneBar: View {
               let habit = store.habits.first(where: { $0.id == offer.habit }) else { return }
         seen = offer.entry
         let moment = MilestoneMoment(entry: offer.entry, habit: habit, value: value, unit: unit, again: offer.again)
-        withAnimation(.snappy(duration: 0.25)) { shown = moment }
+        waiting?.cancel()
+        waiting = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(300))
+            guard !Task.isCancelled else { return }
+            // 0.3–0.55 s, rising 24 and fading in, emphasized decelerate (Figma 853:45906).
+            withAnimation(.timingCurve(0.05, 0.7, 0.1, 1, duration: 0.25)) { shown = moment }
+        }
     }
 
     private func hide() {
+        waiting?.cancel()
         guard shown != nil else { return }
         withAnimation(.snappy(duration: 0.25)) { shown = nil }
     }
@@ -1032,9 +1135,8 @@ struct RowFoot: View {
 
     var body: some View {
         if let mark = store.milestoneOffer, mark.habit == habit.id, mark.day == day {
-            band(fill: habit.color.milestoneBand) {
-                Medal(size: 16, color: habit.color)
-                Text(mark.text).foregroundStyle(habit.color.deep)
+            Playback(duration: MilestoneBandMotion.duration, atRest: MilestoneBandMotion.played(mark.entry, "band")) { ms in
+                MilestoneBandMotion(text: mark.text, color: habit.color, ms: ms)
             }
             .accessibilityIdentifier("today-milestone")
         } else if let limit {
@@ -1056,5 +1158,135 @@ struct RowFoot: View {
             .frame(maxWidth: .infinity, minHeight: RowSpace.footBand, alignment: .leading)
             .background(fill)
             .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - A milestone reached on a row (Figma's Milestone · Motion, Row band, 853:45982)
+//
+// Figma's timeline is 2 s from the finger coming down; the log lands as the press bottoms out (180 ms), so here 0 is
+// the tap. The band itself grows in with the row's own tick animation (its height is the List's to animate); what's
+// inside it plays once (`Playback`), and never again for the same log (a row scrolled away and back shows it at rest).
+
+/// The burst round the round button when a tap reaches a milestone: a ring in the habit's colour, 56 across and 2 thick,
+/// growing 0.7 → 1.45 as it fades from 55 %, and eight dots in its Gradient Top (6 and 4 across in turn, every 45° from
+/// 22.5°) flying out from 20 to 34, each 12 ms after the one before. 120–890 ms after the tap. Only this reads the
+/// store's milestone, so the row doesn't redraw for it (S6).
+struct MilestoneBurst: View {
+    let habit: Habit
+    let day: LocalDay
+    @Environment(HabitStore.self) private var store
+
+    var body: some View {
+        if let mark = store.milestoneOffer, mark.habit == habit.id, mark.day == day {
+            // At rest (a row scrolled away and back), the burst has gone: nothing is drawn.
+            Playback(duration: 900, atRest: MilestoneBandMotion.played(mark.entry, "burst")) { ms in
+                Burst(color: habit.color, ms: ms)
+            }
+                .frame(width: 88, height: 88)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+                .id(mark.entry)
+        }
+    }
+
+    private struct Burst: View {
+        let color: HabitColor
+        let ms: Double
+
+        var body: some View {
+            Canvas { context, size in
+                let c = CGPoint(x: size.width / 2, y: size.height / 2)
+                let ring = track(ms, Key(120, 0, Ease.out), Key(160, 0.55, Ease.out), Key(570, 0))
+                if ring > 0 {
+                    let k = track(ms, Key(120, 0.7, Ease.out), Key(570, 1.45))
+                    let r = 27 * k
+                    context.stroke(Circle().path(in: CGRect(x: c.x - r, y: c.y - r, width: 2 * r, height: 2 * r)),
+                                   with: .color(color.color.opacity(ring)), lineWidth: 2 * k)
+                }
+                for i in 0..<8 {
+                    let start = 120 + 12 * Double(i)
+                    let a = track(ms, Key(start, 0, Ease.out), Key(start + 80, 1, Ease.in), Key(start + 500, 0))
+                    guard a > 0 else { continue }
+                    let s = track(ms, Key(start, 0.6, Ease.out), Key(start + 150, 1, Ease.in), Key(start + 500, 0.3))
+                    let out = track(ms, Key(start, 20, Ease.out), Key(start + 320, 34))
+                    let angle = (22.5 + 45 * Double(i)) * .pi / 180
+                    let r = (i.isMultiple(of: 2) ? 3 : 2) * s
+                    let p = CGPoint(x: c.x + cos(angle) * out, y: c.y + sin(angle) * out)
+                    context.fill(Circle().path(in: CGRect(x: p.x - r, y: p.y - r, width: 2 * r, height: 2 * r)),
+                                 with: .color(color.gradientTop.opacity(a)))
+                }
+            }
+        }
+    }
+}
+
+/// The milestone band's inside, at `ms` after the tap: it fades in (280–440 ms), the medal spins in from 35° and pops
+/// (0.01 → 1.3 → 1, 400–720 ms), the words slide 8 in from the left (460–680 ms), a sheen passes once (700–1300 ms,
+/// 48 × 80, tilted 20°, white at 50 %), and two sparkles over the medal twinkle out (640–1220 ms).
+struct MilestoneBandMotion: View {
+    let text: String
+    let color: HabitColor
+    let ms: Double
+
+    static let duration = 1300.0
+
+    /// The motions that have played, by log and part, so each plays once per log. Main actor only.
+    private static var seen: Set<String> = []
+
+    /// Whether `part` of `entry`'s milestone has played; asking marks it played. Read once, when its view is made
+    /// (`Playback` keeps its first answer), so a later redraw of the same view never stops it mid-way.
+    static func played(_ entry: UUID, _ part: String) -> Bool {
+        !seen.insert(entry.uuidString + part).inserted
+    }
+
+    /// Figma's two sparkles in the band (from its leading edge, at the name's start): x, y of the top left, size, start.
+    private static let sparkles: [(CGFloat, CGFloat, CGFloat, Double)] = [(28.5, 2.5, 7, 640), (9.5, 17.5, 5, 720)]
+
+    var body: some View {
+        HStack(spacing: 6) {
+            Medal(size: 16, color: color)
+                .rotationEffect(.degrees(track(ms, Key(400, 35, Ease.out), Key(720, 0))))
+                .scaleEffect(track(ms, Key(400, 0.01, Ease.out), Key(580, 1.3, Ease.inOut), Key(720, 1)))
+            Text(text)
+                .foregroundStyle(color.deep)
+                .offset(x: track(ms, Key(460, -8, Ease.arrive), Key(680, 0)))
+                .opacity(track(ms, Key(460, 0, Ease.arrive), Key(680, 1)))
+        }
+        .font(.subheadline.weight(.semibold))
+        .lineLimit(1)
+        .overlay(alignment: .topLeading) {
+            Canvas { context, _ in
+                for (x, y, d, start) in Self.sparkles {
+                    let a = track(ms, Key(start, 0, Ease.out), Key(start + 120, 1, Ease.in), Key(start + 500, 0))
+                    guard a > 0 else { continue }
+                    let k = track(ms, Key(start, 0.01, Ease.pop), Key(start + 180, 1.1, Ease.in), Key(start + 500, 0.5))
+                    let turn = track(ms, Key(start, 0, Ease.out), Key(start + 500, 45)) * .pi / 180
+                    let star = sparkle(at: .zero, size: d * k)
+                        .applying(CGAffineTransform(rotationAngle: turn))
+                        .applying(CGAffineTransform(translationX: x + d / 2, y: y + d / 2))
+                    context.fill(star, with: .color(color.color.opacity(a)))
+                }
+            }
+            .frame(width: 44, height: 32)
+            .offset(y: -6)
+            .allowsHitTesting(false)
+        }
+        .padding(.leading, RowSpace.edge + RowSpace.textLeading)
+        .padding(.trailing, RowSpace.edge)
+        .frame(maxWidth: .infinity, minHeight: RowSpace.footBand, alignment: .leading)
+        .opacity(track(ms, Key(280, 0, Ease.out), Key(440, 1)))
+        .background(color.milestoneBand.opacity(track(ms, Key(280, 0, Ease.out), Key(440, 1))))
+        .overlay(alignment: .leading) {
+            if ms > 700 && ms < 1300 {
+                Rectangle()
+                    .fill(sheen(peak: 0.5))
+                    .frame(width: 48, height: 80)
+                    .rotationEffect(.degrees(20))
+                    .offset(x: -147 + track(ms, Key(700, 0, Ease.inOut), Key(1300, 520)))
+                    .allowsHitTesting(false)
+            }
+        }
+        .clipped()
+        .accessibilityElement(children: .combine)
     }
 }

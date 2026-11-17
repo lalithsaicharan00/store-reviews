@@ -35,7 +35,7 @@ final class ProgressUITests: XCTestCase {
         let menu = app.buttons["menu-button"]
         XCTAssertTrue(menu.waitForExistence(timeout: 10))
         menu.tap()
-        let row = app.buttons["menu-progress"]
+        let row = app.menuRow("progress")
         XCTAssertTrue(row.waitForExistence(timeout: 3))
         row.tap()
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5), "Progress opens from the menu")

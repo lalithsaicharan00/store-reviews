@@ -63,8 +63,8 @@ final class AppLockUITests: XCTestCase {
     private func openPrivacy(_ app: XCUIApplication) {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 15), labels(app))
         app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-privacy"].waitForExistence(timeout: 5))
-        app.buttons["menu-privacy"].tap()
+        XCTAssertTrue(app.menuRow("privacy").waitForExistence(timeout: 5))
+        app.menuRow("privacy").tap()
         XCTAssertTrue(app.navigationBars["Privacy & Security"].waitForExistence(timeout: 5), labels(app))
     }
 

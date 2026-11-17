@@ -31,3 +31,27 @@ struct EmptyToday: View {
         .restoresBackupFile(restore)
     }
 }
+
+/// Figma's Today, Nothing planned (791:35769): there are habits, but none on this day. The same `ContentUnavailableView`
+/// as the empty Today, with New Habit as its one action and no restore (the habits are here).
+struct NothingPlanned: View {
+    let isToday: Bool
+    var onNewHabit: () -> Void
+
+    var body: some View {
+        ContentUnavailableView {
+            Label(isToday ? "Nothing Planned Today" : "Nothing Planned", systemImage: "calendar.badge.checkmark")
+        } description: {
+            Text("Your habits are planned for other days. Each shows up on its days.")
+        } actions: {
+            Button(action: onNewHabit) {
+                Text("New Habit").foregroundStyle(Color.onInk)
+            }
+            .buttonStyle(.borderedProminent)
+            .controlSize(.large)
+            .accessibilityIdentifier("nothing-planned-new-habit")
+        }
+        .tint(.ink)
+        .background(Color(.systemGroupedBackground))
+    }
+}

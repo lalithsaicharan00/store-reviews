@@ -38,10 +38,11 @@ struct MilestoneMoment: Identifiable, Equatable {
         supporting = first ? "\(title) · \(habit.name)"
             : again ? "\(habit.name) · back to an earlier run" : "\(habit.name) · reached today"
         let k = unit.nextMilestone(after: value)
-        let detail = "\(k - value) to go · now \(value)"
+        // Figma's pop-up card (853:45930): "Next · 4 to go · now 3".
+        let left = "\(k - value) to go · now \(value)"
         next = MilestoneNext(track: .inARow, target: k, number: "\(k)", title: unit.inARow(k),
-                             pageTitle: "Next: " + unit.inARow(k), detail: detail,
-                             fraction: Double(value) / Double(k), spoken: "Next: \(unit.inARow(k)), \(detail).")
+                             pageTitle: "Next: " + unit.inARow(k), detail: "Next · " + left,
+                             fraction: Double(value) / Double(k), spoken: "Next: \(unit.inARow(k)), \(left).")
     }
 }
 

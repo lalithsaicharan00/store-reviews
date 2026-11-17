@@ -33,7 +33,7 @@ final class WeekCardsUITests: XCTestCase {
         let menu = app.buttons["menu-button"]
         XCTAssertTrue(menu.waitForExistence(timeout: 10))
         menu.tap()
-        let row = app.buttons["menu-progress"]
+        let row = app.menuRow("progress")
         XCTAssertTrue(row.waitForExistence(timeout: 3))
         row.tap()
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 5))
@@ -106,8 +106,8 @@ final class WeekCardsUITests: XCTestCase {
         let bar = app.navigationBars["Progress"]
         if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() } else { bar.buttons.element(boundBy: 0).tap() }
         sleep(1)
-        let menu = app.buttons["menu-progress"]
-        if !menu.waitForExistence(timeout: 3) { app.buttons["menu-button"].tap() }
+        if !app.buttons["menu-progress"].waitForExistence(timeout: 2), !app.buttons["menu-settings"].exists { app.buttons["menu-button"].tap() } // Back lands on Settings
+        let menu = app.menuRow("progress")
         XCTAssertTrue(menu.waitForExistence(timeout: 3))
         menu.tap()
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))

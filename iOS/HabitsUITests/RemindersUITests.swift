@@ -4,7 +4,7 @@ final class RemindersUITests: XCTestCase {
     override func setUp() { continueAfterFailure = false }
     private func open(_ app: XCUIApplication) {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        app.buttons["menu-button"].tap(); app.buttons["menu-reminders"].tap()
+        app.buttons["menu-button"].tap(); app.menuRow("reminders").tap()
         XCTAssertTrue(app.navigationBars["Reminders"].waitForExistence(timeout: 5))
     }
     func testPlanningActionsPermissionsFailuresAndClockChanges() {

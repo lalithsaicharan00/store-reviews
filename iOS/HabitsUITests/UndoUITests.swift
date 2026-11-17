@@ -33,7 +33,7 @@ final class UndoUITests: XCTestCase {
         let menu = app.buttons["menu-button"]
         XCTAssertTrue(menu.waitForExistence(timeout: 5))
         menu.tap()
-        let row = app.buttons["menu-habits"]
+        let row = app.buttons["menu-habitsAndTasks"]
         XCTAssertTrue(row.waitForExistence(timeout: 3))
         row.tap()
     }

@@ -178,16 +178,16 @@ final class WidgetUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-privacy"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.menuRow("privacy").waitForExistence(timeout: 5))
         XCTAssertFalse(app.buttons["menu-widgets"].exists, "No Widgets page in the menu any more")
-        app.buttons["menu-help"].tap()
+        app.menuRow("help").tap()
         XCTAssertTrue(app.navigationBars["Help & Feedback"].waitForExistence(timeout: 5))
         let kinds = app.descendants(matching: .any)["help-topic-Which widgets are there?"]
         for _ in 0..<8 where !kinds.isHittable { app.swipeUp() }
         XCTAssertTrue(kinds.isHittable, "Help → Widgets lists the widgets")
         XCTAssertFalse(app.staticTexts["See Plus"].exists, "No Plus restrictions on widgets for now (the user, 6 Oct 2026)")
-        app.navigationBars.buttons.element(boundBy: 0).tap()
-        app.buttons["menu-button"].tap(); app.buttons["menu-privacy"].tap()
+        app.navigationBars.buttons.element(boundBy: 0).tap() // back to Settings
+        app.menuRow("privacy").tap()
         XCTAssertTrue(app.navigationBars["Privacy & Security"].waitForExistence(timeout: 5))
         let privacy = app.switches["privacy-hide-names"]
         for _ in 0..<6 where !privacy.isHittable || privacy.frame.maxY > app.frame.maxY - 100 { app.swipeUp() }

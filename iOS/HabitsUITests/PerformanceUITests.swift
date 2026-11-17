@@ -102,8 +102,8 @@ final class PerformanceUITests: XCTestCase {
 
     /// ≡ → Habits (All Habits moved into the menu, 30 Sep 2026).
     private func openHabits() {
-        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habits"])
-        open("Habits", tapping: app.buttons["menu-habits"], until: app.navigationBars["Habits"])
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habitsAndTasks"])
+        open("Habits", tapping: app.buttons["menu-habitsAndTasks"], until: app.navigationBars["Habits"])
     }
 
     func testScrollAllHabits() {
@@ -113,14 +113,16 @@ final class PerformanceUITests: XCTestCase {
     }
 
     func testTasksPage() {
-        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
-        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habitsAndTasks"])
+        app.openTasksFromMenu()
+        _ = app.navigationBars["Tasks"].waitForExistence(timeout: 5)
         ready(); keepGoing(scrollUpAndDown)
     }
 
     func testTaskEdit() {
-        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-tasks"])
-        open("Tasks", tapping: app.buttons["menu-tasks"], until: app.navigationBars["Tasks"])
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habitsAndTasks"])
+        app.openTasksFromMenu()
+        _ = app.navigationBars["Tasks"].waitForExistence(timeout: 5)
         let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
         open("Task", tapping: task, until: app.buttons["Edit"])
         open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])
@@ -128,14 +130,14 @@ final class PerformanceUITests: XCTestCase {
     }
 
     func testRemindersPage() {
-        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-reminders"])
-        open("Reminders", tapping: app.buttons["menu-reminders"], until: app.navigationBars["Reminders"])
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-settings"])
+        open("Reminders", tapping: app.menuRow("reminders"), until: app.navigationBars["Reminders"])
         ready(); keepGoing(scrollUpAndDown)
     }
 
     func testBackupPage() {
-        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-backup"])
-        open("iCloud & Backup", tapping: app.buttons["menu-backup"], until: app.navigationBars["iCloud & Backup"])
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-settings"])
+        open("iCloud & Backup", tapping: app.menuRow("backup"), until: app.navigationBars["iCloud & Backup"])
         ready()
         keepGoing(scrollUpAndDown)
     }
@@ -213,8 +215,8 @@ final class PerformanceUITests: XCTestCase {
 
     /// ≡ → Progress.
     private func openProgress() {
-        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-progress"])
-        open("Progress", tapping: app.buttons["menu-progress"], until: app.staticTexts["progress-period"])
+        open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-settings"])
+        open("Progress", tapping: app.menuRow("progress"), until: app.staticTexts["progress-period"])
     }
 
     func testCalendarMonths() {

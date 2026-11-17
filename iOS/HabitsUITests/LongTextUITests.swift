@@ -99,16 +99,15 @@ final class LongTextUITests: XCTestCase {
         shot("04-today-folded")
         app.swipeUp()
         shot("05-today-folded-scrolled")
-        // Times of day are arranged in Edit now (3 Oct 2026); a long name keeps its whole time line and ··· menu.
+        // Routines are edited from Edit Today (17 Nov 2026); a long name keeps its hours and its Edit.
         let edit = app.buttons["arrange-button"]
         XCTAssertTrue(edit.waitForExistence(timeout: 3))
         edit.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["arrange-heading"].waitForExistence(timeout: 3))
-        shot("06-arrange-your-day")
-        let options = app.buttons["arrange-menu-Before breakfast"]
+        XCTAssertTrue(app.navigationBars["Edit Today"].waitForExistence(timeout: 3))
+        shot("06-edit-today")
+        let options = app.buttons["arrange-edit-Before breakfast"]
         app.reveal(options)
         options.tap()
-        app.buttons["Change Time"].tap()
         XCTAssertTrue(app.navigationBars["Edit Time of Day"].waitForExistence(timeout: 3))
         shot("07-section-editor")
         let field = app.textFields["section-name-field"]

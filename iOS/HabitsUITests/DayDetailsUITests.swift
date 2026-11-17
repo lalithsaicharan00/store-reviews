@@ -630,8 +630,8 @@ final class DayDetailsUITests: XCTestCase {
                                  ("Skincare", "checklist", "Tick steps"), ("Call family", "weekly", "Add a check")] {
             launch(fixture: false, dark: true)
             app.buttons["menu-button"].tap()
-            XCTAssertTrue(app.buttons["menu-habits"].waitForExistence(timeout: 3))
-            app.buttons["menu-habits"].tap()
+            XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 3))
+            app.buttons["menu-habitsAndTasks"].tap()
             app.revealAndTap(app.staticTexts[name])
             let history = app.buttons["history-add-entry"]
             XCTAssertTrue(history.waitForExistence(timeout: 5))

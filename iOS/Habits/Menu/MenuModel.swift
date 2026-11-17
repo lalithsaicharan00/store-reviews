@@ -52,9 +52,11 @@ import SwiftUI
     }
 }
 
-/// Every row in the ≡ menu, most used first. The names are the pages' titles, so a row and the page it opens always
-/// say the same thing.
+/// Every page the ≡ menu reaches. The names are the pages' titles, so a row and the page it opens always say the same
+/// thing. The menu itself (Figma's Side menu, 17 Nov 2026) lists Habits & Tasks, Plus and Settings; the rest are
+/// Settings' rows (`settingsGroups`).
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
+    case habitsAndTasks, settings
     case progress, habits, tasks
     case timesOfDay, dayAndWeek, reminders, appearance
     case backup, privacy
@@ -66,11 +68,14 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     /// The menu's groups, separated by a gap like the iPhone's own Settings, ordered by importance: daily places, how the
     /// app works, your data (iCloud and backups matter to everyone, privacy to many), Plus, then Help and About. There's
     /// no account: iCloud & Backup replaced Account and Backup & Export (Architecture 11 §17, 10 Oct 2026).
-    static let groups: [[MenuPlace]] = [[.progress, .habits, .tasks], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
-                                        [.backup, .privacy], [.plus], [.help, .about]]
+    /// Settings' rows, until Settings is built from its own Figma page: every page the menu used to list.
+    static let settingsGroups: [[MenuPlace]] = [[.progress], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
+                                                [.backup, .privacy], [.help, .about]]
 
     var title: String {
         switch self {
+        case .habitsAndTasks: "Habits & Tasks"
+        case .settings: "Settings"
         case .progress: "Progress"
         case .habits: "Habits"
         case .tasks: "Tasks"
@@ -89,6 +94,8 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     /// Monochrome: colour belongs to habits only (Build Plan #11).
     var symbol: String {
         switch self {
+        case .habitsAndTasks: "checklist"
+        case .settings: "gearshape"
         case .progress: "chart.bar.xaxis"
         case .habits: "checklist"
         case .tasks: "list.bullet"
@@ -112,7 +119,7 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
         case .privacy: "Lock the app, hide names outside it, and choose what's shared."
         case .help: "Answers to common questions, and a way to reach us."
         case .about: "The privacy policy and terms."
-        case .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .plus: nil
+        case .habitsAndTasks, .settings, .progress, .habits, .tasks, .timesOfDay, .dayAndWeek, .appearance, .plus: nil
         }
     }
 }

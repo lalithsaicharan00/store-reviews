@@ -39,7 +39,7 @@ final class HabitPageUITests: XCTestCase {
         let bar = app.navigationBars.firstMatch
         if !app.navigationBars["Habits"].exists {
             if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() }
-            let habits = app.buttons["menu-habits"]
+            let habits = app.buttons["menu-habitsAndTasks"]
             if !habits.exists {
                 app.buttons["menu-button"].tap()
                 // The first tap can land while the year demo is still being saved: try the ≡ once more.

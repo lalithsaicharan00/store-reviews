@@ -53,10 +53,11 @@ struct Playback<Content: View>: View {
     let content: (Double) -> Content
     @State private var ms: Double
 
-    init(duration: Double, @ViewBuilder content: @escaping (Double) -> Content) {
+    /// `atRest`: shown at its end from the first frame (it played already, e.g. a row scrolled away and back).
+    init(duration: Double, atRest: Bool = false, @ViewBuilder content: @escaping (Double) -> Content) {
         self.duration = duration
         self.content = content
-        _ms = State(initialValue: UIAccessibility.isReduceMotionEnabled ? duration : 0)
+        _ms = State(initialValue: atRest || UIAccessibility.isReduceMotionEnabled ? duration : 0)
     }
 
     var body: some View {

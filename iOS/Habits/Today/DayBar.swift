@@ -10,7 +10,13 @@ struct DayLabel: View {
         HStack(spacing: 10) {
             MiniRing(progress: total == 0 ? 0 : Double(done) / Double(total)).frame(width: 20, height: 20)
             HStack(spacing: 5) {
-                Text(label).font(.body.weight(.semibold))
+                // A slot as wide as the widest date ("28 May"), the words centred, so the ring and the count never
+                // move as the day changes (Rulebook, 10 Nov 2026).
+                ZStack {
+                    Text("28 May").hidden().accessibilityHidden(true)
+                    Text(label)
+                }
+                .font(.body.weight(.semibold))
                 Image(systemName: "chevron.down").font(.footnote.weight(.bold))
             }
             Text("\(done)/\(total)").font(.subheadline.weight(.semibold).monospacedDigit()).foregroundStyle(.secondary)

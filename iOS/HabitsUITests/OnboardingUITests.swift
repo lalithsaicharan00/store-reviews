@@ -103,7 +103,7 @@ final class OnboardingUITests: XCTestCase {
         launch(onboarding: false, extra: ["-clock-hour", "1"])
         XCTAssertTrue(emptyToday.waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        app.buttons["menu-dayAndWeek"].tap()
+        app.menuRow("dayAndWeek").tap()
         let dayStart = app.buttons["day-start-picker"]
         XCTAssertTrue(dayStart.waitForExistence(timeout: 5))
         dayStart.tap()
@@ -132,7 +132,7 @@ final class OnboardingUITests: XCTestCase {
         launch(onboarding: false)
         XCTAssertTrue(emptyToday.waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        app.buttons["menu-help"].tap()
+        app.menuRow("help").tap()
         XCTAssertTrue(app.navigationBars["Help & Feedback"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["help-contact"].exists)
 
@@ -162,7 +162,7 @@ final class OnboardingUITests: XCTestCase {
         launch(onboarding: false)
         XCTAssertTrue(emptyToday.waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        app.buttons["menu-about"].tap()
+        app.menuRow("about").tap()
         XCTAssertTrue(app.navigationBars["About"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["about-version"].label.hasPrefix("Version "))
     }

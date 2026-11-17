@@ -54,7 +54,7 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         launch(["-test-cloud", "synced"])
         tap(app.buttons["menu-button"], "≡")
         shot("D01-sidebar")
-        tap(app.buttons["menu-backup"], "iCloud & Backup")
+        tap(app.menuRow("backup"), "iCloud & Backup")
         XCTAssertTrue(app.navigationBars["iCloud & Backup"].waitForExistence(timeout: 5))
         shot("D03-icloud-backup-top")
 
@@ -93,7 +93,7 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
         shot("E01-plus")
         back()
         tap(app.buttons["menu-button"], "≡")
-        tap(app.buttons["menu-privacy"], "Privacy")
+        tap(app.menuRow("privacy"), "Privacy")
         shot("E03-privacy")
     }
 }

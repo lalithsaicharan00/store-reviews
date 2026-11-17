@@ -62,7 +62,7 @@ final class SmallScreenUITests: XCTestCase {
         app.launchArguments = ["-uitest", "-year-demo", "-appearance.theme", "dark"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10), "Today")
-        let habits = app.buttons["menu-habits"]
+        let habits = app.buttons["menu-habitsAndTasks"]
         app.buttons["menu-button"].tap()
         if !habits.waitForExistence(timeout: 5) { app.buttons["menu-button"].tap() }
         XCTAssertTrue(habits.waitForExistence(timeout: 10), "The ≡ menu")
@@ -208,8 +208,8 @@ final class SmallScreenUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
-        XCTAssertTrue(app.buttons["menu-privacy"].waitForExistence(timeout: 5))
-        app.buttons["menu-privacy"].tap()
+        XCTAssertTrue(app.menuRow("privacy").waitForExistence(timeout: 5))
+        app.menuRow("privacy").tap()
         XCTAssertTrue(app.buttons["privacy-app-lock"].waitForExistence(timeout: 5))
         app.buttons["privacy-app-lock"].tap()
         let lock = app.switches["privacy-lock"]
@@ -241,8 +241,8 @@ final class SmallScreenUITests: XCTestCase {
             app.launch()
             XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
             app.buttons["menu-button"].tap()
-            XCTAssertTrue(app.buttons["menu-backup"].waitForExistence(timeout: 5))
-            app.buttons["menu-backup"].tap()
+            XCTAssertTrue(app.menuRow("backup").waitForExistence(timeout: 5))
+            app.menuRow("backup").tap()
             let action = app.buttons[state == "full" ? "cloud-manage-storage" : state == "held" ? "cloud-apply-held" : "cloud-sync-now"]
             XCTAssertTrue(action.waitForExistence(timeout: 20), "\(state): \(frames(["cloud-status"]))")
             XCTAssertLessThanOrEqual(action.frame.maxY, window.maxY, "\(state): \(frames(["cloud-status", "cloud-sync-now", "cloud-manage-storage", "cloud-apply-held"]))")
@@ -273,8 +273,8 @@ final class SmallScreenUITests: XCTestCase {
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
         app.buttons["menu-button"].tap()
         // At this text size the menu is taller than the SE: scroll it (not Today) to Privacy & Security.
-        if !app.buttons["menu-privacy"].waitForExistence(timeout: 3) { app.buttons["menu-appearance"].swipeUp() }
-        app.buttons["menu-privacy"].tap()
+        if !app.menuRow("privacy").waitForExistence(timeout: 3) { app.buttons["menu-today"].swipeUp() }
+        app.menuRow("privacy").tap()
         let lockRow = app.buttons["privacy-app-lock"]
         XCTAssertTrue(lockRow.waitForExistence(timeout: 5))
         XCTAssertTrue(lockRow.frame.maxY <= window.maxY, "The App Lock row on screen: \(lockRow.frame)")
@@ -374,7 +374,7 @@ final class SmallScreenUITests: XCTestCase {
         app.navigationBars["New"].buttons["Cancel"].tap()
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
-        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-appearance"].swipeUp() }
+        if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-today"].swipeUp() }
         row.tap()
         fits(["plan-plus", "plus-buy", "plus-restore"], "The Plus page")
         shot("se-plus-page")
