@@ -224,6 +224,7 @@ final class AppModel {
             if ProcessInfo.processInfo.arguments.contains("-widget-fixture") { await WidgetFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
+            if ProcessInfo.processInfo.arguments.contains("-tasks-page-fixture") { await TasksPageFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-plus-fixture") { await PlusFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-day-details-fixture") { await DayDetailsFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-focus-fixture") {

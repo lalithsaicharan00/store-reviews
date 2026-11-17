@@ -29,10 +29,14 @@ extension XCUIApplication {
         XCTAssertTrue(habitsPage.waitForExistence(timeout: 5), "Habits & Tasks opens")
     }
 
+    /// Habits & Tasks › Tasks (Figma 999:1061): its One-time | Repeating control in the bottom bar says it's open.
+    var tasksPage: XCUIElement { segmentedControls["tasks-plan"] }
+
     /// Habits & Tasks, on its Tasks side.
     func openTasksFromMenu() {
         buttons["menu-habitsAndTasks"].tap()
         let tasks = segmentedControls["habits-tasks-picker"].buttons["Tasks"]
         if tasks.waitForExistence(timeout: 5) { tasks.tap() }
+        _ = tasksPage.waitForExistence(timeout: 5)
     }
 }

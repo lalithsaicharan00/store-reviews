@@ -115,14 +115,14 @@ final class PerformanceUITests: XCTestCase {
     func testTasksPage() {
         open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habitsAndTasks"])
         app.openTasksFromMenu()
-        _ = app.navigationBars["Tasks"].waitForExistence(timeout: 5)
+        _ = app.tasksPage.waitForExistence(timeout: 5)
         ready(); keepGoing(scrollUpAndDown)
     }
 
     func testTaskEdit() {
         open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habitsAndTasks"])
         app.openTasksFromMenu()
-        _ = app.navigationBars["Tasks"].waitForExistence(timeout: 5)
+        _ = app.tasksPage.waitForExistence(timeout: 5)
         let task = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Pay the phone bill'")).firstMatch
         open("Task", tapping: task, until: app.buttons["Edit"])
         open("Edit Task", tapping: app.buttons["Edit"], until: app.navigationBars["Edit Task"])

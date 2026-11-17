@@ -241,10 +241,12 @@ struct DaySheet: View {
 }
 
 /// Another Day…: the system calendar showing only the days the task can move to (no message about the others).
-private struct RescheduleSheet: View {
+struct RescheduleSheet: View {
     let range: ClosedRange<LocalDay>
     /// The day the task is on now: Move stays off until another day is picked.
     let current: LocalDay
+    /// "Another Day" from Day details; "Pick a Day" from the Tasks page's More button.
+    var title = "Another Day"
     let onMove: (LocalDay) -> Void
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
@@ -253,7 +255,8 @@ private struct RescheduleSheet: View {
     var body: some View {
         let c = store.calendar
         let first = range.lowerBound.date(calendar: c)
-        let selection = picked ?? first
+        // Opens on the day the task is on, when it can stay there; on the first day it can move to otherwise.
+        let selection = picked ?? (range.contains(current) ? current.date(calendar: c) : first)
         NavigationStack {
             VStack(spacing: 0) {
                 DatePicker("Day", selection: Binding(get: { selection }, set: { picked = $0 }),
@@ -264,7 +267,7 @@ private struct RescheduleSheet: View {
                     .accessibilityIdentifier("reschedule-calendar")
                 Spacer(minLength: 0)
             }
-                .navigationTitle("Another Day")
+                .navigationTitle(title)
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }

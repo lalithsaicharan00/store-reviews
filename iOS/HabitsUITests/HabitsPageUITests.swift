@@ -51,8 +51,7 @@ final class HabitsPageUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Archived Habits"].waitForExistence(timeout: 5))
         let row = app.buttons["archived-Stretch"]
         XCTAssertTrue(row.waitForExistence(timeout: 5), "Stretch is archived")
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Archived '")).firstMatch.exists,
-                      "Its row says when it was archived")
+        XCTAssertTrue(row.label.contains("Archived "), "Its row says when it was archived: \(row.label)")
         shot("archived-01-list")
         // ⋯ › Restore: the banner says so, and Undo puts it back.
         app.buttons["archived-more-Stretch"].tap()

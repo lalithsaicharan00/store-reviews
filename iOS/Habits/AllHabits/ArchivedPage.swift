@@ -42,7 +42,7 @@ struct ArchivedPage: View {
                     Label("No Archived \(noun)", systemImage: "shippingbox.fill")
                 } description: {
                     Text(kind == .habits ? "When you archive a habit, it waits here with its history."
-                                         : "When you archive a task, it waits here.")
+                                         : "When you archive a task, it waits here with its history.")
                 }
             } else {
                 List {
@@ -50,7 +50,7 @@ struct ArchivedPage: View {
                         ForEach(items) { row($0) }
                     } header: {
                         Text(kind == .habits ? "Archived habits keep everything they had. They’re off Today and send no reminders."
-                                             : "Archived tasks keep everything they had. They’re off Today and send no reminders.")
+                                             : "Archived tasks keep their history. They’re off Today and the Tasks list.")
                             .font(.body)
                             .foregroundStyle(Color(.secondaryLabel))
                             .textCase(nil)

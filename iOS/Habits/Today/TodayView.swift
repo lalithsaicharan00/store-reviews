@@ -69,6 +69,8 @@ struct TodayView: View {
             // Every place in the ≡ menu is pushed here, so Back and the edge swipe return to Today.
             .analyticsScreen(.today)
             .navigationDestination(for: MenuPlace.self) { MenuPage(place: $0) }
+            // A habit opened by a Shortcut, over Habits & Tasks.
+            .navigationDestination(for: UUID.self) { HabitPageView(id: $0) }
             .navigationDestination(for: HelpLink.self) { HelpView(open: $0.topic).analyticsScreen(.help) }
             // Open Habit Page from a row's touch-and-hold menu: the page on Today's own stack, Back returns to Today.
             .navigationDestination(for: HabitPageRoute.self) { HabitPageView(id: $0.id, milestones: $0.milestones) }
@@ -246,7 +248,7 @@ struct TodayView: View {
         guard let id = router.openHabit, routine == nil, !showNewHabit else { return }
         router.openHabit = nil
         menu.reset()
-        menu.path.append(MenuPlace.habits)
+        menu.path.append(MenuPlace.habitsAndTasks)
         menu.path.append(id)
     }
 
@@ -347,7 +349,7 @@ struct TodayView: View {
         case .nextDay:
             let next = selectedDay.adding(days: 1, calendar: store.calendar)
             day = next == store.today() ? nil : next
-        case .openAllHabits: menu.path.append(MenuPlace.habits) // Habits lives in the ≡ menu now
+        case .openAllHabits: menu.path.append(MenuPlace.habitsAndTasks) // Habits & Tasks, in the ≡ menu
         case .openWidgets: menu.path.append(HelpLink(topic: HelpTopics.chooseHabitForWidget))
         case .openPlace(let place): menu.path.append(place)
         case .openBlank: menu.path.append(PerfBlankPage())

@@ -252,25 +252,34 @@ struct SettingsPage: View {
 /// Tasks is always in view; then that list. The bar is ☰ and + with no title: the control says where you are. A place
 /// the menu opens stands in for Today, so ☰ opens the menu again rather than Back.
 struct HabitsAndTasksPage: View {
+    enum Kind { case habits, tasks }
+
     @Environment(HabitStore.self) private var store
     @Environment(MenuModel.self) private var menu
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var kind: AllHabitsView.Kind = .habits
+    @State private var kind: Kind
     @State private var adding = false
     @State private var added: UUID?
     @State private var searching = false
+    /// Speed runs: a habit page opened by `PerfDriver`.
+    @State private var perfPage: UUID?
+
+    /// `start` is the side it opens on: Tasks from a speed run's `.tasks` place, Habits otherwise.
+    init(start: Kind = .habits) {
+        _kind = State(initialValue: start)
+    }
 
     var body: some View {
         Group {
             switch kind {
             case .habits: HabitsPage(added: $added)
-            case .tasks: AllHabitsView(kind: .tasks)
+            case .tasks: TasksPage(added: $added)
             }
         }
         .pinnedUnderBar {
             Picker("Show", selection: $kind) {
-                Text("Habits").tag(AllHabitsView.Kind.habits)
-                Text("Tasks").tag(AllHabitsView.Kind.tasks)
+                Text("Habits").tag(Kind.habits)
+                Text("Tasks").tag(Kind.tasks)
             }
             .pickerStyle(.segmented)
             .controlSize(.large)
@@ -295,6 +304,10 @@ struct HabitsAndTasksPage: View {
             }
         }
         .navigationDestination(for: ArchivedHabitsLink.self) { _ in ArchivedPage(kind: .habits) }
+        .navigationDestination(item: $perfPage) { HabitPageView(id: $0) }
+        .onPerfCommand { action in
+            if case .openHabit(let name) = action { perfPage = store.habits.first { $0.name == name }?.id }
+        }
         .fullScreenCover(isPresented: $searching) {
             HabitsSearch { id in
                 added = id
@@ -303,7 +316,7 @@ struct HabitsAndTasksPage: View {
         }
         .sheet(isPresented: $adding) {
             if kind == .tasks {
-                NavigationStack { HabitForm(type: .task, onSaved: { _ in adding = false }) }
+                NavigationStack { HabitForm(type: .task, onSaved: { id in adding = false; added = id }) }
             } else {
                 NewItemView { added = $0 }
             }
@@ -337,8 +350,8 @@ struct MenuPage: View {
         case .habitsAndTasks: HabitsAndTasksPage()
         case .settings: SettingsPage()
         case .progress: ProgressScreen()
-        case .habits: AllHabitsView(kind: .habits)
-        case .tasks: AllHabitsView(kind: .tasks)
+        case .habits: HabitsAndTasksPage()
+        case .tasks: HabitsAndTasksPage(start: .tasks)
         case .timesOfDay: TimesOfDayList()
         case .dayAndWeek: DayAndWeekView()
         case .appearance: AppearanceView()
