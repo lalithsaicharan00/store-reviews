@@ -406,7 +406,7 @@ final class WidgetLatencyDeviceTests: XCTestCase {
         app.buttons["Close"].firstMatch.tap()
         Thread.sleep(forTimeInterval: 2)
         save("2-after-close")
-        XCTAssertFalse(app.staticTexts["Add log"].exists, "The earlier log sheet came back")
+        XCTAssertFalse(app.staticTexts["Add Log"].exists, "The earlier log sheet came back")
         app.terminate()
     }
 

@@ -2,24 +2,25 @@ import SwiftUI
 
 /// One habit's timer, full screen (the user, 4 Oct 2026: "it just runs in the row… it isn't intuitive"; report
 /// "Timers — What People Expect When They Tap ▶"). ▶ on Today starts the timer at once and opens this. It is never a
-/// trap: swipe down or ⌄ puts it away and the timer keeps running in its row, in the bar at the bottom of Today and on
+/// trap: swipe down or ✕ puts it away and the timer keeps running in its row, in the bar at the bottom of Today and on
 /// the Lock Screen. Users show both sides: a big timer to focus on is asked for, a timer screen you can't leave is a
 /// complaint. ≡ → Appearance → Timers turns the screen off (▶ then only starts the timer in the row).
 struct TimerScreen: View {
     let habitID: UUID
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
-    @ScaledMetric(relativeTo: .body) private var buttonGap = 16.0
     @State private var showLog = false
-    /// The timer ran when Log manually opened; it runs again when that sheet closes (as in the routine player).
+    /// Day Details, from the button under the name: the same sheet a Today row opens, for today.
+    @State private var showDay = false
+    /// The timer ran when Log Time opened; it runs again when that sheet closes (as in the routine player).
     @State private var resumeAfterLog = false
     /// The part of the day the timer was started for, kept so Resume counts toward the same one.
     @State private var slot: String?
 
     private var habit: Habit? { store.habits.first { $0.id == habitID && !$0.archived } }
 
+    // Figma's Timer screen (705:7745): a sheet of one height (no handle), "Timer" over the day it counts toward, ✕ to put
+    // it away. The name, Day Details, the ring and "Paused" under it; Log Time | ⏸ at the bottom, as on Day details.
     var body: some View {
         NavigationStack {
             Group {
@@ -27,23 +28,27 @@ struct TimerScreen: View {
                     ContentUnavailableView("This habit is no longer here", systemImage: "timer")
                 }
             }
-            .background(Color(.systemGroupedBackground))
+            .background(Color(.systemBackground))
+            .navigationTitle("Timer")
+            .timerSubtitle(habit.map(FocusProgressValue.period) ?? "")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
+                ToolbarItem(placement: .topBarLeading) {
                     // Putting it away, not stopping: the name says so to VoiceOver too.
-                    Button { dismiss() } label: { Label("Close", systemImage: "chevron.down") }
+                    Button("Close", systemImage: "xmark") { dismiss() }
                         .accessibilityLabel(store.timers[habitID] == nil ? "Close" : "Close, the timer keeps running")
                         .accessibilityIdentifier("timer-screen-close")
                 }
             }
         }
         .tint(.ink)
-        .presentationDragIndicator(.visible)
         .accessibilityIdentifier("timer-screen")
         .onAppear { slot = store.timerSlots[habitID] }
         .sheet(isPresented: $showLog, onDismiss: logFinished) {
             if let habit { AddLogView(habit: habit, day: store.today(), source: .manual) }
+        }
+        .sheet(isPresented: $showDay) {
+            if let habit { DaySheet(habit: habit, day: store.today()) }
         }
     }
 
@@ -60,35 +65,39 @@ struct TimerScreen: View {
                         .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                         .accessibilityAddTraits(.isHeader)
                         .accessibilityIdentifier("timer-screen-name")
-                    Text(FocusProgressValue.period(habit))
-                        .font(.subheadline).foregroundStyle(.secondary)
+                    DayDetailsButton { showDay = true }
                 }
                 .padding(.horizontal, 24)
-                Spacer(minLength: 24)
-                // Figma's Timer ring is 260 across; a narrow screen keeps 36 at each side.
-                FocusClock(habit: habit, day: day,
-                           diameter: min(max(geometry.size.width - 72, 200), 260)) { openLog(habit) }
-                Spacer(minLength: 24)
-                VStack(spacing: buttonGap) {
-                    // One main button, always in the same place: Pause while it runs, Resume (or Start) when it doesn't.
-                    Button { toggle(habit, running: running) } label: {
-                        Label(running ? "Pause" : started ? "Resume" : "Start", systemImage: running ? "pause.fill" : "play.fill")
-                    }
-                    .modifier(FocusPrimaryButton())
-                    .frame(maxWidth: min(actionWidth, 320))
-                    .transaction { $0.animation = nil }
-                    .accessibilityLabel(running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer")
-                    .accessibilityIdentifier("timer-screen-primary")
-                    // Beside the timer's own button, as on Day details: "Log manually" (7 Oct 2026 words).
-                    Button("Log manually") { openLog(habit) }
-                        .font(.subheadline.weight(.medium))
-                        .frame(minHeight: 44)
-                        .accessibilityIdentifier("timer-screen-log")
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.bottom, 24)
+                Spacer(minLength: 24).frame(maxHeight: 32)
+                // Figma's Timer ring is 270 across; a narrow screen keeps 36 at each side.
+                FocusClock(habit: habit, day: day, diameter: min(max(geometry.size.width - 72, 200), 270),
+                           showsState: false) { openLog(habit) }
+                // Always in its place, unseen while it runs, so Pause moves nothing.
+                Text(started ? "Paused" : "Not started")
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(.top, 20)
+                    .opacity(running ? 0 : 1)
+                    .accessibilityHidden(running)
+                    .accessibilityIdentifier("timer-screen-state")
+                Spacer(minLength: 16)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
+        }
+        .safeAreaInset(edge: .bottom) {
+            HStack(spacing: 8) {
+                DayButton("Log Time", id: "timer-screen-log") { openLog(habit) }
+                // One main button, always in the same place: ⏸ while it runs, ▶ when it doesn't (the symbol alone,
+                // Android A69); it stays Ink at the goal (the habit's colour there is Today's round button's alone).
+                DayButton(running ? "Pause" : started ? "Resume" : "Start", prominent: true,
+                          symbol: running ? "pause.fill" : "play.fill", id: "timer-screen-primary") {
+                    toggle(habit, running: running)
+                }
+                .transaction { $0.animation = nil }
+                .accessibilityLabel(running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer")
+            }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 12)
         }
     }
 
@@ -115,5 +124,28 @@ struct TimerScreen: View {
         guard resumeAfterLog, let habit, store.timers[habit.id] == nil else { resumeAfterLog = false; return }
         resumeAfterLog = false
         if !store.isComplete(habit, on: store.today()) || habit.atMost { store.toggleTimer(habit, slot: slot) }
+    }
+}
+
+/// Figma's Day Details button: Small, Bordered, the calendar symbol, always the words "Day Details" (never Today or a
+/// date). It sits in the page under the habit's name, never in the bar.
+struct DayDetailsButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button("Day Details", systemImage: "calendar", action: action)
+            .font(.subheadline)
+            .buttonStyle(.bordered)
+            .buttonBorderShape(.capsule)
+            .controlSize(.small)
+            .tint(.ink)
+            .accessibilityIdentifier("day-details-button")
+    }
+}
+
+private extension View {
+    /// The day the timer counts toward, under "Timer" (iOS 26's navigation subtitle; earlier iOS shows the title alone).
+    @ViewBuilder func timerSubtitle(_ text: String) -> some View {
+        if #available(iOS 26, *) { navigationSubtitle(text) } else { self }
     }
 }

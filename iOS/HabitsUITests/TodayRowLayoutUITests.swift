@@ -72,23 +72,23 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertLessThan(undo.frame.maxX, add.frame.minX, "Side by side, Undo first")
         shot("l02-after-log")
         add.tap()
-        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 3), "Add Note opens Add note")
+        XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 3), "Add Note opens Add note")
         let field = app.textViews["note-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3))
         for key in ["F", "e", "l", "t", " ", "g", "o", "o", "d"] { field.typeText(key) }
         shot("l03-note-sheet")
         app.buttons["note-save"].tap()
-        XCTAssertTrue(app.navigationBars["Add note"].waitForNonExistence(timeout: 3), "Save closes it")
+        XCTAssertTrue(app.navigationBars["Add Note"].waitForNonExistence(timeout: 3), "Save closes it")
         XCTAssertTrue(app.buttons["habit-edit-note"].waitForExistence(timeout: 3), "Once there's a note: Edit Note")
         XCTAssertFalse(app.staticTexts["Felt good"].exists, "The note's text isn't in the row")
         shot("l04-edit-note")
         app.buttons["habit-edit-note"].tap()
-        XCTAssertTrue(app.navigationBars["Edit note"].waitForExistence(timeout: 3), "Edit Note opens Edit note")
+        XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 3), "Edit Note opens Edit note")
         XCTAssertEqual(app.textViews["note-field"].value as? String, "Felt good", "with the note in it")
         XCTAssertTrue(app.buttons["note-save"].isEnabled, "Save is always on in edit mode")
         app.buttons["record-cancel"].tap()
-        XCTAssertTrue(app.navigationBars["Edit note"].waitForNonExistence(timeout: 3), "✕ with no change closes it")
+        XCTAssertTrue(app.navigationBars["Edit Note"].waitForNonExistence(timeout: 3), "✕ with no change closes it")
     }
 
     /// A task's row opens its own sheet: Done, its date and Do Tomorrow, the note, Edit Task; no day paging.
@@ -104,8 +104,8 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Today"].waitForExistence(timeout: 5), "The task's sheet, titled with the day")
         XCTAssertTrue(app.staticTexts["Old task"].exists, "The task's name, once, in its identity row")
         let done = app.buttons["day-done"]
-        XCTAssertTrue(done.exists, "Mark done")
-        XCTAssertEqual(done.label, "Mark done")
+        XCTAssertTrue(done.exists, "Mark Done")
+        XCTAssertEqual(done.label, "Mark Done")
         XCTAssertFalse(app.buttons["day-open-page"].exists, "A task has no habit page to open")
         XCTAssertFalse(app.buttons["day-skip"].exists, "A task has no Skip")
         XCTAssertTrue(app.buttons["day-add-note"].exists, "Its note for the day")
@@ -134,7 +134,7 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertTrue(app.buttons["day-add-note"].exists, "The note stays after the task is done")
         shot("l05c-task-done")
         app.buttons["Undo done"].tap()
-        XCTAssertTrue(app.buttons["Mark done"].waitForExistence(timeout: 3), "Undo done takes it back")
+        XCTAssertTrue(app.buttons["Mark Done"].waitForExistence(timeout: 3), "Undo done takes it back")
         for _ in 0..<4 where !(tomorrow.exists && tomorrow.isHittable) { form.swipeUp(velocity: .slow) }
         tomorrow.tap()
         XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3), "Do Tomorrow closes it")
@@ -155,7 +155,7 @@ final class TodayRowLayoutUITests: XCTestCase {
         XCTAssertFalse(app.buttons["row-swipe-note"].exists, "One action a side: Note is on the swipe right")
         shot("l06-quit-swipe")
         slip.tap()
-        XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 3), "Log Slip opens Add slip")
+        XCTAssertTrue(app.navigationBars["Add Slip"].waitForExistence(timeout: 3), "Log Slip opens Add slip")
         app.buttons["record-add"].tap()
         let undo = app.buttons["habit-inline-undo"]
         XCTAssertTrue(undo.waitForExistence(timeout: 3), "After a slip: Undo Slip, as after any log")

@@ -1,11 +1,11 @@
 import SwiftUI
 
-/// One saved record: view first, then edit (7 October 2026 redesign; Rulebook U19). A log row opens **Log** (a slip
-/// **Slip**): one card with Habit, Date (fixed) and Time; the value (an amount as one large number, a session's
-/// hours, minutes and seconds, a slip's time zone); "Logged with …"; and **Delete log | Edit** at the bottom. **Edit**
-/// switches to **Edit log** / **Edit slip**: ✕ leaves edit mode (asking first if anything changed), the time becomes a
-/// picker inside that log's own day, the value has the keyboard with the number selected, and **Save**, always on,
-/// sits above the keyboard and returns to the view. Only this record changes: other logs, the note and a skip stay.
+/// One saved record: view first, then edit (Figma's Log screen, View; Rulebook U19). A log row opens **Log** (a slip
+/// **Slip**): Back and Edit in the bar; one card with the habit and When ("Today  2:05 PM", plain words: only being
+/// viewed); the value (an amount as one large number, a session as "2 min 42 s"); where it came from; and **Delete Log**
+/// as a red row of its own, asking first in iOS's alert. **Edit** switches to **Edit Log** / **Edit Slip**: ✕ and Save in
+/// the bar, ✕ asking first if anything changed; the time is iOS's compact picker inside that log's own day; an amount
+/// has the keyboard with its number selected, a session the wheel. Only this record changes: other logs, the note and a skip stay.
 /// The day never changes here: moving a log to another day needs the same record moved between days atomically, which
 /// doesn't exist yet (D7).
 struct LogRecordView: View {
@@ -23,7 +23,6 @@ struct LogRecordView: View {
     @State private var room = ScreenRoom()
     @FocusState private var focus: RecordField?
     @ScaledMetric(relativeTo: .largeTitle) private var numberSize = CustomText.amountSize
-    @ScaledMetric(relativeTo: .title) private var durationSize: CGFloat = 32
 
     init(habit: Habit, entry: Entry) {
         self.habit = habit
@@ -54,23 +53,34 @@ struct LogRecordView: View {
         return Form {
             Section {
                 RecordHabitRow(habit: habit)
-                LabeledContent("Date", value: DayWords.withDate(entry.day, today: store.today(), calendar: store.calendar))
-                    .accessibilityIdentifier("record-date")
-                if editing {
-                    DatePicker(timed ? "Finished at" : "Time", selection: $time, in: timeRange(entry), displayedComponents: .hourAndMinute)
-                        .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
-                        .accessibilityIdentifier("record-time")
-                } else {
-                    LabeledContent(timed ? "Finished at" : "Time", value: store.clockText(of: entry))
-                        .accessibilityIdentifier("record-time")
-                }
-                if isSlip {
-                    LabeledContent("Time zone", value: c.timeZone.localizedName(for: .generic, locale: .current) ?? entry.timeZone)
+                // The day stays the log's own: moving a log to another day isn't built (D7).
+                LabeledContent(timed ? "Finished" : "When") {
+                    HStack(spacing: 8) {
+                        Text(dayWord(entry)).accessibilityIdentifier("record-date")
+                        if editing {
+                            DatePicker("Time", selection: $time, in: timeRange(entry), displayedComponents: .hourAndMinute)
+                                .labelsHidden()
+                                .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
+                                .accessibilityIdentifier("record-time")
+                        } else {
+                            Text(store.clockText(of: entry)).accessibilityIdentifier("record-time")
+                        }
+                    }
                 }
             } footer: {
                 if isSlip { footer(entry) }
             }
             valueSection(entry, ruled: ruled, gaps: gaps)
+            if !editing {
+                Section {
+                    Button(isSlip ? "Delete Slip" : "Delete Log", role: .destructive) {
+                        focus = nil
+                        confirmingDelete = true
+                    }
+                    .foregroundStyle(.red)
+                    .accessibilityIdentifier("record-delete")
+                }
+            }
         }
         .contentMargins(.top, gaps.top, for: .scrollContent)
         .listSectionSpacing(gaps.section)
@@ -79,8 +89,8 @@ struct LogRecordView: View {
         .measuresRoom($room)
         .analyticsScreen(nil)
         // The back control is the chevron alone (the user, 4 Oct 2026).
-        .toolbarRole(.editor)
-        .navigationTitle(editing ? "Edit \(noun)" : (isSlip ? "Slip" : "Log"))
+        .backChevronOnly()
+        .navigationTitle(editing ? (isSlip ? "Edit Slip" : "Edit Log") : (isSlip ? "Slip" : "Log"))
         .navigationBarTitleDisplayMode(.inline)
         // In edit mode ✕ replaces the back chevron, and the edge swipe can't throw the draft away.
         .navigationBarBackButtonHidden(editing)
@@ -92,21 +102,20 @@ struct LogRecordView: View {
                         if changed(entry) { confirmingDiscard = true } else { editing = false }
                     }
                 }
-            }
-        }
-        .safeAreaInset(edge: .bottom) {
-            RecordBottomBar {
-                if editing {
-                    DayButton("Save", prominent: true, id: "record-save") { save(entry) }
-                } else {
-                    RecordDeleteButton(title: "Delete \(noun)", id: "record-delete") { focus = nil; confirmingDelete = true }
-                    DayButton("Edit", prominent: true, id: "record-edit") { startEditing(entry) }
+                // Always on (never a greyed-out Save, U19): a value that can't be saved says why in the footer.
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") { save(entry) }.accessibilityIdentifier("record-save")
+                }
+            } else {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Edit") { startEditing(entry) }.accessibilityIdentifier("record-edit")
                 }
             }
         }
+        // Figma's Alert, Destructive: iOS's own, naming the one record and what stays.
         .alert("Delete this \(noun)?", isPresented: $confirmingDelete) {
             Button("Cancel", role: .cancel) {}
-            Button(isSlip ? "Delete Slip" : "Delete Log", role: .destructive) {
+            Button("Delete", role: .destructive) {
                 // Back first, then the log goes, once the screen has left: removing it first also removed the row this
                 // screen was opened from, SwiftUI took the screen away for that, and this dismiss then closed Day
                 // details as well (CI, 7 Oct 2026). The write follows as for any change (S7).
@@ -124,7 +133,9 @@ struct LogRecordView: View {
         // sometimes never appeared (CI, 5 Oct 2026).
         .alert("Discard your changes to this \(noun)?", isPresented: $confirmingDiscard) {
             Button("Keep Editing", role: .cancel) {}
-            Button("Discard Changes", role: .destructive) { editing = false }
+            Button("Discard", role: .destructive) { editing = false }
+        } message: {
+            Text("The \(noun) stays as it was.")
         }
         .onPerfCommand { action in
             switch action {
@@ -144,14 +155,17 @@ struct LogRecordView: View {
         case .duration:
             Section {
                 if editing {
-                    DurationFields(draft: draft, size: min(durationSize, 44), focus: $focus).padding(.vertical, 6)
+                    // Seconds only on a log that has them (a timer's), so editing never drops them.
+                    DurationWheel(draft: draft, showsSeconds: (Double(draft.seconds) ?? 0) > 0)
+                        .frame(height: 216)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
                 } else {
-                    DurationBoxes(minutes: entry.value, size: min(durationSize, 44)).padding(.vertical, 6)
+                    DurationText(minutes: entry.value).padding(.vertical, 6)
                 }
             } header: {
                 Text("How long")
             } footer: {
-                if !editing || draft.problem != nil || focus == nil || room.keepsFooterWhileTyping { footer(entry) }
+                footer(entry)
             }
         default:
             let check = ruled.kind == .check
@@ -171,7 +185,7 @@ struct LogRecordView: View {
                             .accessibilityLabel(check ? HabitCopy.amount(entry.value, raw) : entry.description(for: ruled))
                             .accessibilityIdentifier("record-value")
                         if currency == nil && !raw.isEmpty {
-                            Text(HabitCopy.unitWord(entry.value, raw)).font(.title3).foregroundStyle(.secondary)
+                            Text(HabitCopy.unitWord(entry.value, raw)).font(.body).foregroundStyle(.secondary)
                                 .accessibilityHidden(true)
                         }
                     }
@@ -181,7 +195,7 @@ struct LogRecordView: View {
             } header: {
                 Text(check ? "Checks" : "Amount")
             } footer: {
-                if !editing || draft.problem != nil || focus == nil || room.keepsFooterWhileTyping { footer(entry) }
+                footer(entry)
             }
         }
     }
@@ -190,7 +204,7 @@ struct LogRecordView: View {
     @ViewBuilder private func footer(_ entry: Entry) -> some View {
         if editing {
             if let problem = draft.problem {
-                Text(problem).accessibilityIdentifier("record-problem")
+                Text(problem).foregroundStyle(.red).accessibilityIdentifier("record-problem")
             } else {
                 Text(isSlip ? "Changing the time updates your quit run." : "Only this \(noun) changes. Other logs stay as they are.")
             }
@@ -216,10 +230,9 @@ struct LogRecordView: View {
         draft = ProgressValueDraft(kind: store.rule(habit, on: entry.day).kind, value: entry.value)
         time = entry.createdAt
         editing = true
-        // The value has the keyboard, its number selected, so typing replaces it (minutes for a session).
+        // An amount has the keyboard, its number selected, so typing replaces it; a session is the wheel.
         switch store.rule(habit, on: entry.day).kind {
-        case .quit: break
-        case .duration: focus = .minutes
+        case .quit, .duration: break
         default: focus = .amount
         }
     }
@@ -230,7 +243,7 @@ struct LogRecordView: View {
         guard changed(entry) else { focus = nil; editing = false; return }
         guard let value = isSlip ? 1 : draft.value else {
             // Nothing saved; the footer says why (never a greyed-out Save).
-            if draft.problem == nil, !isSlip { focus = store.rule(habit, on: entry.day).kind == .duration ? .minutes : .amount }
+            if draft.problem == nil, !isSlip, store.rule(habit, on: entry.day).kind != .duration { focus = .amount }
             return
         }
         focus = nil
@@ -241,9 +254,15 @@ struct LogRecordView: View {
     /// Names the one record and its day, and says what stays (row 18 of the design).
     private func deleteMessage(_ entry: Entry, ruled: Habit) -> String {
         let clock = store.clockText(of: entry)
-        if isSlip { return "The slip at \(clock) is removed, and your quit run is worked out again." }
+        if isSlip { return "The slip at \(clock) will be removed, and your quit run is worked out again." }
         let from = entry.day == store.today() ? "today" : DayWords.short(entry.day, calendar: store.calendar).replacingOccurrences(of: ",", with: "")
-        return "\(entry.description(for: ruled)) at \(clock) is removed from \(from). Your other logs stay."
+        return "\(entry.description(for: ruled)) at \(clock) will be removed from \(from). Your other logs stay."
+    }
+
+    /// "Today", "Yesterday", or the date: the log's day in words, beside its time.
+    private func dayWord(_ entry: Entry) -> String {
+        DayWords.relative(entry.day, today: store.today(), calendar: store.calendar)
+            ?? DayWords.short(entry.day, calendar: store.calendar).replacingOccurrences(of: ",", with: "")
     }
 }
 
@@ -264,27 +283,27 @@ struct AllLogsView: View {
                 ForEach(logs) { entry in
                     DayLogRow(entry: entry, habit: ruled)
                 }
-            } header: {
-                Text(habit.name + " · " + DayLogRow.count(logs.count, habit: ruled))
             } footer: {
                 Text(Self.total(logs, habit: ruled)).accessibilityIdentifier("all-logs-footer")
             }
         }
+        // The list starts just under the bar, as Figma draws it: with no header, iOS's own first gap is empty room.
+        .contentMargins(.top, 4, for: .scrollContent)
         .accessibilityIdentifier("all-logs")
         .analyticsScreen(nil)
-        .toolbarRole(.editor)
+        .backChevronOnly()
         .navigationTitle(DayLogRow.title(ruled, day: day, store: store))
         .navigationBarTitleDisplayMode(.inline)
         .onChange(of: logs.isEmpty) { _, empty in if empty { dismiss() } }
     }
 
-    /// "4 glasses in all. Tap a log to see, change or delete it."
+    /// "4 glasses in all. Tap a log to change or delete it."
     static func total(_ logs: [Entry], habit: Habit) -> String {
         let sum = logs.reduce(0) { $0 + $1.value }
         switch habit.kind {
-        case .amount(let unit, _): return HabitCopy.amount(sum, unit) + " in all. Tap a log to see, change or delete it."
-        case .duration: return Format.minutes(sum) + " in all. Tap a log to see, change or delete it."
-        case .quit: return "Tap a slip to see, change or delete it."
+        case .amount(let unit, _): return HabitCopy.amount(sum, unit) + " in all. Tap a log to change or delete it."
+        case .duration: return Format.minutes(sum) + " in all. Tap a log to change or delete it."
+        case .quit: return "Tap a slip to change or delete it."
         case .check where logs.contains { $0.value != 1 }:
             return HabitCopy.amount(sum, habit.checkUnit ?? "checks") + " in all. Undo takes back that one check."
         default: return "Undo takes back that one check."
@@ -336,9 +355,9 @@ struct DayLogRow: View {
         let isToday = day == store.today()
         let short = DayWords.short(day, calendar: store.calendar).replacingOccurrences(of: ",", with: "")
         switch habit.kind {
-        case .quit: return isToday ? "Slips today" : "Slips on " + short
-        case .check: return isToday ? "Checks today" : "Checks on " + short
-        default: return isToday ? "Today's logs" : "Logs for " + short
+        case .quit: return isToday ? "Slips Today" : "Slips on " + short
+        case .check: return isToday ? "Checks Today" : "Checks on " + short
+        default: return isToday ? "Today’s Logs" : "Logs for " + short
         }
     }
 

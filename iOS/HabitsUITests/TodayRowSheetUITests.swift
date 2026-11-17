@@ -103,7 +103,7 @@ final class TodayRowSheetUITests: XCTestCase {
         let skip = app.buttons["Skip this day"]
         revealInSheet(skip)
         XCTAssertTrue(skip.exists, "Its words are this day's: Skip this day")
-        XCTAssertFalse(app.buttons["Skip today"].exists, "Never \"today\" on yesterday's sheet")
+        XCTAssertFalse(app.buttons["Skip Today"].exists, "Never \"today\" on yesterday's sheet")
         shot("r02-yesterday")
         closeSheet()
     }

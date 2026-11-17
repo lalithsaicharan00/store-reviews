@@ -137,7 +137,7 @@ final class HabitPageUITests: XCTestCase {
         pictures(["Swim", "Smoking"], prefix: "hp-dark", progressShots: 4)
     }
 
-    /// History's Add (named for the kind: "Add log" for Water, an amount; U21), Go to Date, and a month folding and
+    /// History's Add (named for the kind: "Add Log" for Water, an amount; U21), Go to Date, and a month folding and
     /// opening.
     func testHistoryFlows() {
         launch()
@@ -146,20 +146,20 @@ final class HabitPageUITests: XCTestCase {
         let add = app.buttons["history-add-entry"], go = app.buttons["history-go-to-date"]
         let width = app.windows.firstMatch.frame.width
         XCTAssertTrue(add.waitForExistence(timeout: 3) && go.exists)
-        XCTAssertEqual(add.label, "Add log", "Named for what it adds, never Add Entry")
+        XCTAssertEqual(add.label, "Add Log", "Named for what it adds, never Add Entry")
         XCTAssertLessThan(add.frame.width, width * 0.45, "Add log is its own width: \(add.frame)")
         XCTAssertLessThan(go.frame.width, width * 0.45, "Go to Date is its own width: \(go.frame)")
         XCTAssertGreaterThanOrEqual(add.frame.height, 28, "Still a comfortable button: \(add.frame)")
         XCTAssertLessThan(add.frame.height, 50, "Not a large button: \(add.frame)")
         shot("hp-flow-0-history-buttons")
         app.buttons["history-add-entry"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3), "Add log, the same Add as everywhere")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3), "Add log, the same Add as everywhere")
         let amount = app.textFields["record-amount"]
         XCTAssertTrue(amount.waitForExistence(timeout: 3))
         amount.typeText("2")
         shot("hp-flow-1-add-log")
         app.buttons["record-add"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForNonExistence(timeout: 5), "Added and closed")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForNonExistence(timeout: 5), "Added and closed")
         let today = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
         XCTAssertTrue(today.waitForExistence(timeout: 5))
         today.tap()
@@ -282,19 +282,19 @@ final class HabitPageUITests: XCTestCase {
     }
 
     /// A note opens as a view, Note: the habit and its day on one line, which opens that day's Day details (the reader's
-    /// View Day, kept); Edit opens Edit note with Save; Delete note asks first, naming the day (U19, 7 Oct 2026).
+    /// View Day, kept); Edit opens Edit Note with Save; Delete Note asks first, naming the day (U19, 7 Oct 2026).
     func testNoteViewEditAndDelete() {
         launch()
         open("Floss")
         tab("Notes")
         app.buttons["notes-add"].tap()
-        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.descendants(matching: .any)["note-date"].firstMatch.exists, "From the Notes tab, the day can be chosen")
         XCTAssertFalse(app.buttons["note-save"].isEnabled, "Save is off until something is written")
         let field = app.textViews["note-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "Typing first")
-        XCTAssertLessThan(app.buttons["note-save"].frame.maxY, app.keyboards.firstMatch.frame.minY + 1, "Save above the keyboard")
+        XCTAssertLessThan(app.buttons["note-save"].frame.maxY, app.keyboards.firstMatch.frame.minY + 1, "Add, in the bar above the keyboard")
         field.typeText("Flossed at the bus stop.")
         shot("hp-note-add")
         app.buttons["note-save"].tap()
@@ -304,14 +304,14 @@ final class HabitPageUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Note"].waitForExistence(timeout: 3), "A note opens as a view")
         let day = app.buttons["note-view-day"]
         XCTAssertTrue(day.exists, "The date line links to the day")
-        XCTAssertEqual(app.buttons["note-delete"].label, "Delete note")
+        XCTAssertEqual(app.buttons["note-delete"].label, "Delete Note")
         shot("hp-note-view")
         day.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "That day's Day details")
         app.buttons["day-close"].tap()
         XCTAssertTrue(app.navigationBars["Note"].waitForExistence(timeout: 3))
         app.buttons["note-edit"].tap()
-        XCTAssertTrue(app.navigationBars["Edit note"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 3))
         let edit = app.textViews["note-field"]
         XCTAssertTrue(edit.waitForExistence(timeout: 3))
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "Edit opens the keyboard")
@@ -326,7 +326,7 @@ final class HabitPageUITests: XCTestCase {
         XCTAssertTrue(alert.label.contains("Delete this note?"))
         XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Only the note for'")).firstMatch.exists)
         shot("hp-note-delete-asks")
-        alert.buttons["Delete Note"].tap()
+        alert.buttons["Delete"].tap()
         XCTAssertTrue(row.waitForNonExistence(timeout: 5), "The note is gone")
     }
 

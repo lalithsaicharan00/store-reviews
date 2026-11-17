@@ -88,12 +88,13 @@ struct DaySheet: View {
             .toolbar {
                 // Edit, Pause, Archive and Delete in one menu, the lasting ones last; Delete asks first and offers
                 // Archive (U14: 79 reviews say deleting is too easy, 63 couldn't find it at all).
-                ToolbarItem(placement: .topBarLeading) { managementMenu }
-                // The sheet saves as it goes (nothing to confirm): the standard Close symbol, named "Close" (U18).
-                ToolbarItem(placement: .topBarTrailing) {
+                // Figma's Day details sheet: ✕ at the leading edge, ⋯ at the trailing one. The sheet saves as it goes
+                // (nothing to confirm), so the ✕ is iOS's Close, named "Close".
+                ToolbarItem(placement: .topBarLeading) {
                     Button("Close", systemImage: "xmark") { dismiss() }
                         .accessibilityIdentifier("day-close")
                 }
+                ToolbarItem(placement: .topBarTrailing) { managementMenu }
             }
             .sheet(item: $destination) { destination in
                 switch destination {
@@ -160,7 +161,7 @@ struct DaySheet: View {
         let skipped = store.isSkipped(current, on: day)
         if skipped || (store.canSkip(ruled) && !store.isPaused(current, on: day)) {
             Section {
-                DayButton(skipped ? "Undo skip" : (day == store.today() ? "Skip today" : "Skip this day"), id: "day-skip") {
+                DayButton(skipped ? "Undo Skip" : (day == store.today() ? "Skip Today" : "Skip This Day"), id: "day-skip") {
                     store.setSkipped(current, on: day, !skipped)
                 }
                 .dayButtonRow()
@@ -292,9 +293,10 @@ struct DayIdentityRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            HabitIcon(symbol: habit.symbol, color: habit.color, size: 40)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(habit.name).font(.headline)
+            // Figma: the icon in a 32 circle, the name in Body.
+            HabitIcon(symbol: habit.symbol, color: habit.color, size: 32)
+            VStack(alignment: .leading, spacing: 0) {
+                Text(habit.name).font(.body)
                 Text(Self.plan(habit, store: store))
                     .font(.subheadline).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -332,34 +334,50 @@ struct DayButton: View {
     var id: String? = nil
     let action: () -> Void
 
-    /// The label's height inside the regular button: the button is 44 pt as designed (design decisions §3: "rows and
-    /// buttons 44 pt"); the large size was 50 on iOS 26 and pushed Skip today off the iPhone SE (7 Oct 2026). It grows
-    /// with larger text.
-    static let labelHeight: CGFloat = 30
+    /// Figma's Button, Large (50 on the phone), 17 Regular: iOS's own size and weight for a sheet's main buttons.
+    static let size = ControlSize.large
 
-    init(_ title: String, prominent: Bool = false, id: String? = nil, action: @escaping () -> Void) {
+    /// Figma's Show label off (▶, ⏸): the symbol alone, the word kept for VoiceOver.
+    var symbol: String? = nil
+
+    init(_ title: String, prominent: Bool = false, symbol: String? = nil, id: String? = nil,
+         action: @escaping () -> Void) {
         self.title = title
         self.prominent = prominent
+        self.symbol = symbol
         self.id = id
         self.action = action
+    }
+
+    /// The word, or the symbol in the word's place: the hidden word keeps the button as tall as a worded one beside it
+    /// (an icon-only button comes out shorter in SwiftUI).
+    @ViewBuilder private var label: some View {
+        if let symbol {
+            Text(title).hidden()
+                .overlay { Image(systemName: symbol) }
+                .frame(maxWidth: .infinity)
+                .accessibilityLabel(title)
+        } else {
+            Text(title).frame(maxWidth: .infinity)
+        }
     }
 
     var body: some View {
         if prominent {
             Button(action: action) {
-                Text(title).fontWeight(.semibold).foregroundStyle(Color.onInk).frame(maxWidth: .infinity, minHeight: Self.labelHeight)
+                label.foregroundStyle(Color.onInk)
             }
             .buttonStyle(.borderedProminent)
             .tint(.ink)
-            .controlSize(.regular)
+            .controlSize(Self.size)
             .accessibilityIdentifier(id ?? title)
         } else {
             Button(action: action) {
-                Text(title).fontWeight(.semibold).frame(maxWidth: .infinity, minHeight: Self.labelHeight)
+                label
             }
             .buttonStyle(.bordered)
             .tint(.ink)
-            .controlSize(.regular)
+            .controlSize(Self.size)
             .accessibilityIdentifier(id ?? title)
         }
     }

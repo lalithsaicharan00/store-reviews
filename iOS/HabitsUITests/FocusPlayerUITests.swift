@@ -172,7 +172,7 @@ final class FocusPlayerUITests: XCTestCase {
         app.buttons["focus-day-details"].tap()
         let stop = app.buttons["day-stop-timer"]
         XCTAssertTrue(stop.waitForExistence(timeout: 3), "Goal reached keeps timing until the user leaves or stops")
-        XCTAssertEqual(stop.label, "Stop and save")
+        XCTAssertEqual(stop.label, "Stop and Save")
         stop.tap()
         app.buttons["day-close"].tap()
         XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3))
@@ -183,9 +183,9 @@ final class FocusPlayerUITests: XCTestCase {
         app.buttons["focus-day-details"].tap()
         let manual = app.buttons["day-add-entry"]
         XCTAssertTrue(manual.waitForExistence(timeout: 3))
-        XCTAssertEqual(manual.label, "Log manually")
+        XCTAssertEqual(manual.label, "Log")
         manual.tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3), "The same Add log as everywhere")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3), "The same Add log as everywhere")
         let amount = app.textFields["record-amount"]
         XCTAssertTrue(amount.waitForExistence(timeout: 3))
         amount.typeText("1")
@@ -262,7 +262,7 @@ final class FocusPlayerUITests: XCTestCase {
         app.buttons["day-close"].tap()
         XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3))
         app.buttons["focus-clock"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3), "The clock opens Add log")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3), "The clock opens Add log")
         app.buttons["record-cancel"].tap()
         // Cancel runs the timer again. ("Paused" under the clock can't be checked here: it is always laid out,
         // invisible and hidden from VoiceOver while the timer runs, and XCUITest on iOS 26 still lists
@@ -271,9 +271,7 @@ final class FocusPlayerUITests: XCTestCase {
                       app.buttons["focus-primary"].label)
         XCTAssertTrue(clock.exists, "The clock always shows")
         app.buttons["focus-clock"].tap()
-        let minutes = app.textFields["record-minutes"]
-        XCTAssertTrue(minutes.waitForExistence(timeout: 3))
-        minutes.typeText("1")
+        app.setDuration(1, to: "1 minute")
         app.buttons["record-add"].tap()
         let undo = app.buttons["focus-undo"]
         XCTAssertTrue(undo.waitForExistence(timeout: 3), "Time saved, with Undo")

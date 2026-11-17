@@ -49,3 +49,13 @@ extension XCUIApplication {
         element.tap()
     }
 }
+
+extension XCUIApplication {
+    /// Turns one wheel of the record screens' duration picker (0 hours, 1 minutes, 2 seconds) to a value such as
+    /// "15 minutes": the wheel is iOS's own, so it's turned, never typed into (17 Nov 2026).
+    func setDuration(_ wheel: Int, to value: String, file: StaticString = #filePath, line: UInt = #line) {
+        let wheels = pickers["record-duration"].pickerWheels
+        XCTAssertTrue(wheels.firstMatch.waitForExistence(timeout: 3), "The duration wheel", file: file, line: line)
+        wheels.element(boundBy: wheel).adjust(toPickerWheelValue: value)
+    }
+}

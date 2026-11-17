@@ -72,7 +72,7 @@ final class DayDetailsScreenshotUITests: XCTestCase {
 
     private func recordSlip() {
         tap("day-add-entry")
-        XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Add Slip"].waitForExistence(timeout: 5))
         app.buttons["record-add"].tap()
         XCTAssertTrue(links.firstMatch.waitForExistence(timeout: 5), "The slip shows")
     }
@@ -84,7 +84,7 @@ final class DayDetailsScreenshotUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5), "The log's view opens")
     }
 
-    private func edit(_ title: String = "Edit log") {
+    private func edit(_ title: String = "Edit Log") {
         tap("record-edit")
         XCTAssertTrue(app.navigationBars[title].waitForExistence(timeout: 5))
     }
@@ -97,15 +97,15 @@ final class DayDetailsScreenshotUITests: XCTestCase {
         writeNote("Big glass after the run. The office bottle was only half full.")
         shot("01-1-day-details")
         tap("day-all-logs")
-        XCTAssertTrue(app.navigationBars["Today's logs"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Today’s Logs"].waitForExistence(timeout: 5))
         shot("01-2-all-logs")
-        app.navigationBars["Today's logs"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Today’s Logs"].buttons.element(boundBy: 0).tap()
         tap("day-add-entry")
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 5))
         app.textFields["record-amount"].typeText("2")
         shot("01-3-add-log")
         tap("record-cancel")
-        app.alerts.buttons["Discard Changes"].tap()
+        app.alerts.buttons["Discard"].tap()
         openLog()
         shot("01-4-log-view")
         edit()
@@ -116,12 +116,12 @@ final class DayDetailsScreenshotUITests: XCTestCase {
 
     func test02_noUnitWeek() {
         open("Push-ups"); tap("day-add-step", times: 2); shot("02-1-day-details")
-        tap("day-add-entry"); XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5)); shot("02-2-add-log")
+        tap("day-add-entry"); XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 5)); shot("02-2-add-log")
         tap("record-cancel"); openLog(); shot("02-3-log-view"); edit(); shot("02-4-edit-log")
     }
 
     func test03_currencyMonth() {
-        openAdd("Savings", title: "Add log", thenDay: true)
+        openAdd("Savings", title: "Add Log", thenDay: true)
         app.textFields["record-amount"].typeText("15")
         shot("03-2-add-log")
         tap("record-add")
@@ -132,7 +132,7 @@ final class DayDetailsScreenshotUITests: XCTestCase {
 
     func test04_limit() {
         open("Coffee"); tap("day-add-step"); shot("04-1-day-details")
-        tap("day-add-entry"); XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5)); shot("04-2-add-log")
+        tap("day-add-entry"); XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 5)); shot("04-2-add-log")
         tap("record-cancel"); openLog(); shot("04-3-log-view"); edit(); shot("04-4-edit-log")
     }
 
@@ -141,11 +141,11 @@ final class DayDetailsScreenshotUITests: XCTestCase {
     func test05_time() {
         open("Read"); shot("05-1-day-details")
         tap("day-add-entry")
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 5))
-        app.textFields["record-minutes"].typeText("15")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 5))
+        app.setDuration(1, to: "15 minutes")
         shot("05-3-add-log")
         tap("record-cancel")
-        app.alerts.buttons["Discard Changes"].tap()
+        app.alerts.buttons["Discard"].tap()
         openLog(); shot("05-4-log-view"); edit(); shot("05-5-edit-log")
     }
 
@@ -163,34 +163,34 @@ final class DayDetailsScreenshotUITests: XCTestCase {
         open("Take vitamins"); shot("08-1-day-details-not-done")
         tap("day-done"); shot("08-2-day-details-done")
         app.terminate()
-        openAdd("Take vitamins", title: "Mark a day done"); shot("08-3-mark-a-day-done")
+        openAdd("Take vitamins", title: "Mark a Day Done"); shot("08-3-mark-a-day-done")
     }
 
     func test09_severalADay() {
         open("Stretch breaks"); tap("day-add-one", times: 2); shot("09-1-day-details")
         tap("day-all-logs")
-        XCTAssertTrue(app.navigationBars["Checks today"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Checks Today"].waitForExistence(timeout: 5))
         shot("09-2-all-logs")
         app.terminate()
-        openAdd("Stretch breaks", yesterday: true, title: "Add a check"); shot("09-3-add-a-check")
+        openAdd("Stretch breaks", yesterday: true, title: "Add a Check"); shot("09-3-add-a-check")
     }
 
     func test10_weekGoal() {
         open("Call family"); shot("10-1-day-details")
         app.terminate()
-        openAdd("Call family", title: "Add a check"); shot("10-2-add-a-check")
+        openAdd("Call family", title: "Add a Check"); shot("10-2-add-a-check")
     }
 
     func test11_monthGoal() {
         open("Deep clean"); shot("11-1-day-details")
         app.terminate()
-        openAdd("Deep clean", title: "Add a check"); shot("11-2-add-a-check")
+        openAdd("Deep clean", title: "Add a Check"); shot("11-2-add-a-check")
     }
 
     func test12_daysAWeek() {
         open("Gym"); shot("12-1-day-details")
         app.terminate()
-        openAdd("Gym", title: "Mark a day done"); shot("12-2-mark-a-day-done")
+        openAdd("Gym", title: "Mark a Day Done"); shot("12-2-mark-a-day-done")
     }
 
     func test12b_olderMultiCheckLog() { open("Squats"); openLog(); shot("12b-log-view-older-multi-check") }
@@ -200,16 +200,16 @@ final class DayDetailsScreenshotUITests: XCTestCase {
     func test13_checklist() {
         open("Tidy desk"); shot("13-1-day-details")
         app.terminate()
-        openAdd("Tidy desk", yesterday: true, title: "Tick steps"); shot("13-2-tick-steps")
+        openAdd("Tidy desk", yesterday: true, title: "Tick Steps"); shot("13-2-tick-steps")
     }
 
     func test14_quit() {
         open("Smoking"); shot("14-1-day-details-no-slips")
         recordSlip(); shot("14-2-day-details-one-slip")
         openLog(title: "Slip"); shot("14-4-slip-view")
-        edit("Edit slip"); shot("14-5-edit-slip")
+        edit("Edit Slip"); shot("14-5-edit-slip")
         app.terminate()
-        openAdd("Smoking", title: "Add slip"); shot("14-3-add-slip")
+        openAdd("Smoking", title: "Add Slip"); shot("14-3-add-slip")
     }
 
     func test15_task() {
@@ -235,7 +235,7 @@ final class DayDetailsScreenshotUITests: XCTestCase {
     func test17_notes() {
         open("Read")
         tap("day-add-note")
-        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 5))
         sleep(1)
         shot("17-1-add-note")
         let field = app.textViews["note-field"]
@@ -246,7 +246,7 @@ final class DayDetailsScreenshotUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Note"].waitForExistence(timeout: 5))
         shot("17-2-note-view")
         tap("note-edit")
-        XCTAssertTrue(app.navigationBars["Edit note"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 5))
         shot("17-3-edit-note")
         tap("record-cancel")
         tap("note-delete")

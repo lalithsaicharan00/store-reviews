@@ -914,6 +914,8 @@ struct FocusClock: View {
     let habit: Habit
     let day: LocalDay
     let diameter: CGFloat
+    /// The Timer screen says Paused under the ring itself (Figma's Timer screen); the player keeps it inside.
+    var showsState = true
     let onTapClock: () -> Void
     @Environment(HabitStore.self) private var store
     @ScaledMetric(relativeTo: .largeTitle) private var clockSize = CustomText.timerSize
@@ -960,10 +962,12 @@ struct FocusClock: View {
             .accessibilityHint("Logs time manually")
             .accessibilityIdentifier("focus-clock")
             // Always there, invisible while running, so Pause doesn't push the icon and clock up.
-            Text(running ? "Paused" : progress > 0 ? "Paused" : "Not started")
-                .font(.caption).foregroundStyle(.secondary)
-                .opacity(running ? 0 : 1)
-                .accessibilityHidden(running)
+            if showsState {
+                Text(running ? "Paused" : progress > 0 ? "Paused" : "Not started")
+                    .font(.caption).foregroundStyle(.secondary)
+                    .opacity(running ? 0 : 1)
+                    .accessibilityHidden(running)
+            }
             if habit.atMost && progress > goal {
                 // Never red (U3): over a limit is said in words, in the same grey as the ring.
                 Text("Over limit").font(.caption).foregroundStyle(.secondary)

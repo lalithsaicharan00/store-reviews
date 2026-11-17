@@ -95,19 +95,15 @@ final class SmallScreenUITests: XCTestCase {
 
     func testAddLogFitsAboveTheKeyboard() {
         launch(["-open-add", "Water"])
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 30))
         XCTAssertTrue(keyboard.waitForExistence(timeout: 5), "The decimal pad is up as Add log opens")
         let amount = app.textFields["record-amount"]
         aboveKeyboard(amount, "The amount")
-        aboveKeyboard(app.buttons["record-add"], "Add")
-        XCTAssertGreaterThan(app.buttons["record-add"].frame.minY, amount.frame.maxY,
-                             "Add is under the amount: " + frames(["record-habit", "record-date", "record-time", "record-amount", "record-add"]))
-        if isSmall {
-            let date = app.descendants(matching: .any)["record-date"].firstMatch
-            let time = app.descendants(matching: .any)["record-time"].firstMatch
-            XCTAssertEqual(date.frame.midY, time.frame.midY, accuracy: 4, "SE, keyboard up: Date and Time share one row")
-            XCTAssertFalse(app.staticTexts["record-footer"].exists, "SE, keyboard up: the footer hides")
-        }
+        XCTAssertLessThan(app.buttons["record-add"].frame.maxY, amount.frame.minY,
+                          "Add is in the bar: " + frames(["record-habit", "record-date", "record-time", "record-amount", "record-add"]))
+        let date = app.descendants(matching: .any)["record-date"].firstMatch
+        let time = app.descendants(matching: .any)["record-time"].firstMatch
+        XCTAssertEqual(date.frame.midY, time.frame.midY, accuracy: 4, "Date and time share one row")
         amount.typeText("2")
         aboveKeyboard(amount, "The typed amount")
         shot("se-add-log")
@@ -115,10 +111,12 @@ final class SmallScreenUITests: XCTestCase {
 
     func testAddTimeFitsAboveTheKeyboard() {
         launch(["-open-add", "Read"])
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))
-        XCTAssertTrue(keyboard.waitForExistence(timeout: 5))
-        for id in ["record-hours", "record-minutes", "record-seconds"] { aboveKeyboard(app.textFields[id], id) }
-        aboveKeyboard(app.buttons["record-add"], "Add")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 30))
+        // A wheel, so no keyboard: the whole wheel shows on the smallest screen.
+        let wheel = app.pickers["record-duration"]
+        XCTAssertTrue(wheel.waitForExistence(timeout: 5))
+        XCTAssertLessThanOrEqual(wheel.frame.maxY, app.windows.firstMatch.frame.maxY, "The duration wheel: \(wheel.frame)")
+        XCTAssertTrue(app.buttons["record-add"].exists, "Add, in the bar")
         shot("se-add-time")
     }
 
@@ -141,12 +139,12 @@ final class SmallScreenUITests: XCTestCase {
         let add = app.buttons["day-add-note"]
         XCTAssertTrue(add.waitForExistence(timeout: 30))
         add.tap()
-        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 5))
         XCTAssertTrue(keyboard.waitForExistence(timeout: 5), "Typing first")
         let box = app.textViews["note-field"]
         let save = app.buttons["note-save"]
-        aboveKeyboard(save, "Save")
-        XCTAssertLessThanOrEqual(box.frame.maxY, save.frame.minY + 1, "The box ends above Save")
+        XCTAssertLessThan(save.frame.maxY, box.frame.minY, "Add, in the bar above the box")
+        aboveKeyboard(box, "The box")
         XCTAssertGreaterThan(box.frame.height, 100, "The box has room to write: \(box.frame)")
         shot("se-add-note")
     }

@@ -42,10 +42,9 @@ import UIKit
     }
 }
 
-// Notes: Add note, Note (view) and Edit note (7 October 2026 redesign, design decisions §7; Rulebook U19, U21). The
-// same mental model as a log: adding is one job; a saved note opens to be read, with Delete note | Edit at the bottom;
-// Edit switches to edit mode with Save. No habit card: one line under the one-line title, [icon] habit name at its start
-// and the date at its end. The note itself fills the rest of the screen. A note has no time of its own: it belongs to
+// Notes: Add Note, Note (view) and Edit Note (Figma's Note screen, 17 Nov 2026). The same mental model as a log: adding
+// is one job; a saved note opens to be read, with Edit in the bar and Delete Note under it; Edit switches to edit mode
+// with Save. One row holds [icon] habit name and the day ("9 Nov"); the note itself fills the rest of the screen. A note has no time of its own: it belongs to
 // its day. Optional, never prompted; saving an empty note removes it (report "Habit Notes and Day Notes", 29 Sep).
 
 /// The typed note, read only by the text box (Rulebook S11). The screen reads only whether there's any text, set when
@@ -101,7 +100,7 @@ struct NoteTextBox: View {
                 .accessibilityLabel("Note")
                 .accessibilityIdentifier("note-field")
             if draft.text.isEmpty {
-                Text("Write a note")
+                Text("Note")
                     .foregroundStyle(.tertiary)
                     .padding(.top, 8).padding(.leading, 5)
                     .allowsHitTesting(false)
@@ -110,7 +109,7 @@ struct NoteTextBox: View {
         }
         .padding(.horizontal, 11).padding(.vertical, 8)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
         .overlay(alignment: .bottomTrailing) {
             if let note = TextLimit.note(draft.text, TextLimit.noteText) {
                 Text(note).formNote().padding(10)
@@ -119,7 +118,8 @@ struct NoteTextBox: View {
     }
 }
 
-/// [icon] habit name at the start, the date at the end; one line. No habit for a note on the whole day.
+/// [icon] habit name at the start, the date at the end: one row of an inset-grouped list, as Figma's Note screen draws
+/// it. No habit for a note on the whole day.
 struct NoteLine<Trailing: View>: View {
     let habit: Habit?
     @ViewBuilder let trailing: Trailing
@@ -127,24 +127,43 @@ struct NoteLine<Trailing: View>: View {
     var body: some View {
         HStack(spacing: 8) {
             if let habit {
-                HStack(spacing: 6) {
-                    HabitIcon(symbol: habit.symbol, color: habit.color, size: 22)
-                    Text(habit.name).font(.subheadline.weight(.semibold)).lineLimit(1).truncationMode(.tail)
+                Label {
+                    Text(habit.name).lineLimit(1).truncationMode(.tail)
+                } icon: {
+                    HabitIcon(symbol: habit.symbol, color: habit.color, size: 24)
                 }
-                .layoutPriority(0)
+                .labelStyle(NoteLineLabel())
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel("Habit, \(habit.name)")
             }
             Spacer(minLength: 8)
             trailing.layoutPriority(1)
         }
-        .frame(minHeight: 36)
+        .padding(.horizontal, 16)
+        .frame(minHeight: 46)
+        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
     }
 }
 
-/// Add note: ✕ and the title; the habit and the day on one line (from Day details or Today, that day as plain text;
-/// from the Notes tab, "Today" and a compact date picker); the box; Save above the keyboard, off until something is
-/// written. A day that already has a note fills the box with it, and the line says so (U5).
+/// The icon 12 from the name, as a list row's leading symbol.
+private struct NoteLineLabel: LabelStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 12) { configuration.icon; configuration.title }
+    }
+}
+
+/// A note's day: "9 Nov", plain Secondary Label.
+private struct NoteDay: View {
+    let day: LocalDay
+    let calendar: Calendar
+    var body: some View {
+        Text(DayWords.dayMonth(day, calendar: calendar)).foregroundStyle(.secondary).accessibilityIdentifier("note-day")
+    }
+}
+
+/// Add Note: ✕, the title and Add in the bar (Add off until something is written); the habit and the day in one row
+/// (from Day details or Today, that day as plain text; from the Notes tab, a compact date picker); the box down to the
+/// keyboard. A day that already has a note fills the box with it, and a line says so.
 struct AddNoteView: View {
     /// Nil for a note on the whole day (Today's "Note for the Day").
     let habit: Habit?
@@ -183,7 +202,7 @@ struct AddNoteView: View {
     private var page: some View {
         let c = store.calendar
         let today = store.today()
-        return VStack(alignment: .leading, spacing: 8) {
+        return VStack(alignment: .leading, spacing: 16) {
                 NoteLine(habit: habit) {
                     if picksDay, let habit {
                         let first = habit.kind == .quit ? store.quitStartDay(of: habit) : store.startDay(of: habit)
@@ -196,14 +215,13 @@ struct AddNoteView: View {
                                 .accessibilityIdentifier("note-date")
                         }
                     } else {
-                        Text(DayWords.withDate(day, today: today, calendar: c))
-                            .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
-                            .accessibilityIdentifier("note-day")
+                        NoteDay(day: day, calendar: c)
                     }
                 }
                 if !draft.opened.isEmpty {
                     Text("\(DayWords.short(day, calendar: c).replacingOccurrences(of: ",", with: "")) already has a note; you're changing it.")
                         .font(.footnote).foregroundStyle(.secondary)
+                        .padding(.horizontal, 16)
                         .accessibilityIdentifier("note-existing")
                 }
                 NoteTextBox(draft: draft, focused: $focused)
@@ -211,22 +229,24 @@ struct AddNoteView: View {
             .padding(.horizontal, 16)
             .padding(.top, 8)
             .background(Color(.systemGroupedBackground))
-            .navigationTitle("Add note")
+            .padding(.bottom, 16)
+            .navigationTitle("Add Note")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     RecordCancelButton { if draft.differs { confirmingDiscard = true } else { dismiss() } }
                 }
-            }
-            .safeAreaInset(edge: .bottom) {
-                RecordBottomBar {
-                    DayButton("Save", prominent: true, id: "note-save") { save() }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Add") { save() }
                         .disabled(!draft.hasText)
+                        .accessibilityIdentifier("note-save")
                 }
             }
             .alert("Discard this note?", isPresented: $confirmingDiscard) {
                 Button("Keep Writing", role: .cancel) {}
-                Button("Discard Changes", role: .destructive) { dismiss() }
+                Button("Discard", role: .destructive) { dismiss() }
+            } message: {
+                Text("What you wrote won’t be saved.")
             }
             .onAppear {
                 guard !asked else { return }
@@ -252,11 +272,11 @@ struct AddNoteView: View {
     }
 }
 
-/// Note (view) and Edit note: one saved note, read first, changed with an explicit Edit (U19). The view: the habit and
-/// the date on one line (from the Notes tab, "Sun, 4 Oct · 6 of 8 glasses ›", which opens that day's Day details: the
-/// reader's "View Day", kept), the full text, and Delete note | Edit at the bottom. Edit note: the date only (a note's
-/// day doesn't change), the box with the cursor at the end, Save always on; ✕ leaves edit mode, asking first if anything
-/// changed. Saving an empty note removes it.
+/// Note (view) and Edit Note: one saved note, read first, changed with Edit in the bar (U19). The view: the habit and
+/// the day in one row (from the Notes tab, "Sun, 4 Oct · 6 of 8 glasses ›", which opens that day's Day details), the
+/// text in its own card, and Delete Note, red, in a section of its own. Edit Note: ✕ and Save in the bar, the box with
+/// the cursor at the end, Save always on; ✕ leaves edit mode, asking first if anything changed. Saving an empty note
+/// removes it.
 struct NoteView: View {
     /// Nil for a note on the whole day.
     let habit: Habit?
@@ -280,8 +300,7 @@ struct NoteView: View {
 
     var body: some View {
         let c = store.calendar
-        let today = store.today()
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 16) {
             NoteLine(habit: habit) {
                 if linksDay && !editing, let habit {
                     Button { showDay = true } label: {
@@ -296,22 +315,32 @@ struct NoteView: View {
                     .accessibilityHint("Opens that day's details")
                     .accessibilityIdentifier("note-view-day")
                 } else {
-                    Text(DayWords.withDate(day, today: today, calendar: c))
-                        .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
-                        .accessibilityIdentifier("note-day")
+                    NoteDay(day: day, calendar: c)
                 }
             }
             if editing {
                 NoteTextBox(draft: draft, focused: $focused)
             } else if let note {
                 ScrollView {
-                    Text(note)
-                        .font(.body)
-                        .textSelection(.enabled)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(16)
-                        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16, style: .continuous))
-                        .accessibilityIdentifier("note-text")
+                    VStack(spacing: 16) {
+                        Text(note)
+                            .font(.body)
+                            .textSelection(.enabled)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.horizontal, 16).padding(.vertical, 14)
+                            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+                            .accessibilityIdentifier("note-text")
+                        Button(role: .destructive) { confirmingDelete = true } label: {
+                            Text("Delete Note")
+                                .foregroundStyle(.red)
+                                .frame(maxWidth: .infinity, minHeight: 50, alignment: .leading)
+                                .padding(.horizontal, 16)
+                                .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+                        .accessibilityIdentifier("note-delete")
+                    }
                 }
                 .scrollBounceBehavior(.basedOnSize)
             } else {
@@ -320,11 +349,12 @@ struct NoteView: View {
         }
         .padding(.horizontal, 16)
         .padding(.top, 8)
+        .padding(.bottom, editing ? 16 : 0)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         .background(Color(.systemGroupedBackground))
         .analyticsScreen(nil)
-        .toolbarRole(.editor)
-        .navigationTitle(editing ? "Edit note" : "Note")
+        .backChevronOnly()
+        .navigationTitle(editing ? "Edit Note" : "Note")
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(editing || startsEditing)
         .toolbar {
@@ -336,32 +366,34 @@ struct NoteView: View {
                     }
                 }
             }
-        }
-        .safeAreaInset(edge: .bottom) {
-            RecordBottomBar {
-                if editing {
-                    DayButton("Save", prominent: true, id: "note-save") { save() }
-                } else {
-                    RecordDeleteButton(title: "Delete note", id: "note-delete") { confirmingDelete = true }
+            if editing {
+                // Always on (U19): saving an emptied note removes it.
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") { save() }.accessibilityIdentifier("note-save")
+                }
+            } else if !startsEditing {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Edit") { startEditing() }
                         .disabled(note == nil)
-                    DayButton("Edit", prominent: true, id: "note-edit") { startEditing() }
-                        .disabled(note == nil)
+                        .accessibilityIdentifier("note-edit")
                 }
             }
         }
         .alert("Delete this note?", isPresented: $confirmingDelete) {
             Button("Cancel", role: .cancel) {}
-            Button("Delete Note", role: .destructive) {
+            Button("Delete", role: .destructive) {
                 // Back first, then the note goes (as Delete log): removing it first took away the row that opened this
                 // screen, and a second dismiss closed the sheet under it (CI, 7 Oct 2026).
                 leave(writing: "")
             }
         } message: {
-            Text("Only the note for \(DayWords.short(day, calendar: c).replacingOccurrences(of: ",", with: "")) is removed. That day's progress stays.")
+            Text("Only the note for \(DayWords.dayMonth(day, calendar: c)) is removed. That day’s progress stays.")
         }
         .alert("Discard your changes to this note?", isPresented: $confirmingDiscard) {
             Button("Keep Editing", role: .cancel) {}
-            Button("Discard Changes", role: .destructive) { leaveEditing() }
+            Button("Discard", role: .destructive) { leaveEditing() }
+        } message: {
+            Text("The note stays as it was.")
         }
         .sheet(isPresented: $showDay) { if let habit { DaySheet(habit: habit, day: day) } }
         .interactiveDismissDisabled(editing && draft.edited)

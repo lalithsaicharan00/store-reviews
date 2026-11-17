@@ -225,6 +225,11 @@ enum DayWords {
         return short(day, calendar: calendar)
     }
 
+    /// "9 Nov": a note's fixed day, plain, the same in Add, Edit and View (a note's day can't change).
+    static func dayMonth(_ day: LocalDay, calendar: Calendar) -> String {
+        day.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated))
+    }
+
     /// "Tue, 6 Oct".
     static func short(_ day: LocalDay, calendar: Calendar) -> String {
         day.date(calendar: calendar).formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
@@ -290,13 +295,13 @@ extension Entry {
         }
     }
 
-    /// "Logged with Log manually.": where it came from, in the Log view's footer. Nil for old logs whose origin was
+    /// "Typed in by hand.": where it came from, in the Log view's footer. Nil for old logs whose origin was
     /// never recorded.
     func originLine(slip: Bool) -> String? {
         guard let source else { return nil }
         let verb = slip ? "Recorded" : "Logged"
         switch source {
-        case .manual: return slip ? "Recorded with Record a slip." : "Logged with Log manually."
+        case .manual: return slip ? "Recorded by hand." : "Typed in by hand."
         case .today: return "\(verb) from Today."
         case .routine: return "\(verb) in the routine player."
         case .reminder: return "\(verb) from a reminder."
@@ -333,6 +338,26 @@ struct DayStatus {
     var detail: String?
     /// A running timer's start: the detail line becomes a live clock.
     var running: Date?
+    /// Figma's This day reading (669:234): the number large, its words beside it, what's left at the trailing edge and
+    /// a bar under them. Nil where the day is a word ("Not done", "Paused") or the number can't stand alone (£15).
+    var reading: Reading?
+
+    struct Reading: Equatable {
+        /// "5", in Large Title.
+        var number: String
+        /// "of 8 glasses", "cups today".
+        var words: String
+        /// "3 glasses to go", at the trailing edge; nil with a limit, which has its own line (the status's detail).
+        var left: String?
+        /// The bar under the reading, 0…1; nil for a limit, which is a fact and never a bar to fill (U3).
+        var fraction: Double?
+
+        /// Splits "3 cups" into "3" and "cups" (with what follows): nil when the text doesn't start with the number.
+        static func split(_ text: String, number: String, then rest: String = "") -> (String, String)? {
+            guard text.hasPrefix(number + " ") else { return nil }
+            return (number, String(text.dropFirst(number.count + 1)) + rest)
+        }
+    }
 
     /// " this week", " this month", " this year", or nothing for a day goal.
     static func periodWord(_ frequency: Frequency) -> String {
@@ -386,8 +411,10 @@ struct DayStatus {
             case .checklist:
                 let done = Int(store.dayProgress(of: ruled, on: day)), all = ruled.steps.count
                 let left = all - done
-                return DayStatus(title: "\(done) of \(all) steps done",
-                                 detail: left <= 0 ? "All steps done" : left == 1 ? "One step left" : "\(left) steps left")
+                let leftWords = left <= 0 ? "All steps done" : left == 1 ? "One step left" : "\(left) steps left"
+                return DayStatus(title: "\(done) of \(all) steps done", detail: leftWords,
+                                 reading: Reading(number: "\(done)", words: "of \(all) steps done", left: leftWords,
+                                                  fraction: all > 0 ? Double(done) / Double(all) : 0))
             case .check:
                 return checkStatus(ruled, entries: entries)
             case .amount, .duration:
@@ -410,7 +437,9 @@ struct DayStatus {
                 let detail = left <= 0 ? "Goal reached"
                     : isToday ? (left == 1 ? "One more reaches today's goal" : "\(HabitCopy.number(left)) more reach today's goal")
                     : "For " + shortDay
-                return DayStatus(title: "\(HabitCopy.number(progress)) of \(HabitCopy.amount(goal, unit))", detail: detail)
+                return DayStatus(title: "\(HabitCopy.number(progress)) of \(HabitCopy.amount(goal, unit))", detail: detail,
+                                 reading: Reading(number: HabitCopy.number(progress), words: "of " + HabitCopy.amount(goal, unit),
+                                                  left: detail, fraction: goal > 0 ? min(progress / goal, 1) : 0))
             }
             let done = store.isDayMet(ruled, on: day)
             if case .flexible(_, let needed) = ruled.frequency, let count = store.flexibleProgress(habit, on: day) {
@@ -438,8 +467,14 @@ struct DayStatus {
             }
             if ruled.atMost {
                 // A limit is a fact, not a bar to fill: no "to go", no colour, nothing about going over (U3/U16).
+                // Figma's Cut down: "3 cups today", then "Limit 2 cups · Over the limit".
+                // An hour or more ("1 h 25 min") has no one number to stand alone: the words stay as they are.
+                let number = timed ? (saved < 60 ? "\(Int(saved.rounded(.down)))" : "") : HabitCopy.number(saved)
+                let parts = Reading.split(text(saved), number: number, then: " " + dayWord)
                 return DayStatus(title: "\(text(saved)) \(dayWord)",
-                                 detail: "Limit \(text(goal))" + (saved <= goal ? " · within limit" : ""), running: running)
+                                 detail: "Limit \(text(goal)) · " + (saved <= goal ? "Within the limit" : "Over the limit"),
+                                 running: running,
+                                 reading: parts.map { Reading(number: $0.0, words: $0.1) })
             }
             let title = timed
                 ? (goal < 60 && saved < 60 ? "\(Int(saved.rounded(.down))) of \(Format.minutes(goal))" : "\(text(saved)) of \(Format.minutes(goal))")
@@ -453,7 +488,15 @@ struct DayStatus {
                 let days = "\(count) of \(needed) \(needed == 1 ? "day" : "days")" + DayStatus.periodWord(ruled.frequency)
                 detail = detail.map { $0 + " · " + days } ?? days
             }
-            return DayStatus(title: title, detail: detail, running: running)
+            // The reading: the number alone, large, where it reads as one ("5 of 8 glasses", "12 of 20 min").
+            var reading: Reading?
+            let fraction = goal > 0 ? min(saved / goal, 1) : 0
+            if timed, goal < 60 && saved < 60 {
+                reading = Reading(number: "\(Int(saved.rounded(.down)))", words: "of " + Format.minutes(goal), left: detail, fraction: fraction)
+            } else if !timed, !HabitCopy.currencies.contains(unit.trimmingCharacters(in: .whitespaces)) {
+                reading = Reading(number: HabitCopy.number(saved), words: "of " + HabitCopy.amount(goal, unit), left: detail, fraction: fraction)
+            }
+            return DayStatus(title: title, detail: detail, running: running, reading: reading)
         }
 
         /// "2 glasses saved": what a skipped day keeps.

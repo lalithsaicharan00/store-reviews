@@ -174,7 +174,7 @@ final class GoalFlowUITests: XCTestCase {
         app.staticTexts["Glasses"].firstMatch.tap()
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3), "The row opens its Day sheet")
         app.buttons["day-add-entry"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3))
         sleep(1)
         let typed = app.textFields["record-amount"]
         typed.typeText("3")

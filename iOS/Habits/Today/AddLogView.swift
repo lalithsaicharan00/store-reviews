@@ -4,13 +4,13 @@ import SwiftUI
 /// U22): Day details' Log manually, History's Add, a Today row and its menu, a Home Screen widget, the timer screen and
 /// the routine player. It replaces "Add Entry" and "Log Amount" / "Log Time": the app says "log".
 ///
-/// Top to bottom: ✕ and a one-line title (the screen's job only); one card with Habit · [icon] name, Date ("Today" and a
-/// compact date picker; any day from the habit's start to today) and Time (now by default, inside the chosen day as the
-/// app counts it, never later than now); then the main thing for the kind; a footer that says exactly what will happen;
-/// and the one filled button at the bottom, riding above the keyboard.
+/// Figma's Log screen (687:829), Entry and Empty: ✕, a one-line title and Add in the bar (plain glass, as Save and Done);
+/// one card with the habit and When (iOS's compact date and time pickers: any day from the habit's start to today, the
+/// time inside that day, never later than now); then the main thing for the kind and a footer that says exactly what
+/// will happen, or, in red, why it can't be added yet.
 ///
-///   Add log (amount)    AMOUNT: one large typed number, the unit under it, the decimal pad up
-///   Add log (time)      HOW LONG: hours, min, sec; the clock row is "Finished at"
+///   Add Log (amount)    AMOUNT: one large typed number, the unit under it, the decimal pad up
+///   Add Log (time)      HOW LONG: Clock's hours-and-minutes wheel; the When row is "Finished"
 ///   Add a check         nothing to type: one check per add (no Times stepper, U19)
 ///   Mark a day done     nothing to type; off when that day is already done, and the footer says so
 ///   Tick steps          STEPS: tick or take back each step; Save
@@ -33,7 +33,6 @@ struct AddLogView: View {
     @State private var room = ScreenRoom()
     @FocusState private var focus: RecordField?
     @ScaledMetric(relativeTo: .largeTitle) private var numberSize = CustomText.amountSize
-    @ScaledMetric(relativeTo: .title) private var durationSize: CGFloat = 32
 
     init(habit: Habit, day: LocalDay, at time: Date? = nil, source: EntrySource = .manual,
          onAdded: ((UUID) -> Void)? = nil) {
@@ -68,9 +67,8 @@ struct AddLogView: View {
         return Form {
                 Section {
                     RecordHabitRow(habit: current)
-                    RecordDateRow(day: $day, range: range, time: Binding(get: { chosenTime }, set: { time = $0 }), timeRange: bounds,
-                                  timeTitle: kind == .time ? "Finished at" : "Time",
-                                  compact: room.isSmall && keyboardUp)
+                    RecordDateRow(day: $day, range: range, time: Binding(get: { chosenTime }, set: { time = $0 }),
+                                  timeRange: bounds, title: kind == .time ? "Finished" : "When")
                 } footer: {
                     if kind != .amount && kind != .time && kind != .steps { footer(kind, ruled: ruled) }
                 }
@@ -88,26 +86,28 @@ struct AddLogView: View {
                 ToolbarItem(placement: .cancellationAction) {
                     RecordCancelButton { if changed { confirmingDiscard = true } else { dismiss() } }
                 }
-            }
-            .safeAreaInset(edge: .bottom) {
-                RecordBottomBar {
-                    DayButton(kind.addButton, prominent: true, id: "record-add") { add(kind, ruled: ruled) }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button(kind.addButton) { add(kind, ruled: ruled) }
                         .disabled(!canAdd(kind, ruled: ruled))
+                        .accessibilityIdentifier("record-add")
                 }
             }
+            // Figma's Alert, Default: iOS's own, naming what would be lost.
             .alert("Discard this \(kind == .slip ? "slip" : "log")?", isPresented: $confirmingDiscard) {
                 Button("Keep Editing", role: .cancel) {}
-                Button("Discard Changes", role: .destructive) { dismiss() }
+                Button("Discard", role: .destructive) { dismiss() }
+            } message: {
+                Text(discardMessage(kind, ruled: ruled))
             }
             .task {
                 if time == .distantPast { time = defaultTime(on: day) }
                 guard !focusedOnce else { return }
                 focusedOnce = true
-                // Typing is the job: the field has the keyboard as the screen opens (minutes for a time habit). Asked
-                // again once the sheet has arrived: focus asked for while a sheet slides in was sometimes dropped
-                // (HabitPageUITests, 5 Oct 2026).
-                let field: RecordField? = kind == .amount ? .amount : kind == .time ? .minutes : nil
-                guard let field else { return }
+                // Typing is the job: the amount has the keyboard as the screen opens (a session is a wheel, no
+                // keyboard). Asked again once the sheet has arrived: focus asked for while a sheet slides in was
+                // sometimes dropped (HabitPageUITests, 5 Oct 2026).
+                guard kind == .amount else { return }
+                let field = RecordField.amount
                 focus = field
                 try? await Task.sleep(for: .milliseconds(400))
                 if focus == nil && !draft.edited { focus = field }
@@ -149,8 +149,9 @@ struct AddLogView: View {
             }
         case .time:
             Section {
-                DurationFields(draft: draft, size: min(durationSize, gaps.cardPadding == 0 ? 32 : 44), focus: $focus)
-                    .padding(.vertical, gaps.cardPadding / 2)
+                DurationWheel(draft: draft)
+                    .frame(height: 216)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
             } header: {
                 Text("How long")
             } footer: {
@@ -192,8 +193,10 @@ struct AddLogView: View {
     /// wherever it would reach the button (the iPhone SE and mini).
     @ViewBuilder private func typingFooter(_ kind: RecordKind, ruled: Habit) -> some View {
         if let problem = draft.problem {
-            Text(problem).accessibilityIdentifier("record-problem")
-        } else if !keyboardUp || room.keepsFooterWhileTyping {
+            // Figma's Empty: said in red where the footer was, and Add stays off.
+            Text(problem).foregroundStyle(.red).accessibilityIdentifier("record-problem")
+        } else {
+            // Kept while typing (Figma's Entry): Add is in the bar now, so nothing at the bottom needs its room.
             footer(kind, ruled: ruled)
         }
     }
@@ -243,6 +246,20 @@ struct AddLogView: View {
             text += " This day is skipped. Adding keeps the skip; undo it in the day's details."
         }
         return text
+    }
+
+    /// What ✕ would lose: "The 2 glasses you typed won't be added."
+    private func discardMessage(_ kind: RecordKind, ruled: Habit) -> String {
+        switch kind {
+        case .amount:
+            guard let value = draft.value else { return "What you typed won’t be added." }
+            return "The \(HabitCopy.amount(value, HabitCopy.unit(of: ruled))) you typed won’t be added."
+        case .time:
+            guard let value = draft.value else { return "The time you chose won’t be added." }
+            return "The \(DurationText.words(value)) you chose won’t be added."
+        case .steps: return "The steps you ticked won’t be saved."
+        default: return "Nothing will be added."
+        }
     }
 
     // MARK: Time

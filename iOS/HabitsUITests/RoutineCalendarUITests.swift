@@ -94,7 +94,7 @@ final class RoutineCalendarUITests: XCTestCase {
         play.tap()
         XCTAssertTrue(playerShows("Afternoon"))
         XCTAssertTrue(app.buttons["Add 1,000 steps to Walk"].waitForExistence(timeout: 3), "+ says its step")
-        // Moving on is the › chevron, which names the next habit and logs nothing ("Skip today" is another thing:
+        // Moving on is the › chevron, which names the next habit and logs nothing ("Skip Today" is another thing:
         // it sets the habit aside for the day).
         let upNext = app.buttons["focus-up-next"]
         XCTAssertEqual(upNext.label, "Next habit: Lunch, no phone")

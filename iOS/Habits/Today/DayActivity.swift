@@ -6,9 +6,9 @@ import SwiftUI
 /// shown as they are; four or more, the two newest and "All N logs ›". Only this view reads the day's entries, so a log
 /// redraws this group and never the identity, Skip or menu around it (S6).
 ///
-///   amount, quick step    4 of 8 glasses              +1 | Log manually (VoiceOver: "Add 1 glass")
-///   amount, no step       £15 this month              Log amount
-///   time, today           12 of 20 min                Start timer | Log manually; running: Stop and save | Log manually
+///   amount, quick step    4 of 8 glasses              +1 | Log (VoiceOver: "Add 1 glass")
+///   amount, no step       £15 this month              Log
+///   time, today           12 of 20 min                Start Timer | Log; running: Stop and Save | Log
 ///   time, another day     25 of 20 min                Log time
 ///   once a day, N a week  Done / Not done             Mark done · Undo done
 ///   counted check         4 of 3 times                Add a check, always; each check with its own Undo
@@ -16,7 +16,7 @@ import SwiftUI
 ///   limit                 1 cup today · Limit 2       the same words, both bordered (U16)
 ///   quit                  No slips recorded           Record a slip · Record another slip, bordered
 ///   task                  Not done                    Mark done · Undo done
-///   paused                Paused                      Resume habit | Log manually
+///   paused                Paused                      Resume Habit | Log
 ///   skipped               Skipped                     the usual buttons, in place, turned off (U15)
 struct DayActivity: View {
     let habit: Habit
@@ -43,36 +43,48 @@ struct DayActivity: View {
         Section {
             VStack(alignment: .leading, spacing: 0) {
                 Text("This day")
-                    .font(.footnote).textCase(.uppercase).foregroundStyle(.secondary)
+                    .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
                     .accessibilityAddTraits(.isHeader)
-                Text(status.title)
-                    .font(.title2.weight(.bold))
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.top, 2)
-                    .accessibilityIdentifier("day-result")
+                if let reading = status.reading {
+                    ReadingLine(reading: reading, color: habit.color.color)
+                        .padding(.top, 4)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(status.title + (reading.left.map { ", " + $0 } ?? ""))
+                        .accessibilityIdentifier("day-result")
+                } else {
+                    Text(status.title)
+                        .font(.title2.weight(.bold))
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 2)
+                        .accessibilityIdentifier("day-result")
+                }
                 if let start = status.running {
                     // The system moves this clock; nothing here redraws while it runs (Rulebook S3).
                     Text("Timer running · \(Text(start, style: .timer))").monospacedDigit()
                         .font(.subheadline).foregroundStyle(.secondary)
                         .accessibilityIdentifier("day-running")
                 }
-                if let detail = status.detail {
+                // The reading shows what's left at its own edge; a limit's line, and every word-only status, sit here.
+                if let detail = status.detail, status.reading?.left == nil {
                     Text(detail).font(.subheadline).foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                         .accessibilityIdentifier("day-detail")
                 }
                 if !actions.isEmpty {
                     buttons(actions)
-                        .padding(.top, spacing.gap(14, 18))
+                        .padding(.top, spacing.gap(16, 20))
                 }
             }
-            // The card's own padding (design: 14 on the SE to 16), less the row's standard 11-pt inset.
-            .padding(.vertical, spacing.gap(14, 16) - 11 - spacing.trim)
+            // The card's own padding (Figma: 20), less the row's standard 11-pt inset.
+            .padding(.vertical, spacing.gap(16, 20) - 11 - spacing.trim)
             if !steps.isEmpty { stepRows(ruled, steps: steps) }
-            noteRow
         }
-        // Before the logs, the gap less the ~12 pt the logs' heading adds above itself, so the heading sits 20–28 below.
-        .listSectionSpacing(logs.isEmpty ? spacing.gap(28, 36) : spacing.gap(8, 16))
+        .listSectionSpacing(spacing.gap(12, 16))
+
+        // Add a Note is its own row, under the card (Figma 669:234): it opens the Note page.
+        Section { noteRow }
+            // Before the logs, the gap less the ~12 pt the logs' heading adds above itself.
+            .listSectionSpacing(logs.isEmpty ? spacing.gap(16, 24) : spacing.gap(8, 16))
 
         if !logs.isEmpty {
             logsSection(ruled, logs: logs)
@@ -120,11 +132,11 @@ struct DayActivity: View {
         if store.isPaused(habit, on: day) {
             var list: [Action] = []
             if store.pause(of: habit, on: today)?.contains(today) == true {
-                list.append(Action(title: "Resume habit", prominent: true, id: "day-resume", run: resume))
+                list.append(Action(title: "Resume Habit", prominent: true, id: "day-resume", run: resume))
             }
             switch ruled.kind {
-            case .amount: list.append(Action(title: list.isEmpty ? "Log amount" : "Log manually", id: "day-add-entry", run: logManually))
-            case .duration: list.append(Action(title: list.isEmpty ? "Log time" : "Log manually", id: "day-add-entry", run: logManually))
+            case .amount: list.append(Action(title: "Log", id: "day-add-entry", run: logManually))
+            case .duration: list.append(Action(title: "Log", id: "day-add-entry", run: logManually))
             default: break
             }
             return list
@@ -132,44 +144,44 @@ struct DayActivity: View {
         switch ruled.kind {
         case .task:
             let done = store.isDone(habit, on: day)
-            return [Action(title: done ? "Undo done" : "Mark done", prominent: !done, id: "day-done") {
+            return [Action(title: done ? "Undo Done" : "Mark Done", prominent: !done, id: "day-done") {
                 store.toggleCheck(habit, on: day, source: source)
             }]
         case .check:
             if store.countsUp(habit, on: day) {
-                // Several a day, or N a week, month or year: "Add a check", whatever unit it has; each tap adds one and a
+                // Several a day, or N a week, month or year: "Add a Check", whatever unit it has; each tap adds one and a
                 // log's own Undo takes one back. A limit stays plainly available, never a prominent invitation (U16).
-                return [Action(title: "Add a check", prominent: !ruled.atMost, enabled: !skipped, id: "day-add-one") {
+                return [Action(title: "Add a Check", prominent: !ruled.atMost, enabled: !skipped, id: "day-add-one") {
                     store.addProgress(habit, value: 1, on: day, source: source)
                 }]
             }
             let done = store.isDayMet(ruled, on: day)
-            return [Action(title: done ? "Undo done" : "Mark done", prominent: !done, enabled: !skipped, id: "day-done") {
+            return [Action(title: done ? "Undo Done" : "Mark Done", prominent: !done, enabled: !skipped, id: "day-done") {
                 store.setDayDone(!done, of: habit, on: day)
             }]
         case .checklist:
             return []
         case .amount(let unit, _):
             guard let step = ruled.quickIncrement else {
-                return [Action(title: "Log amount", prominent: !ruled.atMost, enabled: !skipped, id: "day-add-entry", run: logManually)]
+                return [Action(title: "Log", prominent: !ruled.atMost, enabled: !skipped, id: "day-add-entry", run: logManually)]
             }
             // "+1", "+250", exactly as Today's round button: the step, never the unit (U16).
             return [Action(title: "+" + Format.amount(step), prominent: !ruled.atMost, enabled: !skipped, id: "day-add-step",
                            spoken: "Add " + HabitCopy.amount(step, unit)) {
                         store.increment(habit, on: day, source: source)
                     },
-                    Action(title: "Log manually", enabled: !skipped, id: "day-add-entry", run: logManually)]
+                    Action(title: "Log", enabled: !skipped, id: "day-add-entry", run: logManually)]
         case .duration:
             guard isToday else {
                 // No timer on another day: typing is the one way.
-                return [Action(title: "Log time", prominent: !ruled.atMost, enabled: !skipped, id: "day-add-entry", run: logManually)]
+                return [Action(title: "Log", prominent: !ruled.atMost, enabled: !skipped, id: "day-add-entry", run: logManually)]
             }
             let first = store.timers[habit.id] != nil
-                ? Action(title: "Stop and save", prominent: !ruled.atMost, id: "day-stop-timer") { store.stopTimer(habit, on: day) }
-                : Action(title: "Start timer", prominent: !ruled.atMost, enabled: !skipped, id: "day-start-timer") { store.toggleTimer(habit) }
-            return [first, Action(title: "Log manually", enabled: !skipped, id: "day-add-entry", run: logManually)]
+                ? Action(title: "Stop and Save", prominent: !ruled.atMost, id: "day-stop-timer") { store.stopTimer(habit, on: day) }
+                : Action(title: "Start Timer", prominent: !ruled.atMost, enabled: !skipped, id: "day-start-timer") { store.toggleTimer(habit) }
+            return [first, Action(title: "Log", enabled: !skipped, id: "day-add-entry", run: logManually)]
         case .quit:
-            return [Action(title: hasLogs ? "Record another slip" : "Record a slip", id: "day-add-entry", run: logManually)]
+            return [Action(title: hasLogs ? "Record Another Slip" : "Record a Slip", id: "day-add-entry", run: logManually)]
         }
     }
 
@@ -182,7 +194,8 @@ struct DayActivity: View {
             let done = store.isStepDone(step, of: ruled, on: day)
             Button { store.toggleStep(step, of: ruled, on: day, source: .daySheet) } label: {
                 Label {
-                    Text(step.name).foregroundStyle(.primary)
+                    // A ticked step steps back to Secondary Label, as in Reminders; the next one to do reads first.
+                    Text(step.name).foregroundStyle(done ? .secondary : .primary)
                 } icon: {
                     Image(systemName: done ? "checkmark.circle.fill" : "circle")
                         .font(.title3)
@@ -205,11 +218,15 @@ struct DayActivity: View {
             NavigationLink {
                 NoteView(habit: habit, day: day)
             } label: {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Note").font(.footnote).textCase(.uppercase).foregroundStyle(.secondary)
-                    Text(note).foregroundStyle(.primary).lineLimit(spacing.noteLines).multilineTextAlignment(.leading)
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Note").font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                        Text(note).foregroundStyle(.primary).lineLimit(spacing.noteLines).multilineTextAlignment(.leading)
+                    }
+                } icon: {
+                    Image(systemName: "note.text").foregroundStyle(Color.ink)
                 }
-                .padding(.vertical, spacing.gap(12, 14) - 11 - spacing.trim)
+                .padding(.vertical, 2 - spacing.trim)
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("Note for this day: " + note)
@@ -217,11 +234,13 @@ struct DayActivity: View {
         } else {
             Button(action: addNote) {
                 HStack {
-                    Text("Add a note…").foregroundStyle(.secondary)
+                    Label { Text("Add a Note").foregroundStyle(.primary) } icon: {
+                        Image(systemName: "note.text").foregroundStyle(Color.ink)
+                    }
                     Spacer(minLength: 8)
                     Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                 }
-                .padding(.vertical, spacing.gap(12, 14) - 11 - spacing.trim)
+                .padding(.vertical, -spacing.trim)
                 .contentShape(Rectangle())
             }
             .disabled(!editable)
@@ -241,7 +260,7 @@ struct DayActivity: View {
             if logs.count > 3 {
                 Button(action: openAllLogs) {
                     HStack {
-                        Text("All " + DayLogRow.count(logs.count, habit: ruled)).foregroundStyle(.primary)
+                        Text("All " + DayLogRow.count(logs.count, habit: ruled).capitalized).foregroundStyle(.primary)
                         Spacer(minLength: 8)
                         Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
                     }
@@ -287,5 +306,38 @@ struct DaySpacing: Equatable {
         if typeSize.isAccessibilitySize { share = 0 }
         share = max(0, share)
         return DaySpacing(share: share, noteLines: share >= 0.5 ? 2 : 1)
+    }
+}
+
+/// The This day reading (Figma 669:234): the number in Large Title, its words in Body beside it, what's left in
+/// Subheadline at the trailing edge, and the habit's bar under them (a limit has no bar). One line of words; at the
+/// accessibility sizes what's left goes under the number.
+private struct ReadingLine: View {
+    let reading: DayStatus.Reading
+    let color: Color
+    @Environment(\.dynamicTypeSize) private var typeSize
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            let stacked = typeSize.isAccessibilitySize
+            let layout = stacked ? AnyLayout(VStackLayout(alignment: .leading, spacing: 2))
+                : AnyLayout(HStackLayout(alignment: .firstTextBaseline, spacing: 8))
+            layout {
+                HStack(alignment: .firstTextBaseline, spacing: 8) {
+                    Text(reading.number).font(.largeTitle).monospacedDigit()
+                    Text(reading.words).foregroundStyle(.secondary)
+                }
+                .lineLimit(1)
+                if !stacked { Spacer(minLength: 8) }
+                if let left = reading.left {
+                    Text(left).font(.subheadline).foregroundStyle(.secondary)
+                        .multilineTextAlignment(stacked ? .leading : .trailing)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            if let fraction = reading.fraction {
+                ProgressView(value: fraction).tint(color)
+            }
+        }
     }
 }

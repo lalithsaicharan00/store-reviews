@@ -113,29 +113,29 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertTrue(status("1 of 2 glasses"), "An amount: how far along")
         // "+1" on screen, exactly as Today's round button; VoiceOver says it in full (U16).
         button("day-add-step", "Add 1 glass")
-        button("day-add-entry", "Log manually")
+        button("day-add-entry", "Log")
         XCTAssertEqual(app.buttons["day-add-step"].frame.height, app.buttons["day-add-entry"].frame.height, accuracy: 1,
                        "The two logging buttons are the same size")
         XCTAssertEqual(app.buttons["day-add-step"].frame.minY, app.buttons["day-add-entry"].frame.minY, accuracy: 1,
                        "in one row")
-        XCTAssertTrue(app.staticTexts["Today's logs"].exists, "Its logs, under a heading")
+        XCTAssertTrue(app.staticTexts["Today’s Logs"].exists, "Its logs, under a heading")
         XCTAssertEqual(links.count, 1, "One row per log")
         XCTAssertTrue(app.buttons["day-add-note"].exists, "The note for this day, in the card")
-        XCTAssertLessThan(app.buttons["day-add-note"].frame.maxY, app.staticTexts["Today's logs"].frame.minY,
+        XCTAssertLessThan(app.buttons["day-add-note"].frame.maxY, app.staticTexts["Today’s Logs"].frame.minY,
                           "The note is in This day, above the logs")
         inSheet(app.buttons["day-skip"])
-        button("day-skip", "Skip today")
+        button("day-skip", "Skip Today")
         XCTAssertGreaterThan(app.buttons["day-skip"].frame.minY, links.firstMatch.frame.maxY, "Skip today is last")
         shot("dd-01-amount")
         close()
 
         open("Stretch")
         XCTAssertTrue(status("0 of 3 times"), "Several a day: times")
-        button("day-add-one", "Add a check")
-        XCTAssertFalse(app.staticTexts["Checks today"].exists, "No empty checks section")
+        button("day-add-one", "Add a Check")
+        XCTAssertFalse(app.staticTexts["Checks Today"].exists, "No empty checks section")
         app.buttons["day-add-one"].tap()
         XCTAssertTrue(status("1 of 3 times"), "One check per tap")
-        XCTAssertTrue(app.staticTexts["Checks today"].waitForExistence(timeout: 3), "The check, in its own row")
+        XCTAssertTrue(app.staticTexts["Checks Today"].waitForExistence(timeout: 3), "The check, in its own row")
         XCTAssertTrue(undoRows.firstMatch.exists, "A single check has its own Undo, not an editor")
         XCTAssertEqual(links.count, 0, "and no chevron")
         shot("dd-02-several-checks")
@@ -157,10 +157,10 @@ final class DayDetailsUITests: XCTestCase {
 
         open("Read a little")
         XCTAssertTrue(status("0 of 20 min"), "Time: how far along")
-        button("day-start-timer", "Start timer")
-        button("day-add-entry", "Log manually")
+        button("day-start-timer", "Start Timer")
+        button("day-add-entry", "Log")
         app.buttons["day-start-timer"].tap()
-        button("day-stop-timer", "Stop and save")
+        button("day-stop-timer", "Stop and Save")
         XCTAssertTrue(app.staticTexts["day-running"].exists, "The running clock in the status")
         shot("dd-04-time-running")
         app.buttons["day-stop-timer"].tap()
@@ -171,14 +171,14 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertTrue(status("0 cups today"), "A limit is a fact, not a bar to fill")
         XCTAssertTrue(app.staticTexts["Limit 2 cups · within limit"].exists)
         button("day-add-step", "Add 1 cup")
-        button("day-add-entry", "Log manually")
+        button("day-add-entry", "Log")
         XCTAssertFalse(app.buttons["day-skip"].exists, "A limit can't be skipped")
         shot("dd-05-limit")
         close()
 
         open("Water the plants")
         XCTAssertTrue(status("Not done"), "A task: done or not")
-        button("day-done", "Mark done")
+        button("day-done", "Mark Done")
         XCTAssertFalse(app.buttons["day-skip"].exists, "A task has no Skip")
         XCTAssertFalse(app.buttons["day-open-page"].exists, "A task has no habit page")
         app.buttons["day-done"].tap()
@@ -194,13 +194,13 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label ENDSWITH ' this week'")).firstMatch.exists,
                       "The week as context")
         // Every check counts, even two on one day (Current Work 54): Add a check, never a day's done toggle.
-        button("day-add-one", "Add a check")
+        button("day-add-one", "Add a Check")
         XCTAssertFalse(app.buttons["day-done"].exists, "No Mark done for a week count")
         app.buttons["day-add-one"].tap()
         XCTAssertTrue(status("1 time today"))
         app.buttons["day-add-one"].tap()
         XCTAssertTrue(status("2 times today"), "A second check the same day counts too")
-        XCTAssertTrue(app.staticTexts["Checks today"].waitForExistence(timeout: 3), "Each check in its own row")
+        XCTAssertTrue(app.staticTexts["Checks Today"].waitForExistence(timeout: 3), "Each check in its own row")
         shot("dd-07-weekly")
         undoRows.firstMatch.tap()
         XCTAssertTrue(status("1 time today"), "A check's Undo takes back that one only")
@@ -237,7 +237,7 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertTrue(app.buttons["day-skip"].isHittable, "Skip today still reachable")
         shot("dd-logs-four")
         all.tap()
-        XCTAssertTrue(app.navigationBars["Today's logs"].waitForExistence(timeout: 3), "All logs, titled as the heading")
+        XCTAssertTrue(app.navigationBars["Today’s Logs"].waitForExistence(timeout: 3), "All logs, titled as the heading")
         XCTAssertEqual(links.count, 4, "Every log of the day")
         XCTAssertTrue(app.staticTexts["all-logs-footer"].label.hasPrefix("4 glasses in all."), "The total")
         XCTAssertFalse(app.buttons["day-close"].exists, "No Close on All logs")
@@ -246,10 +246,10 @@ final class DayDetailsUITests: XCTestCase {
         links.element(boundBy: 3).tap()
         XCTAssertTrue(app.navigationBars["Log"].waitForExistence(timeout: 3), "A tap opens the Log view")
         app.buttons["record-delete"].tap()
-        app.alerts.buttons["Delete Log"].tap()
-        XCTAssertTrue(app.navigationBars["Today's logs"].waitForExistence(timeout: 3), "Back to All logs after deleting")
+        app.alerts.buttons["Delete"].tap()
+        XCTAssertTrue(app.navigationBars["Today’s Logs"].waitForExistence(timeout: 3), "Back to All logs after deleting")
         XCTAssertEqual(links.count, 3)
-        app.navigationBars["Today's logs"].buttons.element(boundBy: 0).tap()
+        app.navigationBars["Today’s Logs"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(status("3 of 2 glasses"), "Exactly one log removed")
         XCTAssertFalse(app.buttons["day-all-logs"].exists, "Three logs: no All logs row")
         close()
@@ -263,7 +263,7 @@ final class DayDetailsUITests: XCTestCase {
         let note = app.buttons["day-add-note"]
         inSheet(note)
         note.tap()
-        XCTAssertTrue(app.navigationBars["Add note"].waitForExistence(timeout: 3), "Add note opens")
+        XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 3), "Add note opens")
         let field = app.textViews["note-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         XCTAssertFalse(app.descendants(matching: .any)["record-habit"].exists, "No habit card on a note")
@@ -277,9 +277,9 @@ final class DayDetailsUITests: XCTestCase {
         skip.tap()
         XCTAssertTrue(status("Skipped"))
         XCTAssertTrue(app.staticTexts["1 glass saved · Doesn't count toward your streak"].exists, "What the day keeps")
-        button("day-skip", "Undo skip")
+        button("day-skip", "Undo Skip")
         button("day-add-step", "Add 1 glass", enabled: false)
-        button("day-add-entry", "Log manually", enabled: false)
+        button("day-add-entry", "Log", enabled: false)
         XCTAssertEqual(links.count, 1, "The saved log stays")
         XCTAssertTrue(app.buttons["day-edit-note"].isEnabled, "The note stays and can be changed")
         shot("dd-09-skipped-with-log-and-note")
@@ -313,23 +313,22 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertFalse(app.keyboards.firstMatch.exists, "Viewing: no keyboard")
         XCTAssertFalse(app.buttons["record-save"].exists, "Never a greyed-out Save on the view")
         let delete = app.buttons["record-delete"], edit = app.buttons["record-edit"]
-        XCTAssertEqual(delete.label, "Delete log")
-        XCTAssertEqual(delete.frame.minY, edit.frame.minY, accuracy: 1, "Delete log | Edit side by side")
-        XCTAssertLessThan(delete.frame.minX, edit.frame.minX, "Delete on the left")
+        XCTAssertEqual(delete.label, "Delete Log")
+        XCTAssertGreaterThan(delete.frame.minY, edit.frame.maxY, "Edit in the bar; Delete Log in its own section under the log")
         shot("dd-10-log-view")
         edit.tap()
-        XCTAssertTrue(app.navigationBars["Edit log"].waitForExistence(timeout: 3), "Edit opens edit mode")
+        XCTAssertTrue(app.navigationBars["Edit Log"].waitForExistence(timeout: 3), "Edit opens edit mode")
         let field = app.textFields["record-amount"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "The value has the keyboard")
         XCTAssertTrue(app.descendants(matching: .any)["record-time"].firstMatch.exists, "The time can change")
         let save = app.buttons["record-save"]
         XCTAssertTrue(save.isEnabled, "Save is always on")
-        XCTAssertLessThan(save.frame.maxY, app.keyboards.firstMatch.frame.minY + 1, "Save rides above the keyboard")
+        XCTAssertLessThan(save.frame.maxY, app.keyboards.firstMatch.frame.minY + 1, "Save, in the bar above the keyboard")
         field.typeText("3")
         shot("dd-11-edit-log")
         app.buttons["record-cancel"].tap()
-        let discard = app.alerts.buttons["Discard Changes"]
+        let discard = app.alerts.buttons["Discard"]
         XCTAssertTrue(discard.waitForExistence(timeout: 3), "✕ with changes asks first")
         app.alerts.buttons["Keep Editing"].tap()
         XCTAssertTrue(discard.waitForNonExistence(timeout: 3))
@@ -347,26 +346,24 @@ final class DayDetailsUITests: XCTestCase {
         alert.buttons["Cancel"].tap()
         XCTAssertTrue(app.navigationBars["Log"].exists, "Cancel deletes nothing")
         app.buttons["record-delete"].tap()
-        app.alerts.buttons["Delete Log"].tap()
+        app.alerts.buttons["Delete"].tap()
         XCTAssertTrue(status("1 of 2 glasses"), "Exactly one log removed: \(shown)")
         XCTAssertEqual(links.count, 1, "The other log stays")
         close()
     }
 
-    /// A time habit: Add log types hours, minutes and seconds (HOW LONG), its clock row is "Finished at"; the session
-    /// opens as Log with its length; Edit changes the minutes.
+    /// A time habit: Add Log turns an hours | minutes wheel (How long), its clock row is "Finished"; the session opens
+    /// as Log with its length; Edit turns the minutes.
     func testTimeLogAddViewAndEdit() {
         launch()
         open("Read a little")
         app.buttons["day-add-entry"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3), "Log manually opens Add log")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3), "Log manually opens Add log")
         XCTAssertTrue(app.staticTexts["How long"].exists || app.staticTexts["HOW LONG"].exists, "HOW LONG, never TIME")
-        XCTAssertTrue(app.staticTexts["Finished at"].exists, "The clock row is Finished at")
-        let minutes = app.textFields["record-minutes"]
-        XCTAssertTrue(minutes.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "Minutes have the keyboard")
-        XCTAssertTrue(app.textFields["record-hours"].exists && app.textFields["record-seconds"].exists)
-        minutes.typeText("15")
+        XCTAssertTrue(app.staticTexts["Finished"].exists, "The clock row is Finished")
+        XCTAssertEqual(app.pickers["record-duration"].pickerWheels.count, 2, "Hours and minutes; seconds only on a log that has them")
+        XCTAssertFalse(app.keyboards.firstMatch.exists, "A wheel, never a keyboard")
+        app.setDuration(1, to: "15 minutes")
         shot("dd-time-add")
         app.buttons["record-add"].tap()
         XCTAssertTrue(status("15 of 20 min"), "One session added: \(shown)")
@@ -375,10 +372,8 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertEqual(app.descendants(matching: .any)["record-duration"].firstMatch.label, "15 minutes")
         shot("dd-time-log-view")
         app.buttons["record-edit"].tap()
-        XCTAssertTrue(app.navigationBars["Edit log"].waitForExistence(timeout: 3))
-        let edit = app.textFields["record-minutes"]
-        XCTAssertTrue(edit.waitForExistence(timeout: 3))
-        edit.typeText("3")
+        XCTAssertTrue(app.navigationBars["Edit Log"].waitForExistence(timeout: 3))
+        app.setDuration(1, to: "3 minutes")
         app.buttons["record-save"].tap()
         XCTAssertTrue(app.navigationBars["Log"].waitForExistence(timeout: 3))
         XCTAssertEqual(app.descendants(matching: .any)["record-duration"].firstMatch.label, "3 minutes")
@@ -416,23 +411,22 @@ final class DayDetailsUITests: XCTestCase {
         open("Smoking")
         let before = links.count
         let record = app.buttons["day-add-entry"]
-        XCTAssertTrue(record.label == "Record a slip" || record.label == "Record another slip")
+        XCTAssertTrue(record.label == "Record a Slip" || record.label == "Record Another Slip")
         record.tap()
-        XCTAssertTrue(app.navigationBars["Add slip"].waitForExistence(timeout: 3), "Add slip, the same shape as every Add")
+        XCTAssertTrue(app.navigationBars["Add Slip"].waitForExistence(timeout: 3), "Add slip, the same shape as every Add")
         footer(contains: "A slip is recorded with its time.")
         shot("dd-14-add-slip")
         app.buttons["record-add"].tap()
-        XCTAssertTrue(app.staticTexts["Slips today"].waitForExistence(timeout: 3), "Slips, under their own heading")
+        XCTAssertTrue(app.staticTexts["Slips Today"].waitForExistence(timeout: 3), "Slips, under their own heading")
         XCTAssertEqual(links.count, before + 1, "The new slip, in its own row")
-        button("day-add-entry", "Record another slip")
+        button("day-add-entry", "Record Another Slip")
         shot("dd-14-quit-with-slip")
         links.firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Slip"].waitForExistence(timeout: 3), "A slip opens Slip, a view")
-        XCTAssertTrue(app.staticTexts["Time zone"].exists, "Where it was recorded")
-        XCTAssertEqual(app.buttons["record-delete"].label, "Delete slip")
+        XCTAssertEqual(app.buttons["record-delete"].label, "Delete Slip")
         shot("dd-15-slip-view")
         app.buttons["record-edit"].tap()
-        XCTAssertTrue(app.navigationBars["Edit slip"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Slip"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.descendants(matching: .any)["record-time"].firstMatch.exists, "Its time, to correct")
         XCTAssertFalse(app.keyboards.firstMatch.exists, "Nothing to type for a slip")
         app.buttons["record-cancel"].tap()
@@ -452,18 +446,18 @@ final class DayDetailsUITests: XCTestCase {
     /// a footer saying what will happen, and one filled button at the bottom.
     func testEveryKindsAddScreen() {
         let kinds: [(name: String, title: String, button: String, footer: String)] = [
-            ("Water", "Add log", "Add", "Adds a new log. Other logs stay as they are."),
-            ("Push-ups", "Add log", "Add", "Adds a new log."),
-            ("Savings", "Add log", "Add", "Adds a new log."),
-            ("Coffee", "Add log", "Add", "Records what happened. Your limit stays the same."),
-            ("Read", "Add log", "Add", "Adds one session. Other logs stay as they are."),
-            ("Stretch breaks", "Add a check", "Add", "Checks already there stay."),
-            ("Call family", "Add a check", "Add", "It counts toward this week."),
-            ("Deep clean", "Add a check", "Add", "It counts toward this month."),
-            ("Take vitamins", "Mark a day done", "Mark done", "as done at"),
-            ("Gym", "Mark a day done", "Mark done", "It counts toward that week."),
-            ("Tidy desk", "Tick steps", "Save", "Saves these steps for"),
-            ("Smoking", "Add slip", "Add", "A slip is recorded with its time."),
+            ("Water", "Add Log", "Add", "Adds a new log. Other logs stay as they are."),
+            ("Push-ups", "Add Log", "Add", "Adds a new log."),
+            ("Savings", "Add Log", "Add", "Adds a new log."),
+            ("Coffee", "Add Log", "Add", "Records what happened. Your limit stays the same."),
+            ("Read", "Add Log", "Add", "Adds one session. Other logs stay as they are."),
+            ("Stretch breaks", "Add a Check", "Add", "Checks already there stay."),
+            ("Call family", "Add a Check", "Add", "It counts toward this week."),
+            ("Deep clean", "Add a Check", "Add", "It counts toward this month."),
+            ("Take vitamins", "Mark a Day Done", "Mark Done", "as done at"),
+            ("Gym", "Mark a Day Done", "Mark Done", "It counts toward that week."),
+            ("Tidy desk", "Tick Steps", "Save", "Saves these steps for"),
+            ("Smoking", "Add Slip", "Add", "A slip is recorded with its time."),
         ]
         for kind in kinds {
             launchAdd(kind.name)
@@ -499,7 +493,7 @@ final class DayDetailsUITests: XCTestCase {
     /// Typing a currency amount keeps the symbol before the digits, and no unit line (design decisions §8).
     func testCurrencyAndNoUnitAmounts() {
         launchAdd("Savings")
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 30))
         let field = app.textFields["record-amount"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "The decimal pad is up as the screen opens")
@@ -508,11 +502,11 @@ final class DayDetailsUITests: XCTestCase {
         field.typeText("15")
         XCTAssertTrue(app.buttons["record-add"].isEnabled)
         app.buttons["record-add"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForNonExistence(timeout: 3), "Add closes the screen")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForNonExistence(timeout: 3), "Add closes the screen")
         app.terminate()
 
         launchAdd("Push-ups")
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 30))
         XCTAssertEqual(app.textFields["record-amount"].label, "Amount", "No unit: just the number")
         shot("add-no-unit")
     }
@@ -520,7 +514,7 @@ final class DayDetailsUITests: XCTestCase {
     /// Mark a day done records the day, and is off for a day that's already done, saying so (design decisions §8, row 8).
     func testMarkADayDoneOnlyOnce() {
         launchAdd("Take vitamins", extra: ["-then-open-day"])
-        XCTAssertTrue(app.navigationBars["Mark a day done"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.navigationBars["Mark a Day Done"].waitForExistence(timeout: 30))
         XCTAssertTrue(app.buttons["record-add"].isEnabled)
         XCTAssertFalse(app.keyboards.firstMatch.exists, "Nothing to type")
         app.buttons["record-add"].tap()
@@ -529,7 +523,7 @@ final class DayDetailsUITests: XCTestCase {
         app.terminate()
         // The fixture took yesterday's vitamins.
         launchAdd("Take vitamins", offset: -1)
-        XCTAssertTrue(app.navigationBars["Mark a day done"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.navigationBars["Mark a Day Done"].waitForExistence(timeout: 30))
         XCTAssertFalse(app.buttons["record-add"].isEnabled, "Already done: Mark done is off")
         footer(contains: "is already done")
         shot("add-already-done")
@@ -538,7 +532,7 @@ final class DayDetailsUITests: XCTestCase {
     /// Tick steps saves the steps chosen for the day, and only when something changed.
     func testTickSteps() {
         launchAdd("Tidy desk", extra: ["-then-open-day"])
-        XCTAssertTrue(app.navigationBars["Tick steps"].waitForExistence(timeout: 30))
+        XCTAssertTrue(app.navigationBars["Tick Steps"].waitForExistence(timeout: 30))
         XCTAssertFalse(app.buttons["record-add"].isEnabled, "Nothing changed yet")
         let third = app.buttons["record-step-2"]
         XCTAssertEqual(third.value as? String, "Not done")
@@ -554,10 +548,9 @@ final class DayDetailsUITests: XCTestCase {
     /// copied onto it): with the store's clock at 2:30 PM, the log reads 2:30 PM on yesterday (D7; the time of a log).
     func testPastDayLogKeepsItsDayAndChosenTime() {
         launchAdd("Water", offset: -1, extra: ["-clock-hour", "14", "-then-open-day"])
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 30))
-        // The Date row reads as one element with its "Yesterday" word.
-        XCTAssertTrue(app.descendants(matching: .any).matching(NSPredicate(format: "label CONTAINS 'Yesterday'")).firstMatch.exists,
-                      "The day it was opened from is chosen: \(shown)")
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 30))
+        // The date is iOS's own picker, showing the date itself; the day it was saved on is checked below.
+        XCTAssertTrue(app.descendants(matching: .any)["record-date"].firstMatch.exists, "The date: \(shown)")
         let field = app.textFields["record-amount"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
         field.typeText("2")
@@ -626,8 +619,8 @@ final class DayDetailsUITests: XCTestCase {
     /// day ("Today" only for today, U21), no link back to the page it came from, a past day's own words ("Skip this
     /// day", no timer), and Close. History's Add is named for the kind (never "Add Entry").
     func testHistoryDaysOpenDayDetails() {
-        for (name, key, add) in [("Water", "amount", "Add log"), ("Read", "time", "Add log"), ("Meds", "check", "Mark a day done"),
-                                 ("Skincare", "checklist", "Tick steps"), ("Call family", "weekly", "Add a check")] {
+        for (name, key, add) in [("Water", "amount", "Add Log"), ("Read", "time", "Add Log"), ("Meds", "check", "Mark a Day Done"),
+                                 ("Skincare", "checklist", "Tick Steps"), ("Call family", "weekly", "Add a Check")] {
             launch(fixture: false, dark: true)
             app.buttons["menu-button"].tap()
             XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 3))
@@ -648,7 +641,7 @@ final class DayDetailsUITests: XCTestCase {
             XCTAssertFalse(app.buttons["day-open-page"].exists, "\(name): no link to the page it was opened from")
             XCTAssertTrue(app.buttons["day-more"].exists && app.buttons["day-close"].exists, "\(name): ⋯ and Close")
             XCTAssertFalse(app.buttons["day-start-timer"].exists, "\(name): no timer on an earlier day")
-            XCTAssertFalse(app.buttons["Skip today"].exists, "\(name): an earlier day never says today")
+            XCTAssertFalse(app.buttons["Skip Today"].exists, "\(name): an earlier day never says today")
             shot("dd-history-\(key)")
             close()
             app.terminate()
@@ -669,12 +662,12 @@ final class DayDetailsUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Log"].waitForExistence(timeout: 3))
         shot("dd-dark-log-view")
         app.buttons["record-edit"].tap()
-        XCTAssertTrue(app.navigationBars["Edit log"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Log"].waitForExistence(timeout: 3))
         shot("dd-dark-edit-log")
         app.buttons["record-cancel"].tap()
         app.navigationBars["Log"].buttons.element(boundBy: 0).tap()
         app.buttons["day-add-entry"].tap()
-        XCTAssertTrue(app.navigationBars["Add log"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3))
         shot("dd-dark-add-log")
     }
 }

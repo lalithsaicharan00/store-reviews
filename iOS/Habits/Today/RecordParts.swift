@@ -35,39 +35,39 @@ enum RecordKind: Equatable {
         }
     }
 
-    /// The Add screen's one-line title, and the words on History's Add button (U21).
+    /// The Add screen's one-line title, and the words on History's Add button (U21). Title case, as every title.
     var addTitle: String {
         switch self {
-        case .amount, .time: "Add log"
-        case .check: "Add a check"
-        case .dayDone: "Mark a day done"
-        case .steps: "Tick steps"
-        case .slip: "Add slip"
+        case .amount, .time: "Add Log"
+        case .check: "Add a Check"
+        case .dayDone: "Mark a Day Done"
+        case .steps: "Tick Steps"
+        case .slip: "Add Slip"
         }
     }
 
-    /// The one filled button at the bottom of the Add screen.
+    /// The Add screen's confirm word, in the bar (Figma's Log screen: plain glass, as Add, Save and Done everywhere).
     var addButton: String {
         switch self {
         case .amount, .time, .check, .slip: "Add"
-        case .dayDone: "Mark done"
+        case .dayDone: "Mark Done"
         case .steps: "Save"
         }
     }
 }
 
-// MARK: - The card: Habit, Date, Time
+// MARK: - The card: the habit, then When
 
-/// "Habit · [icon] Water": which habit this record is for, shown and never changeable here (decision log step 8).
+/// The habit this record is for, as on Day details: its icon in a 32 circle and its name (Figma's Log screen). Shown,
+/// never changeable here. A `Label`, so the line under it starts at the name.
 struct RecordHabitRow: View {
     let habit: Habit
 
     var body: some View {
-        LabeledContent("Habit") {
-            HStack(spacing: 6) {
-                HabitIcon(symbol: habit.symbol, color: habit.color, size: 22)
-                Text(habit.name).lineLimit(1).truncationMode(.tail)
-            }
+        Label {
+            Text(habit.name).lineLimit(1).truncationMode(.tail)
+        } icon: {
+            HabitIcon(symbol: habit.symbol, color: habit.color, size: 32)
         }
         .accessibilityElement(children: .combine)
         .accessibilityLabel("Habit, \(habit.name)")
@@ -75,51 +75,32 @@ struct RecordHabitRow: View {
     }
 }
 
-/// The record's date: "Today" in words beside a compact date picker (any day from the habit's start to today, never
-/// the future); on the iPhone SE with the keyboard up, the time picker shares the row (`compact`).
+/// When (Finished for a session): iOS's compact date and time pickers side by side, the capsules saying they can be
+/// changed. Any day from the habit's start to today, never the future; the time inside that day, never later than now.
+/// Their pop-ups (the calendar, the time wheel) are iOS's own.
 struct RecordDateRow: View {
     @Binding var day: LocalDay
     let range: ClosedRange<LocalDay>
     @Binding var time: Date
     let timeRange: ClosedRange<Date>
-    let timeTitle: String
-    /// Date and Time in one row, without the "Today" word (the iPhone SE with the keyboard up).
-    var compact = false
+    let title: String
     @Environment(HabitStore.self) private var store
 
     var body: some View {
         let c = store.calendar
         let dates = range.lowerBound.date(calendar: c)...range.upperBound.date(calendar: c)
         let date = Binding(get: { day.date(calendar: c) }, set: { day = LocalDay($0, calendar: c) })
-        if compact {
-            LabeledContent("Date") {
-                HStack(spacing: 8) {
-                    DatePicker("Date", selection: date, in: dates, displayedComponents: .date)
-                        .labelsHidden()
-                        .accessibilityIdentifier("record-date")
-                    DatePicker(timeTitle, selection: $time, in: timeRange, displayedComponents: .hourAndMinute)
-                        .labelsHidden()
-                        .accessibilityLabel(timeTitle)
-                        .accessibilityIdentifier("record-time")
-                }
+        LabeledContent(title) {
+            HStack(spacing: 6) {
+                DatePicker("Date", selection: date, in: dates, displayedComponents: .date)
+                    .labelsHidden()
+                    .accessibilityIdentifier("record-date")
+                DatePicker("Time", selection: $time, in: timeRange, displayedComponents: .hourAndMinute)
+                    .labelsHidden()
+                    .accessibilityIdentifier("record-time")
             }
-            .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
-        } else {
-            LabeledContent("Date") {
-                HStack(spacing: 8) {
-                    if let word = DayWords.relative(day, today: store.today(), calendar: c) {
-                        Text(word).foregroundStyle(.secondary)
-                    }
-                    DatePicker("Date", selection: date, in: dates, displayedComponents: .date)
-                        .labelsHidden()
-                        .accessibilityIdentifier("record-date")
-                }
-            }
-            .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
-            DatePicker(timeTitle, selection: $time, in: timeRange, displayedComponents: .hourAndMinute)
-                .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
-                .accessibilityIdentifier("record-time")
         }
+        .environment(\.calendar, c).environment(\.timeZone, c.timeZone)
     }
 }
 
@@ -170,79 +151,182 @@ struct AmountUnitLine: View {
 
     var body: some View {
         Text(HabitCopy.unitWord(draft.isOne ? 1 : 2, unit))
-            .font(compact ? .body : .title3)
+            .font(compact ? .subheadline : .body)
             .foregroundStyle(.secondary)
             .accessibilityHidden(true)
     }
 }
 
-/// HOW LONG: hours, minutes and seconds, three tap-to-type fields side by side, each its own small view (S11). Whole
-/// hours and minutes; seconds may have decimals ("1.23").
-struct DurationFields: View {
+/// HOW LONG, chosen on a wheel as Clock's timer is (Figma's Log screen, Duration): hours and minutes in one band,
+/// seconds too on a log that has them (a timer's). The minutes and seconds go round; the hours don't. UIKit's picker,
+/// because two SwiftUI wheels draw two bands (Rulebook, Repeat on a date). It writes the draft's strings, so saving and
+/// checking are the typed fields' own.
+struct DurationWheel: UIViewRepresentable {
     let draft: ProgressValueDraft
-    let size: CGFloat
-    var focus: FocusState<RecordField?>.Binding
+    var showsSeconds = false
 
-    var body: some View {
-        HStack(spacing: 8) {
-            part("hours", key: \.hours, field: .hours, keyboard: .numberPad, id: "record-hours", label: "Hours")
-            part("min", key: \.minutes, field: .minutes, keyboard: .numberPad, id: "record-minutes", label: "Minutes")
-            part("sec", key: \.seconds, field: .seconds, keyboard: .decimalPad, id: "record-seconds", label: "Seconds")
-        }
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    func makeUIView(context: Context) -> DurationPickerView {
+        let picker = DurationPickerView(units: showsSeconds ? ["hours", "min", "s"] : ["hours", "min"])
+        picker.dataSource = context.coordinator
+        picker.delegate = context.coordinator
+        picker.accessibilityIdentifier = "record-duration"
+        picker.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        picker.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        context.coordinator.showDraft(in: picker)
+        return picker
     }
 
-    private func part(_ title: String, key: ReferenceWritableKeyPath<ProgressValueDraft, String>, field: RecordField,
-                      keyboard: UIKeyboardType, id: String, label: String) -> some View {
-        VStack(spacing: 4) {
-            DraftTextField(draft: draft, key: key, placeholder: "0", keyboard: keyboard)
-                .multilineTextAlignment(.center)
-                .font(CustomText.amount(size))
-                .lineLimit(1)
-                .focused(focus, equals: field)
-                .padding(.vertical, 8)
-                .frame(maxWidth: .infinity)
-                .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .accessibilityLabel(label)
-                .accessibilityIdentifier(id)
-            Text(title).font(.subheadline).foregroundStyle(.secondary).accessibilityHidden(true)
+    func updateUIView(_ picker: DurationPickerView, context: Context) { context.coordinator.parent = self }
+
+    final class Coordinator: NSObject, UIPickerViewDataSource, UIPickerViewDelegate, UIPickerViewAccessibilityDelegate {
+        var parent: DurationWheel
+        /// How many times the minutes and seconds repeat, so they seem to go round; the wheel goes back to the middle
+        /// after each turn.
+        private static let laps = 100
+        private let hourCount: Int
+
+        init(_ parent: DurationWheel) {
+            self.parent = parent
+            hourCount = max(24, (Int(parent.draft.hours) ?? 0) + 1)
+        }
+
+        private var keys: [ReferenceWritableKeyPath<ProgressValueDraft, String>] {
+            parent.showsSeconds ? [\.hours, \.minutes, \.seconds] : [\.hours, \.minutes]
+        }
+
+        private func current(_ component: Int) -> Int {
+            let text = parent.draft[keyPath: keys[component]]
+            return Int((Double(text) ?? 0).rounded(.down))
+        }
+
+        private func middleRow(for value: Int) -> Int { 60 * (Self.laps / 2) + value }
+
+        func showDraft(in picker: UIPickerView) {
+            for component in keys.indices {
+                let value = current(component)
+                picker.selectRow(component == 0 ? min(value, hourCount - 1) : middleRow(for: value % 60),
+                                 inComponent: component, animated: false)
+            }
+        }
+
+        func numberOfComponents(in pickerView: UIPickerView) -> Int { keys.count }
+
+        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+            component == 0 ? hourCount : 60 * Self.laps
+        }
+
+        func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+            keys.count == 3 ? 92 : 112
+        }
+
+        func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+            DurationPickerView.rowHeight
+        }
+
+        func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
+                        reusing view: UIView?) -> UIView {
+            let width = self.pickerView(pickerView, widthForComponent: component)
+            let cell = view as? DurationPickerView.Row ?? DurationPickerView.Row()
+            cell.frame = CGRect(x: 0, y: 0, width: width, height: DurationPickerView.rowHeight)
+            let value = component == 0 ? row : row % 60
+            cell.number.text = String(value)
+            // Read whole by VoiceOver, and the wheel's value for a UI test's `adjust(toPickerWheelValue:)`.
+            cell.accessibilityLabel = "\(value) " + (value == 1 ? ["hour", "minute", "second"] : ["hours", "minutes", "seconds"])[component]
+            return cell
+        }
+
+        func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+            let value = component == 0 ? row : row % 60
+            parent.draft.binding(keys[component]).wrappedValue = String(value)
+            if component > 0 { pickerView.selectRow(middleRow(for: value), inComponent: component, animated: false) }
+        }
+
+        func pickerView(_ pickerView: UIPickerView, accessibilityLabelForComponent component: Int) -> String? {
+            ["Hours", "Minutes", "Seconds"][component]
         }
     }
 }
 
-/// A saved time habit's length, read only: the same three boxes as when typing, without fields.
-struct DurationBoxes: View {
+/// The wheel itself, with the units fixed beside the band as Clock's timer has them ("0 hours  5 min").
+final class DurationPickerView: UIPickerView {
+    static let rowHeight: CGFloat = 34
+    /// Where the number ends inside its column; the unit starts just after it.
+    static let numberShare: CGFloat = 0.42
+    private var unitLabels: [UILabel] = []
+
+    /// A row: the number, right-aligned up to the unit's place.
+    final class Row: UIView {
+        let number = UILabel()
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            number.font = UIFontMetrics(forTextStyle: .title2).scaledFont(for: .systemFont(ofSize: 22))
+            number.adjustsFontForContentSizeCategory = true
+            number.textAlignment = .right
+            addSubview(number)
+        }
+        required init?(coder: NSCoder) { fatalError() }
+        override func layoutSubviews() {
+            super.layoutSubviews()
+            number.frame = CGRect(x: 0, y: 0, width: bounds.width * DurationPickerView.numberShare, height: bounds.height)
+        }
+    }
+
+    init(units: [String]) {
+        super.init(frame: .zero)
+        for unit in units {
+            let label = UILabel()
+            label.text = unit
+            label.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: .systemFont(ofSize: 17, weight: .semibold))
+            label.adjustsFontForContentSizeCategory = true
+            label.isAccessibilityElement = false
+            addSubview(label)
+            unitLabels.append(label)
+        }
+    }
+
+    required init?(coder: NSCoder) { fatalError() }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        // Each unit sits just after its column's number, in the band. The column is found from its shown row, so the
+        // place is UIKit's own, whatever spacing it puts between columns.
+        for (component, label) in unitLabels.enumerated() where component < numberOfComponents {
+            guard let row = view(forRow: selectedRow(inComponent: component), forComponent: component) else { continue }
+            let frame = row.convert(row.bounds, to: self)
+            let size = label.sizeThatFits(bounds.size)
+            label.frame = CGRect(x: frame.minX + frame.width * Self.numberShare + 6, y: bounds.midY - size.height / 2,
+                                 width: size.width, height: size.height)
+            bringSubviewToFront(label)
+        }
+    }
+}
+
+/// A saved session's length as words, large: "2 min 42 s", "1 h 5 min" (Figma's Log screen, Duration, View).
+struct DurationText: View {
     let minutes: Double
-    let size: CGFloat
 
     var body: some View {
-        let parts = Self.parts(minutes)
-        HStack(spacing: 8) {
-            box(parts.hours, "hours")
-            box(parts.minutes, "min")
-            box(parts.seconds, "sec")
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(Self.spoken(minutes))
-        .accessibilityIdentifier("record-duration")
+        Text(Self.words(minutes))
+            .font(.largeTitle.bold())
+            .lineLimit(1).minimumScaleFactor(0.5)
+            .frame(maxWidth: .infinity)
+            .accessibilityLabel(Self.spoken(minutes))
+            .accessibilityIdentifier("record-duration")
     }
 
-    private func box(_ value: String, _ title: String) -> some View {
-        VStack(spacing: 4) {
-            Text(value)
-                .font(CustomText.amount(size))
-                .lineLimit(1).minimumScaleFactor(0.5)
-                .padding(.vertical, 8)
-                .frame(maxWidth: .infinity)
-                .background(Color(.tertiarySystemFill), in: RoundedRectangle(cornerRadius: 10, style: .continuous))
-            Text(title).font(.subheadline).foregroundStyle(.secondary)
-        }
-    }
-
-    /// The draft's own split, so the view and the edit fields agree ("0", "15", "00", or "30.5" seconds).
-    static func parts(_ minutes: Double) -> (hours: String, minutes: String, seconds: String) {
-        let draft = ProgressValueDraft(kind: .duration, value: minutes)
-        let seconds = draft.seconds == "0" ? "00" : draft.seconds.count == 1 ? "0" + draft.seconds : draft.seconds
-        return (draft.hours, draft.minutes, seconds)
+    /// "2 min 42 s"; seconds keep their decimals ("10.24 s"); "0 min" for nothing.
+    static func words(_ minutes: Double) -> String {
+        let total = (minutes * 6000).rounded() / 100
+        let whole = Int(total / 60)
+        let h = whole / 60, m = whole % 60
+        let s = total - Double(whole) * 60
+        var parts: [String] = []
+        if h > 0 { parts.append("\(h) h") }
+        if m > 0 { parts.append("\(m) min") }
+        if s > 0 { parts.append(HabitCopy.number(s) + " s") }
+        return parts.isEmpty ? "0 min" : parts.joined(separator: " ")
     }
 
     /// "15 minutes", "1 hour 2 minutes 30 seconds", for VoiceOver.
@@ -261,8 +345,8 @@ struct DurationBoxes: View {
 
 // MARK: - The bottom place
 
-/// The screen's actions at the bottom, full width, riding above the keyboard (or the home indicator): one filled
-/// button (Add, Save, Mark done), or Delete | Edit on a record's view (U18, U19). Nothing else on the screen is filled.
+/// A screen's actions at the bottom, full width, riding above the keyboard (or the home indicator). Only App Lock's
+/// pages use it now: the record screens' Add, Save and Edit are in the navigation bar (Figma, 17 Nov 2026).
 struct RecordBottomBar<Content: View>: View {
     @ViewBuilder let content: Content
 
@@ -273,24 +357,6 @@ struct RecordBottomBar<Content: View>: View {
             .padding(.bottom, 8)
             .frame(maxWidth: .infinity)
             .background(Color(.systemGroupedBackground))
-    }
-}
-
-/// "Delete log": red text on the ordinary bordered button, never a red fill (U19; Apple HIG: the destructive role's
-/// colour, not the prominent style). Always asks first.
-struct RecordDeleteButton: View {
-    let title: String
-    let id: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(role: .destructive, action: action) {
-            Text(title).fontWeight(.semibold).foregroundStyle(.red).frame(maxWidth: .infinity, minHeight: DayButton.labelHeight)
-        }
-        .buttonStyle(.bordered)
-        .tint(.ink)
-        .controlSize(.regular)
-        .accessibilityIdentifier(id)
     }
 }
 
@@ -316,11 +382,6 @@ struct ScreenRoom: Equatable {
         let windows = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows)
         return (windows.first(where: \.isKeyWindow) ?? windows.first)?.bounds.height ?? 852
     }
-
-    /// Room for the footer above the keyboard: only the largest iPhones (Plus and Pro Max). The design kept it on the
-    /// 6.1-inch, but iOS 26's 52-pt rows leave no room there: on a 6.3-inch the footer and the amount reached under
-    /// Add (SmallScreenUITests on the default simulator, run 37624448992, 7 Oct 2026).
-    var keepsFooterWhileTyping: Bool { Self.windowHeight() >= 920 }
 
     /// The gaps a record screen uses (design decisions §3): the minimum on the SE with the keyboard up, where the card,
     /// the amount and the button must all fit above the keyboard (measured on the SE simulator, 7 Oct 2026: with the
@@ -415,7 +476,7 @@ struct DraftTextField: View {
             guard let s = GoalNumber.parse(part(seconds)) else { return (nil, "Seconds take up to 2 decimal places.") }
             guard s < 60 else { return (nil, "Seconds go up to 59.99.") }
             let v = h * 60 + m + s / 60
-            guard v > 0 else { return (nil, "A session is longer than zero.") }
+            guard v > 0 else { return (nil, "Enter more than zero.") }
             return v <= GoalNumber.maximum ? (v, nil) : (nil, "That's longer than a log can hold.")
         }
         if amount.trimmingCharacters(in: .whitespaces).isEmpty { return (nil, nil) }
@@ -437,5 +498,13 @@ struct DraftTextField: View {
             if problem != self.problem { self.problem = problem }
             if !self.edited && self.differs { self.edited = true }
         })
+    }
+}
+
+extension View {
+    /// The back control is the chevron alone (the user, 4 Oct 2026). iOS 26's back button already is, and keeps the
+    /// title centred as Figma draws it; before 26 the editor role drops the previous title, at the cost of a leading one.
+    @ViewBuilder func backChevronOnly() -> some View {
+        if #available(iOS 26, *) { self } else { toolbarRole(.editor) }
     }
 }

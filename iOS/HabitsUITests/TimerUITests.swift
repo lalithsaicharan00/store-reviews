@@ -60,10 +60,10 @@ final class TimerUITests: XCTestCase {
         sleep(2)
         XCTAssertNotEqual(screenClock.label, first, "Its clock ticks")
         XCTAssertEqual(app.buttons["timer-screen-primary"].label, "Stop Read timer", "Pause is the main button")
-        XCTAssertEqual(app.buttons["timer-screen-log"].label, "Log manually", "Log manually is one tap away")
+        XCTAssertEqual(app.buttons["timer-screen-log"].label, "Log Time", "Log Time is one tap away")
         shot("t00-timer-screen")
         app.buttons["timer-screen-close"].tap()
-        XCTAssertTrue(app.staticTexts["timer-screen-name"].waitForNonExistence(timeout: 3), "⌄ puts it away")
+        XCTAssertTrue(app.staticTexts["timer-screen-name"].waitForNonExistence(timeout: 3), "✕ puts it away")
         XCTAssertTrue(app.buttons["Stop Read timer"].waitForExistence(timeout: 3), "Still running: the row shows ⏸")
         XCTAssertTrue(clock.waitForExistence(timeout: 3), "The row keeps the live clock")
         // Folded, the bar opens the timer; a swipe down puts it away again, as any iPhone sheet.

@@ -192,7 +192,7 @@ final class TodayUITests: XCTestCase {
 
     /// Ticking off (#58): a done row finishes in place and sinks below the rest only once the person pauses, never in
     /// the middle of a run of taps. Call family, then Water: before the pause Call family is still above Water; after it,
-    /// below. (Ticking Water moves "Add note" off Call family, which would otherwise hold it in place.)
+    /// below. (Ticking Water moves "Add Note" off Call family, which would otherwise hold it in place.)
     func testDoneRowWaitsForThePause() {
         // An 8 s pause: GitHub's simulator takes more than 1.5 s between two taps (run 78).
         app.terminate()
