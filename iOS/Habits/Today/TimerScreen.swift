@@ -130,6 +130,7 @@ struct TimerScreen: View {
 /// Figma's Day Details button: Small, Bordered, the calendar symbol, always the words "Day Details" (never Today or a
 /// date). It sits in the page under the habit's name, never in the bar.
 struct DayDetailsButton: View {
+    var id = "day-details-button"
     let action: () -> Void
 
     var body: some View {
@@ -139,7 +140,7 @@ struct DayDetailsButton: View {
             .buttonBorderShape(.capsule)
             .controlSize(.small)
             .tint(.ink)
-            .accessibilityIdentifier("day-details-button")
+            .accessibilityIdentifier(id)
     }
 }
 

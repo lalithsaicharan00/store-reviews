@@ -105,20 +105,19 @@ final class UndoUITests: XCTestCase {
         XCTAssertTrue(app.buttons["day-add-one"].isEnabled)
     }
 
-    func testRoutineUndoStaysVisibleAndLeavesEarlierLogsIntact() {
+    /// The player's Undo is in Saved · Undo · Add Note, floating above the bottom bar (Figma's Routine player, 17 Nov
+    /// 2026); it takes back only the log just made.
+    func testRoutineUndoLeavesEarlierLogsIntact() {
         app.buttons["Start Anytime routine"].tap()
         XCTAssertTrue(app.buttons["focus-primary"].waitForExistence(timeout: 3))
         app.buttons["focus-primary"].tap()
-        let undo = app.buttons["focus-persistent-undo"]
+        let undo = app.buttons["focus-undo"]
         XCTAssertTrue(undo.waitForExistence(timeout: 3))
-        sleep(6)
-        XCTAssertTrue(undo.exists)
-        shot("undo-routine-persistent")
+        shot("undo-routine-banner")
         undo.tap()
-        // The circle is a container (its children keep their identifiers), and the player keeps the pages beside the
-        // current one loaded, so look for the number with this value.
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "identifier == 'focus-quantity' AND label == '1 / 2 glasses'")).firstMatch.waitForExistence(timeout: 3))
-        XCTAssertFalse(undo.exists)
+        // The player keeps the pages beside the current one loaded, so look for the number with this value.
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "identifier == 'focus-quantity' AND label == '1 of 2 glasses'")).firstMatch.waitForExistence(timeout: 3))
+        XCTAssertTrue(undo.waitForNonExistence(timeout: 3))
     }
 
     func testStoreCorrectionsRecalculateAndPersist() {

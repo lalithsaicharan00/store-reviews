@@ -47,7 +47,7 @@ final class RoutineCalendarUITests: XCTestCase {
     /// The player's main button once its habit is done; on the last habit it finishes the routine.
     private func tapFinish() {
         let finish = app.buttons["focus-primary"]
-        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == 'Finish routine'"), object: finish)
+        let ready = XCTNSPredicateExpectation(predicate: NSPredicate(format: "label == 'Finish'"), object: finish)
         XCTAssertEqual(XCTWaiter.wait(for: [ready], timeout: 3), .completed, "The main button finishes the routine")
         finish.tap()
     }
@@ -237,7 +237,7 @@ final class RoutineCalendarUITests: XCTestCase {
         app.buttons["Start Anytime routine"].tap()
         app.buttons["focus-primary"].tap()
         XCTAssertTrue(app.buttons["focus-undo"].waitForExistence(timeout: 3))
-        // The up-next pill and the main button both say "Finish routine": tap the main one.
+        // The last habit done: the main button says Finish and goes to the end page.
         app.buttons["focus-primary"].tap()
         app.buttons["Done"].tap()
         XCTAssertFalse(app.buttons["Start Anytime routine"].exists)

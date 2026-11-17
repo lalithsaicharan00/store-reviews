@@ -67,28 +67,28 @@ final class FocusPlayerUITests: XCTestCase {
 
     func testCountCheckAndUndoStayOnTheCurrentHabit() {
         launch()
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 2 glasses")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 of 2 glasses")
         shot("focus-01-amount")
         app.buttons["focus-primary"].tap()
         XCTAssertTrue(app.buttons["focus-up-next"].waitForExistence(timeout: 3))
         XCTAssertEqual(app.staticTexts["focus-name"].label, "Drink water", "Completion must not move the screen under the finger")
         app.buttons["focus-undo"].tap()
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 2 glasses")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 of 2 glasses")
         app.buttons["focus-primary"].tap()
         app.buttons["focus-up-next"].tap()
         expectPage("Stretch")
         let quantity = app.staticTexts["focus-quantity"]
         for count in 1...3 {
             app.buttons["focus-primary"].tap()
-            XCTAssertTrue(waitUntil { quantity.label == "\(count) / 3" }, "Each tap logs one: \(quantity.label)")
+            XCTAssertTrue(waitUntil { quantity.label == "\(count) of 3 times" }, "Each tap logs one: \(quantity.label)")
         }
-        // Done: the main button moves on (it said "Log one" until now).
+        // Done: the main button moves on (it said "Add a Check" until now).
         XCTAssertTrue(waitUntil { self.app.buttons["focus-primary"].label == "Next" }, app.buttons["focus-primary"].label)
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "3 / 3")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "3 of 3 times")
         XCTAssertEqual(app.staticTexts["focus-name"].label, "Stretch")
         shot("focus-02-check-complete")
         app.buttons["focus-undo"].tap()
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "2 / 3")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "2 of 3 times")
         XCTAssertTrue(app.buttons["focus-primary"].exists)
     }
 
@@ -96,7 +96,7 @@ final class FocusPlayerUITests: XCTestCase {
         launch()
         jump("Clean kitchen")
         XCTAssertTrue(app.buttons["Undo Wash dishes"].exists)
-        XCTAssertEqual(app.staticTexts["focus-checklist-progress"].label, "1 / 3 steps")
+        XCTAssertEqual(app.staticTexts["focus-checklist-progress"].label, "1 of 3 steps")
         shot("focus-03-checklist")
         app.buttons["Mark Wipe the counter done"].tap()
         app.buttons["Mark Sweep the floor done"].tap()
@@ -106,7 +106,7 @@ final class FocusPlayerUITests: XCTestCase {
         expectPage("Stretch")
         jump("Clean kitchen")
         XCTAssertTrue(app.buttons["Undo Sweep the floor"].exists)
-        XCTAssertEqual(app.staticTexts["focus-checklist-progress"].label, "3 / 3 steps")
+        XCTAssertEqual(app.staticTexts["focus-checklist-progress"].label, "3 of 3 steps")
     }
 
     /// A limit is logged only when it happens, so it's never in a routine of things to do: it waits on Today under
@@ -121,7 +121,10 @@ final class FocusPlayerUITests: XCTestCase {
         expectPage("Water the plants")
         app.buttons["focus-primary"].tap()
         app.buttons["focus-primary"].tap()
-        XCTAssertTrue(app.staticTexts["4 left for later. Your progress is saved."].waitForExistence(timeout: 3))
+        // The end page: what's left waits on Today (Figma's End · Some left).
+        XCTAssertTrue(app.staticTexts["1 of 5 done"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["Drink water, Stretch, Clean kitchen and Read a little wait on Today. Pick them up any time."].exists)
+        XCTAssertTrue(app.buttons["end-later-Stretch"].exists, "Left for later lists it")
         XCTAssertFalse(app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'check-in'")).firstMatch.exists)
         shot("focus-05-summary")
         app.buttons["Done"].tap()
@@ -194,7 +197,7 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 3))
         app.buttons["day-close"].tap()
         let quantity = app.staticTexts["focus-quantity"]
-        XCTAssertTrue(waitUntil { quantity.label == "2 / 2 glasses" }, quantity.label)
+        XCTAssertTrue(waitUntil { quantity.label == "2 of 2 glasses" }, quantity.label)
     }
 
     func testSavedFocusProgressSurvivesTermination() {
@@ -206,7 +209,7 @@ final class FocusPlayerUITests: XCTestCase {
         app.terminate()
         launch(disk: true)
         XCTAssertEqual(app.staticTexts["focus-name"].label, "Stretch", "Completed water is not logged again")
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 3")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 of 3 times")
     }
 
     func testLargeTextKeepsActionsAndChecklistReachable() {
@@ -279,32 +282,34 @@ final class FocusPlayerUITests: XCTestCase {
         XCTAssertTrue(undo.waitForNonExistence(timeout: 3))
     }
 
-    /// The bottom row is the native bottom bar, as on Today (the user, 5 Oct 2026, superseding 4 Oct's custom row 40
-    /// points up): it sits at the bottom with no band of space under it, the main button floats a gap above it, and
-    /// neither moves whatever the habit's state (logged with its Undo, an unfinished checklist with no main button, a
-    /// running timer). An unfinished checklist's steps all show without scrolling (Current Work 51: they were cut off
-    /// by the empty button slot). The middle item is Day details (U23): the same sheet a row on Today opens, full height.
+    /// The bottom bar is ‹, the main action and › (Figma's Routine player, 17 Nov 2026): it sits at the bottom, and
+    /// neither it nor the main button moves whatever the habit's state (logged with Saved · Undo over it, an unfinished
+    /// checklist with no main button, a running timer). An unfinished checklist's steps all show above it without
+    /// scrolling. Day Details is in the page, under the name, and opens the same sheet a row on Today opens (U23).
     func testBottomRowStaysPutAndOptionsShowEverything() {
         launch()
         let screen = app.windows.firstMatch.frame
-        let options = app.buttons["focus-day-details"]
+        let next = app.buttons["focus-up-next"]
         let primary = app.buttons["focus-primary"]
-        let row = options.frame
+        let row = next.frame
         let button = primary.frame
         XCTAssertLessThanOrEqual(screen.maxY - row.maxY, 60, "The bottom bar sits at the bottom, no band of space under it")
-        XCTAssertGreaterThanOrEqual(row.minY - button.maxY, 16, "Room between the main button and the bottom bar")
+        XCTAssertEqual(button.midY, row.midY, accuracy: 4, "The main button is in the bar, between ‹ and ›")
         XCTAssertEqual(app.buttons["Previous habit"].frame.midY, row.midY, accuracy: 4, "‹ is in the bar")
-        XCTAssertEqual(app.buttons["focus-up-next"].frame.midY, row.midY, accuracy: 4, "› is in the bar")
+        XCTAssertLessThan(app.buttons["Previous habit"].frame.maxX, button.minX, "‹ before the main button")
+        XCTAssertGreaterThan(row.minX, button.maxX, "› after the main button")
         shot("player-01-bottom-row")
         func expectStill(_ when: String, file: StaticString = #filePath, line: UInt = #line) {
-            XCTAssertEqual(options.frame.midY, row.midY, accuracy: 0.5, "The bottom bar moved: \(when)", file: file, line: line)
+            XCTAssertEqual(next.frame.midY, row.midY, accuracy: 0.5, "The bottom bar moved: \(when)", file: file, line: line)
             if primary.exists {
                 XCTAssertEqual(primary.frame.midY, button.midY, accuracy: 0.5, "The main button moved: \(when)", file: file, line: line)
             }
         }
         primary.tap()
-        XCTAssertTrue(app.buttons["focus-persistent-undo"].waitForExistence(timeout: 3))
-        expectStill("after a log, with Undo under the circle")
+        let undo = app.buttons["focus-undo"]
+        XCTAssertTrue(undo.waitForExistence(timeout: 3))
+        XCTAssertLessThan(undo.frame.maxY, row.minY, "Saved · Undo floats above the bar")
+        expectStill("after a log, with Saved · Undo over it")
         jump("Clean kitchen")
         XCTAssertFalse(primary.exists, "An unfinished checklist has no main button")
         expectStill("an unfinished checklist")
@@ -322,7 +327,9 @@ final class FocusPlayerUITests: XCTestCase {
         sleep(2)
         primary.tap() // Pause: the time so far is a log
         expectStill("a paused timer")
-        XCTAssertEqual(options.label, "Day details", "Habit options became Day details")
+        let options = app.buttons["focus-day-details"]
+        XCTAssertEqual(options.label, "Day Details")
+        XCTAssertLessThan(options.frame.maxY, row.minY - 100, "Day Details is in the page, not the bar")
         options.tap()
         let close = app.buttons["day-close"]
         XCTAssertTrue(close.waitForExistence(timeout: 3), "The same Day details a row opens")
@@ -337,37 +344,37 @@ final class FocusPlayerUITests: XCTestCase {
         expectStill("after Day details")
     }
 
+    /// The value says how far, and over what: "1 of 2 glasses" for a day, "… this week" over a week; a time habit's
+    /// clock says "of 20 min" and VoiceOver reads its period as its value. A once-a-day task says Not done or Done.
     func testCompactProgressAcrossPeriodsAndTypes() {
         launch(["-focus-period-fixture"])
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 / 2 glasses")
-        XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "Today")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "1 of 2 glasses")
         XCTAssertFalse(app.staticTexts["focus-goal"].exists)
         shot("compact-01-amount")
         jump("Stretch")
         let quantity = app.staticTexts["focus-quantity"]
         app.buttons["focus-primary"].tap()
-        XCTAssertTrue(waitUntil { quantity.label == "1 / 3" }, quantity.label)
+        XCTAssertTrue(waitUntil { quantity.label == "1 of 3 times" }, quantity.label)
         app.buttons["focus-primary"].tap()
-        XCTAssertTrue(waitUntil { quantity.label == "2 / 3" }, quantity.label)
+        XCTAssertTrue(waitUntil { quantity.label == "2 of 3 times" }, quantity.label)
         shot("compact-02-daily-check")
         jump("Call family")
-        // 2 / 3 from earlier in the week, or 0 / 3 when the week starts today.
-        XCTAssertTrue(["2 / 3", "0 / 3"].contains(app.staticTexts["focus-quantity"].label))
-        XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "This week")
+        // 2 of 3 from earlier in the week, or 0 of 3 when the week starts today.
+        XCTAssertTrue(["2 of 3 times this week", "0 of 3 times this week"].contains(app.staticTexts["focus-quantity"].label),
+                      app.staticTexts["focus-quantity"].label)
         shot("compact-03-weekly-check")
         jump("Read a little")
         XCTAssertTrue(clock.label.contains(" of 20 min"), clock.label)
-        XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "Today")
+        XCTAssertEqual(clock.value as? String, "Today")
         shot("compact-04-timer")
         jump("Monthly reading")
         XCTAssertTrue(clock.label.contains(" of 1 h"), clock.label)
-        XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "This month")
+        XCTAssertEqual(clock.value as? String, "This month")
         shot("compact-05-monthly-timer")
         jump("Yearly distance")
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "0 / 100 km")
-        XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "This year")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "0 of 100 km this year")
         jump("Flexible reading")
-        XCTAssertEqual(app.staticTexts["focus-progress-period"].label, "20 min on 3 days a week")
+        XCTAssertTrue(clock.label.contains(" of 20 min"), clock.label)
         XCTAssertFalse(app.staticTexts["focus-period-progress"].exists)
         shot("compact-06-flexible")
         app.buttons["focus-day-details"].tap()
@@ -377,7 +384,7 @@ final class FocusPlayerUITests: XCTestCase {
         app.buttons["day-close"].tap()
         XCTAssertTrue(app.buttons["day-close"].waitForNonExistence(timeout: 3))
         jump("Water the plants")
-        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "0 / 1")
+        XCTAssertEqual(app.staticTexts["focus-quantity"].label, "Not done")
         shot("compact-07-task")
     }
 

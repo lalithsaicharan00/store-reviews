@@ -14,14 +14,8 @@ struct RoutinePlayer: View {
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .title) private var numberSize = CustomText.clockSize
-    @ScaledMetric(relativeTo: .body) private var breathingRoom = 24.0
-    @ScaledMetric(relativeTo: .body) private var actionWidth = 240.0
-    /// Between the main button and the bottom bar: room enough that neither is tapped for the other.
-    @ScaledMetric(relativeTo: .body) private var navigationGap = 24.0
-    /// The main button's slot, measured: each page keeps this much room at its end (with the gap) so its last step
-    /// scrolls clear of the button floating over it.
-    @State private var actionHeight: CGFloat = 52
     /// The habit the manual-entry sheet is for, fixed when it opens: the sheet never changes habit under the person.
     @State private var logHabitID: UUID?
     @State private var analyticsFlow = Analytics.shared.ticket
@@ -30,6 +24,10 @@ struct RoutinePlayer: View {
     @State private var busy = false
     @State private var reviewed: Set<UUID> = []
     @State private var showQueue = false
+    /// Your Routine opened as Change Order (from ⋯), or switched to it with Edit.
+    @State private var queueEditing = false
+    /// Milestones reached during this run, for the end page.
+    @State private var reached: [HabitStore.MilestoneOffer] = []
     @State private var showLog = false
     /// The current habit's Day details, the same sheet a row opens on Today (U23).
     @State private var showDayDetails = false
@@ -42,8 +40,6 @@ struct RoutinePlayer: View {
     /// Entries that existed before the routine started: Undo in the player only touches this session's own.
     @State private var entriesBefore: Set<UUID> = []
     @State private var undoID: UUID?
-    /// "Skipped · Undo": the habit to un-skip (and return to) if Undo is tapped.
-    @State private var undoSkipID: UUID?
     @State private var feedback: String?
     @State private var feedbackCount = 0
     @State private var expired = false
@@ -91,12 +87,13 @@ struct RoutinePlayer: View {
             Group {
                 if expired {
                     ContentUnavailableView {
-                        Label("A new day has started", systemImage: "sunrise")
+                        Label("A New Day Has Started", systemImage: "sunrise")
                     } description: {
-                        Text("Your routine's progress is saved to its original day. Return to Today to continue.")
+                        Text("Your routine’s progress is saved to its own day. Go back to Today to carry on.")
                     } actions: {
                         Button { close() } label: { Text("Back to Today").foregroundStyle(Color.onInk) }
                             .buttonStyle(.borderedProminent)
+                            .controlSize(.large)
                     }
                 } else {
                     pager
@@ -106,24 +103,23 @@ struct RoutinePlayer: View {
             .navigationTitle("")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                // Figma's title menu: the routine's name with ⌄, "1 of 3" under it; a tap opens Your Routine.
                 ToolbarItem(placement: .principal) {
-                    Button { showQueue = true } label: {
-                        HStack(spacing: 6) {
-                            Text(store.section(session.part).name).font(.headline)
-                                .lineLimit(1).minimumScaleFactor(0.8)
-                            Text("·").foregroundStyle(.tertiary)
-                            Text("\(min(index + 1, order.count))/\(order.count)")
-                                .font(.subheadline).monospacedDigit().foregroundStyle(.secondary)
-                                .fixedSize()
-                            Image(systemName: "chevron.down").font(.caption2.weight(.semibold))
-                                .foregroundStyle(.secondary)
+                    Button { queueEditing = false; showQueue = true } label: {
+                        VStack(spacing: 0) {
+                            HStack(spacing: 4) {
+                                Text(store.section(session.part).name).font(.headline).lineLimit(1)
+                                Image(systemName: "chevron.down").font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
+                            }
+                            Text("\(min(index + 1, order.count)) of \(order.count)")
+                                .font(.caption).monospacedDigit().foregroundStyle(.secondary)
                         }
                         .frame(minHeight: 44)
                     }
                     .buttonStyle(.plain)
                     .accessibilityLabel("\(store.section(session.part).name) routine, " +
-                        (index < order.count ? "habit \(index + 1) of \(order.count)" : "summary"))
-                    .accessibilityHint("View and reorder the routine")
+                        (index < order.count ? "habit \(index + 1) of \(order.count)" : "the end"))
+                    .accessibilityHint("Shows your routine")
                     .accessibilityIdentifier("routine-queue")
                     .disabled(expired)
                 }
@@ -133,17 +129,16 @@ struct RoutinePlayer: View {
                 ToolbarItem(placement: .primaryAction) {
                     // For the whole routine only; actions on one habit sit on its page (the user, 29 Sep).
                     Menu {
-                        Button("View routine", systemImage: "list.bullet") { showQueue = true }
                         if let first = remaining.first, let position = order.firstIndex(where: { $0.id == first.id }), position != index {
-                            Button("Go to first unfinished", systemImage: "arrow.uturn.backward") { navigate(to: position) }
+                            Button("Go to First Unfinished", systemImage: "arrow.uturn.backward") { navigate(to: position) }
                         }
-                        Button("End routine", systemImage: "flag.checkered") { navigate(to: order.count) }
+                        Button("Change Order", systemImage: "arrow.up.arrow.down") { queueEditing = true; showQueue = true }
+                        Button("End Routine", systemImage: "flag.checkered") { navigate(to: order.count) }
                     } label: {
                         Label("Routine options", systemImage: "ellipsis")
                     }
                     .disabled(expired)
                 }
-                if !expired { bottomBar }
             }
         }
         .tint(.ink)
@@ -180,13 +175,18 @@ struct RoutinePlayer: View {
         }
         .onDisappear { TimerPresence.playerOpen = false; UIApplication.shared.isIdleTimerDisabled = false }
         .onChange(of: store.timers.count) { updateScreenAwake() }
+        // A milestone reached on the way is kept for the end page ("Reached in this routine"); its pop-up waits.
+        .onChange(of: store.milestoneOffer?.entry) {
+            guard let mark = store.milestoneOffer, mark.day == session.day,
+                  order.contains(where: { $0.id == mark.habit }), !reached.contains(where: { $0.entry == mark.entry }) else { return }
+            reached.append(mark)
+        }
         .sheet(isPresented: $showQueue) { queue.analyticsScreen(nil) }
-        // Day details for the routine's day, full height, exactly as a row on Today opens it: status and goal, the
-        // logging buttons, Skip / Undo skip, each log, the note, and Edit in its ⋯ menu (the user, 7 Oct 2026; U23).
+        // Day details for the routine's day, exactly as a row on Today opens it (U23).
         .sheet(isPresented: $showDayDetails) {
             if let habit = current { DaySheet(habit: habit, day: session.day) }
         }
-        // A note is written in its own sheet with Save, as from Today (3 Oct 2026); the bottom row stays where it is.
+        // A note is written in its own sheet, as from Today (3 Oct 2026); the bottom bar stays where it is.
         .sheet(isPresented: $showNote) {
             if let habit = order.first(where: { $0.id == noteHabitID }) ?? current {
                 if store.note(of: habit, on: session.day) == nil {
@@ -203,12 +203,11 @@ struct RoutinePlayer: View {
                 AddLogView(habit: habit, day: session.day, source: .routine)
             }
         }
-        .alert("Couldn't save progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
+        .alert("Couldn’t Save Progress", isPresented: Binding(get: { store.problem != nil }, set: { if !$0 { store.problem = nil } })) {
             Button("OK", role: .cancel) { store.problem = nil }
         } message: { Text(store.problem ?? "") }
         // No haptic of its own for a log: the store gives every log its tap, and the completion sound only when it makes
-        // the habit complete (`HabitStore+Feedback`, Current Work 18). It used to play "success" for every save, a
-        // skip and an undo alike.
+        // the habit complete (`HabitStore+Feedback`, Current Work 18).
         .onPerfCommand { action in
             switch action {
             case .nextHabit: advance()
@@ -225,139 +224,140 @@ struct RoutinePlayer: View {
         #endif
     }
 
-    // MARK: The player: a playlist of habits (round 2, "Focus Player — How It Should Behave" P18–P23)
+    // MARK: The player: one habit at a time (Figma's Routine player, 17 Nov 2026)
 
-    /// Swipe between habits, or use ‹ and ›. The finish screen is the last page.
+    /// Swipe between habits, or use ‹ and ›. The end page is the last page. The bottom bar is ‹, the main action and ›,
+    /// or Done alone on the end page; Saved · Undo · Add Note floats just above it, so nothing under it moves.
     private var pager: some View {
-        // The bottom row is the native bottom bar, as on Today (the user, 5 Oct 2026: "an actual bottom navigation, not
-        // a huge block"). The main button floats over the bottom of the page, so a page that has none (an unfinished
-        // checklist) uses that space for its steps, and nothing moves when it comes and goes.
-        VStack(spacing: 0) {
-            header
-            TabView(selection: $page) {
-                ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
-                    habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
-                }
-                summary.tag(order.count)
+        TabView(selection: $page) {
+            ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
+                habitPage(store.habits.first { $0.id == habit.id } ?? habit).tag(position)
             }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .overlay(alignment: .bottom) {
-                VStack(spacing: 8) {
-                    // The save message floats above the main button, so nothing under it jumps when it appears.
-                    feedbackBanner
-                    if let habit = current { action(habit) }
-                }
-                .padding(.bottom, min(navigationGap, 32))
-            }
+            summary.tag(order.count)
         }
-        // Not .disabled(busy): that greyed the whole player for each save and turned the Pause/Resume button
-        // dark (found by hand 29 Sep). Every action already ignores taps while a save is in progress.
+        .tabViewStyle(.page(indexDisplayMode: .never))
+        .accessibilityIdentifier("routine-content")
+        .overlay(alignment: .bottom) { feedbackBanner }
+        .safeAreaInset(edge: .bottom, spacing: 0) { bottomBar }
+        // Not .disabled(busy): that greyed the whole player for each save (found by hand 29 Sep). Every action
+        // already ignores taps while a save is in progress.
         .onChange(of: page) { _, new in
             guard new != index else { return }
             // While the player's own slide runs, the pager reports pages it slides past as if chosen; obeying sent the
-            // player back to them, so › tapped fast slid the habits back and forth (Current Work 50, CI 5 Oct 2026:
-            // 6 steps back in one run). Only a swipe of the person's own, outside that slide, chooses a habit.
+            // player back to them (Current Work 50). Only a swipe of the person's own, outside that slide, chooses.
             if slide.running { showPage(); return }
             navigate(to: new, reviewing: new > index && current?.atMost == true ? current?.id : nil)
         }
         .onChange(of: index) { _, new in if page != new { page = new } }
     }
 
-    /// The compact toolbar already carries position and queue access; only the progress segments live here.
-    private var header: some View {
-        HStack(spacing: 4) {
-            ForEach(Array(order.enumerated()), id: \.element.id) { position, habit in
-                Capsule()
-                    .fill(position == index ? Color.ink : covered(habit) ? Color.ink.opacity(0.45) : Color(.tertiarySystemFill))
-                    .frame(height: position == index ? 6 : 4)
-            }
-        }
-        .frame(height: 6)
-        .padding(.horizontal, 24).padding(.top, min(breathingRoom, 36)).padding(.bottom, 8)
-        .accessibilityElement()
-        .accessibilityLabel("\(order.filter(covered).count) of \(order.count) habits covered")
-        .animation(animation, value: index)
-    }
-
-    /// The title stays at the top; the circle gets the available space between context and actions.
-    private func habitPage(_ habit: Habit) -> some View {
-        GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 24) {
-                    Spacer(minLength: 16)
-                    VStack(spacing: 24) {
-                        VStack(spacing: 8) {
-                            Text(habit.name)
-                                .font(.title2.weight(.semibold))
-                                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                                .accessibilityAddTraits(.isHeader)
-                                .accessibilityIdentifier("focus-name")
-                            // The habit's description (what counts, how to do it) is at hand while doing it.
-                            if let description = store.description(of: habit) {
-                                Text(description)
-                                    .font(.subheadline).foregroundStyle(.secondary)
-                                    .multilineTextAlignment(.center).lineLimit(3)
-                                    .accessibilityIdentifier("focus-description")
+    /// One habit: its icon in a circle of its colour, the name, the description and Day Details, then the value, its
+    /// bar and a kept place for the status or the milestone ribbon. A time habit's value is its ring, with the icon
+    /// inside; a checklist is the same identity smaller, in a card, with its steps under it.
+    @ViewBuilder private func habitPage(_ habit: Habit) -> some View {
+        if habit.kind == .checklist {
+            checklistPage(habit)
+        } else {
+            GeometryReader { geometry in
+                ScrollView {
+                    let ring = habit.kind == .duration && !skipped(habit) && !dynamicTypeSize.isAccessibilitySize
+                    VStack(spacing: 32) {
+                        identity(habit, icon: ring ? nil : 112)
+                        if ring {
+                            FocusClock(habit: habit, day: session.day, diameter: min(max(geometry.size.width - 96, 200), 260)) { openLog() }
+                        } else {
+                            VStack(spacing: 12) {
+                                value(habit)
+                                ProgressView(value: fraction(habit))
+                                    .tint(habit.atMost ? Color(.systemGray) : habit.color.color)
+                                    .padding(.top, 20)
+                                    .accessibilityHidden(true)
                             }
-                            Text(habit.frequency.isFlexible
-                                 ? HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
-                                 : FocusProgressValue.period(habit))
-                                .font(.subheadline).foregroundStyle(.secondary)
-                                .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                                .accessibilityIdentifier("focus-progress-period")
                         }
-                        hero(habit, diameter: min(max(geometry.size.width - 72, 200), habit.kind == .checklist ? 236 : 272))
+                        PlayerMilestone(habit: habit, day: session.day, status: status(habit))
                     }
-                    // A milestone this habit just reached: the ribbon, under the progress, its place kept so nothing
-                    // moves when it appears.
-                    PlayerMilestone(habit: habit, day: session.day)
-                    // Its place is kept while there's nothing to undo, so the circle never jumps when it appears.
-                    ZStack {
-                        if done(habit), let entry = latestEntry(habit) {
-                            Button { TickFeedback.undone(); store.undoEntry(entry.id) } label: {
-                                Text(entry.undoLabel(for: habit)).frame(minWidth: 44, minHeight: 44)
-                            }
-                                .buttonStyle(.borderless).font(.callout)
-                                .accessibilityIdentifier("focus-persistent-undo")
-                        }
-                    }
-                    .frame(minHeight: 44)
-                    if habit.kind == .checklist { checklist(habit) }
-                    // Room at the end for the main button floating over the page (and the save message above it): the
-                    // last step scrolls clear of them.
-                    Spacer(minLength: actionHeight + min(navigationGap, 32) + 24)
+                    .padding(.horizontal, 40)
+                    .padding(.vertical, 24)
+                    .frame(maxWidth: 540)
+                    .frame(minHeight: geometry.size.height)
+                    .frame(maxWidth: .infinity)
                 }
-                .padding(.horizontal, 24)
-                .frame(maxWidth: 540)
-                .frame(minHeight: geometry.size.height)
-                .frame(maxWidth: .infinity)
+                .scrollBounceBehavior(.basedOnSize)
             }
-            .accessibilityIdentifier("routine-content")
-            .scrollBounceBehavior(.basedOnSize)
         }
     }
 
-    @ViewBuilder private func hero(_ habit: Habit, diameter: CGFloat) -> some View {
+    /// The icon (nil: none, the ring carries it), the name, the description and Day Details.
+    private func identity(_ habit: Habit, icon: CGFloat?) -> some View {
+        VStack(spacing: icon == 72 ? 12 : 24) {
+            if let icon { HabitIcon(symbol: habit.symbol, color: habit.color, size: icon) }
+            VStack(spacing: icon == 72 ? 6 : 8) {
+                Text(habit.name)
+                    .font(icon == 112 && dynamicTypeSize.isAccessibilitySize ? .title.weight(.semibold) : .title2.weight(.semibold))
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityIdentifier("focus-name")
+                // The habit's description (what counts, how to do it) is at hand while doing it.
+                if icon != 72, let description = store.description(of: habit) {
+                    Text(description)
+                        .font(.body).foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center).lineLimit(3)
+                        .accessibilityIdentifier("focus-description")
+                }
+                DayDetailsButton(id: "focus-day-details") { showDayDetails = true }
+            }
+        }
+    }
+
+    /// "Not done" / "Done" for a once-a-day check; "3 of 8 glasses" for a count; the clock's words at large text.
+    @ViewBuilder private func value(_ habit: Habit) -> some View {
         let progress = store.progress(of: habit, on: session.day)
         let goal = store.goal(of: habit)
-        let big = CustomText.clock(numberSize)
-        if habit.kind == .duration && !skipped(habit) {
-            FocusClock(habit: habit, day: session.day, diameter: diameter) { openLog() }
+        if skipped(habit) {
+            Text("Skipped").font(CustomText.clock(numberSize)).accessibilityIdentifier("focus-quantity")
+        } else if habit.kind == .duration {
+            // Large text: the ring gives way to the clock's words and a bar (Figma's Habit · 200% text).
+            FocusClockLine(habit: habit, day: session.day, numberSize: numberSize) { openLog() }
+        } else if (habit.kind == .check || habit.kind == .task) && goal <= 1 {
+            Text(progress >= 1 ? "Done" : "Not done")
+                .font(CustomText.clock(numberSize))
+                .accessibilityIdentifier("focus-quantity")
         } else {
-            FocusProgressCircle(progress: progress, goal: goal, color: habit.color.color,
-                                limit: habit.atMost, diameter: diameter) {
-                HabitIcon(symbol: habit.symbol, color: habit.color, size: 44)
-                    .accessibilityHidden(true)
-                FocusProgressValue(value: HabitCopy.number(progress), target: progressTarget(habit, goal: goal),
-                                   period: FocusProgressValue.period(habit), font: big,
-                                   identifier: habit.kind == .checklist ? "focus-checklist-progress" : "focus-quantity")
-                if skipped(habit) {
-                    Text("Skipped").font(.caption).foregroundStyle(.secondary)
-                } else if habit.atMost && progress > goal {
-                    Text("Over limit").font(.caption).foregroundStyle(.secondary)
-                }
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(HabitCopy.number(progress)).font(CustomText.clock(numberSize))
+                Text("of " + progressTarget(habit, goal: goal) + period(habit)).font(.body).foregroundStyle(.secondary)
             }
+            .multilineTextAlignment(.center)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(HabitCopy.number(progress) + " of " + progressTarget(habit, goal: goal) + period(habit))
+            .accessibilityIdentifier("focus-quantity")
         }
+    }
+
+    /// " this week" after a goal counted over a week, month or year; nothing for a day's.
+    private func period(_ habit: Habit) -> String {
+        switch habit.frequency {
+        case .perWeek: " this week"
+        case .perMonth: " this month"
+        case .perYear: " this year"
+        default: ""
+        }
+    }
+
+    private func fraction(_ habit: Habit) -> Double {
+        if skipped(habit) { return 0 }
+        return min(1, store.progress(of: habit, on: session.day) / max(store.goal(of: habit), 0.001))
+    }
+
+    /// The words in the status place when no milestone holds it: never red, never "missed" (U3).
+    private func status(_ habit: Habit) -> String? {
+        if skipped(habit) { return "Skipped for today" }
+        if habit.atMost {
+            let over = store.progress(of: habit, on: session.day) > store.goal(of: habit)
+            return "Limit " + progressTarget(habit, goal: store.goal(of: habit)).replacingOccurrences(of: " max", with: "")
+                + (over ? " · Over the limit" : " · Within the limit")
+        }
+        return done(habit) ? "Goal met" : nil
     }
 
     private func progressTarget(_ habit: Habit, goal: Double) -> String {
@@ -365,80 +365,86 @@ struct RoutinePlayer: View {
         let unit: String
         switch habit.kind {
         case .amount(let name, _): unit = HabitCopy.unitWord(goal, name)
-        case .check: unit = habit.checkUnit.map { HabitCopy.unitWord(goal, $0) } ?? ""
+        case .check: unit = habit.checkUnit.map { HabitCopy.unitWord(goal, $0) } ?? (goal == 1 ? "time" : "times")
         case .checklist: unit = habit.frequency.isDayBased ? "steps" : "days"
         default: unit = ""
         }
         return HabitCopy.number(goal) + (unit.isEmpty ? "" : " " + unit) + (habit.atMost ? " max" : "")
     }
 
-    private func checklist(_ habit: Habit) -> some View {
-        VStack(spacing: 0) {
-            ForEach(habit.steps) { step in
-                let checked = store.isStepDone(step, of: habit, on: session.day)
-                Button {
-                    change(checked ? "Step unchecked" : "Step saved", captureUndo: !checked) {
-                        store.toggleStep(step, of: habit, on: session.day, source: .routine)
+    /// A checklist: the identity smaller, in a card with its bar and "1 of 4 steps", then the steps as rows with
+    /// Reminders' circles. Many steps scroll; the bottom bar stays.
+    private func checklistPage(_ habit: Habit) -> some View {
+        let progress = store.progress(of: habit, on: session.day)
+        let goal = store.goal(of: habit)
+        return ScrollView {
+            VStack(spacing: 12) {
+                VStack(spacing: 16) {
+                    identity(habit, icon: 72)
+                    HStack(spacing: 12) {
+                        // Figma's Habit progress in the card: a 12-point capsule on System Fill.
+                        GeometryReader { bar in
+                            Capsule().fill(Color(.systemFill))
+                                .overlay(alignment: .leading) {
+                                    Capsule().fill(habit.color.color)
+                                        .frame(width: fraction(habit) == 0 ? 0 : max(12, bar.size.width * fraction(habit)))
+                                }
+                        }
+                        .frame(height: 12)
+                        .accessibilityHidden(true)
+                        Text(HabitCopy.number(progress) + " of " + progressTarget(habit, goal: goal))
+                            .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+                            .accessibilityIdentifier("focus-checklist-progress")
                     }
-                } label: {
-                    HStack(spacing: 14) {
-                        Image(systemName: checked ? "checkmark.circle.fill" : "circle")
-                            .font(.title2).foregroundStyle(checked ? habit.color.color : .secondary)
-                        Text(step.name).foregroundStyle(.primary).multilineTextAlignment(.leading)
-                        Spacer(minLength: 0)
-                    }
-                    .padding(16).frame(maxWidth: .infinity, minHeight: 52)
-                    .contentShape(Rectangle())
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel(checked ? "Undo \(step.name)" : "Mark \(step.name) done")
-                .accessibilityIdentifier("focus-step-" + step.name)
-                if step.id != habit.steps.last?.id { Divider().padding(.leading, 54) }
+                .padding(.horizontal, 24).padding(.vertical, 20)
+                .frame(maxWidth: .infinity)
+                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 32, style: .continuous))
+                VStack(spacing: 0) {
+                    ForEach(habit.steps) { step in
+                        let checked = store.isStepDone(step, of: habit, on: session.day)
+                        Button {
+                            change(checked ? "Step unchecked" : "Step saved", captureUndo: !checked) {
+                                store.toggleStep(step, of: habit, on: session.day, source: .routine)
+                            }
+                        } label: {
+                            HStack(spacing: 12) {
+                                Image(systemName: checked ? "checkmark.circle.fill" : "circle")
+                                    .font(.title3)
+                                    .foregroundStyle(checked ? habit.color.color : Color(.tertiaryLabel))
+                                // A ticked step steps back to Secondary Label, as in Reminders.
+                                Text(step.name).foregroundStyle(checked ? .secondary : .primary).multilineTextAlignment(.leading)
+                                Spacer(minLength: 0)
+                            }
+                            .padding(.horizontal, 16).frame(maxWidth: .infinity, minHeight: 44)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(skipped(habit))
+                        .accessibilityLabel(checked ? "Undo \(step.name)" : "Mark \(step.name) done")
+                        .accessibilityIdentifier("focus-step-" + step.name)
+                        if step.id != habit.steps.last?.id { Divider().padding(.leading, 52).padding(.trailing, 16) }
+                    }
+                }
+                .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
+                PlayerMilestone(habit: habit, day: session.day, status: skipped(habit) ? status(habit) : nil)
             }
+            .padding(.horizontal, 16).padding(.bottom, 16)
+            .frame(maxWidth: 540)
+            .frame(maxWidth: .infinity)
         }
-        .background(Color.card, in: RoundedRectangle(cornerRadius: 20))
+        .scrollBounceBehavior(.basedOnSize)
     }
 
-    /// One primary action, floating over the bottom of the page; everything secondary has one clearly named home in the
-    /// bottom bar. Its slot is always there, so the save message above it never moves (the user, 4 Oct 2026: "no
-    /// layout shift"). An unfinished checklist leaves the slot empty: its steps are the action.
-    private func action(_ habit: Habit) -> some View {
-        ZStack {
-            Button {} label: { Label("Next", systemImage: "arrow.right") }
-                .modifier(FocusPrimaryButton())
-                .hidden()
-                .accessibilityHidden(true)
-            if habit.kind != .checklist || done(habit) || skipped(habit) {
-                // The system's own prominent button (the user, 29 Sep: the custom style didn't feel native).
-                primary(habit)
-                    .accessibilityIdentifier("focus-primary")
-                    .modifier(FocusPrimaryButton())
-                    .transaction { $0.animation = nil }
-            }
-        }
-        .frame(maxWidth: min(actionWidth, 320))
-        .onGeometryChange(for: CGFloat.self) { $0.size.height.rounded(.up) } action: { height in
-            if abs(height - actionHeight) > 0.5 { actionHeight = height } // only when Dynamic Type changes it
-        }
-        .padding(.horizontal, 28)
-    }
-
-    /// "Amount saved · Undo · Add Note", floating above the controls: Figma's Banner (`Banner`).
+    /// "Saved · Undo · Add Note", floating just above the bottom bar: Figma's Banner.
     @ViewBuilder private var feedbackBanner: some View {
-        if let feedback {
+        if let feedback, let id = undoID {
             Banner(text: feedback) {
-                if let id = undoSkipID, let habit = order.first(where: { $0.id == id }) {
-                    Button("Undo") { unskip(habit, stay: false) }
-                    // Why it was skipped, if the person wants to say (users show: Way of Life); never asked.
-                    Button("Add Note") { noteHabitID = id; showNote = true }
-                        .accessibilityIdentifier("focus-skip-note")
-                } else if let id = undoID {
-                    Button("Undo") { change("Undone", captureUndo: false) { store.undoEntry(id) } }
-                        .accessibilityIdentifier("focus-undo")
-                    // The note belongs right after logging, next to Undo; never asked for (notes UX report).
-                    Button("Add Note") { noteHabitID = current?.id; showNote = true }
-                        .accessibilityIdentifier("focus-banner-note")
-                }
+                Button("Undo") { change("Undone", captureUndo: false) { store.undoEntry(id) } }
+                    .accessibilityIdentifier("focus-undo")
+                // The note belongs right after logging, next to Undo; never asked for (notes UX report).
+                Button("Add Note") { noteHabitID = current?.id; showNote = true }
+                    .accessibilityIdentifier("focus-banner-note")
             }
             .padding(.horizontal, 16)
             .padding(.bottom, 8)
@@ -446,142 +452,223 @@ struct RoutinePlayer: View {
         }
     }
 
-    /// ‹ · Day details · ›: the standard bottom bar, the same as Today's ‹ · Today · › (the user, 5 Oct 2026). On
-    /// iOS 26 each part is its own Liquid Glass item; before iOS 26 it is a plain bottom bar. It stays on the finish
-    /// page too, so ‹ still goes back and the pages never change height. Skip is a separate explicit action, never a
-    /// chevron side effect.
-    @ToolbarContentBuilder
-    private var bottomBar: some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) {
-            Button("Previous habit", systemImage: "chevron.left") { navigate(to: max(0, index - 1)) }
-                .disabled(index == 0)
+    /// ‹, the main action, ›: glass buttons either side of one Prominent capsule (Figma's Bottom bar). An unfinished
+    /// checklist has no main action (its steps are it), so only the arrows show. The end page has Done alone.
+    private var bottomBar: some View {
+        HStack(spacing: 8) {
+            if index >= order.count {
+                Button { close() } label: { Label("Done", systemImage: "checkmark") }
+                    .modifier(FocusPrimaryButton())
+                    .accessibilityIdentifier("focus-finish")
+            } else {
+                Button("Previous habit", systemImage: "chevron.left") { navigate(to: max(0, index - 1)) }
+                    .modifier(PlayerArrow())
+                    .disabled(index == 0)
+                    .accessibilityIdentifier("focus-previous")
+                if let habit = current, habit.kind != .checklist || done(habit) || skipped(habit) {
+                    primary(habit)
+                        .accessibilityIdentifier("focus-primary")
+                        .modifier(FocusPrimaryButton())
+                        .transaction { $0.animation = nil }
+                } else {
+                    Spacer()
+                }
+                Button("Next habit", systemImage: "chevron.right") { advance() }
+                    .modifier(PlayerArrow())
+                    .accessibilityLabel(next.map { "Next habit: \($0.name)" } ?? "Finish routine")
+                    .accessibilityIdentifier("focus-up-next")
+            }
         }
-        if #available(iOS 26, *) {
-            ToolbarSpacer(.flexible, placement: .bottomBar)
-            ToolbarItem(placement: .bottomBar) { optionsButton }
-            ToolbarSpacer(.flexible, placement: .bottomBar)
-        } else {
-            ToolbarItem(placement: .status) { optionsButton }
-        }
-        ToolbarItem(placement: .bottomBar) {
-            Button("Next habit", systemImage: "chevron.right") { advance() }
-                .disabled(index >= order.count)
-                .accessibilityLabel(next.map { "Next habit: \($0.name)" } ?? "Finish routine")
-                .accessibilityIdentifier("focus-up-next")
-        }
+        .padding(.horizontal, 16).padding(.top, 12).padding(.bottom, 4)
+        .disabled(expired)
+        .opacity(expired ? 0 : 1)
     }
 
-    /// The current habit's (or task's) Day details: the same sheet a row opens on Today (U23, 7 Oct 2026; it was
-    /// "Habit options" / "Task options", a separate sheet).
-    private var optionsButton: some View {
-        Button {
-            showDayDetails = true
-        } label: {
-            Text("Day details").lineLimit(1)
-        }
-        .disabled(current == nil)
-        .accessibilityIdentifier("focus-day-details")
-    }
-
-    /// Next habit (or the finish screen). Leaving a limit counts as having checked in on it.
+    /// Next habit (or the end page). Leaving a limit counts as having checked in on it.
     private func advance() {
         let leaving = current
         navigate(to: index + 1, reviewing: leaving?.atMost == true ? leaving?.id : nil)
     }
 
-    /// One main action per type, always in the same place (P22).
+    /// One main action per type, always in the same place (P22): a word, or the symbol alone for Start, Pause and
+    /// Resume, as on the Timer screen.
     @ViewBuilder private func primary(_ habit: Habit) -> some View {
-        if skipped(habit) {
+        if skipped(habit) || (done(habit) && !habit.atMost) {
             Button { advance() } label: {
-                Label(next == nil ? "Finish routine" : "Next", systemImage: next == nil ? "checkmark" : "arrow.right")
-                    .lineLimit(1)
+                Label(next == nil ? "Finish" : "Next", systemImage: next == nil ? "checkmark" : "arrow.right")
             }
         } else if habit.atMost {
             // Cut down: log what happened; it never becomes "done" (P23).
             Button {
-                if habit.quickIncrement != nil { change("Logged") { store.increment(habit, on: session.day, source: .routine) } } else { openLog() }
+                if habit.quickIncrement != nil { change("Saved") { store.increment(habit, on: session.day, source: .routine) } } else { openLog() }
             } label: {
-                Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log amount", systemImage: "plus")
+                Text(habit.quickIncrement.map { "+" + Format.amount($0) } ?? "Log").frame(maxWidth: .infinity)
             }
-        } else if done(habit) {
-            Button { advance() } label: {
-                Label(next == nil ? "Finish routine" : "Next", systemImage: next == nil ? "checkmark" : "arrow.right")
-                    .lineLimit(1)
-            }
+            .accessibilityLabel(habit.quickIncrement.map { "Add \(HabitCopy.amount($0, amountUnit(habit))) to \(habit.name)" } ?? "Log for \(habit.name)")
         } else {
             switch habit.kind {
             case .check, .task:
+                let several = habit.kind == .check && store.goal(of: habit) > 1
                 Button {
-                    // "Log one" adds one, as it says: a ✓ toggles its day (Rulebook U14), so a second "Log one" for a
+                    // "Add a Check" adds one, as it says: a ✓ toggles its day (Rulebook U14), so a second tap for a
                     // 3-times-a-week habit took the first one back (found by ScheduleCheck, 4 Oct 2026).
                     change("Saved") {
-                        if habit.kind == .check && store.goal(of: habit) > 1 {
-                            store.addProgress(habit, value: 1, on: session.day, source: .routine)
-                        } else {
-                            store.toggleCheck(habit, on: session.day, source: .routine)
-                        }
+                        if several { store.addProgress(habit, value: 1, on: session.day, source: .routine) }
+                        else { store.toggleCheck(habit, on: session.day, source: .routine) }
                     }
                 } label: {
-                    Label(store.goal(of: habit) > 1 ? "Log one" : "Mark done", systemImage: "checkmark")
-                }.accessibilityLabel("Mark \(habit.name) done")
+                    Label(several ? "Add a Check" : "Mark Done", systemImage: "checkmark")
+                }
+                .accessibilityLabel("Mark \(habit.name) done")
             case .amount:
                 Button {
                     if habit.quickIncrement != nil { change("Saved") { store.increment(habit, on: session.day, source: .routine) } }
                     else { openLog() }
                 } label: {
-                    Label(habit.quickIncrement.map { "Log " + HabitCopy.amount($0, amountUnit(habit)) } ?? "Log amount", systemImage: "plus")
-                }.accessibilityLabel(habit.quickIncrement.map { "Add \(HabitCopy.amount($0, amountUnit(habit))) to \(habit.name)" } ?? "Log an amount for \(habit.name)")
+                    // "+1", exactly as Today's round button: the step, never the unit (U16).
+                    Text(habit.quickIncrement.map { "+" + Format.amount($0) } ?? "Log").frame(maxWidth: .infinity)
+                }
+                .accessibilityLabel(habit.quickIncrement.map { "Add \(HabitCopy.amount($0, amountUnit(habit))) to \(habit.name)" } ?? "Log an amount for \(habit.name)")
             case .duration:
                 let running = store.timers[habit.id] != nil
                 let started = store.progress(of: habit, on: session.day) > 0
                 Button { toggleTimer(habit) } label: {
-                    Label(running ? "Pause" : started ? "Resume" : "Start", systemImage: running ? "pause.fill" : "play.fill")
-                }.accessibilityLabel(running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer")
+                    // The symbol alone, as wide and tall as a word would be (Figma's Button, Show label off).
+                    Text(running ? "Pause" : started ? "Resume" : "Start").hidden()
+                        .overlay { Image(systemName: running ? "pause.fill" : "play.fill") }
+                        .frame(maxWidth: .infinity)
+                }
+                .accessibilityLabel(running ? "Stop \(habit.name) timer" : "Start \(habit.name) timer")
             case .checklist, .quit:
                 EmptyView()
             }
         }
     }
 
+    // MARK: The end page
+
+    /// An Ink circle with ✓ (or ⋯ when some are left), what was done, what's left for later, and milestones reached on
+    /// the way. A row left for later goes back to it.
     private var summary: some View {
-        ScrollView {
+        let left = remaining
+        let finished = order.filter { covered($0) }
+        return ScrollView {
             VStack(spacing: 24) {
-                // Not a pause symbol: it read as a media button (found by hand 29 Sep).
-                Image(systemName: remaining.isEmpty ? "checkmark.circle.fill" : "clock.arrow.circlepath")
-                    .font(.system(size: 72, weight: .light)).foregroundStyle(Color.ink)
-                    .accessibilityHidden(true)
-                Text(remaining.isEmpty ? "Routine finished" : "End of the routine").font(.largeTitle.weight(.semibold))
-                Text(summaryText).font(.body).foregroundStyle(.secondary)
-                let skippedCount = order.filter { skipped($0) }.count
-                if skippedCount > 0 {
-                    Text("\(skippedCount) skipped for today. Skipped days don't count against you.")
-                        .font(.subheadline).foregroundStyle(.secondary)
+                VStack(spacing: 16) {
+                    Image(systemName: left.isEmpty ? "checkmark" : "ellipsis.circle")
+                        .font(.system(size: 42, weight: .medium))
+                        .foregroundStyle(Color.onInk)
+                        .frame(width: 112, height: 112)
+                        .background(Color.ink, in: Circle())
+                        .accessibilityHidden(true)
+                    VStack(spacing: 8) {
+                        Text(left.isEmpty ? "\(store.section(session.part).name) is done" : "\(order.count - left.count) of \(order.count) done")
+                            .font(.largeTitle.weight(.semibold))
+                            .accessibilityIdentifier("focus-end-title")
+                        Text(summaryText(left))
+                            .font(.body).foregroundStyle(.secondary)
+                    }
+                    .multilineTextAlignment(.center)
                 }
-                if !reviewed.isEmpty {
-                    Text("\(reviewed.count) limit \(reviewed.count == 1 ? "check-in" : "check-ins"). Your limits keep tracking through the day.")
-                        .font(.subheadline).foregroundStyle(.secondary)
+                .padding(.horizontal, 24).padding(.vertical, 28)
+                if !reached.isEmpty {
+                    endSection("Reached in this routine") {
+                        ForEach(reached, id: \.entry) { mark in
+                            if let habit = order.first(where: { $0.id == mark.habit }) {
+                                endRow(habit, subtitle: habit.name, title: mark.text, symbol: "medal.fill")
+                            }
+                        }
+                    }
                 }
-                // Done is the main way out; going back to what's left is the secondary choice.
-                Button { close() } label: {
-                    Text("Done").font(.body.weight(.semibold)).foregroundStyle(Color.onInk).frame(maxWidth: .infinity)
+                if !left.isEmpty {
+                    endSection("Left for later") {
+                        ForEach(left) { habit in
+                            Button {
+                                if let position = order.firstIndex(where: { $0.id == habit.id }) { navigate(to: position) }
+                            } label: {
+                                endRow(habit, subtitle: compactProgress(habit), chevron: true)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("end-later-" + habit.name)
+                        }
+                    }
                 }
-                    .modifier(FocusPrimaryButton())
-                if let first = remaining.first, let position = order.firstIndex(where: { $0.id == first.id }) {
-                    Button("Return to unfinished", systemImage: "arrow.uturn.backward") { navigate(to: position) }
-                        .buttonStyle(.bordered).controlSize(.large)
+                if !finished.isEmpty {
+                    endSection("Done") {
+                        ForEach(finished) { habit in endRow(habit, subtitle: compactProgress(habit)) }
+                    }
                 }
-                Button("Review routine", systemImage: "list.bullet") { showQueue = true }
             }
-            .multilineTextAlignment(.center).padding(32).frame(maxWidth: 540)
-            .frame(maxWidth: .infinity).containerRelativeFrame(.vertical, alignment: .center)
+            .padding(.horizontal, 16).padding(.bottom, 16)
+            .frame(maxWidth: 540)
+            .frame(maxWidth: .infinity)
+        }
+        .scrollBounceBehavior(.basedOnSize)
+    }
+
+    private func summaryText(_ left: [Habit]) -> String {
+        if left.isEmpty { return "All \(order.count) done today." }
+        let names = left.map(\.name)
+        let list = names.count == 1 ? names[0] : names.dropLast().joined(separator: ", ") + " and " + names.last!
+        return "\(list) \(names.count == 1 ? "waits" : "wait") on Today. Pick \(names.count == 1 ? "it" : "them") up any time."
+    }
+
+    private func endSection<Rows: View>(_ title: String, @ViewBuilder rows: () -> Rows) -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(title).font(.subheadline.weight(.semibold)).foregroundStyle(Color.ink).padding(.leading, 16)
+                .accessibilityAddTraits(.isHeader)
+            VStack(spacing: 0) {
+                Group(subviews: rows()) { subviews in
+                    ForEach(subviews.indices, id: \.self) { i in
+                        subviews[i]
+                        if i < subviews.count - 1 { Divider().padding(.leading, 56).padding(.trailing, 16) }
+                    }
+                }
+            }
+            .background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 26, style: .continuous))
         }
     }
 
-    private var summaryText: String {
-        if remaining.isEmpty { return reviewed.isEmpty ? "All habits in this routine are done." : "Your routine is complete. Your progress is saved." }
-        return "\(remaining.count) left for later. Your progress is saved."
+    /// One row on the end page: the habit's icon, its name (or a milestone's words) and how far it got.
+    private func endRow(_ habit: Habit, subtitle: String, title: String? = nil, symbol: String? = nil, chevron: Bool = false) -> some View {
+        HStack(spacing: 12) {
+            HabitIcon(symbol: symbol ?? habit.symbol, color: habit.color, size: 32)
+            VStack(alignment: .leading, spacing: 0) {
+                Text(title ?? habit.name).foregroundStyle(.primary)
+                Text(subtitle).font(.subheadline).foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 8)
+            if chevron {
+                Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+            }
+        }
+        .padding(.horizontal, 16).padding(.vertical, 11)
+        .frame(minHeight: 64)
+        .contentShape(Rectangle())
+        .accessibilityElement(children: .combine)
     }
 
+    /// "Done", "4/10 min", "1/4 steps", "3/8 glasses", "Skipped", "Checked in": how far a habit got, in a row.
+    private func compactProgress(_ habit: Habit) -> String {
+        if skipped(habit) { return "Skipped" }
+        if habit.atMost { return reviewed.contains(habit.id) ? "Checked in" : "Limit" }
+        let progress = store.progress(of: habit, on: session.day)
+        let goal = store.goal(of: habit)
+        switch habit.kind {
+        case .check, .task:
+            if goal <= 1 { return progress >= 1 ? "Done" : "Not done" }
+            return HabitCopy.number(progress) + "/" + progressTarget(habit, goal: goal)
+        case .duration:
+            return HabitCopy.number(progress.rounded(.down)) + "/" + Format.minutes(goal)
+        default:
+            return HabitCopy.number(progress) + "/" + progressTarget(habit, goal: goal)
+        }
+    }
+
+    // MARK: Your Routine
+
+    /// Your Routine: every habit with how far it got, a tap goes to it; Edit turns it into Change Order, where the rows
+    /// drag. Moving never marks anything done, and the order is this run's only.
     private var queue: some View {
         NavigationStack {
             List {
@@ -592,26 +679,22 @@ struct RoutinePlayer: View {
                             showQueue = false
                             navigate(to: position)
                         } label: {
-                            // Top-aligned like the Today rows (RowBand): a long name runs on below, the icon and mark stay up.
-                            HStack(alignment: .top, spacing: 12) {
-                                HabitIcon(symbol: habit.symbol, color: habit.color)
-                                    .frame(height: RowBand.height)
-                                VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 12) {
+                                HabitIcon(symbol: habit.symbol, color: habit.color, size: 32)
+                                VStack(alignment: .leading, spacing: 0) {
                                     Text(habit.name).foregroundStyle(.primary)
-                                    Text(habit.atMost ? (reviewed.contains(habit.id) ? "Checked in" : "Limit check-in")
-                                         : doneToday(habit) ? "Done" : skipped(habit) ? "Skipped for today" : "Not finished")
-                                        .font(.caption).foregroundStyle(.secondary)
+                                    Text(current?.id == habit.id && !queueEditing ? "Here now" : compactProgress(habit))
+                                        .font(.subheadline).foregroundStyle(.secondary)
                                 }
-                                .frame(minHeight: RowBand.height)
-                                Spacer()
-                                Group {
-                                    if current?.id == habit.id { Image(systemName: "play.fill").accessibilityLabel("Current habit") }
-                                    else if skipped(habit) { Image(systemName: "forward.fill").foregroundStyle(.secondary).accessibilityLabel("Skipped") }
-                                    else if covered(habit) { Image(systemName: "checkmark").accessibilityLabel(doneToday(habit) ? "Done" : "Checked in") }
+                                Spacer(minLength: 8)
+                                if current?.id == habit.id && !queueEditing {
+                                    Image(systemName: "play.fill").font(.footnote).foregroundStyle(.tertiary)
+                                        .accessibilityLabel("Current habit")
                                 }
-                                .frame(height: RowBand.height)
                             }
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
                         .accessibilityIdentifier("queue-" + habit.name)
                     }
                     .onMove { source, destination in
@@ -620,16 +703,27 @@ struct RoutinePlayer: View {
                         if let id, let position = order.firstIndex(where: { $0.id == id }) { index = position }
                     }
                 } footer: {
-                    Text("Jump to any habit, or change the order for this routine. Moving on never marks a habit done.")
+                    Text(queueEditing ? "Drag to change the order for this run. Today’s order stays as it is."
+                         : "Tap a habit to go to it. Moving never marks anything done.")
                 }
             }
-            .navigationTitle("Your routine").navigationBarTitleDisplayMode(.inline)
+            .environment(\.editMode, .constant(queueEditing ? .active : .inactive))
+            .navigationTitle(queueEditing ? "Change Order" : "Your Routine").navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Done") { showQueue = false } }
-                ToolbarItem(placement: .primaryAction) { EditButton() }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close", systemImage: "xmark") { showQueue = false }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(queueEditing ? "Done" : "Edit") { withAnimation { queueEditing.toggle() } }
+                        .fontWeight(queueEditing ? .semibold : .regular)
+                        .accessibilityIdentifier("queue-edit")
+                }
             }
         }
-        .presentationDragIndicator(.visible)
+        // Figma's Your Routine: Medium, one height, so no handle; an opaque grouped background, because the page behind
+        // showed through the glass between the rows.
+        .presentationDetents([.medium])
+        .presentationBackground(Color(.systemGroupedBackground))
         .disabled(busy || expired)
     }
 
@@ -653,27 +747,7 @@ struct RoutinePlayer: View {
         // Instant, never blocked by a save in progress: each tap flips the state the person sees.
         guard !expired, session.day == store.today() else { return }
         if store.timers[habit.id] != nil { store.stopTimer(habit, on: session.day, source: .routine) } else { store.toggleTimer(habit) }
-        withAnimation(animation) { feedback = nil; undoID = nil; undoSkipID = nil }
-    }
-
-    /// Skip today: set aside for today (neutral everywhere), and on to the next habit, with Undo.
-    private func skip(_ habit: Habit) {
-        guard !busy else { return }
-        store.setSkipped(habit, on: session.day, true)
-        let skippedID = habit.id
-        navigate(to: index + 1)
-        // At once, like every other change (S7); the write follows in order.
-        withAnimation(animation) { feedback = "Skipped for today"; undoID = nil; undoSkipID = skippedID }
-        TickFeedback.tapped()
-        feedbackCount += 1
-        hideFeedbackSoon()
-    }
-
-    /// Undo a skip: from its page (stay) or from the message after moving on (go back to it).
-    private func unskip(_ habit: Habit, stay: Bool) {
-        store.setSkipped(habit, on: session.day, false)
-        withAnimation(animation) { feedback = nil; undoSkipID = nil }
-        if !stay, let position = order.firstIndex(where: { $0.id == habit.id }) { navigate(to: position) }
+        withAnimation(animation) { feedback = nil; undoID = nil }
     }
 
     private func startCurrentTimer() {
@@ -692,7 +766,7 @@ struct RoutinePlayer: View {
             store.stopTimer(habit, on: session.day, source: .routine)
         }
         if let id { reviewed.insert(id) }
-        feedback = nil; undoID = nil; undoSkipID = nil
+        feedback = nil; undoID = nil
         #if DEBUG
         PagerProbe.shared.moved(from: index, to: destination)
         PagerProbe.shared.index = destination
@@ -791,7 +865,7 @@ struct RoutinePlayer: View {
         Task { @MainActor in
             try? await Task.sleep(for: .seconds(4))
             guard feedbackCount == shown else { return }
-            withAnimation(animation) { feedback = nil; undoID = nil; undoSkipID = nil }
+            withAnimation(animation) { feedback = nil; undoID = nil }
         }
     }
 
@@ -878,7 +952,7 @@ struct FocusPrimaryLabel: LabelStyle {
     func makeBody(configuration: Configuration) -> some View {
         // One line always, so the button keeps its height from habit to habit.
         HStack(spacing: 8) { configuration.icon; configuration.title.lineLimit(1).minimumScaleFactor(0.75) }
-            .font(.body.weight(.semibold))
+            .font(.body) // a native button's word is 17 Regular (Rulebook, Day details on iPhone)
             .foregroundStyle(Color.onInk)
             .frame(maxWidth: .infinity)
     }
@@ -886,10 +960,12 @@ struct FocusPrimaryLabel: LabelStyle {
 
 /// The milestone ribbon under the player's progress (Figma's Milestone ribbon): what this habit's last tap reached,
 /// for as long as the store offers it. Only this reads the store's milestone, so the page doesn't redraw for it (S6).
-/// Its 32 points are kept while there's none, so the page never jumps.
+/// Its 32 points are kept while there's none, so the page never jumps; with no milestone it holds the habit's status
+/// ("Goal met", "Skipped for today"), in the same place.
 private struct PlayerMilestone: View {
     let habit: Habit
     let day: LocalDay
+    var status: String? = nil
     @Environment(HabitStore.self) private var store
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -899,10 +975,60 @@ private struct PlayerMilestone: View {
                 MilestoneRibbon(text: mark.text, color: habit.color)
                     .id(mark.entry)
                     .transition(reduceMotion ? .opacity : .opacity.combined(with: .offset(y: 10)))
+            } else if let status {
+                Text(status).font(.subheadline).foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .accessibilityIdentifier("focus-status")
             }
         }
         .frame(minHeight: 32)
         .animation(.snappy(duration: 0.25), value: store.milestoneOffer?.entry)
+    }
+}
+
+/// ‹ and › in the player's bottom bar: 48-point glass circles (Figma's Glass button, Bottom 48).
+private struct PlayerArrow: ViewModifier {
+    @ScaledMetric(relativeTo: .body) private var size = 48.0
+    func body(content: Content) -> some View {
+        let circle = content
+            .labelStyle(.iconOnly)
+            .font(.body.weight(.medium))
+            .frame(width: size, height: size)
+            .contentShape(Circle())
+        if #available(iOS 26, *) {
+            circle.buttonStyle(.plain).glassEffect(.regular.interactive(), in: Circle()).foregroundStyle(Color.ink)
+        } else {
+            circle.buttonStyle(.plain).background(.regularMaterial, in: Circle()).foregroundStyle(Color.ink)
+        }
+    }
+}
+
+/// A time habit at large text: the clock's words and "of 10 min" in place of the ring (Figma's Habit · 200% text);
+/// the bar under it is the page's. Only this ticks, and only while its timer runs (S3).
+private struct FocusClockLine: View {
+    let habit: Habit
+    let day: LocalDay
+    let numberSize: CGFloat
+    let onTapClock: () -> Void
+    @Environment(HabitStore.self) private var store
+    private static let never = Date.distantFuture
+
+    var body: some View {
+        let start = store.timers[habit.id]
+        TimelineView(.periodic(from: start ?? Self.never, by: 1)) { context in
+            let progress = store.progress(of: habit, on: day, now: start == nil ? .now : context.date)
+            let target = Format.minutes(store.goal(of: habit)) + (habit.atMost ? " max" : "")
+            Button(action: onTapClock) {
+                VStack(spacing: 4) {
+                    Text(Format.clock(progress)).font(CustomText.clock(numberSize)).monospacedDigit()
+                    Text("of " + target).font(.body).foregroundStyle(.secondary)
+                }
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(Format.clock(progress) + " of " + target)
+            .accessibilityHint("Logs time manually")
+            .accessibilityIdentifier("focus-clock")
+        }
     }
 }
 
@@ -977,36 +1103,14 @@ struct FocusClock: View {
     }
 }
 
-/// The goal context sits above the circle; VoiceOver also reads the current value’s period.
-struct FocusProgressValue: View {
-    let value: String
-    let target: String
-    let period: String
-    let font: Font
-    let identifier: String
-
+/// The period a goal counts over, for VoiceOver on a clock ("This week") and the Timer screen's subtitle.
+enum FocusProgressValue {
     static func period(_ habit: Habit) -> String {
         switch habit.frequency {
         case .perWeek: "This week"
         case .perMonth: "This month"
         case .perYear: "This year"
         default: "Today"
-        }
-    }
-
-    private var fraction: some View {
-        (Text(value).foregroundStyle(Color.primary) + Text(" / " + target).font(.title2).foregroundStyle(Color.secondary))
-            .font(font).multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-            .accessibilityIdentifier(identifier)
-    }
-
-    var body: some View {
-        VStack(spacing: 8) {
-            fraction
-                .lineLimit(2).minimumScaleFactor(0.65)
-                .accessibilityValue(period)
-
         }
     }
 }
