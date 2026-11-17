@@ -83,15 +83,13 @@ enum ItemType: String, CaseIterable, Identifiable {
 /// form. Each question is its own list, pushed in the same sheet, so every step looks and moves
 /// the same way (spec: iOS/Docs/Specs/New Habit Goal and Time of Day.md §1).
 struct NewItemView: View {
-    /// The group Today is filtered to: a habit made while looking at it goes in it.
-    var group: UUID? = nil
     /// Called with the new habit's ID, so Today can show where it went.
     var onAdded: (UUID) -> Void = { _ in }
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            NewItemChoices(group: group, onAdded: { onAdded($0); dismiss() })
+            NewItemChoices(onAdded: { onAdded($0); dismiss() })
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 }
@@ -104,7 +102,6 @@ struct NewItemView: View {
 /// exactly as they will every other time. The stack needs a `NavigationPath` (or none), as its pages push their own
 /// values.
 struct NewItemChoices: View {
-    var group: UUID? = nil
     /// Called with the new item's ID once it's saved. The caller closes whatever the flow is in.
     let onAdded: (UUID) -> Void
     @Environment(HabitStore.self) private var store
@@ -202,7 +199,7 @@ struct NewItemChoices: View {
     }
 
     private func form(_ type: ItemType) -> some View {
-        HabitForm(type: type, group: group, onSaved: onAdded)
+        HabitForm(type: type, onSaved: onAdded)
     }
 }
 
@@ -266,7 +263,6 @@ struct HabitForm: View {
     let type: ItemType
     let onSaved: (UUID) -> Void
     /// Editing: the group as saved.
-    private let originalGroup: UUID?
     /// Editing: the habit as saved. The form opens filled in, shows only what can change (how it's tracked is
     /// fixed and never shown, spec §8) and saves with Save.
     private let original: Habit?
@@ -338,9 +334,6 @@ struct HabitForm: View {
     @State private var remindersEdited = false
     @State private var alert: AlertStyle = .notification
     @State private var followUp: Int?
-    /// Its group (Build Plan #68): optional; the row shows once any group exists. A new habit made while Today is
-    /// filtered to a group starts in it (so it doesn't vanish from the list it was added to), and the row says so.
-    @State private var groupID: UUID?
 
     @State private var notificationsDenied = false
     @State private var alarmsDenied = false
@@ -348,12 +341,10 @@ struct HabitForm: View {
     @FocusState private var focus: Field?
 
     /// A new habit or task: nothing is saved until Add, and amounts stay empty (C203, C292).
-    init(type: ItemType, group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
+    init(type: ItemType, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
-        originalGroup = nil
-        _groupID = State(initialValue: group)
         _color = State(initialValue: .blue)
         let plainSymbol = type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill"
         _symbol = State(initialValue: plainSymbol)
@@ -372,12 +363,10 @@ struct HabitForm: View {
     }
 
     /// Opens the form on a saved habit, every row as it is now.
-    init(editing habit: Habit, weekStart: Int, description: String = "", group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
+    init(editing habit: Habit, weekStart: Int, description: String = "", onSaved: @escaping (UUID) -> Void) {
         type = ItemType(habit)
         self.onSaved = onSaved
         original = habit
-        originalGroup = group
-        _groupID = State(initialValue: group)
         originalDescription = description
         _descriptionText = State(initialValue: description)
         _typed = State(initialValue: TypedName(habit.name))
@@ -446,7 +435,6 @@ struct HabitForm: View {
     private var editChanged: Bool {
         // The saved name here, and the name field's own "changed": the typed text is never read while drawing.
         (edited(name: original?.name ?? "").map { $0 != original } ?? false) || typed.isChanged || reminderWords.isChanged || TextLimit.clean(descriptionText, TextLimit.descriptionText) != originalDescription
-            || groupID != originalGroup
     }
 
     private var trimmedName: String { TextLimit.clean(name, TextLimit.name) }
@@ -521,13 +509,11 @@ struct HabitForm: View {
             switch type {
             case .quit:
                 quitSection
-                Section { groupRow }
             case .task:
                 taskSection
                 if taskRepeats { Section { repeatRow } }
                 Section {
                     timeOfDayRow
-                    groupRow
                     remindersRow
                 }
                 if taskRepeats { startEndSection }
@@ -538,7 +524,6 @@ struct HabitForm: View {
                     // A limit has no time of day: it's logged only when it happens, so on Today it sits under Quit or
                     // Cut Down, never in a time of day where it reads as something to do (the user, 5 Oct 2026).
                     Section {
-                        groupRow
                         remindersRow
                     } footer: {
                         Text("It shows on Today under \(TodayView.quittingTitle). Log it only when it happens.").formNote()
@@ -547,7 +532,6 @@ struct HabitForm: View {
                 } else {
                     Section {
                         timeOfDayRow
-                        groupRow
                         remindersRow
                     }
                 }
@@ -692,16 +676,6 @@ struct HabitForm: View {
             }
         }
         .accessibilityLabel("\(title), \(value)")
-    }
-
-    /// Group: what area of life it's in, beside Time of Day (when). Optional; None by default, never forced. Always
-    /// shown, so a group can be made here as well as from Today's Filter, before any exists (the user, 3 Oct 2026).
-    private var groupRow: some View {
-        screenRow("Group", value: groupID.flatMap { id in store.groups.first { $0.id == id }?.name } ?? "None") {
-            GroupPicker(selection: $groupID)
-                .onAppear { focus = nil }
-        }
-        .accessibilityIdentifier("group-row")
     }
 
     /// A repeating task's How often: the habit screen without counts, plus "After it's done" (29 Sep).
@@ -1295,7 +1269,6 @@ struct HabitForm: View {
             if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
             store.update(habit)
             store.setDescription(descriptionText, of: habit.id)
-            if groupID != originalGroup { store.setGroup(groupID, of: habit.id) }
             onSaved(habit.id)
             dismiss()
             return
@@ -1314,7 +1287,6 @@ struct HabitForm: View {
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
         store.add(habit)
         store.setDescription(descriptionText, of: habit.id)
-        if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)
     }
 }

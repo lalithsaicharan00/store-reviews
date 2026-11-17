@@ -19,8 +19,6 @@ struct ProgressScreen: View {
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
     /// Phase 3: what counts as a full day, in percent (report §25.1, ledger C201).
     @AppStorage(ProgressOptions.fullDay) private var fullDay = 100
-    /// The group chip chosen ("" is All), remembered; Progress keeps its own, apart from Today's (groups spec §2).
-    @AppStorage(GroupFilter.progress) private var groupRaw = ""
     /// A day in the period on screen; nil means the current one, so the page always opens on it.
     @State private var anchor: LocalDay?
     /// Kept between openings (one for the app): reopening Progress with nothing changed shows the numbers already
@@ -42,7 +40,7 @@ struct ProgressScreen: View {
 
     var body: some View {
         let key = ProgressModel.Key(range: range, anchor: anchor, version: store.dataVersion, fullDay: fullDay,
-                                    group: store.existingGroup(groupRaw), today: store.today())
+                                    today: store.today())
         Group {
             if let snapshot = model.snapshot {
                 if snapshot.hasHabits {
@@ -104,7 +102,6 @@ struct ProgressScreen: View {
             store.analytics.event(.preference, ["setting": .text("streaks"), "value": .text(showStreaks ? "enabled" : "disabled")], ticket: store.analytics.ticket)
             store.analyticsConfiguration()
         }
-        .onChange(of: groupRaw) { store.analytics.count(.progressGroup, ticket: store.analytics.ticket) }
         .onChange(of: key) { model.load(key, store: store) }
         .sheet(item: $openDay, onDismiss: {
             // "Show on Today": close Progress and open that day on Today, where logging happens (report §7.4).
@@ -113,7 +110,7 @@ struct ProgressScreen: View {
             router.showDay = day
             menu.path = NavigationPath()
         }) { day in
-            ProgressDaySheet(day: day, group: model.snapshot?.group) { showOnToday = day }
+            ProgressDaySheet(day: day) { showOnToday = day }
         }
         .sheet(isPresented: $showExplainer) { ProgressExplainer().analyticsScreen(nil) }
         .navigationDestination(for: HabitPageLink.self) { link in
@@ -127,23 +124,8 @@ struct ProgressScreen: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 22) {
                 ProgressCard { rangeControl(snapshot) }
-                // Groups (report §15): the chips filter every number below; nothing shows until a group exists.
-                if !store.groups.isEmpty {
-                    GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
-                        .padding(.top, -10)
-                }
                 overview(snapshot)
-                if !snapshot.groupBars.isEmpty { groupBars(snapshot) }
-                ForEach(snapshot.sections) { section in
-                    rowSection(section, snapshot: snapshot)
-                }
-                if snapshot.group != nil && snapshot.sections.isEmpty && snapshot.quitting.isEmpty {
-                    Text("No habits in this group yet. Add them in Filter on Today, or in a habit's Group.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                        .frame(maxWidth: .infinity)
-                        .multilineTextAlignment(.center)
-                        .accessibilityIdentifier("progress-group-empty")
-                }
+                habitsSection(snapshot.rows, title: "Habits", snapshot: snapshot, footer: nil)
                 if !snapshot.quitting.isEmpty {
                     ProgressGroup(title: "Quitting") {
                         if snapshot.range == .week && !typeSize.isAccessibilitySize {
@@ -171,7 +153,7 @@ struct ProgressScreen: View {
 
     // MARK: Week and Month
 
-    /// The Week and Month views (Month built the same way, 2 Oct 2026). Week | Month | Year and the group chips scroll away; the dates stay pinned at the top while the
+    /// The Week and Month views (Month built the same way, 2 Oct 2026). Week | Month | Year scrolls away; the dates stay pinned at the top while the
     /// cards scroll, so it's always clear which week they show and ‹ › are one tap away (report §3; NN/g: a sticky
     /// header should be small and hold only what's needed while scrolling). A lazy stack of cards in a scroll view,
     /// never a `List` (Design Rules).
@@ -185,10 +167,6 @@ struct ProgressScreen: View {
                     .padding(.bottom, WeekSpacing.tight)
                 Section {
                     VStack(alignment: .leading, spacing: WeekSpacing.card) {
-                        // Groups (report §15): the chips choose which habits' cards show; nothing shows until a group exists.
-                        if !store.groups.isEmpty {
-                            GroupChipRow(selection: snapshot.group) { groupRaw = $0?.uuidString ?? "" }
-                        }
                         // What the squares mean, at the top (the user, 2–3 Oct 2026): open until the person folds it once
                         // anywhere; Week, Month and Year share this visit's state (Current Work 57).
                         HeatKeySection()
@@ -196,14 +174,6 @@ struct ProgressScreen: View {
                     .padding(.horizontal, 16)
                     .padding(.top, WeekSpacing.tight)
                     .padding(.bottom, WeekSpacing.section)
-                    if snapshot.group != nil && all.isEmpty {
-                        Text("No habits in this group yet. Add them in Filter on Today, or in a habit's Group.")
-                            .font(.subheadline).foregroundStyle(.secondary)
-                            .frame(maxWidth: .infinity)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 16)
-                            .accessibilityIdentifier("progress-group-empty")
-                    }
                     ForEach(snapshot.cards) { card in
                         weekCardButton(card, snapshot)
                     }
@@ -456,42 +426,6 @@ struct ProgressScreen: View {
         .accessibilityIdentifier(id)
     }
 
-    // MARK: Groups
-
-    /// One bar per group for the period, in the groups' own order, never ranked (report §15). Tapping one chooses it.
-    private func groupBars(_ snapshot: ProgressSnapshot) -> some View {
-        ProgressGroup(title: "Groups") {
-            ForEach(Array(snapshot.groupBars.enumerated()), id: \.element.id) { index, bar in
-                if index > 0 { Divider() }
-                Button { groupRaw = bar.group.id.uuidString } label: {
-                    ProgressGroupBarView(bar: bar, showPercentages: showPercentages).padding(.vertical, 8)
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("progress-group-\(bar.group.name)")
-            }
-        }
-    }
-
-    /// A group's habits under its heading, "● Health · 24 of 30 · 80%"; or "No Group"; or "Habits" when there's one.
-    @ViewBuilder
-    private func rowSection(_ section: ProgressRowSection, snapshot: ProgressSnapshot) -> some View {
-        if let group = section.group {
-            ProgressGroup(content: { rowCards(section.rows, snapshot: snapshot) }, header: {
-                HStack(spacing: 6) {
-                    Circle().fill(group.color.color).frame(width: 8, height: 8)
-                    Text(group.name)
-                    if let tally = section.tally, tally.planned > 0 {
-                        Text("· \(tally.done) of \(tally.planned)" + (showPercentages ? tally.percent.map { " · \($0)%" } ?? "" : ""))
-                            .monospacedDigit()
-                    }
-                }
-                .accessibilityElement(children: .combine)
-            })
-        } else {
-            habitsSection(section.rows, title: section.ungrouped ? "No Group" : "Habits", snapshot: snapshot, footer: nil)
-        }
-    }
-
     // MARK: Habit rows
 
     @ViewBuilder
@@ -587,8 +521,6 @@ struct ProgressRowView: View {
         let anchor: LocalDay?
         let version: Int
         var fullDay = 100
-        /// The group chip chosen; nil is All.
-        var group: UUID? = nil
         /// A new day makes new numbers: "This week" kept from before midnight would be last week (CI, 1 Oct 2026).
         var today: LocalDay? = nil
     }
@@ -603,12 +535,12 @@ struct ProgressRowView: View {
         }
         // Numbers from before a change are never shown again.
         cache = cache.filter { $0.key.version == key.version }
-        // Ranges × periods × groups: room for every group's week, month and year and the ones before them.
+        // Ranges × periods: room for many weeks, months and years.
         if cache.count > 80 { cache.removeAll() }
         let today = key.today ?? store.today()
         let made = perfTimed("Progress \(key.range): whole snapshot") {
             store.progressSnapshot(key.range, containing: key.anchor ?? today, today: today, fullAt: Double(key.fullDay) / 100,
-                                   group: key.group, weekCards: true)
+                                   weekCards: true)
         }
         cache[key] = made
         snapshot = made
@@ -722,29 +654,3 @@ struct QuitRunClock: View {
     }
 }
 
-/// A group's bar in the Groups card: "● Health", its done of planned and the bar (report §15).
-struct ProgressGroupBarView: View {
-    let bar: ProgressGroupBar
-    let showPercentages: Bool
-
-    var body: some View {
-        let tally = bar.tally
-        let text = tally.planned == 0 ? "Nothing planned"
-            : "\(tally.done) of \(tally.planned)" + (showPercentages ? tally.percent.map { " · \($0)%" } ?? "" : "")
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 8) {
-                Circle().fill(bar.group.color.color).frame(width: 10, height: 10)
-                Text(bar.group.name).foregroundStyle(.primary).lineLimit(1)
-                Spacer(minLength: 8)
-                Text(text).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
-            }
-            ProgressView(value: tally.planned == 0 ? 0 : Double(tally.done) / Double(tally.planned))
-                .tint(bar.group.color.color)
-        }
-        .contentShape(Rectangle())
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(bar.group.name), \(text)")
-        .accessibilityHint("Shows this group only")
-        .accessibilityAddTraits(.isButton)
-    }
-}

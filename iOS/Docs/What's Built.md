@@ -127,9 +127,11 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 - [x] Checked in the app with 17 golden cases (`-progresscheck`) and `ProgressUITests`, both in `[ios-ci]`
 - [x] Phase 2 (30 Sep 2026): Year (a grid of day dots; tap a month to open it; each row its own year grid); Quitting rows with the run ticking once a minute, best run, slips in the period and a clean-day strip
 - [x] Phase 3 (30 Sep 2026): View Options → Full Day (All Done, 80%, 60%); Year → Share: a picture of the year
-- [x] Group stats (30 Sep 2026): chips under the range control filter every number; with All, a Groups card (a bar per group, in the groups' order) and the habits under their group's heading
+- ~~Group stats (30 Sep 2026): chips under the range control filter every number; with All, a Groups card (a bar per group, in the groups' order) and the habits under their group's heading~~ Removed 17 Nov 2026
 
 ## Groups (30 Sep 2026; Build Plan #68)
+
+**Removed 17 Nov 2026 (the user; Android A64, A120).** Nothing below is in the app any more. Groups saved by an older build stay in the database untouched and are never read (golden case G18).
 
 - [x] Optional and invisible until the first one: Today's Filter (beside +) explains them and has + New Group
 - [x] Filter: chips All · ● Health 5 · ● Mind 0 · ○ Reading – (the number is how many habits it shows on the day open), empty groups last, Edit on the Groups heading

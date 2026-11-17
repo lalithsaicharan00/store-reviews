@@ -171,14 +171,12 @@ final class PerformanceUITests: XCTestCase {
     /// Progress with 30 habits and two years of history (report §20): open it, switch Week, Month and Year, go back and
     /// forth, and scroll. Targets: opens in under 300 ms, a switch in under 150 ms.
     func testProgress() {
-        // With four groups (Build Plan #68): the chips are switched too, and All shows the Groups card.
-        relaunch(["-perf-many", "-groups-demo"])
+        relaunch(["-perf-many"])
         openProgress()
         ready()
         let control = app.segmentedControls["progress-range"]
         let previous = app.buttons["progress-previous"], next = app.buttons["progress-next"]
         keepGoing {
-            for chip in ["group-chip-Health", "group-chip-Mind", "group-chip-all"] { app.buttons[chip].tap() }
             control.buttons["Month"].tap()
             previous.tap(); next.tap()
             control.buttons["Year"].tap()

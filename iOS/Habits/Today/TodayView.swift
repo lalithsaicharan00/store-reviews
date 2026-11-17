@@ -102,7 +102,7 @@ struct TodayView: View {
                 noteSheet(target)
             }
             .sheet(isPresented: $showNewHabit, onDismiss: revealAdded) {
-                NewItemView(group: nil) { added = $0 }
+                NewItemView { added = $0 }
             }
         }
     }

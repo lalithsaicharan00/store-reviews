@@ -217,12 +217,4 @@ final class WeekCardsUITests: XCTestCase {
             shot("hp-dark-\(i)")
         }
     }
-
-    func testWeekCardsWithGroups() {
-        openWeek(["-groups-demo", "-appearance.theme", "light"])
-        shot("wg-1-top-groups")
-        app.swipeUp(velocity: .slow)
-        sleep(1)
-        shot("wg-2-scrolled")
-    }
 }

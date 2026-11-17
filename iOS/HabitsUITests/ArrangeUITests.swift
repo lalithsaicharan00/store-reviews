@@ -130,20 +130,15 @@ final class ArrangeUITests: XCTestCase {
         shot("a08-added")
     }
 
-    /// The habit form shows Group before any group exists, with New Group in it.
-    func testGroupRowBeforeAnyGroup() {
+    /// The habit form has no Group: groups are gone (17 Nov 2026, the user; Android A64).
+    func testHabitFormHasNoGroup() {
         launch()
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain,'")).firstMatch.tap()
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off,'")).firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
-        let group = app.buttons["group-row"]
-        app.reveal(group)
-        XCTAssertTrue(group.exists, "Group row with no groups yet")
-        XCTAssertEqual(group.label, "Group, None")
-        group.tap()
-        XCTAssertTrue(app.buttons["group-picker-new"].waitForExistence(timeout: 3), "New Group from the form")
-        shot("a11-group-picker")
+        XCTAssertTrue(app.descendants(matching: .any)["habit-form"].waitForExistence(timeout: 3))
+        XCTAssertFalse(app.buttons["group-row"].exists, "No Group row")
     }
 }

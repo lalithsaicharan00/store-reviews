@@ -358,7 +358,6 @@ enum GoldenRecorder {
         case let v as LocalDay: return v.key
         case let v as UUID: return v.uuidString
         case let v as Habit: return ["habit": v.id.uuidString]
-        case let v as HabitGroup: return ["group": v.id.uuidString]
         case let v as URL: return v.absoluteString
         default: break
         }

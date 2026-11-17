@@ -75,7 +75,11 @@ removed it from designs as well."
 - [x] Note for the Day is gone from the bottom of Today, and its card from the top. Saved day notes stay in the data
       and in backups (nothing is lost) and still show, read only, on Progress's day.
 - [x] The speed run's groups scenario and its hide-completed measure are deleted.
-- [ ] **For the user:** group editing (Groups) has no way in now. Remove groups altogether?
+- [x] Group editing (Groups) had no way in after that. The user, 17 Nov: "Yes, remove groups". Gone from the habit
+      form, Habits (one list), Progress (chips, the Groups card, by-group headings and the Day sheet), the store, the
+      speed run and the UI tests (`GroupsUITests` deleted, and dropped from the CI workflow's default list). Groups saved
+      by an older build stay in the database untouched; golden case G18 now checks that such a database opens with every
+      habit and its history.
 
 ## Then
 

@@ -1,5 +1,7 @@
 # Groups — What to Build
 
+> **Removed from the app, 17 November 2026 (the user: "Yes, remove groups").** Android dropped groups on 23 Oct (A64) and a routine plays where a group can't (A120). Kept for history only.
+
 Written by Claude (Claude Code), 30 September 2026. Build Plan #68 (tags or grouping, C045) and the group stats left over from #60g. Checklist: [Groups](<../Checklists/Groups.md>).
 
 **Where the evidence comes from.** No new review mining was needed: the existing reports already cover groups in depth, and this plan puts them together.
