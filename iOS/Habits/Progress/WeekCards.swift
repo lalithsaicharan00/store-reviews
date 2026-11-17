@@ -213,9 +213,11 @@ struct HistoryCardMore: View {
             }
             Button("Delete", systemImage: "trash", role: .destructive) { deleting = true }
         } label: {
-            Image(systemName: "ellipsis")
-                .font(.body)
-                .foregroundStyle(.secondary)
+            // iOS's More button (Figma's More button): ellipsis.circle.fill, hierarchical, Title 2, in Ink.
+            Image(systemName: "ellipsis.circle.fill")
+                .font(.title2)
+                .symbolRenderingMode(.hierarchical)
+                .foregroundStyle(Color.ink)
                 .frame(width: Self.size, height: Self.size)
                 .contentShape(Rectangle())
         }

@@ -624,8 +624,8 @@ final class DayDetailsUITests: XCTestCase {
             launch(fixture: false, dark: true)
             app.buttons["menu-button"].tap()
             XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 3))
-            app.buttons["menu-habitsAndTasks"].tap()
-            app.revealAndTap(app.staticTexts[name])
+            app.openHabitsFromMenu()
+            app.revealAndTap(app.habitCard(name))
             let history = app.buttons["history-add-entry"]
             XCTAssertTrue(history.waitForExistence(timeout: 5))
             XCTAssertEqual(history.label, add, "\(name): History's Add says what it adds")

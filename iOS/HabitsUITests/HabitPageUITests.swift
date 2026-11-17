@@ -37,7 +37,7 @@ final class HabitPageUITests: XCTestCase {
     /// habit's row on Today (3 Oct 2026: a tap during the year demo's first seconds opened Today's row instead).
     private func open(_ name: String) {
         let bar = app.navigationBars.firstMatch
-        if !app.navigationBars["Habits"].exists {
+        if !app.habitsPage.exists {
             if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() }
             let habits = app.buttons["menu-habitsAndTasks"]
             if !habits.exists {
@@ -48,8 +48,8 @@ final class HabitPageUITests: XCTestCase {
             XCTAssertTrue(habits.waitForExistence(timeout: 10), "The ≡ menu opens")
             habits.tap()
         }
-        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), "The Habits list")
-        let row = app.staticTexts[name].firstMatch
+        XCTAssertTrue(app.habitsPage.waitForExistence(timeout: 5), "The Habits page")
+        let row = app.habitCard(name)
         app.revealAndTap(row)
         XCTAssertTrue(app.segmentedControls["habit-tabs"].waitForExistence(timeout: 5), "\(name)'s page")
         sleep(1)

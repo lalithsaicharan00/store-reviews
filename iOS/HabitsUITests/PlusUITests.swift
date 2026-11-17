@@ -221,10 +221,13 @@ final class PlusUITests: XCTestCase {
         app.buttons["menu-button"].tap()
         XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 5))
         app.buttons["menu-habitsAndTasks"].tap()
-        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), labels(app))
-        let stretch = button(startingWith: "Stretch", app)
+        XCTAssertTrue(app.habitsPage.waitForExistence(timeout: 5), labels(app))
+        // Archived habits are a row at the end of the Habits page (Figma 986:150825).
+        app.revealAndTap(app.buttons["habits-archived"])
+        // Its ⋯ holds Restore (Figma's Archived habits page 988:7736).
+        let stretch = app.buttons["archived-more-Stretch"]
         XCTAssertTrue(stretch.waitForExistence(timeout: 5), labels(app))
-        stretch.swipeLeft()
+        stretch.tap()
         let restore = app.buttons["Restore"]
         XCTAssertTrue(restore.waitForExistence(timeout: 3), labels(app))
         restore.tap()
@@ -235,7 +238,11 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.buttons["make-room-archive-Walk"].waitForExistence(timeout: 5), labels(app))
         app.buttons["make-room-archive-Walk"].tap()
         XCTAssertTrue(app.staticTexts["Bring back Stretch"].waitForNonExistence(timeout: 8), labels(app))
+        // Archived Habits › Habits & Tasks › ☰ › Today.
         app.navigationBars.buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.buttons["habits-menu"].waitForExistence(timeout: 5), labels(app))
+        app.buttons["habits-menu"].tap()
+        app.buttons["menu-today"].tap()
         XCTAssertTrue(app.buttons["Mark Stretch done"].waitForExistence(timeout: 8), "Stretch is back on Today: \(labels(app))")
         XCTAssertFalse(app.buttons["Mark Walk done"].exists, "Walk was archived to make room")
     }

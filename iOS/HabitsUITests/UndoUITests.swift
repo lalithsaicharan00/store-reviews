@@ -36,11 +36,12 @@ final class UndoUITests: XCTestCase {
         let row = app.buttons["menu-habitsAndTasks"]
         XCTAssertTrue(row.waitForExistence(timeout: 3))
         row.tap()
+        XCTAssertTrue(app.habitsPage.waitForExistence(timeout: 5), "Habits & Tasks opens")
     }
 
     private func daySheet(_ name: String) {
         openHabits()
-        app.revealAndTap(app.staticTexts[name])
+        app.revealAndTap(app.habitCard(name))
         // The habit page opens on History: its first row is today (newest first, this month open).
         let today = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
         XCTAssertTrue(today.waitForExistence(timeout: 5))
@@ -185,7 +186,7 @@ final class UndoUITests: XCTestCase {
 
     func testDayControlsAndCalendarOpeningAreExplicit() {
         openHabits()
-        app.revealAndTap(app.staticTexts["Stretch"])
+        app.revealAndTap(app.habitCard("Stretch"))
         let calendarDays = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
         // History, newest first: the first day row is today.
         XCTAssertTrue(calendarDays.firstMatch.waitForExistence(timeout: 5))

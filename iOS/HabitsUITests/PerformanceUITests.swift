@@ -103,7 +103,7 @@ final class PerformanceUITests: XCTestCase {
     /// ≡ → Habits (All Habits moved into the menu, 30 Sep 2026).
     private func openHabits() {
         open("Menu", tapping: app.buttons["menu-button"], until: app.buttons["menu-habitsAndTasks"])
-        open("Habits", tapping: app.buttons["menu-habitsAndTasks"], until: app.navigationBars["Habits"])
+        open("Habits", tapping: app.buttons["menu-habitsAndTasks"], until: app.habitsPage)
     }
 
     func testScrollAllHabits() {

@@ -19,6 +19,8 @@ import SwiftUI
     var mounted = false
     /// Today's navigation stack. A menu row appends its place; the habit page appends a habit's ID.
     var path = NavigationPath()
+    /// The place the menu last opened; it's the page on screen while `path` isn't empty.
+    var place: MenuPlace?
 
     /// Opens or closes the menu from wherever a finger left it, and on closing can open `place` on Today's stack in
     /// the same animation.
@@ -27,7 +29,8 @@ import SwiftUI
         withAnimation(MenuModel.motion(reduceMotion)) {
             isOpen = open
             drag = 0
-            if let place { path.append(place) }
+            // The menu's places are siblings of Today, so one replaces whatever the menu opened before.
+            if let place { path = NavigationPath([place]); self.place = place }
         } completion: { [self] in
             if !isOpen && drag == 0 { mounted = false }
         }

@@ -67,8 +67,8 @@ final class SmallScreenUITests: XCTestCase {
         if !habits.waitForExistence(timeout: 5) { app.buttons["menu-button"].tap() }
         XCTAssertTrue(habits.waitForExistence(timeout: 10), "The ≡ menu")
         habits.tap()
-        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 5), "Habits")
-        app.revealAndTap(app.staticTexts["Water"].firstMatch)
+        XCTAssertTrue(app.habitsPage.waitForExistence(timeout: 5), "Habits")
+        app.revealAndTap(app.habitCard("Water"))
         let progress = app.segmentedControls["habit-tabs"].buttons["Progress"]
         XCTAssertTrue(progress.waitForExistence(timeout: 5), "Water's page")
         progress.tap()

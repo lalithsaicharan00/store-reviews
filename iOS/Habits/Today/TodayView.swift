@@ -158,6 +158,15 @@ struct TodayView: View {
             }
             routine = RoutineSession(part: .anytime, day: store.today(), habits: habits)
         }
+        // Open a menu place directly for visual review in Simulator: `-open-place habitsAndTasks`.
+        .task {
+            let arguments = ProcessInfo.processInfo.arguments
+            guard let flag = arguments.firstIndex(of: "-open-place"), flag + 1 < arguments.count,
+                  let place = MenuPlace(rawValue: arguments[flag + 1]) else { return }
+            await AppModel.shared.ensureLoaded()
+            menu.place = place
+            menu.path = NavigationPath([place])
+        }
         #endif
         .onChange(of: selectedDay) { layout.reset(); store.clearLogOffer() }
         .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } else { routeWidget() } }

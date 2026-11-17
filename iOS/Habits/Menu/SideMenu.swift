@@ -133,8 +133,9 @@ private struct SideMenu: View {
     var body: some View {
         List {
             Section {
-                row("Today", symbol: "sun.max", detail: nil, id: "menu-today", current: true) {
+                row("Today", symbol: "sun.max", detail: nil, id: "menu-today", current: menu.path.isEmpty) {
                     menu.setOpen(false, reduceMotion: reduceMotion)
+                    menu.path = NavigationPath()
                 }
                 place(.habitsAndTasks)
             }
@@ -182,7 +183,8 @@ private struct SideMenu: View {
     }
 
     private func place(_ place: MenuPlace) -> some View {
-        row(place.title, symbol: place.symbol, detail: detail(place), id: "menu-" + place.rawValue, current: false) {
+        row(place.title, symbol: place.symbol, detail: detail(place), id: "menu-" + place.rawValue,
+            current: !menu.path.isEmpty && menu.place == place) {
             menu.go(to: place, reduceMotion: reduceMotion)
         }
     }
@@ -246,24 +248,67 @@ struct SettingsPage: View {
     }
 }
 
-/// Habits & Tasks, until it's built from its own Figma page: Habits | Tasks on top, then that list.
+/// Habits & Tasks (Figma's Habits page, 6 Nov 2026): Habits | Tasks, the biggest control, pinned right under the bar so
+/// Tasks is always in view; then that list. The bar is ☰ and + with no title: the control says where you are. A place
+/// the menu opens stands in for Today, so ☰ opens the menu again rather than Back.
 struct HabitsAndTasksPage: View {
+    @Environment(MenuModel.self) private var menu
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var kind: AllHabitsView.Kind = .habits
+    @State private var adding = false
+    @State private var added: UUID?
 
     var body: some View {
-        AllHabitsView(kind: kind)
-            .id(kind)
-            .safeAreaInset(edge: .top, spacing: 0) {
-                Picker("Show", selection: $kind) {
-                    Text("Habits").tag(AllHabitsView.Kind.habits)
-                    Text("Tasks").tag(AllHabitsView.Kind.tasks)
-                }
-                .pickerStyle(.segmented)
-                .controlSize(.large)
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .accessibilityIdentifier("habits-tasks-picker")
+        Group {
+            switch kind {
+            case .habits: HabitsPage(added: $added)
+            case .tasks: AllHabitsView(kind: .tasks)
             }
+        }
+        .pinnedUnderBar {
+            Picker("Show", selection: $kind) {
+                Text("Habits").tag(AllHabitsView.Kind.habits)
+                Text("Tasks").tag(AllHabitsView.Kind.tasks)
+            }
+            .pickerStyle(.segmented)
+            .controlSize(.large)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .accessibilityIdentifier("habits-tasks-picker")
+        }
+        .navigationTitle("")
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden(true)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Button("Menu", systemImage: "line.3.horizontal") { menu.setOpen(true, reduceMotion: reduceMotion) }
+                    .accessibilityIdentifier("habits-menu")
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(kind == .tasks ? "New Task" : "New Habit", systemImage: "plus") { adding = true }
+                    .accessibilityIdentifier("habits-add")
+            }
+        }
+        .navigationDestination(for: ArchivedHabitsLink.self) { _ in ArchivedPage(kind: .habits) }
+        .sheet(isPresented: $adding) {
+            if kind == .tasks {
+                NavigationStack { HabitForm(type: .task, onSaved: { _ in adding = false }) }
+            } else {
+                NewItemView { added = $0 }
+            }
+        }
+    }
+}
+
+private extension View {
+    /// A control pinned right under the navigation bar that the page scrolls under: part of the bar on iOS 26, so the
+    /// bar's scroll edge softens what passes beneath it (Figma's Scroll edge); on the page's colour before.
+    @ViewBuilder func pinnedUnderBar<Bar: View>(@ViewBuilder _ bar: () -> Bar) -> some View {
+        if #available(iOS 26, *) {
+            safeAreaBar(edge: .top, spacing: 0, content: bar)
+        } else {
+            safeAreaInset(edge: .top, spacing: 0) { bar().background(Color(.systemGroupedBackground)) }
+        }
     }
 }
 

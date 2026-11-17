@@ -15,6 +15,20 @@ extension XCUIApplication {
         return row
     }
 
+    /// Habits & Tasks (Figma 986:150825, 17 Nov 2026): it has no title, so its Habits | Tasks control says it's open.
+    var habitsPage: XCUIElement { segmentedControls["habits-tasks-picker"] }
+
+    /// A habit's card on Habits & Tasks › Habits (a quit habit's card has its own id).
+    func habitCard(_ name: String) -> XCUIElement {
+        buttons.matching(NSPredicate(format: "identifier IN %@", ["progress-row-" + name, "progress-quit-" + name])).firstMatch
+    }
+
+    /// ☰ › Habits & Tasks, on Habits.
+    func openHabitsFromMenu() {
+        buttons["menu-habitsAndTasks"].tap()
+        XCTAssertTrue(habitsPage.waitForExistence(timeout: 5), "Habits & Tasks opens")
+    }
+
     /// Habits & Tasks, on its Tasks side.
     func openTasksFromMenu() {
         buttons["menu-habitsAndTasks"].tap()

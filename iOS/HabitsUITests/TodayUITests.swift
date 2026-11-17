@@ -112,17 +112,20 @@ final class TodayUITests: XCTestCase {
         XCTAssertTrue(app.buttons["menu-today"].waitForNonExistence(timeout: 3))
         XCTAssertTrue(menu.isHittable)
 
-        // Habits: its page, then a habit's own page, then back to Today.
-        openFromMenu("habits", title: "Habits")
-        let call = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Call family'")).firstMatch
+        // Habits & Tasks: its Habits cards, then a habit's own page, then ☰ › Today (a menu place has no Back, 17 Nov 2026).
+        menu.tap()
+        app.buttons["menu-habitsAndTasks"].tap()
+        XCTAssertTrue(app.habitsPage.waitForExistence(timeout: 5), "Habits & Tasks opens")
+        let call = app.habitCard("Call family")
         XCTAssertTrue(call.waitForExistence(timeout: 3))
         shot("m02-habits")
-        call.tap()
-        // The page's own title bar: the Habits row also shows the name, so text alone can't prove the page opened.
+        app.revealAndTap(call)
+        // The page's own title bar: the card also shows the name, so text alone can't prove the page opened.
         XCTAssertTrue(app.navigationBars["Call family"].waitForExistence(timeout: 5), "The habit page opens")
-        back(to: "Habits")
-        XCTAssertTrue(app.navigationBars["Habits"].waitForExistence(timeout: 3), "Back on Habits")
         back()
+        XCTAssertTrue(app.habitsPage.waitForExistence(timeout: 3), "Back on Habits")
+        app.buttons["habits-menu"].tap()
+        app.buttons["menu-today"].tap()
         XCTAssertTrue(menu.waitForExistence(timeout: 3), "Back on Today")
 
         // The other wired pages, Progress among them.
