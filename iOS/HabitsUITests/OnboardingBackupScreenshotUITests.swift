@@ -1,8 +1,9 @@
 import XCTest
 
-/// Current Work 73 + 3 (9 Oct 2026): every screen of the welcome and ≡ → iCloud & Backup, as built, for the Figma
-/// page "onboarding" (first taken of the earlier welcome; the welcome's tests follow the rebuilt one, 73.1). Screenshots only: each is named in the order it's laid out (`A01-welcome-name`). A test launch
-/// (`-uitest`: in-memory database, its own fake iCloud), so the person's habits and iCloud are never touched (D8).
+/// Current Work 73 + 3 (9 Oct 2026): ≡ → iCloud & Backup and the pages that speak about the data, as built, for Figma.
+/// Screenshots only: each is named in the order it's laid out (`D01-sidebar`). The welcome's screenshots went with the
+/// welcome (17 Nov 2026: the first launch has no pages; `OnboardingUITests` covers what's left). A test launch (`-uitest`:
+/// in-memory database, its own fake iCloud), so the person's habits and iCloud are never touched (D8).
 final class OnboardingBackupScreenshotUITests: XCTestCase {
     private var app: XCUIApplication!
 
@@ -46,84 +47,6 @@ final class OnboardingBackupScreenshotUITests: XCTestCase {
             if button.exists { button.tap(); return }
         }
         app.swipeDown(velocity: .fast)
-    }
-
-    /// The welcome (Current Work 73.1), page by page, with what each page opens; then the empty Today.
-    func testA_Welcome() {
-        launch(["-empty", "-onboarding"])
-        XCTAssertTrue(app.staticTexts["onboarding-page-welcome"].waitForExistence(timeout: 30))
-        shot("A01-welcome")
-        if tap(app.buttons["onboarding-privacy"], "Privacy link") {
-            shot("A02-welcome-privacy")
-            back()
-        }
-        tap(app.buttons["onboarding-new"], "I'm new here")
-        shot("A03-included")
-        tap(app.buttons["onboarding-continue"], "Continue 1")
-        shot("A04-build")
-        tap(app.buttons["onboarding-continue"], "Continue 2")
-        shot("A05-quit")
-        tap(app.buttons["onboarding-continue"], "Continue 3")
-        shot("A06-tasks")
-        tap(app.buttons["onboarding-continue"], "Continue 4")
-        shot("A07-days")
-        if tap(app.buttons["onboarding-day-start"], "Day start picker") {
-            shot("A08-day-start-menu")
-            app.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.12)).tap()
-        }
-        tap(app.buttons["onboarding-continue"], "Continue 5")
-        shot("A09-first-habit")
-        app.swipeUp()
-        shot("A10-first-habit-scrolled")
-        app.swipeDown()
-        if tap(app.buttons["idea-Exercise"], "Exercise idea") {
-            shot("A11-idea-form")
-            // The idea's form is pushed on the welcome; nothing typed, so it leaves by Back without asking (U18).
-            XCTAssertFalse(app.navigationBars["New Habit"].buttons["Cancel"].exists, "An untouched idea has no Cancel to confirm")
-            tap(app.navigationBars["New Habit"].buttons.firstMatch, "The idea form's Back")
-            XCTAssertFalse(app.buttons["Discard Changes"].waitForExistence(timeout: 1), "Nothing typed, nothing to discard")
-            XCTAssertTrue(app.staticTexts["onboarding-page-ideas"].waitForExistence(timeout: 5), "Back returns to the ideas")
-        }
-        if tap(app.buttons["onboarding-make-own"], "Create my own habit") {
-            shot("A12-create-my-own")
-            tap(app.navigationBars["New"].buttons.firstMatch, "New's back button")
-            XCTAssertTrue(app.staticTexts["onboarding-page-ideas"].waitForExistence(timeout: 5), "Back returns to the ideas")
-        }
-        tap(app.buttons["onboarding-skip"], "Skip setup")
-        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10))
-        shot("A13-empty-today")
-    }
-
-    /// I've used it before: every way back and the pages each opens.
-    func testB_WelcomeBack() {
-        launch(["-empty", "-onboarding"])
-        tap(app.buttons["onboarding-returning"], "I've used it before")
-        shot("B01-welcome-back")
-        tap(app.buttons["onboarding-way-restore"], "Restore a backup")
-        shot("B03-restore-a-backup")
-        back()
-        app.terminate()
-        launch(["-empty", "-onboarding", "-test-cloud", "has-habits"])
-        tap(app.buttons["onboarding-returning"], "I've used it before")
-        _ = app.descendants(matching: .any)["onboarding-found"].waitForExistence(timeout: 20)
-        shot("B02-welcome-back-from-icloud")
-        app.terminate()
-        launch(["-onboarding"])
-        tap(app.buttons["onboarding-returning"], "I've used it before")
-        shot("B05-welcome-back-data-found")
-    }
-
-    /// Help → Show the Welcome Again: what's included and what the app does.
-    func testC_WelcomeReplay() {
-        launch([])
-        tap(app.buttons["menu-button"], "≡")
-        tap(app.buttons["menu-help"], "Help & Feedback")
-        shot("C01-help")
-        if tap(app.buttons["help-welcome"], "Show the Welcome Again") {
-            shot("C02-replay-included")
-            tap(app.buttons["onboarding-continue"], "Continue")
-            shot("C03-replay-build")
-        }
     }
 
     /// ≡ → iCloud & Backup (the demo habits), in its states, and every sheet and question it opens.

@@ -13,19 +13,14 @@ final class AnalyticsUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.staticTexts["Analytics: all checks passed"].waitForExistence(timeout: 30), app.debugDescription)
     }
-    func testWelcomeConsentIsOptional() {
+    /// The first launch asks nothing (no welcome since 17 Nov 2026): usage sharing stays off until the person turns it on.
+    func testFirstLaunchAsksNothing() {
         let app = XCUIApplication()
-        app.launchArguments = ["-uitest", "-empty", "-onboarding"]
+        app.launchArguments = ["-uitest", "-empty", "-onboarding", "-test-cloud", "synced"]
         app.launch()
-        let privacy = app.buttons["onboarding-privacy"]
-        XCTAssertTrue(privacy.waitForExistence(timeout: 10))
-        privacy.tap()
-        let usage = app.switches["privacy-usage"]
-        XCTAssertTrue(usage.waitForExistence(timeout: 5))
-        XCTAssertEqual(usage.value as? String, "0")
-        XCTAssertFalse(app.switches["privacy-crashes"].isEnabled)
-        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
-        shot.name = "analytics-optional-welcome-consent"; shot.lifetime = .keepAlways; add(shot)
+        XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 15))
+        XCTAssertEqual(app.alerts.count, 0, "No question on the first launch")
+        XCTAssertFalse(app.switches["privacy-usage"].exists)
     }
     func testUsageConsentIsOptionalAndSeparate() {
         let app = XCUIApplication()

@@ -42,11 +42,13 @@ final class ArrangeUITests: XCTestCase {
         if !passed.waitForExistence(timeout: 30) { XCTFail(app.staticTexts.firstMatch.label) }
     }
 
-    /// Today in normal mode: Edit, Filter and +; each time of day says when it starts; only "Note for the Day" at the
-    /// bottom. Edit opens Arrange Your Day with every habit; Anytime moves to the bottom and stays there after Done.
+    /// Today in normal mode: Edit and +, no Filter; each time of day says when it starts; nothing under the last card
+    /// (no Note for the Day since 17 Nov 2026). Edit opens Arrange Your Day with every habit; Anytime moves to the bottom
+    /// and stays there after Done.
     func testEditArrangesTheDay() {
         launch()
-        XCTAssertTrue(app.buttons["filter-button"].exists)
+        XCTAssertTrue(app.buttons["arrange-button"].exists)
+        XCTAssertFalse(app.buttons["filter-button"].exists, "No Filter on Today")
         XCTAssertTrue(app.buttons["New Habit"].exists)
         let morning = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Morning, Starts '")).firstMatch
         XCTAssertTrue(morning.waitForExistence(timeout: 3), "Morning says when it starts")
@@ -54,13 +56,13 @@ final class ArrangeUITests: XCTestCase {
                        "Anytime has no start")
         XCTAssertFalse(app.buttons["Edit Times of Day"].exists, "Gone from the bottom of Today")
         app.reveal(app.buttons["add-day-note"])
-        XCTAssertTrue(app.buttons["add-day-note"].exists, "Note for the Day stays")
+        XCTAssertFalse(app.buttons["add-day-note"].exists, "No Note for the Day at the bottom")
         shot("a01-today")
 
         app.buttons["arrange-button"].tap()
         XCTAssertTrue(any("arrange-heading").waitForExistence(timeout: 3))
         XCTAssertTrue(app.buttons["arrange-done"].exists, "Done, alone in the top bar")
-        XCTAssertFalse(app.buttons["filter-button"].exists)
+        XCTAssertFalse(app.buttons["arrange-button"].exists)
         XCTAssertFalse(app.buttons["menu-button"].exists)
         // Every habit, not only today's: Call family is three times a week, Floss is in the Evening.
         XCTAssertTrue(any("arrange-row-Call family").exists)
@@ -126,36 +128,6 @@ final class ArrangeUITests: XCTestCase {
         app.reveal(menu)
         XCTAssertTrue(menu.waitForExistence(timeout: 3), "Listed in Arrange Your Day")
         shot("a08-added")
-    }
-
-    /// Filter: All Habits, New Group and the two Hide switches. Hide Completed Habits takes a done habit off Today once
-    /// it settles, says so at the top, and one tap brings it back.
-    func testHideCompleted() {
-        // Water is done already, so it's hidden until a tap holds Today; on a slow simulator the 1.5 s hold ended before
-        // the test reached Water (3 Oct 2026), and on 4 Oct finding Water's button alone took 4 s (22.4 → 26.4 s), so a
-        // 4 s pause ended first. A longer pause keeps the test about the rule, not the simulator's speed.
-        launch(["-today.settlePause", "8"])
-        app.buttons["filter-button"].tap()
-        XCTAssertTrue(app.navigationBars["Filter"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.buttons["group-new"].exists, "New Group, up front")
-        XCTAssertTrue(app.switches["hide-done-tasks"].exists)
-        let hide = app.switches["hide-done-habits"]
-        XCTAssertTrue(hide.exists)
-        hide.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap()
-        shot("a09-filter")
-        app.navigationBars["Filter"].buttons["Done"].tap()
-        XCTAssertTrue(app.buttons["hide-done-chip"].waitForExistence(timeout: 3), "Today says completed ones are hidden")
-
-        // Three times a week: its + adds one; once something is logged today it's done for the day, so it hides.
-        let call = app.buttons["Add 1 to Call family"]
-        XCTAssertTrue(call.waitForExistence(timeout: 3))
-        call.tap()
-        // Logging Water moves "Add note" off Call family, which would otherwise keep it in place.
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch.tap()
-        XCTAssertTrue(call.waitForNonExistence(timeout: 16), "Gone once Today settles")
-        shot("a10-hidden")
-        app.buttons["hide-done-chip"].tap()
-        XCTAssertTrue(call.waitForExistence(timeout: 3), "Back with one tap")
     }
 
     /// The habit form shows Group before any group exists, with New Group in it.

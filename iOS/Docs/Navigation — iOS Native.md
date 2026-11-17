@@ -104,7 +104,7 @@ iOS has search but draws it differently, so both components were changed, not de
 
 ## What's different on other pages
 
-- **Today's actions are Edit, then + (6 Nov 2026,** the user: the pencil "is looking a little bit weird"). The Navigation bar has a *Text action*: a word in its own glass capsule, 12 before the symbol capsule. Apple's Toolbars guidance keeps a word apart from symbols and uses a word for Edit, and Shortcuts on iOS 26 draws exactly this. SwiftUI: `Button("Edit")`, `ToolbarSpacer(.fixed)`, `Button("New", systemImage: "plus")`. All 264 of Today's bars changed. Filter, which the app still has, stays out (Android removed it).
+- **Today's actions are Edit, then + (6 Nov 2026,** the user: the pencil "is looking a little bit weird"). The Navigation bar has a *Text action*: a word in its own glass capsule, 12 before the symbol capsule. Apple's Toolbars guidance keeps a word apart from symbols and uses a word for Edit, and Shortcuts on iOS 26 draws exactly this. SwiftUI: `Button("Edit")`, `ToolbarSpacer(.fixed)`, `Button("New", systemImage: "plus")`. All 264 of Today's bars changed. Filter stays out (Android removed it); the app's Filter, its groups bar and Note for the Day went on 17 Nov 2026.
 - **Notes' search in the app** is an inline field with radius 10 (`HabitNotesTab.swift:77`), where the file now has the capsule, which is what iOS draws for `.searchable`. The app gets the same field when it's rebuilt.
 - **Flow names and notes still say "tabs"** in places ("the top bar, the tabs and the period row stay"). Those are labels, and they weren't rewritten.
 - **The screens are still 360 × 800.**

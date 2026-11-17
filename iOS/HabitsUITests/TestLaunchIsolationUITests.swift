@@ -23,35 +23,41 @@ final class TestLaunchIsolationUITests: XCTestCase {
         return text
     }
 
-    private func hideSwitch() -> XCUIElement {
-        app.buttons["filter-button"].tap()
-        XCTAssertTrue(app.navigationBars["Filter"].waitForExistence(timeout: 5))
-        let hide = app.switches["hide-done-habits"]
-        XCTAssertTrue(hide.waitForExistence(timeout: 3))
-        return hide
+    /// ≡ › Appearance › Done Habits (a setting test launches reset, T8), read off the page.
+    private func openDoneOrder() -> XCUIElement {
+        XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 30))
+        app.buttons["menu-button"].tap()
+        app.buttons["menu-appearance"].tap()
+        let order = app.buttons["appearance-done-order"]
+        XCTAssertTrue(order.waitForExistence(timeout: 5))
+        return order
     }
 
+    /// Today has no Filter since 17 Nov 2026, so the person's setting here is Appearance's Done Habits, which a test
+    /// launch also resets; it was Hide Completed Habits, which lived in the Filter.
     func testATestLaunchLeavesThePersonsWidgetsAndSettings() {
-        // The person: Hide Completed Habits on, and their own habits on their widgets.
+        // The person: done habits kept in place, and their own habits on their widgets.
         app.launchArguments = []
         app.launch()
-        XCTAssertTrue(app.buttons["filter-button"].waitForExistence(timeout: 30), "Today, as the person has it")
-        let hide = hideSwitch()
-        if (hide.value as? String) != "1" { hide.coordinate(withNormalizedOffset: CGVector(dx: 0.9, dy: 0.5)).tap() }
-        XCTAssertEqual(hide.value as? String, "1", "The person turns Hide Completed Habits on")
-        app.navigationBars["Filter"].buttons["Done"].tap()
+        let order = openDoneOrder()
+        if !order.label.contains("Stay in Place") {
+            order.tap()
+            let choice = app.buttons["Stay in Place"].firstMatch
+            XCTAssertTrue(choice.waitForExistence(timeout: 3))
+            choice.tap()
+        }
+        XCTAssertTrue(order.label.contains("Stay in Place"), "The person chooses Stay in Place: " + order.label)
         Thread.sleep(forTimeInterval: 2) // the setting is saved; the launch's own widget publication has finished
         app.terminate()
         let before = report()
-        XCTAssertTrue(before.contains("hide true"), "The person's setting is kept: " + before)
+        XCTAssertTrue(before.contains("order inPlace"), "The person's setting is kept: " + before)
         XCTAssertFalse(before.hasPrefix("widgets 0 "), "The person's widgets show their habits: " + before)
 
-        // A UI test's launch: its own demo habits and its own settings, Hide Completed off as every test starts (T8).
+        // A UI test's launch: its own demo habits and its own settings, done habits at the bottom as every test starts (T8).
         app.launchArguments = ["-uitest"]
         app.launch()
-        XCTAssertTrue(app.buttons["filter-button"].waitForExistence(timeout: 20))
-        XCTAssertEqual(hideSwitch().value as? String, "0", "A test launch starts with Hide Completed off (T8)")
-        app.navigationBars["Filter"].buttons["Done"].tap()
+        XCTAssertTrue(openDoneOrder().label.contains("Move to Bottom"), "A test launch starts with the default order (T8)")
+        app.navigationBars.buttons.element(boundBy: 0).tap()
         // Something logged, so the test launch publishes its widgets again (0.5 s after a change).
         let add = app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Add ' AND label ENDSWITH ' to Water'")).firstMatch
         if add.waitForExistence(timeout: 5) { add.tap() }

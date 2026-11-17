@@ -143,3 +143,22 @@ The 12 flows are rebuilt at 393 × 852, 600 apart, with Google's steps gone and 
 - **Detaching a copy can leave nested copies of the same screen.** Look again before deleting the main.
 - **An empty frame laid over canvas nodes pictures nothing.** To see a flow, clone its nodes into a temporary frame.
 - **`createFrame` clips,** which cut the Search field's shadow into a box: set `clipsContent` false.
+
+## In the app (17 Nov 2026)
+
+Built on `ios-update` and tested by hand on the iPhone 17 Simulator, flows 1 to 7, screen by screen.
+
+- **Files:** `Onboarding/Onboarding.swift` (when Today waits for iCloud), `Onboarding/FirstLook.swift` (the first
+  launch: an overlay in Today's background from the first frame, Looking in iCloud… only after a second, No Internet
+  Connection), `Today/EmptyToday.swift` (the empty Today), `Onboarding/FileRestore.swift` (Apple's picker, Restoring
+  Your Habits…, the alerts). The launch screen is `UILaunchScreen` with `LaunchBackground` in `Habits/Assets.xcassets`.
+  The welcome's pages are deleted.
+- **The empty Today's bar is ☰ and +:** Edit comes with something to arrange.
+- **A backup with no habits in it** gets an alert, *No Habits in This Backup*, never an empty Today shown as restored
+  (D5).
+- **Update to Open This Backup** opens the App Store at the app once `AppStoreLink.appID` is set; until then it opens
+  the App Store. Not checked: the Simulator has no App Store.
+- **Flow 5 (iCloud turned on in the Settings app)** is checked by leaving the app and coming back: any launch or return
+  with no habits and iCloud on waits for iCloud's first look.
+- **Tests:** `-onboarding` makes a test launch a first launch, and always a fresh one (`onboarding.done` is cleared,
+  T8); `-test-cloud` gives FakeCloud's states (`synced`, `has-habits-slow`, `offline-then-online`, `turn-on-later`).

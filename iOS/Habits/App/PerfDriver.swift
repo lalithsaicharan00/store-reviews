@@ -11,7 +11,7 @@ enum PerfAction: Equatable {
     /// Day details' All logs page, the Log view's Edit, and the day's note (the 7 Oct 2026 redesign).
     case openAllLogs, editEntry, openNote
     /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
-    case openPlace(MenuPlace), toggleMenu, nextGroup, nextRange, openEdit
+    case openPlace(MenuPlace), toggleMenu, nextRange, openEdit
     /// Progress's "What the squares mean": fold or open it (`HeatKeySection`, 3 Oct 2026).
     case toggleHeatKey
     /// A page with nothing on it, pushed like a menu page (`PerfBlankPage`); one with only a number field.
@@ -24,8 +24,6 @@ enum PerfAction: Equatable {
     case openArrange
     /// The lock's keypad (Current Work 58): a digit, or Delete.
     case codeKey(Int), codeDelete
-    /// The welcome (Current Work 73.1): shown over Today, a page pushed by name (`OnboardingRoute.perf`), and Back.
-    case openOnboarding, onboardingPage(String), onboardingBack
     /// Privacy & Security's App Lock page, and its setup sheet (Current Work 58.13).
     case openAppLock, openLockSetup
     /// iCloud & Backup's Restore page (Current Work 76).
@@ -369,7 +367,7 @@ enum PerfDriver {
             UserDefaults.standard.set(ProgressRange.week.rawValue, forKey: ProgressOptions.range)
         case "arrange":
             // Today's Edit (3 Oct 2026): opening Arrange Your Day, scrolling every habit in it, moving Anytime, sorting a
-            // card, and hiding completed habits back on Today.
+            // card.
             await openTwice("Arrange Your Day") { send(.openArrange) }
             await measure("Arrange Your Day: scrolling") { await scroll() }
             await measure("Arrange Your Day: move Anytime and sort") {
@@ -380,13 +378,6 @@ enum PerfDriver {
                 }
             }
             send(.close)
-            await pause(1)
-            await measure("Today: hide completed on and off") {
-                await repeatFor(window) {
-                    UserDefaults.standard.set(true, forKey: Preferences.hideDoneHabits); await pause(0.5)
-                    UserDefaults.standard.set(false, forKey: Preferences.hideDoneHabits); await pause(0.5)
-                }
-            }
         case "plus-page":
             // ≡ › Plus without Plus (Current Work 80, T4): the page and New's 6th-habit sheet (a year of history has more
             // than 5 habits, so New's habit rows open it). No plan to choose since 21 Oct 2026 (no Plus Family).
@@ -402,11 +393,6 @@ enum PerfDriver {
             await measure("Menu: open and close") {
                 await repeatFor(window) { send(.toggleMenu); await pause(0.6) }
             }
-        case "groups":
-            await measure("Today: group filter") {
-                await repeatFor(window) { send(.nextGroup); await pause(0.4) }
-            }
-            send(.close)
         case "menu-pages":
             // Every other page in the ≡ menu: how long each takes to open, between two blank pages pushed the same
             // way (the control: what a push alone costs).
@@ -641,35 +627,6 @@ enum PerfDriver {
                     for _ in 0..<12 { send(.previousHabit); await pause(0.1) }
                 }
             }
-        case "onboarding":
-            // The welcome (Current Work 73.1, T4): shown over Today, each page's opening, Back and forward, the ideas
-            // scrolled, every way back, and typing a transfer code. It runs on the speed runs' own data, so Welcome back
-            // shows "We found data on this device".
-            await open("Welcome") { send(.openOnboarding) }
-            for page in ["included", "build", "quit", "tasks", "days", "firstHabit"] {
-                await open("Welcome: \(page)") { send(.onboardingPage(page)) }
-            }
-            await measure("Welcome: ideas scrolling") { await scroll() }
-            await measure("Welcome: Back and forward") {
-                await repeatFor(window) {
-                    send(.onboardingBack); await pause(0.5)
-                    send(.onboardingPage("firstHabit")); await pause(0.5)
-                }
-            }
-            await open("Welcome: New (Create my own habit)") { send(.onboardingPage("createOwn")) }
-            for _ in 0..<7 { send(.onboardingBack) }
-            await pause(1.2)
-            for page in ["welcomeBack", "signIn", "restore", "transferCode"] {
-                await open("Welcome: \(page)") { send(.onboardingPage(page)) }
-            }
-            let code = "K7PQ49XM"
-            await measure("Transfer code: typing") {
-                await repeatFor(window) {
-                    for n in 1...code.count { type(String(code.prefix(n))); await pause(0.12) }
-                    for n in stride(from: code.count - 1, through: 0, by: -1) { type(String(code.prefix(n))); await pause(0.08) }
-                }
-            }
-            send(.close)
         default:
             MainThreadMeter.mark("# NOTE unknown scenario \(scenario)")
         }

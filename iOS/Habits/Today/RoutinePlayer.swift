@@ -938,7 +938,7 @@ struct FocusClock: View {
         return FocusProgressCircle(progress: progress, goal: goal, color: habit.color.color, limit: habit.atMost,
                                    diameter: diameter) {
             Image(systemName: habit.symbol)
-                .font(.system(size: 28))
+                .font(.title)
                 .foregroundStyle(habit.color.color)
                 .accessibilityHidden(true)
             // A time habit always shows its clock (the user, 7 Oct 2026: "Show clock" was removed). A tap types time.

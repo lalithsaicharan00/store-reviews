@@ -9,7 +9,12 @@ import Foundation
 /// - `synced`, `waiting` (offline), `full`, `off`, `restricted`, `removed` (the habits were removed from iCloud),
 ///   `other-account` (this database synced with another Apple Account), `free-this` / `free-other` (with `-free`: this
 ///   device, or an iPad, is the one syncing), `plus` (an iPad syncs too);
-/// - `has-habits`: another device's habits already in iCloud (a fresh install's welcome brings them back);
+/// - `has-habits`: another device's habits already in iCloud (a fresh install brings them back), `has-habits-slow` the same
+///   with a 3-second first look, so Looking in iCloud… shows;
+/// - `offline-then-online`: `has-habits`, with this iPhone offline for 8 seconds (No Internet Connection, then it goes on by
+///   itself); `turn-on-later`: signed out, then 8 seconds later signed in to an iCloud that has habits (iCloud turned on
+///   in the Settings app; go Home and open the app again after it, as a person coming back from Settings does: signed
+///   out there's no engine to hear the sign-in, and the return asks iCloud). The first launch's own states (Figma's onboarding flows 2, 4 and 5; 17 Nov 2026);
 /// - `bringing`, `held`, `brake`: shown as they'd be (the logic behind them is `CloudSyncCheck`'s).
 @MainActor
 enum CloudTestStates {
@@ -23,7 +28,7 @@ enum CloudTestStates {
 
     static func transport(_ arguments: [String]) -> CloudTransport {
         let state = value(after: "-test-cloud", in: arguments)
-        let signedIn = state.map { !["off", "restricted"].contains($0) } ?? false
+        let signedIn = state.map { !["off", "restricted", "turn-on-later"].contains($0) } ?? false
         let cloud = FakeCloud(user: signedIn ? "test-user" : nil)
         if state == "restricted" { cloud.statusWhenSignedOut = .restricted }
         fake = cloud
@@ -49,9 +54,23 @@ enum CloudTestStates {
             try? fake.saveDevice(CloudDevice(id: "other-ipad", name: "iPad", platform: "ipados", lastSync: .now, habits: 14))
         case "removed":
             try? await repository.cloud.setState(key: "question", value: "removed")
-        case "has-habits":
+        case "has-habits", "has-habits-slow":
             // Another device's habits already in this Apple Account's iCloud (a reinstall, a new iPhone, §13.1).
             fake.seed(habitRows(["Read from iCloud", "Walk from iCloud"]))
+            if state == "has-habits-slow" { fake.fetchDelay = .seconds(3) }
+        case "offline-then-online":
+            fake.seed(habitRows(["Read from iCloud", "Walk from iCloud"]))
+            fake.offline = true
+            Task {
+                try? await Task.sleep(for: .seconds(offlineSeconds))
+                fake.offline = false
+            }
+        case "turn-on-later":
+            fake.seed(habitRows(["Read from iCloud", "Walk from iCloud"]), for: "test-user")
+            Task {
+                try? await Task.sleep(for: .seconds(8))
+                await fake.signIn("test-user")
+            }
         case "bringing", "held", "brake":
             fake.offline = true
             Task {
@@ -63,6 +82,9 @@ enum CloudTestStates {
             break
         }
     }
+
+    /// `offline-then-online`: how long the phone is offline, for the fake iCloud and `Connection` alike.
+    static let offlineSeconds: Double = 8
 
     /// The iCloud page's states, for the speed runs (`icloud-states`).
     static let pageStates = ["synced", "waiting", "full", "off", "bringing", "free-other", "plus", "removed", "other-account", "held"]

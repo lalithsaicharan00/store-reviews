@@ -24,15 +24,15 @@ final class BackupUITests: XCTestCase {
         XCTAssertEqual(result.label, "Backup: all checks passed")
     }
 
-    /// The page from Today's empty state: sync's status first, then backups, export and import, then deleting; no
-    /// account anywhere, no "our server" (Architecture 11 §17).
+    /// The page with nothing on this iPhone (≡ → iCloud & Backup; the empty Today's Restore from a Backup opens Apple's
+    /// file picker since 17 Nov 2026): sync's status first, then backups, export and import, then deleting; no account
+    /// anywhere, no "our server" (Architecture 11 §17).
     func testTheICloudPageFromAnEmptyToday() {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-free", "-empty"]
         app.launch()
-        let restore = app.buttons["empty-restore-backup"]
-        XCTAssertTrue(restore.waitForExistence(timeout: 10))
-        restore.tap()
+        XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 10))
+        openBackup(app)
         XCTAssertTrue(app.navigationBars["iCloud & Backup"].waitForExistence(timeout: 5), labels(app))
         XCTAssertTrue(shows(app, row: "cloud-status", "iCloud is off"), status(app, "cloud-status"))
         for id in ["backup-export-csv", "backup-save", "backup-import", "backup-restore"] {
@@ -88,7 +88,7 @@ final class BackupUITests: XCTestCase {
         app.launchArguments = ["-uitest"]
         app.launch()
         XCTAssertTrue(app.buttons["menu-button"].waitForExistence(timeout: 10))
-        XCTAssertFalse(app.staticTexts["No habits yet"].exists, "The demo habits are there to start with")
+        XCTAssertFalse(app.staticTexts["No Habits Yet"].exists, "The demo habits are there to start with")
         openBackup(app)
         let erase = app.buttons["backup-erase"]
         for _ in 0..<5 where !erase.isHittable { app.swipeUp() }
@@ -100,7 +100,7 @@ final class BackupUITests: XCTestCase {
         XCTAssertTrue(app.alerts["Erased"].waitForExistence(timeout: 10))
         app.alerts["Erased"].buttons.firstMatch.tap()
         app.navigationBars["iCloud & Backup"].buttons.firstMatch.tap()
-        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10), "Everything on this iPhone is gone")
+        XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 10), "Everything on this iPhone is gone")
     }
 
     /// Restore From a Backup lists iCloud's dated copies and a backup file (screen 6), never an account.
@@ -108,8 +108,8 @@ final class BackupUITests: XCTestCase {
         let app = XCUIApplication()
         app.launchArguments = ["-uitest", "-empty"]
         app.launch()
-        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 10))
-        app.buttons["empty-restore-backup"].tap()
+        XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 10))
+        openBackup(app)
         XCTAssertTrue(app.navigationBars["iCloud & Backup"].waitForExistence(timeout: 5))
         app.revealAndTap(app.buttons["backup-restore"])
         XCTAssertTrue(app.navigationBars["Restore From a Backup"].waitForExistence(timeout: 5))

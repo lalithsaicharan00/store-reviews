@@ -84,7 +84,7 @@ Three kinds, never mixed: a note on a habit for one day, a habit's description, 
 
 **The other two kinds:**
 
-- [x] **Note for the Day:** bottom of Today → Note for the Day; it shows as a card at the top of Today
+- ~~**Note for the Day:** bottom of Today → Note for the Day; it shows as a card at the top of Today~~ Removed from Today 17 Nov 2026 (the user); saved day notes are kept and show on Progress's day
 - [x] **Description:** written in New Habit or Edit Habit; shown under the habit's name in the routine player
 
 ## Pausing a habit

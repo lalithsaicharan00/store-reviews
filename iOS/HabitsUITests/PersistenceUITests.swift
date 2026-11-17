@@ -21,7 +21,7 @@ final class PersistenceUITests: XCTestCase {
 
     /// New Habit → Build or maintain → Check it off → "Stretch" → Add; returns its tick button.
     private func addStretch(_ app: XCUIApplication) -> XCUIElement {
-        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5), "A fresh database starts empty")
+        XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 5), "A fresh database starts empty")
         app.buttons["New Habit"].firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
@@ -85,7 +85,7 @@ final class PersistenceUITests: XCTestCase {
     func testHabitAndTickSurviveRelaunch() {
         continueAfterFailure = false
         var app = launch(reset: true)
-        XCTAssertTrue(app.staticTexts["No habits yet"].waitForExistence(timeout: 5), "A fresh database starts empty")
+        XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 5), "A fresh database starts empty")
         shot("01-empty")
 
         app.buttons["New Habit"].firstMatch.tap()
@@ -137,7 +137,7 @@ final class PersistenceUITests: XCTestCase {
         XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label CONTAINS 'be opened'")).firstMatch.exists)
         shot("05-open-failure")
         alert.buttons["OK"].tap()
-        XCTAssertFalse(app.staticTexts["No habits yet"].waitForExistence(timeout: 2), "An unopened database must not look empty")
+        XCTAssertFalse(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 2), "An unopened database must not look empty")
         shot("06-after-dismiss")
     }
 }

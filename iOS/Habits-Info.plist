@@ -66,6 +66,14 @@
 		<key>UIApplicationSupportsMultipleScenes</key>
 		<false/>
 	</dict>
+	<!-- The launch screen is Today's background and nothing else, no logo or words (Figma's Launch screen, 553:2427;
+	     Apple's Launching guidance). UIColorName must name an asset-catalog colour, so LaunchBackground holds System
+	     Grouped Background's values (F2F2F7, black in dark); everything after launch uses the system colour by name. -->
+	<key>UILaunchScreen</key>
+	<dict>
+		<key>UIColorName</key>
+		<string>LaunchBackground</string>
+	</dict>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Face ID unlocks the app when App Lock is on.</string>
 	<key>NSAlarmKitUsageDescription</key>

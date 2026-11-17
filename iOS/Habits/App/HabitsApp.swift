@@ -5,8 +5,6 @@ struct HabitsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
     private let model = AppModel.shared
     @Environment(\.scenePhase) private var scenePhase
-    /// The welcome, on a fresh install only (`Onboarding.shouldShow`).
-    @State private var showOnboarding = false
 
     init() {
         Preferences.register()
@@ -172,32 +170,14 @@ struct HabitsApp: App {
             .onChange(of: model.store.problem) {
                 if model.store.problem == nil && model.store.isStorageReady { model.scheduler.scheduleReconcile(model.store) }
             }
-            .fullScreenCover(isPresented: $showOnboarding) {
-                // Every way back (sign in, restore, move from another device) finishes inside the welcome, so it
-                // always ends on Today (Current Work 73.1).
-                OnboardingView { showOnboarding = false }
-                .environment(model.store)
-                .environment(model.scheduler)
-                .environment(model.menu)
-                .environment(model.router)
-                .modifier(OptionalBackup(backup: model.backup, cloud: model.cloud))
-                .tint(.ink)
-            }
-            #if DEBUG
-            // Speed runs (`PerfDriver` "onboarding", Rulebook T4): the welcome over Today, as on a fresh install.
-            .onPerfCommand { action in if action == .openOnboarding { showOnboarding = true } }
-            #endif
+            // The first launch: Today's background, then Looking in iCloud… or No Internet Connection, then Today
+            // (Figma's onboarding flows; `FirstLook`). Over the menu and its pages too.
+            .modifier(FirstLookCover(cloud: model.cloud, store: model.store))
             .task {
                 // The theme is set on the window itself, so it reaches sheets and alerts too (≡ → Appearance).
                 Theme.apply(UserDefaults.standard.string(forKey: Preferences.theme) ?? Theme.automatic.rawValue)
                 await model.ensureLoaded()
                 guard model.store.isLoaded, model.store.isStorageReady else { return }
-                if Onboarding.shouldShow(model.store) {
-                    // Already there when the app opens, not sliding up over an empty Today.
-                    var instant = Transaction()
-                    instant.disablesAnimations = true
-                    withTransaction(instant) { showOnboarding = true }
-                }
                 #if DEBUG
                 PerfDriver.startIfAsked(store: model.store)
                 #endif
@@ -229,16 +209,6 @@ private struct PlusEndedNotice: ViewModifier {
         content.sheet(item: Binding(get: { plus.ended }, set: { if $0 == nil { plus.acknowledgeEnded() } })) { reason in
             PlusEndedView(reason: reason)
         }
-    }
-}
-
-/// The backup centre and iCloud for a screen shown over Today in its own presentation, when there are (none without a
-/// database).
-private struct OptionalBackup: ViewModifier {
-    let backup: BackupCenter?
-    let cloud: CloudSync?
-    func body(content: Content) -> some View {
-        if let backup, let cloud { content.environment(backup).environment(cloud) } else { content }
     }
 }
 

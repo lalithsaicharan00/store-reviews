@@ -1,7 +1,8 @@
 import SwiftUI
 import UIKit
 
-/// ≡ → Help & Feedback (Build Plan #71): a searchable How It Works, a way to write to us, and the welcome again.
+/// ≡ → Help & Feedback (Build Plan #71): a searchable How It Works and a way to write to us. There's no welcome to show
+/// again: the first launch has no pages of its own (Figma's onboarding, 17 Nov 2026).
 /// Research: "Onboarding — The Name, What's Free, and a First Habit" §5 and "Settings — What People Need There"
 /// (482 reviews say a missing help screen cost them; C075). Every answer names the exact place to tap, in the app's own
 /// words. **When a way in changes, change its answer here too.**
@@ -10,7 +11,6 @@ struct HelpView: View {
     var open: String? = nil
     @State private var query = ""
     @State private var observedSearch = false
-    @State private var showWelcome = false
     @State private var showAddress = false
     @Environment(\.openURL) private var openURL
 
@@ -33,10 +33,6 @@ struct HelpView: View {
                         HelpRowLabel(title: "Contact Us", detail: Support.email, symbol: "envelope")
                     }
                     .accessibilityIdentifier("help-contact")
-                    Button { Analytics.shared.count(.welcomeReplay, ticket: Analytics.shared.ticket); showWelcome = true } label: {
-                        HelpRowLabel(title: "Show the Welcome Again", detail: "What's free, and what \(Onboarding.appName) can do", symbol: "hand.wave")
-                    }
-                    .accessibilityIdentifier("help-welcome")
                 } footer: {
                     Text("We read every message. Tell us what happened and when; your habits are never sent with it.")
                 }
@@ -66,9 +62,6 @@ struct HelpView: View {
         }
         .navigationTitle("Help & Feedback")
         .navigationBarTitleDisplayMode(.inline)
-        .fullScreenCover(isPresented: $showWelcome) {
-            OnboardingView(replay: true) { showWelcome = false }
-        }
         .alert("Write to Us", isPresented: $showAddress) {
             Button("Copy Address") { UIPasteboard.general.string = Support.email }
             Button("OK", role: .cancel) {}

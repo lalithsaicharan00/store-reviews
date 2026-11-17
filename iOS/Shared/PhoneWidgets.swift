@@ -565,7 +565,7 @@ nonisolated enum WidgetButtonRegion: Sendable {
     case none
 }
 
-struct WidgetButtonShape: Shape {
+nonisolated struct WidgetButtonShape: Shape {
     let region: WidgetButtonRegion
     func path(in rect: CGRect) -> Path {
         switch region {

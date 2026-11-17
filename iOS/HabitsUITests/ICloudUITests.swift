@@ -103,7 +103,7 @@ final class ICloudUITests: XCTestCase {
         XCTAssertTrue(alert.buttons["Back Up Again"].exists && alert.buttons["Not Now"].exists)
         let shot = XCTAttachment(screenshot: app.screenshot()); shot.name = "icloud-removed-alert"; shot.lifetime = .keepAlways; add(shot)
         alert.buttons["Not Now"].tap()
-        XCTAssertFalse(app.staticTexts["No habits yet"].exists, "Nothing here was deleted")
+        XCTAssertFalse(app.staticTexts["No Habits Yet"].exists, "Nothing here was deleted")
         openICloud(app)
         XCTAssertTrue(shows(app, "cloud-status", "iCloud sync is off on this iPhone"), label(app, "cloud-status"))
         XCTAssertTrue(app.buttons["cloud-turn-on"].exists)

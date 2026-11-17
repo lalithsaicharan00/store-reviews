@@ -367,8 +367,8 @@ struct NextMilestone: View {
 }
 
 /// Figma's Milestone row, a row of the All Milestones list: a Small medal (40) for one reached, or the Progress ring
-/// for the next, in a 48 slot; what it is in Body and when (or what's left) under it. 72 tall; its line starts at the
-/// words, as every list row's does.
+/// for the next, in a 48 slot; what it is in Body and when (or what's left) under it, in the list's own insets (about
+/// 72 tall, as Figma draws it); its line starts at the words, as every list row's does.
 private struct MilestoneRow<Badge: View>: View {
     let headline: String
     let supporting: String?
@@ -387,7 +387,6 @@ private struct MilestoneRow<Badge: View>: View {
             .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
             Spacer(minLength: 0)
         }
-        .listRowInsets(EdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16))
         .accessibilityElement(children: .ignore)
     }
 }

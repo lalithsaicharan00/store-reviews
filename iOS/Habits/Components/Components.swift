@@ -196,9 +196,10 @@ private struct FloatingGlass: ViewModifier {
 
 /// Figma's Banner: a short message floating where the person is, with at most two actions ("Note saved · Undo").
 /// Subheadline in Label, its symbol 6 before the words, the actions Semibold 12 after them; 16 at the sides and 12 above
-/// and below, so one line is 44 tall and a capsule. Two lines at most, then "…"; never wider than 328, hugging its words
-/// below that. Solid card colour with a soft shadow: glass or material vanished on a light page (29 Sep). The shadow is on
-/// the background shape alone, never the text (S10). Place it in an overlay so nothing under it moves when it comes.
+/// and below, so one line is 44 tall and a capsule. Two lines at most, then "…"; as wide as its words, never wider than
+/// the room its place gives it. Solid card colour with a soft shadow: glass or material vanished on a light page
+/// (29 Sep). The shadow is on the background shape alone, never the text (S10). Place it in an overlay so nothing under
+/// it moves when it comes.
 struct Banner<Actions: View>: View {
     let text: String
     var symbol = "checkmark.circle"
@@ -221,16 +222,14 @@ struct Banner<Actions: View>: View {
             RoundedRectangle(cornerRadius: 22, style: .continuous).fill(Color.card)
                 .shadow(color: .black.opacity(0.12), radius: 8, y: 2)
         }
-        // After the background, so the banner hugs its words and this only caps the room it's offered.
-        .frame(maxWidth: 328)
     }
 }
 
 /// Figma's Card notice: a list card at the top of a page when something needs the person, in TipView's anatomy and our
 /// neutral colours. A filled symbol at Title 2 in a 32 column (System Red for a problem, Secondary Label otherwise),
 /// the title in Headline, the line in Subheadline, Secondary Label, 2 under it, and at most one fix, a Regular Bordered
-/// button 10 under the words. The ✕ is Not Now, only on what can wait. It's the list's own row (Secondary System Grouped
-/// Background, the list's corners), 15 above and below and 16 at the sides, so its words line up with the rows under it.
+/// button 10 under the words. The ✕ is Not Now, only on what can wait. It's the list's own row, with the list's own
+/// background, corners and insets, so its words line up with the rows under it.
 struct CardNotice<Fix: View>: View {
     let symbol: String
     let title: String
@@ -274,7 +273,7 @@ struct CardNotice<Fix: View>: View {
                     Image(systemName: "xmark.circle.fill")
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(Color.ink, Color.ink.opacity(0.25))
-                        .font(.system(size: 26))
+                        .font(.title2)
                         .frame(width: 44, height: 44)
                         .contentShape(Rectangle())
                 }
@@ -285,7 +284,6 @@ struct CardNotice<Fix: View>: View {
                 .accessibilityIdentifier(closeID)
             }
         }
-        .listRowInsets(EdgeInsets(top: 15, leading: 16, bottom: 15, trailing: 16))
     }
 }
 

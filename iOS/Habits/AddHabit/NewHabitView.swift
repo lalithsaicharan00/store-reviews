@@ -254,7 +254,6 @@ struct ChoiceLabel: View {
 /// (`HabitDefaults`), and the line under the sentence says which ones. Anything needing its own page is
 /// pushed, never a sheet, so the whole flow moves one way.
 struct HabitForm: View {
-    private let fromSuggestion: Bool
     enum Field: Hashable { case name, description, amount, unit, increment, minutes, reminderText, item(UUID) }
 
     /// One reminder. `part` is the time of day it's for (nil for Anytime); its time stays inside that part.
@@ -348,10 +347,8 @@ struct HabitForm: View {
     @State private var confirmDiscard = false
     @FocusState private var focus: Field?
 
-    /// `idea` (onboarding, or Start From an Idea on an empty Today) fills in the name and how often, and nothing
-    /// else: nothing is saved until Add, and amounts stay empty as for every new habit (C203, C292).
-    init(type: ItemType, group: UUID? = nil, idea: HabitIdea? = nil, onSaved: @escaping (UUID) -> Void) {
-        fromSuggestion = idea != nil
+    /// A new habit or task: nothing is saved until Add, and amounts stay empty (C203, C292).
+    init(type: ItemType, group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
@@ -359,9 +356,9 @@ struct HabitForm: View {
         _groupID = State(initialValue: group)
         _color = State(initialValue: .blue)
         let plainSymbol = type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill"
-        _symbol = State(initialValue: idea.flatMap { IconSuggester.symbol(for: $0.name) } ?? idea?.symbol ?? plainSymbol)
-        _typed = State(initialValue: TypedName(idea?.name ?? ""))
-        _shownName = State(initialValue: idea?.name ?? "")
+        _symbol = State(initialValue: plainSymbol)
+        _typed = State(initialValue: TypedName(""))
+        _shownName = State(initialValue: "")
         // Amounts start empty (left out of the sentence): the right amount depends on the person. How often starts
         // as every day and Time of Day as Anytime (the user, 29 Sep).
         let start = HabitDefaults.suggest(type, name: "")
@@ -370,13 +367,12 @@ struct HabitForm: View {
         _hours = State(initialValue: "0")
         _minutes = State(initialValue: "0")
         var draft = OftenDraft()
-        draft.choose(idea?.often ?? start.often)
+        draft.choose(start.often)
         _often = State(initialValue: draft)
     }
 
     /// Opens the form on a saved habit, every row as it is now.
     init(editing habit: Habit, weekStart: Int, description: String = "", group: UUID? = nil, onSaved: @escaping (UUID) -> Void) {
-        fromSuggestion = false
         type = ItemType(habit)
         self.onSaved = onSaved
         original = habit
@@ -462,8 +458,7 @@ struct HabitForm: View {
         }
     }
     private var remind: Bool { remindOn && !times.isEmpty }
-    /// Something the person typed (U18: Cancel asks first only then). An idea's own name isn't typed: its form leaves
-    /// by Back without a question until it's changed (run 37999286664).
+    /// Something the person typed (U18: Cancel asks first only then).
     private var hasChanges: Bool { editing ? editChanged : typed.isChanged || !filledItems.isEmpty }
     private var isHabit: Bool { type.isBuild || type == .cutBack }
     /// How it's tracked: the type chosen before the form.
@@ -588,7 +583,7 @@ struct HabitForm: View {
             }
         }
         .interactiveDismissDisabled(hasChanges)
-        // Adding a 6th habit on the free plan (an idea's form, or a form opened before the limit was reached): the
+        // Adding a 6th habit on the free plan (a form opened before the limit was reached): the
         // 6th-habit sheet, and the form is kept whatever happens there. Saved once there's Plus or room; ✕ comes back
         // here (Current Work 80).
         .sheet(isPresented: $sixthHabit, onDismiss: {
@@ -632,7 +627,6 @@ struct HabitForm: View {
                 // tomorrow, and a habit started then stayed off Today until 3 AM (Current Work 52, 6 Oct 2026).
                 startDate = trackingToday; endDate = trackingToday; taskDate = trackingToday
                 color = store.suggestedColor()
-                // An idea arrives named: show the whole form first instead of the keyboard.
                 if name.isEmpty && PerfSwitches.focusFormName { focus = .name }
                 if type != .quit { syncReminders(force: true) }
             }
@@ -1318,7 +1312,7 @@ struct HabitForm: View {
         let habit = makeHabit(name: trimmedName)
         // Reminders are on by default, so permission is asked when the habit is saved, not before.
         if habit.remind && !habit.reminders.isEmpty { Task { _ = await scheduler.requestPermission() } }
-        store.add(habit, suggestion: fromSuggestion)
+        store.add(habit)
         store.setDescription(descriptionText, of: habit.id)
         if let groupID, store.groups.contains(where: { $0.id == groupID }) { store.setGroup(groupID, of: habit.id) }
         onSaved(habit.id)

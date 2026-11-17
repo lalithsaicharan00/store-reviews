@@ -62,6 +62,8 @@ final class FakeCloud {
     var dieAfterApplying = false
     /// The network is down: every call fails, nothing changes.
     var offline = false
+    /// How long a fetch takes before its first page (a slow first look, so Looking in iCloud… shows; 17 Nov 2026).
+    var fetchDelay: Duration = .zero
     /// Records a fetch delivers at a time.
     var pageSize = 200
     /// Records a request may carry (`limitExceeded` beyond it, which Apple's batcher never lets happen).
@@ -325,6 +327,7 @@ final class FakeCloudTransport: CloudTransport {
         guard !down else { throw CloudTransportError.network }
         guard let space = cloud.space else { throw CloudTransportError.noAccount }
         await handler.handle(.willFetch)
+        if cloud.fetchDelay > .zero { try? await Task.sleep(for: cloud.fetchDelay) }
         if space.zoneGeneration != zoneGeneration {
             zoneGeneration = space.zoneGeneration
             token = 0
@@ -381,6 +384,15 @@ extension FakeCloud {
     func countRequest() { requests += 1 }
 
     /// Records already in iCloud (saved by "another device"): a fixture for big fetches.
+    /// Rows already in another Apple Account's iCloud before this device signs in to it (iCloud turned on later).
+    func seed(_ records: [CloudRowRecord], for name: String) {
+        if spaces[name] == nil { spaces[name] = Space() }
+        let current = user
+        user = name
+        seed(records)
+        user = current
+    }
+
     func seed(_ records: [CloudRowRecord]) {
         guard let space else { return }
         space.habitsZone = true

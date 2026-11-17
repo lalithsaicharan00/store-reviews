@@ -14,10 +14,6 @@ struct PartSection: View {
     let isNow: Bool
     /// Done habits go below the rest (≡ → Appearance → Done Habits; the default).
     let doneLast: Bool
-    /// The Filter's "Hide Completed Habits" and "Hide Completed Tasks" (the user, 3 Oct 2026). Done rows go only when
-    /// Today settles, like done rows sinking, so nothing vanishes under a finger (Rulebook U4).
-    let hideDoneHabits: Bool
-    let hideDoneTasks: Bool
     let highlighted: String?
     let onStart: () -> Void
     /// Opens Arrange Your Day (touch and hold on the header: a shortcut, never the only way in).
@@ -44,13 +40,9 @@ struct PartSection: View {
         // Done habits sink to the bottom, keeping their order otherwise. The row just logged stays put while it offers
         // "Add note" (or its note is being written), so the offer is where the person is looking.
         let held = store.noteOffer.flatMap { $0.day == day ? $0.habit : nil }
-        let hides = hideDoneHabits || hideDoneTasks
-        let shown = !hides || layout.holding ? items : items.filter { item in
-            done[item.id] != true || item.habit.id == held || !(item.habit.kind == .task ? hideDoneTasks : hideDoneHabits)
-        }
         let fresh = doneLast
-            ? shown.filter { done[$0.id] != true || $0.habit.id == held } + shown.filter { done[$0.id] == true && $0.habit.id != held }
-            : shown
+            ? items.filter { done[$0.id] != true || $0.habit.id == held } + items.filter { done[$0.id] == true && $0.habit.id != held }
+            : items
         let ordered = layout.order(part, fresh: fresh)
         Section {
             PartHeader(title: title, habits: items.map(\.habit), left: left, isNow: isNow, isOpen: open,

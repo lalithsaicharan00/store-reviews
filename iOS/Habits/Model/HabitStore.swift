@@ -2771,7 +2771,7 @@ final class HabitStore {
         logFeedback(habit, on: entry.day, wasComplete: wasComplete)
         let updated = entry
         perform { [self] telemetry in
-            try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis)
+            try await repository.editEntry(id: updated.id.uuidString, value: updated.value, createdAt: updated.createdAt.millis, day: nil)
             analytics.count(.editEntry, ticket: telemetry)
         }
     }
