@@ -6,18 +6,18 @@ import SwiftUI
 
 /// History · Notes · Progress: three jobs, one control (research IA).
 enum HabitTab: String, CaseIterable, Identifiable, Hashable {
-    case history, notes, progress
+    case progress, history
     var id: Self { self }
     var title: String {
         switch self {
-        case .history: "History"
-        case .notes: "Notes"
         case .progress: "Progress"
+        case .history: "History"
         }
     }
 
-    /// A task has no Progress: its history and notes are all there is.
-    static func tabs(for habit: Habit) -> [HabitTab] { habit.kind == .task ? [.history, .notes] : allCases }
+    /// Progress | History (Figma's Habit details page 1020:4052): Progress first, the tab the page opens on. A task
+    /// has no Progress: its history is all there is.
+    static func tabs(for habit: Habit) -> [HabitTab] { habit.kind == .task ? [.history] : allCases }
 }
 
 /// What the page shows, worked out when its data changes and kept while the page is open, so switching tabs never
@@ -30,12 +30,18 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
     }
 
     private(set) var history: [HistoryMonth] = []
+    /// History with only the days that have a note, for With Notes: "2 days with a note" under each month.
+    private(set) var noteHistory: [HistoryMonth] = []
     private(set) var record: HabitOverall?
     private(set) var milestones = HabitMilestones.none
-    private(set) var notes: [NoteMonth] = []
+    /// Nothing logged yet (Figma's New habit, 1031:2743): Progress says so and keeps only this week and the key.
+    /// A quit habit's progress is its clean run, so it's never "new".
+    private(set) var isNew = false
+    /// Nothing for History to list yet (Figma's History · empty, 1031:3300): no log, note, skip or pause on any day.
+    /// A quit habit's clean days are its history, so it always has rows.
+    private(set) var historyIsEmpty = false
     @ObservationIgnored private var historyKey: Key?
     @ObservationIgnored private var recordKey: Key?
-    @ObservationIgnored private var notesKey: Key?
 
     func load(_ key: Key, tab: HabitTab, store: HabitStore) {
         switch tab {
@@ -43,70 +49,26 @@ enum HabitTab: String, CaseIterable, Identifiable, Hashable {
             guard key != historyKey else { return }
             historyKey = key
             history = perfTimed("Habit page: history") { store.history(of: key.habit, today: key.today) }
+            noteHistory = history.compactMap { month in
+                let days = month.days.filter { $0.note != nil }
+                guard !days.isEmpty else { return nil }
+                return HistoryMonth(first: month.first, title: month.title,
+                                    summary: days.count == 1 ? "1 day with a note" : "\(days.count) days with a note", days: days)
+            }
+            historyIsEmpty = key.habit.kind != .quit && noteHistory.isEmpty && store.entries(of: key.habit.id).isEmpty
+                && !history.contains { $0.days.contains { $0.heat == .off(.skipped) || $0.heat == .off(.paused) } }
         case .progress:
             guard key != recordKey, key.habit.kind != .task else { return }
             recordKey = key
             let record = perfTimed("Habit page: overall record") { store.habitRecord(of: key.habit, today: key.today) }
             self.record = record
+            isNew = key.habit.kind != .quit && store.entries(of: key.habit.id).isEmpty
             milestones = perfTimed("Habit page: milestones") { store.habitMilestones(of: key.habit, record: record, today: key.today) }
-        case .notes:
-            guard key != notesKey else { return }
-            notesKey = key
-            notes = NoteMonth.group(store.notes(of: key.habit), today: key.today, calendar: store.calendar)
         }
-    }
-}
-
-/// One month of notes, newest first: a card like History's month, a row per day's note (Current Work 46, 5 Oct 2026).
-struct NoteMonth: Hashable, Identifiable {
-    struct Note: Hashable, Identifiable {
-        let day: LocalDay
-        let text: String
-        /// "Sat 3", as History's day rows say it; made once here, never while drawing (S8).
-        var title = ""
-        /// "Today", "Yesterday", or nil.
-        var relative: String?
-        var id: LocalDay { day }
-    }
-    let first: LocalDay
-    let title: String
-    let notes: [Note]
-    /// Never the same as a History month's id: both tabs share one lazy stack, and equal ids there showed History's
-    /// card under Notes (3 Oct 2026; lesson L11).
-    var id: String { "notes-" + first.key }
-
-    /// "3 notes", under the month's name as History's months show how they went.
-    var summary: String { notes.count == 1 ? "1 note" : "\(notes.count) notes" }
-
-    static func group(_ notes: [(day: LocalDay, text: String)], today: LocalDay, calendar: Calendar) -> [NoteMonth] {
-        let names = calendar.standaloneMonthSymbols
-        let shortDays = calendar.shortStandaloneWeekdaySymbols
-        let yesterday = today.adding(days: -1, calendar: calendar)
-        var months: [NoteMonth] = []
-        for note in notes {
-            let first = LocalDay(year: note.day.year, month: note.day.month, day: 1)
-            let item = Note(day: note.day, text: note.text,
-                            title: "\(shortDays[note.day.weekday(calendar: calendar) - 1]) \(note.day.day)",
-                            relative: note.day == today ? "Today" : note.day == yesterday ? "Yesterday" : nil)
-            if let last = months.last, last.first == first {
-                months[months.count - 1] = NoteMonth(first: first, title: last.title, notes: last.notes + [item])
-            } else {
-                months.append(NoteMonth(first: first, title: names[first.month - 1] + " \(first.year)", notes: [item]))
-            }
-        }
-        return months
     }
 }
 
 extension View {
-    /// History's and Notes' actions (Add Entry, Go to Date, Add Note): secondary, used now and then, so one native
-    /// bordered size for all of them, the same in both tabs (the user, 5 Oct 2026, Current Work 26).
-    func pageAction() -> some View {
-        buttonStyle(.bordered)
-            .controlSize(.regular)
-            .font(.subheadline.weight(.semibold))
-    }
-
     /// A card on the habit page: 16-point padding, the app's card colour and corner (as Progress's cards). `vertical`
     /// sets the top and bottom apart from the sides (Year in Pixels: narrower sides, the same top and bottom).
     func pageCard(padding: CGFloat = WeekSpacing.card, vertical: CGFloat? = nil) -> some View {
@@ -151,56 +113,128 @@ struct PageRowStyle: ButtonStyle {
 
 // MARK: - History
 
-/// History (research History, revised): Add (named per kind) and Go to Date always in view, then one card per month, newest
-/// first, each folding (the user, 3 Oct 2026). This month and last month start open; older months start folded.
+/// History (Figma 1046:7304): Search notes, With Notes and Go to Date…, then one card per month, newest first, each
+/// folding (the user, 3 Oct 2026; this month and last month start open). A day's note shows under it, so the notes
+/// have no tab of their own; With Notes keeps only the days that have one. Add floats over the page (`HistoryAddButton`).
+/// Nothing yet: "Nothing Here Yet", and no search or filters, which would have nothing to work on.
 struct HabitHistoryTab: View {
     let habit: Habit
     let months: [HistoryMonth]
+    /// The same months with only the days that have a note (`HabitPageModel`), for With Notes.
+    let noteMonths: [HistoryMonth]
     let open: (LocalDay) -> Void
-    let addEntry: () -> Void
     let goToDate: () -> Void
+    let searchNotes: () -> Void
     @Environment(HabitStore.self) private var store
     /// Months folded or opened by hand while the page is open (a month's default is open for the newest two).
     @State private var toggled: Set<LocalDay> = []
+    @State private var withNotes = false
 
     var body: some View {
-        // Secondary actions, used now and then, so they're sized as such: native bordered buttons at their own width,
-        // ink text on a light ink tint, readable in light and dark (the user, 5 Oct 2026, Current Work 26: Add Entry's
-        // filled style put white text on the off-white ink of dark mode, and both were large and full-width).
-        HStack(spacing: WeekSpacing.tight) {
-            // Named for what this habit adds, never from its name (U21): Add log, Add a check, Mark a day done,
-            // Tick steps, Add slip. The same Add screen as everywhere (U22).
-            Button(action: addEntry) {
-                Label(RecordKind(habit, on: store.today(), store: store).addTitle, systemImage: "plus")
-            }
-            .accessibilityIdentifier("history-add-entry")
-            Button(action: goToDate) {
-                Label("Go to Date", systemImage: "calendar")
-            }
-            .accessibilityIdentifier("history-go-to-date")
-            Spacer(minLength: 0)
-        }
-        .pageAction()
-        .pageItem()
-        // What the squares mean, open until the person folds it once anywhere in the app (Current Work 57).
-        HeatKeySection()
-            .pageItem()
         if months.isEmpty {
-            Text("Nothing recorded yet. Days appear here once they're planned or logged.")
-                .font(.subheadline).foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .pageCard()
-                .pageItem()
-        }
-        ForEach(Array(months.enumerated()), id: \.element.id) { index, month in
-            let isOpen = (index < 2) != toggled.contains(month.first)
-            HistoryMonthCard(month: month, color: habit.color, isOpen: isOpen, open: open) {
-                withAnimation(.snappy(duration: 0.25)) {
-                    if toggled.contains(month.first) { toggled.remove(month.first) } else { toggled.insert(month.first) }
-                }
+            ContentUnavailableView {
+                Label("Nothing Here Yet", systemImage: "clock.arrow.circlepath")
+            } description: {
+                Text("Each day you log or write a note shows here, newest first. Add opens any day.")
             }
+            .frame(minHeight: 420)
+            .accessibilityIdentifier("history-empty")
+        } else {
+            let hasNotes = !noteMonths.isEmpty
+            if hasNotes {
+                NotesSearchField(action: searchNotes)
+                    .pageItem()
+            }
+            HStack(spacing: 8) {
+                // A filter is one button that toggles: Bordered off, Prominent on (Figma's section 07).
+                if hasNotes {
+                    Button { withAnimation(.snappy(duration: 0.25)) { withNotes.toggle() } } label: {
+                        Text("With Notes").foregroundStyle(withNotes ? Color.onInk : Color.primary)
+                    }
+                    .buttonStyle(FilterStyle(on: withNotes))
+                    .accessibilityAddTraits(withNotes ? .isSelected : [])
+                    .accessibilityIdentifier("history-with-notes")
+                }
+                Button(action: goToDate) {
+                    Label("Go to Date…", systemImage: "calendar")
+                }
+                .buttonStyle(.bordered)
+                .tint(Color.ink)
+                .foregroundStyle(Color.primary)
+                .accessibilityIdentifier("history-go-to-date")
+                Spacer(minLength: 0)
+            }
+            .controlSize(.small)
+            .buttonBorderShape(.capsule)
+            .font(.subheadline)
             .pageItem()
+            let shown = withNotes ? noteMonths : months
+            ForEach(Array(shown.enumerated()), id: \.element.id) { index, month in
+                let isOpen = (index < 2) != toggled.contains(month.first)
+                HistoryMonthCard(month: month, color: habit.color, isOpen: isOpen, open: open) {
+                    withAnimation(.snappy(duration: 0.25)) {
+                        if toggled.contains(month.first) { toggled.remove(month.first) } else { toggled.insert(month.first) }
+                    }
+                }
+                .pageItem()
+            }
         }
+    }
+
+    /// Bordered off, Prominent on, both in Ink (the app's filter, as Habits' With notes was drawn in Figma).
+    private struct FilterStyle: PrimitiveButtonStyle {
+        let on: Bool
+        func makeBody(configuration: Configuration) -> some View {
+            if on {
+                Button(role: configuration.role, action: configuration.trigger) { configuration.label }
+                    .buttonStyle(.borderedProminent).tint(Color.ink)
+            } else {
+                Button(role: configuration.role, action: configuration.trigger) { configuration.label }
+                    .buttonStyle(.bordered).tint(Color.ink)
+            }
+        }
+    }
+}
+
+/// History's Search notes (Figma's Search field): a glass capsule that opens the notes search, where iOS's own field
+/// takes over with the keyboard up (`NotesSearchPage`).
+struct NotesSearchField: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 9) {
+                Image(systemName: "magnifyingglass").foregroundStyle(.primary)
+                Text("Search notes").foregroundStyle(.secondary)
+                Spacer(minLength: 0)
+            }
+            .font(.body)
+            .padding(.horizontal, 13)
+            .frame(height: 44)
+            .contentShape(Capsule())
+        }
+        .buttonStyle(.plain)
+        .floatingGlass()
+        .accessibilityLabel("Search notes")
+        .accessibilityIdentifier("history-search-notes")
+    }
+}
+
+/// History's Add (Figma): Ink, floating at the bottom right over the page, as the app's main action there. It opens
+/// the same Add screen as everywhere (U22), on today, where the date can be changed to any day.
+struct HistoryAddButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            Label("Add", systemImage: "plus").foregroundStyle(Color.onInk)
+        }
+        .buttonStyle(.borderedProminent)
+        .buttonBorderShape(.capsule)
+        .controlSize(.large)
+        .tint(Color.ink)
+        .fontWeight(.semibold)
+        .accessibilityIdentifier("history-add-entry")
     }
 }
 
@@ -215,20 +249,22 @@ struct HistoryMonthCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             Button(action: toggle) {
-                HStack(alignment: .center, spacing: WeekSpacing.tight) {
-                    VStack(alignment: .leading, spacing: WeekSpacing.label) {
-                        Text(month.title).font(.headline).foregroundStyle(.primary)
+                HStack(alignment: .center, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text(month.title).font(.body).foregroundStyle(.primary)
                         if !month.summary.isEmpty {
                             Text(month.summary).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
                         }
                     }
-                    Spacer(minLength: WeekSpacing.tight)
-                    // An accordion's chevron: down while folded, up while open (Design Rules).
-                    Image(systemName: "chevron.down")
-                        .font(.footnote.weight(.semibold)).foregroundStyle(.secondary)
-                        .rotationEffect(.degrees(isOpen ? 180 : 0))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    // A disclosure's chevron, as iOS's own: right while folded, down while open (Figma's month header).
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                        .rotationEffect(.degrees(isOpen ? 90 : 0))
                 }
-                .padding(WeekSpacing.card)
+                .padding(.horizontal, WeekSpacing.card)
+                .padding(.vertical, 15)
+                .frame(minHeight: 72)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -237,11 +273,12 @@ struct HistoryMonthCard: View {
             .accessibilityHint(isOpen ? "Folds the month" : "Shows the month's days")
             .accessibilityIdentifier("history-month-\(month.first.key)")
             if isOpen {
-                Divider().padding(.leading, WeekSpacing.card)
+                Divider().padding(.horizontal, WeekSpacing.card)
                 ForEach(month.days) { day in
                     HistoryDayRow(day: day, color: color) { open(day.day) }
                     if day.id != month.days.last?.id {
-                        Divider().padding(.leading, WeekSpacing.card + HeatSize.smallest + 12)
+                        // From the row's text to 16 before the edge.
+                        Divider().padding(.leading, WeekSpacing.card + 36 + 16).padding(.trailing, WeekSpacing.card)
                     }
                 }
             }
@@ -252,7 +289,8 @@ struct HistoryMonthCard: View {
     }
 }
 
-/// One day: its square, the date (with Today or Yesterday), what was recorded, a note mark, and a chevron.
+/// One day (Figma's Day row): its square, the date, what was recorded (with Today or Yesterday first), the day's note
+/// under it in two lines at most, and a chevron. The row opens the day.
 struct HistoryDayRow: View {
     let day: HistoryDay
     let color: HabitColor
@@ -260,28 +298,31 @@ struct HistoryDayRow: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
+            HStack(spacing: 16) {
                 HeatSquare(cell: day.heat, color: color, size: HeatSize.smallest, isToday: day.relative == "Today")
                     .equatable()
-                VStack(alignment: .leading, spacing: WeekSpacing.label) {
-                    HStack(spacing: 6) {
-                        Text(day.title).font(.body.weight(.medium)).foregroundStyle(.primary)
-                        if let relative = day.relative {
-                            Text(relative).font(.subheadline).foregroundStyle(.secondary)
-                        }
-                    }
-                    Text(day.detail).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
+                    .frame(width: 36, height: 36)
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(day.title).font(.body).foregroundStyle(.primary)
+                    Text(day.line).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
                         .lineLimit(2)
+                    if let note = day.note {
+                        HStack(alignment: .firstTextBaseline, spacing: 8) {
+                            Image(systemName: "note.text").foregroundStyle(.secondary)
+                            Text(note).foregroundStyle(.primary).lineLimit(2)
+                        }
+                        .font(.subheadline)
+                        .padding(.top, 4)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel("Note: " + note)
+                    }
                 }
-                Spacer(minLength: WeekSpacing.tight)
-                if day.hasNote {
-                    Image(systemName: "note.text").font(.subheadline).foregroundStyle(.secondary)
-                        .accessibilityLabel("Has a note")
-                }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
             }
             .padding(.horizontal, WeekSpacing.card)
-            .padding(.vertical, 10)
+            .padding(.vertical, 15)
+            .frame(minHeight: 72)
             .contentShape(Rectangle())
         }
         .buttonStyle(PageRowStyle())

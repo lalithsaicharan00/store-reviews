@@ -8,8 +8,9 @@ enum PerfAction: Equatable {
     case previousMonth, nextMonth
     case previousHabit, nextHabit
     case openDay(LocalDay), closeDay, openLog, closeLog, openEntry, saveEntry, logAgain, hideLogKeyboard
-    /// Day details' All logs page, the Log view's Edit, and the day's note (the 7 Oct 2026 redesign).
-    case openAllLogs, editEntry, openNote
+    /// Day details' All logs page, the Log view's Edit, and the day's note (the 7 Oct 2026 redesign); the habit page's
+    /// Notes search (19 Nov 2026).
+    case openAllLogs, editEntry, openNote, openNotesSearch
     /// A page from the ≡ menu; the menu itself; Today's group filter; Progress's range; the habit page's Edit.
     case openPlace(MenuPlace), toggleMenu, nextRange, openEdit
     /// Progress's "What the squares mean": fold or open it (`HeatKeySection`, 3 Oct 2026).
@@ -353,8 +354,6 @@ enum PerfDriver {
             await measure("Progress: key fold and open") {
                 await repeatFor(window) { send(.toggleHeatKey); await pause(0.6) }
             }
-            // Folding is remembered app-wide now (Current Work 57): the runs after start from a key never folded.
-            HeatKeyVisit.forgetAll()
         case "progress-year":
             // Year (2 Oct 2026): a heat map per habit, a year of squares each. Opened on Year (set before opening, so
             // the scenario never depends on the range a run before left), then its cards scrolled; Week afterwards.
@@ -420,17 +419,17 @@ enum PerfDriver {
             await openTwice("All Habits") { send(.openAllHabits) }
             await measure("All Habits: scrolling") { await scroll() }
         case "habit-page":
-            // The habit page (3 Oct 2026): History opens first, then Notes and Progress, each switched to and scrolled.
+            // The habit page (Figma's Habit details, 19 Nov 2026): Progress opens first, then History (notes in it), each
+            // switched to and scrolled.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
-            await measure("Habit page: History scrolling") { await scroll() }
-            await open("Habit page: Notes") { send(.habitTab(1)) }
-            await open("Habit page: Progress") { send(.habitTab(2)) }
             await measure("Habit page: Progress scrolling") { await scroll() }
+            await open("Habit page: History") { send(.habitTab(1)) }
+            await measure("Habit page: History scrolling") { await scroll() }
             await measure("Habit page: switching tabs") {
                 await repeatFor(window) {
                     send(.habitTab(0)); await pause(0.5)
-                    send(.habitTab(2)); await pause(0.5)
+                    send(.habitTab(1)); await pause(0.5)
                 }
             }
         case "habit-milestones", "habit-milestones-blank":
@@ -439,7 +438,7 @@ enum PerfDriver {
             // scrolled sideways, then the All milestones page opened and scrolled.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page") { send(.openHabit("Brush teeth")) }
-            await open("Habit page: Progress (milestones)") { send(.habitTab(2)) }
+            await open("Habit page: Progress (milestones)") { send(.habitTab(0)) }
             await measure("Habit page: Progress scrolling (milestones)") { await scroll() }
             send(.showMilestones)
             await pause(1)
@@ -456,16 +455,16 @@ enum PerfDriver {
             // A weekly total (15 km a week): its Progress has the week's total against its goal.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page (weekly total)") { send(.openHabit("Run")) }
-            await measure("Habit page (weekly total): History scrolling") { await scroll() }
-            await open("Habit page (weekly total): Progress") { send(.habitTab(2)) }
             await measure("Habit page (weekly total): Progress scrolling") { await scroll() }
+            await open("Habit page (weekly total): History") { send(.habitTab(1)) }
+            await measure("Habit page (weekly total): History scrolling") { await scroll() }
         case "habit-page-quit":
             // A quit habit: its Progress has the live clock and the time since the last slip.
             await open("All Habits") { send(.openAllHabits) }
             await open("Habit page (quit)") { send(.openHabit("Smoking")) }
-            await measure("Habit page (quit): History scrolling") { await scroll() }
-            await open("Habit page (quit): Progress") { send(.habitTab(2)) }
             await measure("Habit page (quit): Progress scrolling") { await scroll() }
+            await open("Habit page (quit): History") { send(.habitTab(1)) }
+            await measure("Habit page (quit): History scrolling") { await scroll() }
         case "calendar":
             await openTwice("Calendar") { send(.openCalendar) }
             await measure("Calendar: month ‹ ›") {
@@ -582,6 +581,34 @@ enum PerfDriver {
             send(.closeDay)
             await pause(1.0)
             store.setNote("", of: water, on: today)
+        case "notes-search":
+            // Notes search (Figma 1053:9079, 19 Nov 2026; T4): forty days of Water's notes, a word typed and taken back
+            // (every result redrawn per letter), then the results scrolled.
+            guard let water = store.habits.first(where: { $0.name == "Water" }) else { return MainThreadMeter.mark("# NOTE no Water") }
+            let today = store.today()
+            let days = (1...40).map { today.adding(days: -$0) }
+            for (i, day) in days.enumerated() {
+                store.setNote(i.isMultiple(of: 3) ? "Refilled the glass twice after the walk." : "Kept a glass by the desk all day.",
+                              of: water, on: day)
+            }
+            await store.flush()
+            await open("All Habits") { send(.openAllHabits) }
+            await open("Habit page") { send(.openHabit("Water")) }
+            await open("Habit page: History") { send(.habitTab(1)) }
+            await open("Notes search") { send(.openNotesSearch) }
+            let word = "glass"
+            await measure("Notes search: typing") {
+                await repeatFor(window) {
+                    for n in 1...word.count { type(String(word.prefix(n))); await pause(0.12) }
+                    for n in stride(from: word.count - 1, through: 0, by: -1) { type(String(word.prefix(n))); await pause(0.08) }
+                }
+            }
+            type(word)
+            await pause(0.5)
+            await measure("Notes search: results scrolling") { await scroll() }
+            send(.close)
+            await pause(1.2)
+            for day in days { store.setNote("", of: water, on: day) }
         case "new-habit":
             await openTwice("New Habit") { send(.openNewHabit) }
             send(.close)

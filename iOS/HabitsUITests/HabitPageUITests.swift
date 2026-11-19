@@ -1,8 +1,8 @@
 import XCTest
 
-/// The habit page (3 Oct 2026: History · Notes · Progress; checklist "Habit Details Page — Build"): pictures of every
-/// habit type's three tabs, light and dark, and the flows the research asks for: add an entry, go to a date, fold a
-/// month, write, find and read a note, and pick a day in Year in Pixels.
+/// The habit page (Figma's Habit details, 1020:4052; 19 Nov 2026: Progress · History, notes in History): pictures of
+/// every habit type's two tabs, light and dark, and the flows: add a log, go to a date, fold a month, write a note from
+/// a day, find it with Search notes, keep only days with a note, and pick a day in Year in Pixels.
 final class HabitPageUITests: XCTestCase {
     private var app: XCUIApplication!
 
@@ -99,17 +99,16 @@ final class HabitPageUITests: XCTestCase {
         sleep(1)
     }
 
-    /// Every type's page: History (top and a fold), Notes, Progress top to bottom.
+    /// Every type's page: History (top and a fold), then Progress top to bottom.
     private func pictures(_ names: [String], prefix: String, progressShots: Int = 5) {
         for name in names {
             open(name)
             let key = name.lowercased().replacingOccurrences(of: " ", with: "-")
+            tab("History")
             shot("\(prefix)-\(key)-1-history")
             app.swipeUp(velocity: .slow); sleep(1)
             shot("\(prefix)-\(key)-2-history-scrolled")
             topOfPage()
-            tab("Notes")
-            shot("\(prefix)-\(key)-3-notes")
             tab("Progress")
             shot("\(prefix)-\(key)-4-progress")
             for i in 1...progressShots {
@@ -137,20 +136,20 @@ final class HabitPageUITests: XCTestCase {
         pictures(["Swim", "Smoking"], prefix: "hp-dark", progressShots: 4)
     }
 
-    /// History's Add (named for the kind: "Add Log" for Water, an amount; U21), Go to Date, and a month folding and
-    /// opening.
+    /// History's Add (Figma's floating Add, which opens the kind's own Add: Add Log for Water), Go to Date, and a month
+    /// folding and opening.
     func testHistoryFlows() {
         launch()
         open("Water")
-        // Secondary actions at their own size, never full-width and large (Current Work 26, 5 Oct 2026).
+        tab("History")
+        // Add floats at the bottom right; Go to Date is a small capsule under the search (Figma's History).
         let add = app.buttons["history-add-entry"], go = app.buttons["history-go-to-date"]
         let width = app.windows.firstMatch.frame.width
         XCTAssertTrue(add.waitForExistence(timeout: 3) && go.exists)
-        XCTAssertEqual(add.label, "Add Log", "Named for what it adds, never Add Entry")
-        XCTAssertLessThan(add.frame.width, width * 0.45, "Add log is its own width: \(add.frame)")
+        XCTAssertEqual(add.label, "Add", "Figma's Add, never Add Entry")
+        XCTAssertGreaterThan(add.frame.minX, width * 0.5, "Add floats at the bottom right: \(add.frame)")
         XCTAssertLessThan(go.frame.width, width * 0.45, "Go to Date is its own width: \(go.frame)")
-        XCTAssertGreaterThanOrEqual(add.frame.height, 28, "Still a comfortable button: \(add.frame)")
-        XCTAssertLessThan(add.frame.height, 50, "Not a large button: \(add.frame)")
+        XCTAssertLessThan(go.frame.height, add.frame.height, "Go to Date is small, Add large: \(go.frame) \(add.frame)")
         shot("hp-flow-0-history-buttons")
         app.buttons["history-add-entry"].tap()
         XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3), "Add log, the same Add as everywhere")
@@ -186,110 +185,118 @@ final class HabitPageUITests: XCTestCase {
         months.firstMatch.tap(); sleep(1)
     }
 
-    /// Notes: add one, find it by searching, read it, and see it in the list.
+    /// Writes a note on today from History: today's row opens Day details, whose Add a Note saves it there.
+    private func addNoteToday(_ text: String) {
+        tab("History")
+        let today = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
+        XCTAssertTrue(today.waitForExistence(timeout: 5), "Today's row")
+        today.tap()
+        let add = app.buttons["day-add-note"]
+        XCTAssertTrue(add.waitForExistence(timeout: 5), "Day details' Add a Note")
+        add.tap()
+        let field = app.textViews["note-field"]
+        XCTAssertTrue(field.waitForExistence(timeout: 3))
+        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "The keyboard comes up by itself")
+        field.typeText(text)
+        app.buttons["note-save"].tap()
+        XCTAssertTrue(app.buttons["day-edit-note"].waitForExistence(timeout: 5), "The note shows in Day details")
+    }
+
+    /// Notes live in History (Figma's History · with notes and Notes search, 1053:9079): a note written on a day shows
+    /// under its row; Search notes finds it, the word in bold, and a result opens its day.
     func testNotesFlows() {
         launch()
         open("Read")
-        let historyButton = app.buttons["history-add-entry"]
-        XCTAssertTrue(historyButton.waitForExistence(timeout: 3))
-        let historyHeight = historyButton.frame.height
-        tab("Notes")
-        app.buttons["notes-add"].tap()
-        let field = app.descendants(matching: .any)["note-field"].firstMatch
-        XCTAssertTrue(field.waitForExistence(timeout: 3))
-        XCTAssertTrue(app.keyboards.firstMatch.waitForExistence(timeout: 3), "The keyboard comes up by itself")
-        field.typeText("Read on the train; the long chapter went quickly.")
-        shot("hp-notes-1-editor")
-        app.buttons["note-save"].tap()
-        sleep(1)
-        let search = app.textFields["notes-search"]
-        XCTAssertTrue(search.waitForExistence(timeout: 3))
-        // Search across the width, Add Note under it as History's buttons are (Current Work 26, 5 Oct 2026).
-        let add = app.buttons["notes-add"]
+        tab("History")
+        XCTAssertFalse(app.buttons["history-search-notes"].exists, "No search before there's a note")
+        addNoteToday("Read on the train; the long chapter went quickly.")
+        app.buttons["day-close"].tap()
+        let row = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND label CONTAINS 'train'")).firstMatch
+        XCTAssertTrue(row.waitForExistence(timeout: 5), "The note shows under its day")
+        let search = app.buttons["history-search-notes"]
+        XCTAssertTrue(search.waitForExistence(timeout: 3), "Search notes, once there's a note")
         XCTAssertGreaterThan(search.frame.width, app.windows.firstMatch.frame.width * 0.7, "Search has the width: \(search.frame)")
-        XCTAssertGreaterThan(add.frame.minY, search.frame.maxY, "Add Note is under the search field")
-        XCTAssertEqual(add.frame.height, historyHeight, accuracy: 1, "The same button as History's")
-        shot("hp-notes-0-search-and-add")
-        search.tap(); search.typeText("train")
-        sleep(1)
-        shot("hp-notes-2-search")
-        let note = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'note-'")).firstMatch
-        XCTAssertTrue(note.waitForExistence(timeout: 3), "The note is found")
-        note.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["note-text"].waitForExistence(timeout: 3), "The note reads in full")
-        shot("hp-notes-3-reader")
-        back()
+        shot("hp-notes-0-history-with-a-note")
+        search.tap()
+        let field = app.searchFields.firstMatch
+        XCTAssertTrue(field.waitForExistence(timeout: 3), "The search page, its field ready")
+        XCTAssertTrue(app.staticTexts["Search Read’s notes by any word."].waitForExistence(timeout: 3), "Before a word")
+        field.typeText("train")
+        let result = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'notes-result-'")).firstMatch
+        XCTAssertTrue(result.waitForExistence(timeout: 3), "The note is found")
+        XCTAssertTrue(app.staticTexts["1 note"].exists, "Counted")
+        shot("hp-notes-1-results")
+        field.typeText("zzz")
+        XCTAssertTrue(app.staticTexts["No Notes with “trainzzz”"].waitForExistence(timeout: 3), "Nothing found")
+        shot("hp-notes-2-nothing-found")
+        for _ in 0..<3 { field.typeText(XCUIKeyboardKey.delete.rawValue) }
+        XCTAssertTrue(result.waitForExistence(timeout: 3))
+        result.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "The result opens its day")
+        XCTAssertTrue(app.buttons["day-edit-note"].exists, "With the note")
+        app.buttons["day-close"].tap()
+        XCTAssertTrue(app.segmentedControls["habit-tabs"].waitForExistence(timeout: 3), "Back on the habit page")
     }
 
-    /// "What the squares mean" is one key for the whole app (Current Work 57, 6 Oct 2026): open on every habit's page
-    /// until the person folds it once; then folded on every habit's page, and a tap opens it.
-    func testSquaresKeyFoldedOnceIsFoldedEverywhere() {
+    /// "What the squares mean" starts closed on every habit's page and is never remembered (the user, 19 Nov 2026):
+    /// opened on one page it stays open while the person stays there, and is closed on another habit's page and on the
+    /// next visit.
+    func testSquaresKeyStartsClosedOnEveryPage() {
         launch()
         let key = app.descendants(matching: .any)["progress-key"]
         let toggle = app.buttons["heat-key-toggle"]
         open("Read")
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Never folded: open")
-        tab("Progress")
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "The Progress tab: still open")
+        app.revealAndTap(toggle)
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
         tab("History")
-        back()
-        open("Read")
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Seen but never folded: still open on the next visit")
-        toggle.tap()
-        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded")
         tab("Progress")
-        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "The Progress tab: folded too")
-        tab("History")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Still open on the same page")
         back()
         open("Water")
-        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "Another habit: folded, the same key")
-        shot("hp-key-2-folded")
-        toggle.tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
+        XCTAssertTrue(app.reveal(toggle))
+        XCTAssertFalse(key.exists, "Another habit: closed")
+        shot("hp-key-2-closed")
         back()
         open("Read")
-        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "Opened by hand once, folded again on the next visit")
+        XCTAssertTrue(app.reveal(toggle))
+        XCTAssertFalse(key.exists, "The next visit: closed again")
     }
 
-    /// Notes come in month cards that fold like History's, a row per day's note (Current Work 46, 5 Oct 2026).
-    func testNotesFoldByMonthLikeHistory() {
+    /// With Notes keeps only the days with a note, in History's month cards (Figma's History · with notes).
+    func testWithNotesKeepsDaysWithANote() {
         launch()
         open("Floss")
-        tab("Notes")
-        app.buttons["notes-add"].tap()
-        let field = app.descendants(matching: .any)["note-field"].firstMatch
-        XCTAssertTrue(field.waitForExistence(timeout: 3))
-        field.typeText("Flossed at the bus stop.")
-        app.buttons["note-save"].tap()
+        addNoteToday("Flossed at the bus stop.")
+        app.buttons["day-close"].tap()
+        let days = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'"))
+        XCTAssertTrue(days.firstMatch.waitForExistence(timeout: 5))
+        XCTAssertGreaterThan(days.count, 1, "Every day, before the filter")
+        let filter = app.buttons["history-with-notes"]
+        XCTAssertTrue(filter.waitForExistence(timeout: 3), "With Notes, once there's a note")
+        filter.tap()
         sleep(1)
-        let month = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'notes-month-'")).firstMatch
-        XCTAssertTrue(month.waitForExistence(timeout: 3), "A month card")
-        XCTAssertTrue(month.label.contains("note"), "The month says how many notes: \(month.label)")
-        let row = app.buttons.matching(NSPredicate(format: "label CONTAINS 'bus stop'")).firstMatch
-        XCTAssertTrue(row.waitForExistence(timeout: 3), "Today's note is a row in it")
-        XCTAssertTrue(row.label.contains("Today"), "Dated as History dates its days: \(row.label)")
-        shot("hp-notes-4-month-open")
-        month.tap()
-        XCTAssertTrue(row.waitForNonExistence(timeout: 3), "The month folds")
-        shot("hp-notes-5-month-folded")
-        month.tap()
-        XCTAssertTrue(row.waitForExistence(timeout: 3), "And opens again")
-        row.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["note-text"].waitForExistence(timeout: 3), "The note reads in full")
+        XCTAssertEqual(days.count, 1, "Only the day with a note")
+        XCTAssertTrue(days.firstMatch.label.contains("bus stop"), "That day: \(days.firstMatch.label)")
+        let month = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history-month-'")).firstMatch
+        XCTAssertTrue(month.label.contains("1 day with a note"), "The month says how many: \(month.label)")
+        shot("hp-notes-3-with-notes")
+        filter.tap()
+        sleep(1)
+        XCTAssertGreaterThan(days.count, 1, "Every day again")
     }
 
-    /// A note opens as a view, Note: the habit and its day on one line, which opens that day's Day details (the reader's
-    /// View Day, kept); Edit opens Edit Note with Save; Delete Note asks first, naming the day (U19, 7 Oct 2026).
+    /// A note opens as a view, Note: Edit opens Edit Note with Save; Delete Note asks first, naming the day (U19,
+    /// 7 Oct 2026). Written from a day in History, its day is that day and can't change.
     func testNoteViewEditAndDelete() {
         launch()
         open("Floss")
-        tab("Notes")
-        app.buttons["notes-add"].tap()
+        tab("History")
+        let today = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
+        XCTAssertTrue(today.waitForExistence(timeout: 5))
+        today.tap()
+        app.buttons["day-add-note"].tap()
         XCTAssertTrue(app.navigationBars["Add Note"].waitForExistence(timeout: 3))
-        XCTAssertTrue(app.descendants(matching: .any)["note-date"].firstMatch.exists, "From the Notes tab, the day can be chosen")
+        XCTAssertFalse(app.descendants(matching: .any)["note-date"].firstMatch.exists, "From a day, the day is fixed")
         XCTAssertFalse(app.buttons["note-save"].isEnabled, "Save is off until something is written")
         let field = app.textViews["note-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
@@ -298,18 +305,12 @@ final class HabitPageUITests: XCTestCase {
         field.typeText("Flossed at the bus stop.")
         shot("hp-note-add")
         app.buttons["note-save"].tap()
-        let row = app.buttons.matching(NSPredicate(format: "label CONTAINS 'bus stop'")).firstMatch
+        let row = app.buttons["day-edit-note"]
         XCTAssertTrue(row.waitForExistence(timeout: 3))
         row.tap()
         XCTAssertTrue(app.navigationBars["Note"].waitForExistence(timeout: 3), "A note opens as a view")
-        let day = app.buttons["note-view-day"]
-        XCTAssertTrue(day.exists, "The date line links to the day")
         XCTAssertEqual(app.buttons["note-delete"].label, "Delete Note")
         shot("hp-note-view")
-        day.tap()
-        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "That day's Day details")
-        app.buttons["day-close"].tap()
-        XCTAssertTrue(app.navigationBars["Note"].waitForExistence(timeout: 3))
         app.buttons["note-edit"].tap()
         XCTAssertTrue(app.navigationBars["Edit Note"].waitForExistence(timeout: 3))
         let edit = app.textViews["note-field"]
@@ -327,7 +328,7 @@ final class HabitPageUITests: XCTestCase {
         XCTAssertTrue(alert.staticTexts.matching(NSPredicate(format: "label BEGINSWITH 'Only the note for'")).firstMatch.exists)
         shot("hp-note-delete-asks")
         alert.buttons["Delete"].tap()
-        XCTAssertTrue(row.waitForNonExistence(timeout: 5), "The note is gone")
+        XCTAssertTrue(app.buttons["day-add-note"].waitForExistence(timeout: 5), "The note is gone: Add a Note again")
     }
 
     /// Year in Pixels: a tap shows the day under the grid, and Open Day opens it.

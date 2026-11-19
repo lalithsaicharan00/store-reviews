@@ -14,10 +14,13 @@ struct HistoryDay: Hashable, Identifiable {
     let title: String
     /// "Today", "Yesterday", or nil.
     let relative: String?
-    /// "500 of 2,000 ml · 2 entries", "Skipped", "Nothing logged".
+    /// "500 of 2,000 ml · 2 logs", "Skipped", "Nothing logged".
     let detail: String
-    let hasNote: Bool
+    /// The day's note, shown under the row (Figma's History · with notes).
+    let note: String?
     var id: LocalDay { day }
+    /// The row's line: "Today · 4/8 glasses · 4 logs" (Figma's Day row).
+    var line: String { relative.map { $0 + " · " + detail } ?? detail }
 }
 
 /// One month's card in History, newest first.
@@ -93,7 +96,8 @@ struct PeriodComparison: Hashable {
     /// The two values on one scale, for the bars; nil for counts of days ("4 of 5 days"), which bars would mislead.
     let thisValue: Double?
     let previousValue: Double?
-    /// "No earlier week to compare" when there's nothing before; then the rows are hidden.
+    /// "Started on 10 Oct, partway through October" when the period before is only partly the habit's; then the rows
+    /// are hidden. With nothing before at all there's no comparison.
     let note: String?
 }
 
@@ -187,7 +191,8 @@ extension HabitStore {
             let earliest = max(span.lowerBound, start)
             while day >= earliest {
                 let entries = self.entries(of: habit.id, on: day)
-                let hasNote = note(of: habit, on: day) != nil
+                let note = note(of: habit, on: day)
+                let hasNote = note != nil
                 let skipped = isSkipped(habit, on: day)
                 let due = habit.kind != .quit && rule(habit, on: day).frequency.isDayBased && (sharedDays?.isDue(day) ?? isDue(habit, on: day))
                 if due || !entries.isEmpty || hasNote || skipped {
@@ -198,7 +203,7 @@ extension HabitStore {
                         title: "\(shortDays[day.weekday(calendar: calendar) - 1]) \(day.day)",
                         relative: day == today ? "Today" : day == yesterday ? "Yesterday" : nil,
                         detail: historyDetail(habit, on: day, entries: entries, skipped: skipped, today: today),
-                        hasNote: hasNote))
+                        note: note))
                 }
                 day = day.adding(days: -1, calendar: calendar)
             }
@@ -226,8 +231,8 @@ extension HabitStore {
         let kind = rule(habit, on: day).kind
         // The number of entries matters where one day can hold several (amounts, time, counts).
         switch kind {
-        case .amount, .duration: return counted == 1 ? result + " · 1 entry" : result + " · \(counted) entries"
-        case .check where dayGoal(of: rule(habit, on: day)) > 1 && counted > 1: return result + " · \(counted) entries"
+        case .amount, .duration: return counted == 1 ? result + " · 1 log" : result + " · \(counted) logs"
+        case .check where dayGoal(of: rule(habit, on: day)) > 1 && counted > 1: return result + " · \(counted) logs"
         default: return result
         }
     }
@@ -301,12 +306,22 @@ extension HabitStore {
                 thisPeriod = name + HabitCopy.number(periodCount(now, in: range)) + " of " + HabitCopy.number(goal(of: now))
             }
         }
+        // Where the run going on now began ("Since 30 Sep"), and a best run still going ends "today" (Figma's Overall
+        // record, 1020:1451); a period goal's running week says how it's going instead.
+        let currentRun = runs.last.flatMap { $0.isCurrent && $0.length > 0 ? $0 : nil }
+        let runSince = currentRun.map { "Since " + daySpan($0.start...$0.start, today: today) }
+        let currentDetail = thisPeriod ?? runSince
+        let bestDetail = bestRun.map { run in
+            run.isCurrent && run.start < run.end ? daySpan(run.start...run.start, today: today) + " – today" : daySpan(run.start...run.end, today: today)
+        }
         let currentFact = RecordFact(title: "Current streak", number: HabitCopy.number(Double(current)), unit: unit.word(current),
-                                     detail: thisPeriod,
-                                     spoken: "Current streak, \(current) \(unit.word(current))" + (thisPeriod.map { ". " + $0 } ?? ""))
+                                     detail: currentDetail,
+                                     spoken: "Current streak, \(current) \(unit.word(current))" + (currentDetail.map { ". " + $0 } ?? ""))
         let bestFact = RecordFact(title: "Best streak", number: HabitCopy.number(Double(best)), unit: unit.word(best),
-                                  detail: bestRun.map { daySpan($0.start...$0.end, today: today) },
-                                  spoken: "Best streak, \(best) \(unit.word(best))" + (bestRun.map { ", " + spokenSpan($0.start...$0.end, today: today) } ?? ""))
+                                  detail: bestDetail,
+                                  spoken: "Best streak, \(best) \(unit.word(best))" + (bestRun.map { run in
+                                      ", " + (run.isCurrent ? "since " + spokenDate(run.start, today: today) : spokenSpan(run.start...run.end, today: today))
+                                  } ?? ""))
 
         func periods(_ n: Int) -> String {
             switch kind {
@@ -493,13 +508,13 @@ extension HabitStore {
         let completed = running ? span.lowerBound.days(to: today, calendar: calendar) : span.lowerBound.days(to: span.upperBound, calendar: calendar) + 1
         let thisLabel = running ? "This \(noun)" : (noun == "week" ? "That week" : monthName(span.lowerBound))
         let previousLabel = noun == "week" ? (running ? "Last week" : "The week before") : monthName(previousFull.lowerBound)
+        // Nothing at all before it: no comparison (Figma's first month, 1142:261882, ends at its chart).
+        if previousFull.upperBound < start { return nil }
         if previousFull.lowerBound < start {
             return PeriodComparison(title: "Compared with the \(noun) before", thisLabel: thisLabel, previousLabel: previousLabel,
                                     thisText: "", previousText: "", thisValue: nil, previousValue: nil,
-                                    note: start <= previousFull.upperBound
-                                        // Began partway through it: say so, rather than "no earlier month" with September there.
-                                        ? "Started on \(start.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated))), partway through \(noun == "week" ? previousLabel.lowercased() : previousLabel)"
-                                        : "No earlier \(noun) to compare")
+                                    // Began partway through it: say so, rather than leaving September out.
+                                    note: "Started on \(start.date(calendar: calendar).formatted(.dateTime.day().month(.abbreviated))), partway through \(noun == "week" ? previousLabel.lowercased() : previousLabel)")
         }
         guard completed > 0 else {
             return PeriodComparison(title: "Compared with last \(noun)", thisLabel: thisLabel, previousLabel: previousLabel,

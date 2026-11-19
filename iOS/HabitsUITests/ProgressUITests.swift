@@ -121,14 +121,13 @@ final class ProgressUITests: XCTestCase {
         row.tap()
         XCTAssertTrue(app.navigationBars["Read"].waitForExistence(timeout: 5), "The habit page opens")
         let tabs = app.segmentedControls["habit-tabs"]
-        XCTAssertTrue(tabs.waitForExistence(timeout: 5), "History · Notes · Progress")
+        XCTAssertTrue(tabs.waitForExistence(timeout: 5), "Progress · History")
         XCTAssertTrue(tabs.buttons["Progress"].isSelected, "Opened from Progress, on Progress")
         XCTAssertTrue(app.descendants(matching: .any)["habit-progress-record"].waitForExistence(timeout: 5), "Overall record")
         shot("p04-habit-progress")
         tabs.buttons["History"].tap()
         XCTAssertTrue(app.buttons["history-add-entry"].waitForExistence(timeout: 5), "History")
-        tabs.buttons["Notes"].tap()
-        XCTAssertTrue(app.buttons["notes-add"].waitForExistence(timeout: 5), "Notes")
+        XCTAssertFalse(tabs.buttons["Notes"].exists, "Notes live in History, no tab of their own")
         back()
         XCTAssertTrue(app.navigationBars["Progress"].waitForExistence(timeout: 3), "Back on Progress")
     }

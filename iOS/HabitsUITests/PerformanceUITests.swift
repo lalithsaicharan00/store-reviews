@@ -201,7 +201,7 @@ final class PerformanceUITests: XCTestCase {
         XCTAssertTrue(control.waitForExistence(timeout: 10))
         ready()
         keepGoing {
-            for title in ["History", "Notes", "Progress"] { control.buttons[title].tap() }
+            for title in ["History", "Progress"] { control.buttons[title].tap() }
             scrollUpAndDown()
         }
     }

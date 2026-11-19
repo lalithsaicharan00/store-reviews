@@ -111,7 +111,6 @@ final class AppModel {
             UserDefaults.standard.removeObject(forKey: Preferences.doneOrder)
             UserDefaults.standard.removeObject(forKey: Preferences.timerScreen)
             UserDefaults.standard.removeObject(forKey: Preferences.timerLiveActivity)
-            HeatKeyVisit.forgetAll()
         }
         if arguments.contains("-uitest") {
             opened = Persistence.inMemory()

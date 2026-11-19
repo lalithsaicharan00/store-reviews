@@ -17,8 +17,26 @@ struct HabitProgressTab: View {
     @AppStorage(ProgressOptions.showPercentages) private var showPercentages = true
 
     var body: some View {
-        HeatKeySection()
+        if model.isNew {
+            // Figma's New habit (1031:2743): nothing to count yet, so no record, milestones, month or year; this week
+            // shows where the first logs will go.
+            ContentUnavailableView {
+                Label("No Progress Yet", systemImage: "chart.bar.xaxis")
+            } description: {
+                Text("Log \(habit.name) on Today. Your record, streaks and milestones build up here.")
+            }
             .pageItem()
+            .accessibilityIdentifier("habit-progress-empty")
+            HabitPeriodCard(habit: habit, kind: .week, anchor: nil)
+                .pageItem()
+            HabitKeyCard(color: habit.color)
+                .pageItem()
+        } else {
+            records
+        }
+    }
+
+    @ViewBuilder private var records: some View {
         if habit.kind == .quit {
             VStack(alignment: .leading, spacing: WeekSpacing.card) {
                 // "Tracking since": the header's "Quitting since" is the run going on now, which can be later.
@@ -43,12 +61,94 @@ struct HabitProgressTab: View {
                 .pageItem()
                 .id(HabitPageView.milestonesCard)
         }
+        HabitKeyCard(color: habit.color)
+            .pageItem()
         HabitPeriodCard(habit: habit, kind: .week, anchor: start?.range == .week ? start?.anchor : nil)
             .pageItem()
         HabitPeriodCard(habit: habit, kind: .month, anchor: start?.range == .month ? start?.anchor : nil)
             .pageItem()
         HabitYearCard(habit: habit, year: start?.range == .year ? start?.anchor.year : nil, openDay: openDay)
             .pageItem()
+    }
+}
+
+// MARK: - What the squares mean
+
+/// Figma's "What the squares mean" on the habit page (1142:253823 folded, 1142:255177 open): a card that's one row,
+/// ? and the words with a chevron, closed whenever the page opens (`HeatKeyVisit`). Open, every kind of square in the
+/// habit's own colour, one to a line, then that nothing counts against anyone. The row folds it again.
+struct HabitKeyCard: View {
+    let color: HabitColor
+    @Environment(HeatKeyVisit.self) private var pageVisit: HeatKeyVisit?
+    @State private var ownVisit = HeatKeyVisit()
+
+    private static let squares: [(cell: HeatCell, title: String, isToday: Bool)] = [
+        (.level(4), "Done: the goal was reached", false),
+        (.level(5), "More than the goal", false),
+        (.level(2), "Partially completed", false),
+        (.level(0), "Not done", false),
+        (.off(.notScheduled), "No goal that day", false),
+        (.off(.skipped), "Skipped", false),
+        (.off(.paused), "Paused", false),
+        (.blank, "Before the habit started", false),
+        (.upcoming, "Still to come", false),
+        (.upcoming, "Today", true),
+    ]
+
+    var body: some View {
+        let visit = pageVisit ?? ownVisit
+        let open = visit.isOpen
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.snappy(duration: 0.25)) { visit.toggle() }
+            } label: {
+                HStack(spacing: 16) {
+                    Image(systemName: "questionmark.circle")
+                        .font(.body)
+                        .foregroundStyle(.secondary)
+                        .frame(width: 24)
+                    Text("What the squares mean").font(.body).foregroundStyle(.primary)
+                    Spacer(minLength: 8)
+                    Image(systemName: "chevron.right")
+                        .font(.footnote.weight(.semibold))
+                        .foregroundStyle(.tertiary)
+                        .rotationEffect(.degrees(open ? 90 : 0))
+                }
+                .padding(.horizontal, 16)
+                .frame(minHeight: 52)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityValue(open ? "Shown" : "Hidden")
+            .accessibilityHint(open ? "Hides the key" : "Shows the key")
+            .accessibilityIdentifier("heat-key-toggle")
+            if open {
+                Divider().padding(.leading, 56).padding(.trailing, 16)
+                VStack(alignment: .leading, spacing: 12) {
+                    ForEach(Self.squares.indices, id: \.self) { i in
+                        let square = Self.squares[i]
+                        HStack(spacing: 16) {
+                            HeatSquare(cell: square.cell, color: color, size: HeatSize.week, isToday: square.isToday)
+                            Text(square.title).font(.subheadline)
+                        }
+                    }
+                    Text("Nothing here counts against you: skipped, paused and no-goal days are left out of every count.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .padding(.top, 0)
+                }
+                .padding(16)
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier("progress-key")
+                .transition(.opacity)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.card, in: CardShape.shape)
+        .onPerfCommand { action in
+            if action == .toggleHeatKey { withAnimation(.snappy(duration: 0.25)) { visit.toggle() } }
+        }
     }
 }
 
@@ -202,11 +302,11 @@ private struct MilestonesCard: View {
                 Text("Milestones").font(.body).accessibilityAddTraits(.isHeader)
                 Spacer(minLength: WeekSpacing.tight)
                 if reached.count >= 2 {
+                    // Plain, as See All Streaks under the record (Figma 1020:1492).
                     Button("See All \(reached.count)", action: seeAll)
-                        .buttonStyle(.bordered)
-                        .buttonBorderShape(.capsule)
+                        .buttonStyle(.borderless)
                         .controlSize(.small)
-                        .tint(Color.ink)
+                        .foregroundStyle(Color.ink)
                         .accessibilityLabel("See all \(reached.count) milestones")
                         .accessibilityIdentifier("habit-milestones-see-all")
                 } else if reached.count == 1 {
@@ -505,10 +605,14 @@ private struct HabitPeriodCard: View {
         let letters: [String]
         let bars: [LightBarChart.Bar]
         let goals: [LightBarChart.GoalLine]
+        let ticks: [Double]?
         let xLabels: [LightBarChart.XLabel]
         let rule: Habit
         let canGoBack: Bool
         let canGoForward: Bool
+        /// A habit started today with nothing logged (Figma's New habit): "Your first week" over "Started today,
+        /// Fri 23 Oct", in place of the card's own words.
+        var opening: (headline: String, detail: String)?
     }
 
     init(habit: Habit, kind: Kind, anchor: LocalDay?) {
@@ -531,9 +635,9 @@ private struct HabitPeriodCard: View {
             }
             if let data, let card = data.card {
                 VStack(alignment: .leading, spacing: WeekSpacing.label) {
-                    Text(card.headline).font(.title3.weight(.semibold)).monospacedDigit()
+                    Text(data.opening?.headline ?? card.headline).font(.title3.weight(.semibold)).monospacedDigit()
                         .fixedSize(horizontal: false, vertical: true)
-                    if let detail = card.detail {
+                    if let detail = data.opening?.detail ?? card.detail {
                         Text(detail).font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -550,7 +654,7 @@ private struct HabitPeriodCard: View {
                     VStack(alignment: .leading, spacing: WeekSpacing.tight) {
                         Text("Recorded each day").font(.subheadline.weight(.semibold))
                         LightBarChart(title: "Recorded each day", bars: data.bars, goals: data.goals, dashedGoals: true,
-                                      xLabels: data.xLabels, color: habit.color.color,
+                                      xLabels: data.xLabels, ticks: data.ticks, color: habit.color.color,
                                       yLabel: { store.progressValue($0, data.rule) })
                             .frame(height: 140)
                     }
@@ -559,7 +663,8 @@ private struct HabitPeriodCard: View {
                 Text(habit.kind == .quit ? "Nothing recorded this \(noun)." : "Not started yet this \(noun).")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
-            if let comparison = data?.comparison {
+            // A first week has nothing before it to compare with (Figma's New habit leaves it out).
+            if data?.opening == nil, let comparison = data?.comparison {
                 Divider()
                 ComparisonView(comparison: comparison, color: habit.color)
             }
@@ -587,22 +692,35 @@ private struct HabitPeriodCard: View {
         var bars: [LightBarChart.Bar] = []
         var goals: [LightBarChart.GoalLine] = []
         var xLabels: [LightBarChart.XLabel] = []
+        var ticks: [Double]?
         // The amount recorded each day of the month, for habits that record amounts (research: actual quantities,
         // a goal line only where it is that day's goal).
         let shape = store.progressShape(rule)
         if kind == .month && [.times, .amount, .time, .periodTotal, .limitDay].contains(shape) && habit.kind != .quit {
             let days = store.days(in: span)
             let n = Double(days.count)
+            // Figma (1142:260528): a day short of its goal is the lighter bar, as a partly done square is the lighter
+            // square; a limit has no goal to reach, so its bars stay one colour.
+            let reaching = shape != .limitDay && shape != .periodTotal
             for (i, day) in days.enumerated() where day <= today && day >= first {
-                let value = store.dayProgress(of: store.rule(habit, on: day), on: day)
+                let dayRule = store.rule(habit, on: day)
+                let value = store.dayProgress(of: dayRule, on: day)
+                let goal = store.dayGoal(of: dayRule)
                 let label = "\(day.day) \(store.calendar.shortStandaloneMonthSymbols[day.month - 1]): " + store.progressValue(value, rule)
                 bars.append(LightBarChart.Bar(id: i, from: (Double(i) + 0.15) / n, to: (Double(i) + 0.85) / n, value: value,
-                                              opacity: 1, over: false, label: label))
+                                              opacity: reaching && goal > 0 && value < goal ? 0.5 : 1, over: false, label: label))
             }
-            if rule.frequency.isDayBased && !rule.frequency.isFlexible && store.dayGoal(of: rule) > 0 {
-                goals = [LightBarChart.GoalLine(from: 0, to: 1, value: store.dayGoal(of: rule))]
+            // Lines at the goal and half of it, labelled (Figma), where the month has one daily goal; otherwise the goal
+            // line follows each day's own goal.
+            let goal = store.dayGoal(of: rule)
+            if rule.frequency.isDayBased && !rule.frequency.isFlexible && goal > 0 {
+                let dayGoals = Set(days.filter { $0 <= today && $0 >= first }.map { store.dayGoal(of: store.rule(habit, on: $0)) })
+                if dayGoals.count <= 1 { ticks = [goal / 2, goal] } else { goals = [LightBarChart.GoalLine(from: 0, to: 1, value: goal)] }
             }
-            xLabels = [1, 8, 15, 22, 29].filter { $0 <= days.count }.map { LightBarChart.XLabel(at: (Double($0) - 0.5) / n, text: "\($0)") }
+            // The first day and the last one shown: today, or the month's end.
+            let last = days.lastIndex { $0 <= today } ?? days.count - 1
+            xLabels = [0, last].reduce(into: [Int]()) { if !$0.contains($1) { $0.append($1) } }
+                .map { LightBarChart.XLabel(at: (Double($0) + 0.5) / n, text: "\(days[$0].day)") }
             if !bars.contains(where: { $0.value > 0 }) { bars = [] }
         }
         data = PeriodData(
@@ -613,9 +731,13 @@ private struct HabitPeriodCard: View {
             comparison: store.periodComparison(of: habit, in: span, noun: kind == .week ? "week" : "month", today: today),
             lead: store.monthLead(span),
             letters: store.orderedWeekdayLetters(),
-            bars: bars, goals: goals, xLabels: xLabels, rule: rule,
+            bars: bars, goals: goals, ticks: ticks, xLabels: xLabels, rule: rule,
             canGoBack: span.lowerBound > first,
             canGoForward: span.upperBound < today)
+        if first == today, span.contains(today), habit.kind != .quit, store.entries(of: habit.id).isEmpty {
+            data?.opening = ("Your first \(kind == .week ? "week" : "month")",
+                             "Started today, " + DayWords.short(today, calendar: store.calendar))
+        }
     }
 }
 

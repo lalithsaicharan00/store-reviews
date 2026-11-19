@@ -617,7 +617,7 @@ final class DayDetailsUITests: XCTestCase {
 
     /// A day opened from a habit's History is the same Day details, for that day (the user, 5 Oct 2026): titled by that
     /// day ("Today" only for today, U21), no link back to the page it came from, a past day's own words ("Skip this
-    /// day", no timer), and Close. History's Add is named for the kind (never "Add Entry").
+    /// day", no timer), and Close. History's Add (Figma's floating Add) opens the kind's own Add (never "Add Entry").
     func testHistoryDaysOpenDayDetails() {
         for (name, key, add) in [("Water", "amount", "Add Log"), ("Read", "time", "Add Log"), ("Meds", "check", "Mark a Day Done"),
                                  ("Skincare", "checklist", "Tick Steps"), ("Call family", "weekly", "Add a Check")] {
@@ -626,9 +626,16 @@ final class DayDetailsUITests: XCTestCase {
             XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 3))
             app.openHabitsFromMenu()
             app.revealAndTap(app.habitCard(name))
+            let historyTab = app.segmentedControls["habit-tabs"].buttons["History"]
+            XCTAssertTrue(historyTab.waitForExistence(timeout: 5), "\(name)'s page")
+            historyTab.tap()
             let history = app.buttons["history-add-entry"]
             XCTAssertTrue(history.waitForExistence(timeout: 5))
-            XCTAssertEqual(history.label, add, "\(name): History's Add says what it adds")
+            XCTAssertEqual(history.label, "Add", "\(name): History's Add")
+            history.tap()
+            XCTAssertTrue(app.navigationBars[add].waitForExistence(timeout: 3), "\(name): Add opens \(add)")
+            app.buttons["record-cancel"].tap()
+            XCTAssertTrue(app.navigationBars[add].waitForNonExistence(timeout: 3), "\(name): closed untouched")
             let days = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
             XCTAssertTrue(days.firstMatch.waitForExistence(timeout: 5), "\(name): History's days")
             // Newest first: the second row is an earlier day.

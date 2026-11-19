@@ -23,18 +23,23 @@ struct HabitPageView: View {
     /// An archived habit brought back past the free limit: the 6th-habit sheet first (Current Work 80).
     @State private var restoring: Habit?
     @State private var showGoTo = false
+    @State private var showNotesSearch = false
+    /// The day Notes search or Go to Date chose, opened once that page has gone (one sheet at a time).
+    @State private var pendingDay: LocalDay?
     @State private var confirmingDelete = false
     @State private var openDay: LocalDay?
     @State private var addEntryDay: LocalDay?
     /// The All milestones page, pushed from Milestones' "See all": held here, not by the card, so it stays while the
     /// Progress tab redraws under it (U27).
     @State private var showMilestones = false
+    /// The name moves into the bar once the header has scrolled under it (Figma's Scrolled state), as a large title does.
+    @State private var headerGone = false
 
     /// `milestones` opens it on its Progress tab with All Milestones pushed on top (the milestone pop-up's button).
     init(id: UUID, overTime: OverTimeStart? = nil, milestones: Bool = false) {
         self.id = id
         self.overTime = overTime
-        _tab = State(initialValue: overTime == nil && !milestones ? .history : .progress)
+        _tab = State(initialValue: .progress)
         _showMilestones = State(initialValue: milestones)
     }
 
@@ -46,6 +51,10 @@ struct HabitPageView: View {
         }
     }
 
+    private func openPendingDay() {
+        if let day = pendingDay { pendingDay = nil; openDay = day }
+    }
+
     private func page(_ habit: Habit) -> some View {
         let today = store.today()
         let key = HabitPageModel.Key(habit: habit, version: store.dataVersion, today: today)
@@ -53,16 +62,14 @@ struct HabitPageView: View {
         return ScrollViewReader { proxy in ScrollView {
             LazyVStack(alignment: .leading, spacing: 0, pinnedViews: [.sectionHeaders]) {
                 header(habit, today: today)
-                    .padding(.horizontal, WeekSpacing.card)
-                    .padding(.top, WeekSpacing.tight)
-                    .padding(.bottom, WeekSpacing.card)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 16)
                 Section {
                     switch tabs.contains(tab) ? tab : .history {
                     case .history:
-                        HabitHistoryTab(habit: habit, months: model.history,
-                                        open: { openDay = $0 }, addEntry: { addEntryDay = today }, goToDate: { showGoTo = true })
-                    case .notes:
-                        HabitNotesTab(habit: habit, months: model.notes)
+                        HabitHistoryTab(habit: habit, months: model.historyIsEmpty ? [] : model.history, noteMonths: model.noteHistory,
+                                        open: { openDay = $0 }, goToDate: { showGoTo = true },
+                                        searchNotes: { showNotesSearch = true })
                     case .progress:
                         HabitProgressTab(habit: habit, model: model, start: overTime, openDay: { openDay = $0 },
                                          openMilestones: { showMilestones = true })
@@ -71,14 +78,27 @@ struct HabitPageView: View {
                     tabBar(tabs)
                 }
             }
-            .padding(.bottom, WeekSpacing.section)
+            // Room at the end for History's Add, so it never covers the last row.
+            .padding(.bottom, tab == .history ? 80 : WeekSpacing.section)
+        }
+        .onScrollGeometryChange(for: Bool.self) { $0.contentOffset.y + $0.contentInsets.top > Self.headerHeight } action: { _, gone in
+            withAnimation(.easeOut(duration: 0.15)) { headerGone = gone }
         }
         .onPerfCommand { action in
             // Speed runs: the Milestones card at the top, so its shelf can be scrolled sideways.
             if action == .showMilestones { withAnimation(nil) { proxy.scrollTo(Self.milestonesCard, anchor: .top) } }
         }
         }
+        .pinnedTabsEdge()
         .background(Color(.systemGroupedBackground))
+        // History's Add floats over the page at the bottom right (Figma), in reach of the thumb.
+        .overlay(alignment: .bottomTrailing) {
+            if tabs.contains(.history) && (tab == .history || !tabs.contains(tab)) {
+                HistoryAddButton { addEntryDay = today }
+                    .padding(.trailing, 16)
+                    .padding(.bottom, 8)
+            }
+        }
         .environment(heatVisit)
         .onChange(of: isPresented) { if !isPresented { heatVisit = HeatKeyVisit() } }
         .onAppear { model.load(key, tab: tab, store: store) }
@@ -89,18 +109,25 @@ struct HabitPageView: View {
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            // No title while the header shows the name; it moves into the bar once the header has gone.
+            ToolbarItem(placement: .principal) {
+                Text(habit.name.capped(HabitRow.nameShown))
+                    .font(.headline)
+                    .lineLimit(1)
+                    .opacity(headerGone ? 1 : 0)
+                    .accessibilityHidden(!headerGone)
+            }
             ToolbarItem(placement: .topBarTrailing) { menu(habit, today: today) }
         }
         .sheet(item: $openDay) { DaySheet(habit: habit, day: $0) }
         .sheet(item: $addEntryDay) { AddLogView(habit: habit, day: $0, source: .manual) }
-        .sheet(isPresented: $showGoTo) {
+        .fullScreenCover(isPresented: $showNotesSearch, onDismiss: openPendingDay) {
+            NotesSearchPage(habit: habit, months: model.noteHistory) { pendingDay = $0 }
+        }
+        .sheet(isPresented: $showGoTo, onDismiss: openPendingDay) {
             GoToDateSheet(habit: habit) { day in
+                pendingDay = day
                 showGoTo = false
-                // After the picker's sheet has gone: one sheet at a time.
-                Task { @MainActor in
-                    try? await Task.sleep(for: .milliseconds(350))
-                    openDay = day
-                }
             }
         }
         .onPerfCommand { action in
@@ -109,6 +136,7 @@ struct HabitPageView: View {
             case .openEdit: showEdit = true
             case .closeDay: openDay = nil; showEdit = false; showMilestones = false
             case .openMilestones: showMilestones = true
+            case .openNotesSearch: showNotesSearch = true
             case .habitTab(let index): if index < tabs.count { tab = tabs[index] }
             default: break
             }
@@ -132,20 +160,25 @@ struct HabitPageView: View {
 
     // MARK: Header
 
-    /// What the habit is, in a glance: its icon, name and goal in words, and a paused banner while paused. No numbers:
-    /// they belong to Progress (research IA).
+    /// The header's height, past which the name moves into the bar: the 56 icon (Figma's large title).
+    static let headerHeight: CGFloat = 56
+
+    /// What the habit is, in a glance: its icon, name and plan with its routine ("8 glasses a day | Anytime"), and a
+    /// paused banner while paused. No numbers: they belong to Progress.
     @ViewBuilder private func header(_ habit: Habit, today: LocalDay) -> some View {
         VStack(alignment: .leading, spacing: WeekSpacing.card) {
-            HStack(alignment: .center, spacing: 12) {
-                HabitIcon(symbol: habit.symbol, color: habit.color, size: 48)
-                VStack(alignment: .leading, spacing: WeekSpacing.label) {
+            HStack(alignment: .center, spacing: 16) {
+                HabitIcon(symbol: habit.symbol, color: habit.color, size: 56)
+                VStack(alignment: .leading, spacing: 0) {
                     Text(habit.name).font(.title2.weight(.bold)).lineLimit(2)
-                    Text(Self.sentence(habit, store: store)).font(.subheadline).foregroundStyle(.secondary)
+                        .accessibilityAddTraits(.isHeader)
+                    Text(Self.planLine(habit, store: store)).font(.subheadline).foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             if let description = store.description(of: habit) {
-                Text(description).font(.callout).fixedSize(horizontal: false, vertical: true)
+                HabitDescription(text: description)
             }
             if let pause = store.pause(of: habit, on: today), pause.contains(today) {
                 HStack(spacing: WeekSpacing.tight) {
@@ -163,18 +196,29 @@ struct HabitPageView: View {
         .accessibilityElement(children: .contain)
     }
 
-    /// History · Notes · Progress, pinned under the navigation bar while the page scrolls (as Progress's dates bar).
-    private func tabBar(_ tabs: [HabitTab]) -> some View {
+    /// Under the name: how much and how often, then the habit's routine. "8 glasses a day | Anytime".
+    static func planLine(_ habit: Habit, store: HabitStore) -> String {
+        if habit.kind == .quit || habit.kind == .task { return sentence(habit, store: store) }
+        let plan = HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
+        guard let part = habit.parts.first else { return plan }
+        return plan + " | " + store.section(part).name
+    }
+
+    /// Progress | History, pinned under the navigation bar while the page scrolls. A task has one tab, so none.
+    @ViewBuilder private func tabBar(_ tabs: [HabitTab]) -> some View {
+        if tabs.count > 1 { segmented(tabs) }
+    }
+
+    private func segmented(_ tabs: [HabitTab]) -> some View {
         Picker("Section", selection: $tab) {
             ForEach(tabs) { Text($0.title).tag($0) }
         }
         .pickerStyle(.segmented)
-        .padding(.horizontal, WeekSpacing.card)
-        .padding(.vertical, WeekSpacing.tight)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
         // Opaque, the page's own colour: cards slide under it cleanly.
         .background(Color(.systemGroupedBackground))
-        .padding(.bottom, WeekSpacing.tight)
         .accessibilityIdentifier("habit-tabs")
     }
 
@@ -207,7 +251,7 @@ struct HabitPageView: View {
             Divider()
             Button("Delete", systemImage: "trash", role: .destructive) { confirmingDelete = true }
         } label: {
-            Image(systemName: "ellipsis.circle")
+            Image(systemName: "ellipsis")
                 .accessibilityLabel("More")
         }
         .accessibilityIdentifier("habit-menu")
@@ -243,5 +287,58 @@ struct HabitPageView: View {
 
     static func firstOfMonth(_ day: LocalDay, _ calendar: Calendar) -> LocalDay {
         LocalDay(year: day.year, month: day.month, day: 1)
+    }
+}
+
+/// The habit's description under its name (Figma's With description and Description open): two lines, then More,
+/// which shows the whole text and turns into Less. More shows only when the text runs past two lines.
+private struct HabitDescription: View {
+    let text: String
+    @State private var open = false
+    @State private var fullHeight: CGFloat = 0
+    @State private var shortHeight: CGFloat = 0
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(text)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .lineLimit(open ? nil : 2)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { if !open { shortHeight = $0 } }
+                // The whole text, measured unseen, says whether two lines cut it.
+                .background(alignment: .topLeading) {
+                    Text(text)
+                        .font(.subheadline)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .hidden()
+                        .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { fullHeight = $0 }
+                        .accessibilityHidden(true)
+                }
+            if open || fullHeight > shortHeight + 1 {
+                Button(open ? "Less" : "More") {
+                    withAnimation(.easeOut(duration: 0.2)) { open.toggle() }
+                }
+                .buttonStyle(.borderless)
+                .controlSize(.small)
+                .font(.subheadline)
+                .tint(Color.ink)
+                .accessibilityIdentifier("habit-description-more")
+            }
+        }
+        .padding(.top, -4)
+    }
+}
+
+private extension View {
+    /// Under the bar, the hard edge Apple asks for when a scroll view has a pinned header (Figma's Scrolled states):
+    /// rows go under the tabs and stop, instead of showing through the soft edge above them. iOS 26 and later.
+    @ViewBuilder func pinnedTabsEdge() -> some View {
+        if #available(iOS 26.0, *) {
+            scrollEdgeEffectStyle(.hard, for: .top)
+        } else {
+            self
+        }
     }
 }

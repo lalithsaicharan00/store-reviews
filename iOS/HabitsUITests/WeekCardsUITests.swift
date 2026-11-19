@@ -45,7 +45,7 @@ final class WeekCardsUITests: XCTestCase {
 
     /// The key at the top, then a screen at a time down to the end; then back to the top.
     private func walk(_ prefix: String) {
-        XCTAssertTrue(app.descendants(matching: .any)["progress-key"].waitForExistence(timeout: 3), "What the squares mean")
+        XCTAssertTrue(app.buttons["heat-key-toggle"].waitForExistence(timeout: 3), "What the squares mean")
         shot("\(prefix)-1-top")
         for i in 2...8 {
             app.swipeUp(velocity: .slow)
@@ -62,16 +62,16 @@ final class WeekCardsUITests: XCTestCase {
         openWeek(["-year-demo", "-appearance.theme", "light"])
         XCTAssertTrue(app.buttons["progress-row-Swim"].exists, "A card per habit")
         walk("w-light")
-        // The key folds and opens again (left open for the tests after).
+        // The key opens and folds again.
         let key = app.descendants(matching: .any)["progress-key"]
         let toggle = app.buttons["heat-key-toggle"]
         XCTAssertTrue(toggle.waitForExistence(timeout: 3), "The key's header")
         toggle.tap()
-        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Open")
         sleep(1)
-        shot("w-key-folded")
+        shot("w-key-open")
         toggle.tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Open again")
+        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded again")
         // Last week: the caption says so, and nothing is "so far".
         app.buttons["progress-previous"].tap()
         sleep(1)
@@ -83,25 +83,20 @@ final class WeekCardsUITests: XCTestCase {
         walk("w-dark")
     }
 
-    /// Progress's key is one key for the whole app (Current Work 57, 6 Oct 2026): open until the person folds it; folded in
-    /// Week, it's folded in Month and Year too and on the next visit, and a tap opens it again.
-    func testSquaresKeyFoldedOnceIsFoldedEverywhere() {
+    /// "What the squares mean" starts closed on every page and is never remembered (the user, 19 Nov 2026): opened here,
+    /// it stays open while the person stays on Progress (Week, Month and Year are the same page), and is closed again
+    /// on the next visit.
+    func testSquaresKeyStartsClosedAndIsForgottenOnLeaving() {
         openWeek(["-year-demo"])
         let key = app.descendants(matching: .any)["progress-key"]
         let toggle = app.buttons["heat-key-toggle"]
         let ranges = app.segmentedControls["progress-range"]
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Never folded: open")
-        ranges.buttons["Month"].tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Month: still open")
-        ranges.buttons["Week"].tap()
+        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
+        XCTAssertFalse(key.exists, "Closed when the page opens")
         toggle.tap()
-        XCTAssertTrue(key.waitForNonExistence(timeout: 3), "Folded in Week")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
         ranges.buttons["Month"].tap()
-        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "Month: folded too, the same key")
-        ranges.buttons["Year"].tap()
-        XCTAssertTrue(toggle.waitForExistence(timeout: 3))
-        XCTAssertFalse(key.exists, "Year: folded too")
+        XCTAssertTrue(key.waitForExistence(timeout: 3), "Month: still open, the same page")
         // Leave Progress and come back.
         let bar = app.navigationBars["Progress"]
         if bar.buttons["BackButton"].exists { bar.buttons["BackButton"].tap() } else { bar.buttons.element(boundBy: 0).tap() }
@@ -111,12 +106,8 @@ final class WeekCardsUITests: XCTestCase {
         XCTAssertTrue(menu.waitForExistence(timeout: 3))
         menu.tap()
         XCTAssertTrue(toggle.waitForExistence(timeout: 5))
-        XCTAssertFalse(key.exists, "The next visit: folded")
+        XCTAssertFalse(key.exists, "The next visit: closed again")
         shot("w-key-next-visit")
-        toggle.tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "A tap opens it")
-        ranges.buttons["Month"].tap()
-        XCTAssertTrue(key.waitForExistence(timeout: 3), "Opened by hand: open on the other ranges in this visit")
     }
 
     /// Month (2 Oct 2026): the same cards with a month of marks, light and dark.
@@ -158,7 +149,7 @@ final class WeekCardsUITests: XCTestCase {
         XCTAssertTrue(swim.waitForExistence(timeout: 5), "Swim's card")
         sleep(1)
         shot("\(prefix)-1-top")
-        XCTAssertTrue(app.descendants(matching: .any)["progress-key"].exists, "What the squares mean")
+        XCTAssertTrue(app.buttons["heat-key-toggle"].exists, "What the squares mean")
         for i in 2...(theme == "light" ? 8 : 4) {
             app.swipeUp(velocity: .slow)
             sleep(1)

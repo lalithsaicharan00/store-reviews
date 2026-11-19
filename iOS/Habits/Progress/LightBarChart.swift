@@ -44,6 +44,9 @@ struct LightBarChart: View {
     var goals: [GoalLine] = []
     var dashedGoals = false
     var xLabels: [XLabel] = []
+    /// The values to draw lines and labels at, in place of the round steps from 0 (the habit page's month: its goal
+    /// and half of it, Figma 1142:260528).
+    var ticks: [Double]? = nil
     let color: Color
     let yLabel: (Double) -> String
     /// The tapped bar, whose label shows above the chart; nil where bars can't be tapped.
@@ -52,8 +55,8 @@ struct LightBarChart: View {
     @State private var width: CGFloat = 0
 
     var body: some View {
-        let axis = ChartGrid.axis(max(bars.map(\.value).max() ?? 0, goals.map(\.value).max() ?? 0))
-        let grid = ChartGrid(top: axis.top, ticks: stride(from: 0, through: axis.top, by: axis.step).map { $0 }, yLabel: yLabel,
+        let axis = ChartGrid.axis(max(bars.map(\.value).max() ?? 0, goals.map(\.value).max() ?? 0, ticks?.max() ?? 0))
+        let grid = ChartGrid(top: axis.top, ticks: ticks ?? stride(from: 0, through: axis.top, by: axis.step).map { $0 }, yLabel: yLabel,
                              hasXLabels: !xLabels.isEmpty, roomAbove: bars.contains { $0.note != nil } ? 14 : 8)
         let picked = chosen?.wrappedValue.flatMap { id in bars.first { $0.id == id } }
         Canvas { context, size in

@@ -169,6 +169,38 @@ struct TodayView: View {
             menu.place = place
             menu.path = NavigationPath([place])
         }
+        // Open one habit's page over Habits & Tasks for visual review in Simulator: `-open-habit Water`.
+        .task {
+            let arguments = ProcessInfo.processInfo.arguments
+            guard let flag = arguments.firstIndex(of: "-open-habit"), flag + 1 < arguments.count else { return }
+            await AppModel.shared.ensureLoaded()
+            // `-new-habit`: a copy of Water named as asked, started today with nothing logged (Figma's New habit).
+            if arguments.contains("-new-habit"), !store.habits.contains(where: { $0.name == arguments[flag + 1] }),
+               var copy = store.habits.first(where: { $0.name == "Water" }) {
+                copy.id = UUID()
+                copy.name = arguments[flag + 1]
+                copy.createdAt = .now
+                copy.startsOn = store.today()
+                store.add(copy)
+                await store.flush()
+            }
+            guard let habit = store.habits.first(where: { $0.name == arguments[flag + 1] }) else { return }
+            // `-habit-description "…"`: give it a description first (Figma's With description).
+            if let d = arguments.firstIndex(of: "-habit-description"), d + 1 < arguments.count {
+                store.setDescription(arguments[d + 1], of: habit.id)
+            }
+            // `-habit-notes`: two notes on earlier days (Figma's History · with notes).
+            if arguments.contains("-habit-notes") {
+                let today = store.today()
+                store.setNote("Long run in the morning; refilled the bottle twice.", of: habit, on: today.adding(days: -3, calendar: store.calendar))
+                store.setNote("Started keeping a glass by the bed.", of: habit, on: today.adding(days: -10, calendar: store.calendar))
+                await store.flush()
+            }
+            menu.place = .habitsAndTasks
+            var path = NavigationPath([MenuPlace.habitsAndTasks])
+            path.append(habit.id)
+            menu.path = path
+        }
         #endif
         .onChange(of: selectedDay) { layout.reset(); store.clearLogOffer() }
         .onChange(of: routine?.id) { if routine != nil { store.clearLogOffer() } else { routeWidget() } }

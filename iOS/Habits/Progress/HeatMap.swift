@@ -387,61 +387,19 @@ struct HeatKey: View {
     }
 }
 
-/// Whether "What the squares mean" starts open: one answer for the whole app (the user, 6 Oct 2026, Current Work 57:
-/// "once they close it… it shouldn't be opened ever again by default unless they open it"; "it's the same content,
-/// why do I need to close it multiple times?"). Open everywhere until the person folds it once, anywhere (Progress's
-/// Week, Month or Year, any habit's page); from then on it starts folded everywhere, and a tap opens it. Replaces
-/// 5 Oct's first visit per place (Current Work 25), which made people fold the same key on every range and habit.
-@Observable final class HeatKeyMemory {
-    static let shared = HeatKeyMemory()
-    static let key = "heatKey.folded"
-    /// 5 Oct's places seen, no longer read.
-    private static let oldKey = "heatKey.seen"
-
-    /// The person has folded the key somewhere. Written once, the first time (S15).
-    private(set) var folded: Bool
-
-    private init() {
-        let defaults = UserDefaults.standard
-        folded = defaults.bool(forKey: Self.key)
-        if defaults.object(forKey: Self.oldKey) != nil { defaults.removeObject(forKey: Self.oldKey) }
-    }
-
-    func fold() {
-        guard !folded else { return }
-        folded = true
-        UserDefaults.standard.set(true, forKey: Self.key)
-    }
-
-    /// Test launches start with the key never folded (T8).
-    func forget() {
-        UserDefaults.standard.removeObject(forKey: Self.key)
-        UserDefaults.standard.removeObject(forKey: Self.oldKey)
-        folded = false
-    }
-}
-
-/// One page's key (Progress, or one habit's page): the app-wide default until the person taps it here, then what they
-/// chose, for as long as the page is open. Switching ranges, dates or tabs, or scrolling the key away and back, is the
-/// same visit and never changes it on its own; Week, Month and Year share it because the key is the same.
+/// One page's "What the squares mean": closed whenever a page opens, everywhere in the app, and open only while the
+/// person stays on the page where they opened it (the user, 19 Nov 2026: "When I open it and leave that page, it should
+/// be closed … just because I opened it here, it doesn't mean everywhere else … it should stay closed"). Nothing is
+/// remembered: switching tabs, ranges or dates on the same page keeps it as it is; leaving the page forgets it. This
+/// replaces 6 Oct's app-wide memory (Current Work 57).
 @Observable final class HeatKeyVisit {
-    private var shown: Bool?
+    private(set) var isOpen = false
 
-    var isOpen: Bool { shown ?? !HeatKeyMemory.shared.folded }
-
-    /// A tap: folding it anywhere folds it everywhere from now on; opening it opens it here.
-    func toggle() {
-        let open = !isOpen
-        shown = open
-        if !open { HeatKeyMemory.shared.fold() }
-    }
-
-    /// Test launches forget a fold (T8).
-    static func forgetAll() { HeatKeyMemory.shared.forget() }
+    func toggle() { isOpen.toggle() }
 }
 
-/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section), open by itself until the person
-/// folds it once anywhere (`HeatKeyMemory`). `boxed` gives it its own card (Progress); inside a list section (the
+/// The key, folded or open (the user, 3 Oct 2026: a separate, collapsible section), closed whenever its page opens
+/// (`HeatKeyVisit`). `boxed` gives it its own card (Progress); inside a list section (the
 /// habit's page) it draws plainly.
 struct HeatKeySection: View {
     var boxed = true
