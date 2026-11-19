@@ -435,14 +435,19 @@ final class HabitPageUITests: XCTestCase {
         shot("hp-milestones-many")
         seeAll.tap()
         let page = app.descendants(matching: .any)["all-milestones"]
-        XCTAssertTrue(page.waitForExistence(timeout: 5) && app.navigationBars["Milestones"].exists, "The All milestones page")
+        XCTAssertTrue(page.waitForExistence(timeout: 5) && app.navigationBars["All Milestones"].exists, "The All Milestones page")
         XCTAssertTrue(app.descendants(matching: .any)["all-milestones-inARow"].exists, "All milestones: In a row")
         XCTAssertTrue(app.descendants(matching: .any)["all-milestones-inTotal"].exists, "All milestones: In total")
-        XCTAssertTrue(app.staticTexts["Milestones you reach stay here, even when a run starts again."].exists
-                      || { app.swipeUp(velocity: .slow); return app.staticTexts["Milestones you reach stay here, even when a run starts again."].exists }(),
-                      "All milestones: the footnote")
         shot("hp-milestones-all")
-        app.navigationBars["Milestones"].buttons.element(boundBy: 0).tap()
+        // Last on the page, How Milestones Work opens its page (Figma 1036:98, 1142:29038).
+        let how = app.buttons["how-milestones-work"]
+        app.revealAndTap(how)
+        XCTAssertTrue(app.navigationBars["How Milestones Work"].waitForExistence(timeout: 5)
+                      && app.staticTexts["Which ones get a pop-up"].exists, "How Milestones Work")
+        shot("hp-milestones-how")
+        app.navigationBars["How Milestones Work"].buttons.element(boundBy: 0).tap()
+        XCTAssertTrue(app.navigationBars["All Milestones"].waitForExistence(timeout: 5), "Back on All Milestones")
+        app.navigationBars["All Milestones"].buttons.element(boundBy: 0).tap()
         XCTAssertTrue(app.segmentedControls["habit-tabs"].waitForExistence(timeout: 5), "Back on the habit page")
         XCTAssertTrue(app.segmentedControls["habit-tabs"].buttons["Progress"].isSelected, "Still on Progress")
     }

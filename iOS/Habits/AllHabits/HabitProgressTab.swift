@@ -491,12 +491,14 @@ private struct MilestoneRow<Badge: View>: View {
     }
 }
 
-/// All Milestones (spec §3.2), pushed from See All: an inset-grouped list with a section per track, its next milestone
-/// first and then every one reached, newest first.
+/// All Milestones (spec §3.2; Figma 1036:98, and 1156:99273 for a quit habit), pushed from See All: an inset-grouped
+/// list with a section per track, its next milestone first and then every one reached, newest first; last, How
+/// Milestones Work in a section of its own, as Android's page has it.
 struct AllMilestonesPage: View {
     let model: HabitPageModel
     let name: String
     let color: HabitColor
+    var quitting = false
     @AppStorage(ProgressOptions.showStreaks) private var showStreaks = true
 
     var body: some View {
@@ -511,13 +513,14 @@ struct AllMilestonesPage: View {
 
     private func page(_ milestones: HabitMilestones) -> some View {
         List {
-            Section {
-            } header: {
-                Text("\(name) · \(milestones.reached.count) reached")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
-                    .textCase(nil)
-            }
+            // "Water · 5 reached": the page's own line, not a section header, so it reads in Secondary Label at full
+            // strength (a header's empty section drew it faded under the bar's scroll edge).
+            Text("\(name) · \(milestones.reached.count) reached")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+                .listSectionSpacing(4)
             ForEach(milestones.next) { next in
                 Section(Self.title(next.track)) {
                     MilestoneRow(headline: next.title, supporting: next.detail.map { "Next · " + $0 }) {
@@ -533,8 +536,23 @@ struct AllMilestonesPage: View {
                     }
                 }
             }
+            Section {
+                NavigationLink {
+                    HowMilestonesWorkPage(quitting: quitting)
+                } label: {
+                    Label {
+                        Text("How Milestones Work").foregroundStyle(Color.primary)
+                    } icon: {
+                        Image(systemName: "questionmark.circle").foregroundStyle(.secondary)
+                    }
+                }
+                .accessibilityIdentifier("how-milestones-work")
+            }
         }
         .listStyle(.insetGrouped)
+        // Figma puts the line 8 under the bar; the List's own first gap is 35, and a row is 44 at least.
+        .contentMargins(.top, 8, for: .scrollContent)
+        .environment(\.defaultMinListRowHeight, 20)
         .accessibilityIdentifier("all-milestones")
         .navigationTitle("All Milestones")
         .navigationBarTitleDisplayMode(.inline)
@@ -544,8 +562,72 @@ struct AllMilestonesPage: View {
         switch track {
         case .inARow: "In a row"
         case .inTotal: "In total"
-        case .sinceSlip: "Since a slip"
+        case .sinceSlip: "Days clean in a row"
         }
+    }
+}
+
+/// How Milestones Work (Figma 1142:29038, and 1156:99544 for a quit habit), from All Milestones: what each kind of
+/// milestone counts, one card per kind under its header. Words only, so plain inset-grouped sections of text.
+struct HowMilestonesWorkPage: View {
+    var quitting = false
+
+    private struct Part: Identifiable {
+        let title: String
+        let body: String
+        var note: String? = nil
+        var id: String { title }
+    }
+
+    private static let building: [Part] = [
+        Part(title: "In a row", body: "3, 7, 14, 30, 60, 90, 180 and 365 days in a row, then every year.",
+             note: "A weekly goal counts weeks in a row (2, 4, 8, 13, 26, 52); a monthly one, months (2, 3, 6, 9, 12)."),
+        Part(title: "In total", body: "10, 25, 50, 100, 250, 500, 1,000 times your goal, and on.",
+             note: "They never fall on the same day as an in-a-row milestone."),
+        Part(title: "Anniversaries", body: "Each year since your first log, if the goal was met in the 30 days before."),
+        Part(title: "Which ones get a pop-up",
+             body: "The big ones: 30, 180 and 365 days in a row (4, 26 and 52 weeks; 6 and 12 months), every anniversary, and your very first milestone.",
+             note: "The rest show as a bar on Today, and as a ribbon in a routine. At most two pop-ups in a week."),
+        Part(title: "Quitting and cutting down",
+             body: "Quit: days clean. Cut down: days within the limit. Skipped and paused days never count against you."),
+    ]
+
+    private static let quit: [Part] = [
+        Part(title: "Quitting: days clean in a row", body: "3, 7, 14, 30, 60, 90, 180 and 365 days clean in a row, then every year.",
+             note: "A slip starts the count again. A number you already reached is never given twice."),
+        Part(title: "Quitting: clean days in total",
+             body: "10, 25, 50, 100, 250, 500 and 1,000 clean days, however many slips came between.",
+             note: "A slip never takes a clean day away."),
+        Part(title: "Cutting down: days within the limit",
+             body: "3, 7, 14, 30, 60, 90, 180 and 365 days within the limit in a row; 10, 25, 50, 100 and on in total.",
+             note: "A day counts once it has ended at or under the limit. A weekly limit counts weeks instead (2, 4, 8, 13, 26, 52)."),
+        Part(title: "Never counted", body: "What you had is never a milestone: having more is not doing better.",
+             note: "Skipped and paused days don’t break a run, and aren’t added to it."),
+        Part(title: "Anniversaries", body: "Each year since you started, if the 30 days before were clean or within the limit."),
+        Part(title: "Which ones get a pop-up",
+             body: "30 and 180 days, each year, and every anniversary. The rest show as a bar on Today.",
+             note: "Tell me at milestones, on the habit’s form, also sends a notification at 30 days, 180 days, a year and each year after."),
+    ]
+
+    var body: some View {
+        List {
+            ForEach(quitting ? Self.quit : Self.building) { part in
+                Section(part.title) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text(part.body)
+                        if let note = part.note {
+                            Text(note).font(.subheadline).foregroundStyle(.secondary)
+                        }
+                    }
+                    .padding(.vertical, 6)
+                    .accessibilityElement(children: .combine)
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+        .accessibilityIdentifier("how-milestones-work-page")
+        .navigationTitle("How Milestones Work")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

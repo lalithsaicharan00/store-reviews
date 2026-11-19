@@ -114,7 +114,7 @@ struct HabitPageView: View {
         .onAppear { model.load(key, tab: tab, store: store) }
         .onChange(of: key) { model.load(key, tab: tab, store: store) }
         .onChange(of: tab) { model.load(key, tab: tab, store: store) }
-        .navigationDestination(isPresented: $showMilestones) { AllMilestonesPage(model: model, name: habit.name, color: habit.color) }
+        .navigationDestination(isPresented: $showMilestones) { AllMilestonesPage(model: model, name: habit.name, color: habit.color, quitting: habit.kind == .quit) }
         .analyticsScreen(.habitDetail)
         .navigationTitle(habit.name.capped(HabitRow.nameShown))
         .navigationBarTitleDisplayMode(.inline)

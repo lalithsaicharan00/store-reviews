@@ -30,7 +30,7 @@ struct StreaksPage: View {
                     }
                     .padding(20)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .background(Color.card, in: RoundedRectangle(cornerRadius: 24, style: .continuous))
+                    .background(Color.card, in: CardShape.shape)
                     Text(list.note).font(.footnote).foregroundStyle(.secondary)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -56,7 +56,8 @@ struct StreaksPage: View {
 
 /// One run on the Streaks page (Figma's Run row): its length (Body) and dates (Subheadline, Secondary Label) on one
 /// baseline, then an 8-point bar on Tertiary System Fill. The longest run fills the track and a shorter one its share;
-/// the run going on now is in the habit's colour, an earlier one in its Fill.
+/// the run going on now is in the habit's colour, an earlier one in its lighter Gradient Top shade (Figma's #2FA9FF
+/// for blue: the Fill was too pale to read as a bar on the grey track).
 private struct RunRow: View {
     let row: StreakRow
     let color: HabitColor
@@ -71,7 +72,7 @@ private struct RunRow: View {
             }
             ZStack(alignment: .leading) {
                 Capsule().fill(Color(.tertiarySystemFill))
-                Capsule().fill(row.isCurrent ? color.color : color.fill)
+                Capsule().fill(row.isCurrent ? color.color : color.gradientTop)
                     .scaleEffect(x: max(0.02, min(1, row.fraction)), y: 1, anchor: .leading)
             }
             .frame(height: 8)
