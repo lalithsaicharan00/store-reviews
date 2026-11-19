@@ -59,3 +59,26 @@ extension XCUIApplication {
         wheels.element(boundBy: wheel).adjust(toPickerWheelValue: value)
     }
 }
+
+extension XCUIApplication {
+    /// History's "which day?" calendar (Go to Date… and Add, 19 Nov 2026): taps the first day that can be picked in the
+    /// month it opens on (today's) and returns that day's key ("2026-11-01"), or nil if the calendar never showed.
+    /// iOS's calendar names a day by its weekday ("Sunday, November 1"); the month and year buttons have none.
+    func pickCalendarDay(file: StaticString = #filePath, line: UInt = #line) -> String? {
+        let weekdays = Calendar.current.weekdaySymbols
+        let names = weekdays.map { _ in "label CONTAINS %@" }.joined(separator: " OR ")
+        let days = buttons.matching(NSPredicate(format: "enabled == YES AND (\(names))", argumentArray: weekdays))
+        guard days.firstMatch.waitForExistence(timeout: 5) else {
+            XCTFail("The calendar's days never showed", file: file, line: line)
+            return nil
+        }
+        let day = days.firstMatch
+        guard let number = day.label.split(whereSeparator: { !$0.isNumber }).compactMap({ Int($0) }).first(where: { $0 <= 31 }) else {
+            XCTFail("No day number in “\(day.label)”", file: file, line: line)
+            return nil
+        }
+        let now = Calendar.current.dateComponents([.year, .month], from: .now)
+        day.tap()
+        return String(format: "%04d-%02d-%02d", now.year ?? 0, now.month ?? 0, number)
+    }
+}

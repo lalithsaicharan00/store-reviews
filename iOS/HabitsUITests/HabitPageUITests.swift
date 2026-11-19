@@ -136,8 +136,8 @@ final class HabitPageUITests: XCTestCase {
         pictures(["Swim", "Smoking"], prefix: "hp-dark", progressShots: 4)
     }
 
-    /// History's Add (Figma's floating Add, which opens the kind's own Add: Add Log for Water), Go to Date, and a month
-    /// folding and opening.
+    /// History's Add and Go to Date (Figma's flows 203 and 202): both ask which day in iOS's calendar, from the button.
+    /// Add opens that day's Day details; Go to Date scrolls History to the day's row. Then a month folds and opens.
     func testHistoryFlows() {
         launch()
         open("Water")
@@ -151,34 +151,26 @@ final class HabitPageUITests: XCTestCase {
         XCTAssertLessThan(go.frame.width, width * 0.45, "Go to Date is its own width: \(go.frame)")
         XCTAssertLessThan(go.frame.height, add.frame.height, "Go to Date is small, Add large: \(go.frame) \(add.frame)")
         shot("hp-flow-0-history-buttons")
-        app.buttons["history-add-entry"].tap()
-        XCTAssertTrue(app.navigationBars["Add Log"].waitForExistence(timeout: 3), "Add log, the same Add as everywhere")
-        let amount = app.textFields["record-amount"]
-        XCTAssertTrue(amount.waitForExistence(timeout: 3))
-        amount.typeText("2")
-        shot("hp-flow-1-add-log")
-        app.buttons["record-add"].tap()
-        XCTAssertTrue(app.navigationBars["Add Log"].waitForNonExistence(timeout: 5), "Added and closed")
-        let today = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).firstMatch
-        XCTAssertTrue(today.waitForExistence(timeout: 5))
-        today.tap()
+        add.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["day-calendar"].firstMatch.waitForExistence(timeout: 3), "Add asks which day")
+        shot("hp-flow-1-add-calendar")
+        XCTAssertNotNil(app.pickCalendarDay())
         XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "The day opens")
-        XCTAssertTrue(app.navigationBars["Today"].exists, "Today's row opens Day details titled Today")
         shot("hp-flow-2-day")
         app.buttons["day-close"].tap()
         sleep(1)
-        app.buttons["history-go-to-date"].tap()
-        XCTAssertTrue(app.navigationBars["Go to Date"].waitForExistence(timeout: 3), "Go to Date")
+        go.tap()
+        XCTAssertTrue(app.descendants(matching: .any)["day-calendar"].firstMatch.waitForExistence(timeout: 3), "Go to Date")
         shot("hp-flow-4-go-to-date")
-        app.navigationBars["Go to Date"].buttons["Open"].tap()
-        XCTAssertTrue(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 5), "The chosen day opens")
+        guard let key = app.pickCalendarDay() else { return }
+        XCTAssertFalse(app.descendants(matching: .any)["day-result"].firstMatch.waitForExistence(timeout: 2), "Go to Date opens no sheet")
+        XCTAssertTrue(app.buttons["habit-day-\(key)"].isHittable, "History scrolled to \(key)")
         shot("hp-flow-3-chosen-day")
-        app.buttons["day-close"].tap()
-        sleep(1)
         let months = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'history-month-'"))
         XCTAssertTrue(months.firstMatch.waitForExistence(timeout: 3))
         let rowsBefore = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).count
-        months.firstMatch.tap(); sleep(1)
+        // Go to Date left the page partway down: bring the month's heading back first.
+        app.revealAndTap(months.firstMatch, clear: true); sleep(1)
         let rowsAfter = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-'")).count
         XCTAssertLessThan(rowsAfter, rowsBefore, "Folding a month hides its days")
         shot("hp-flow-5-month-folded")

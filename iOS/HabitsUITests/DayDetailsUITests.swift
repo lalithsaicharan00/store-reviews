@@ -617,10 +617,10 @@ final class DayDetailsUITests: XCTestCase {
 
     /// A day opened from a habit's History is the same Day details, for that day (the user, 5 Oct 2026): titled by that
     /// day ("Today" only for today, U21), no link back to the page it came from, a past day's own words ("Skip this
-    /// day", no timer), and Close. History's Add (Figma's floating Add) opens the kind's own Add (never "Add Entry").
+    /// day", no timer), and Close. History's Add (Figma's floating Add, flow 203) asks which day in iOS's calendar and
+    /// opens that day's Day details, where each kind's own Add is (never "Add Entry").
     func testHistoryDaysOpenDayDetails() {
-        for (name, key, add) in [("Water", "amount", "Add Log"), ("Read", "time", "Add Log"), ("Meds", "check", "Mark a Day Done"),
-                                 ("Skincare", "checklist", "Tick Steps"), ("Call family", "weekly", "Add a Check")] {
+        for (name, key) in [("Water", "amount"), ("Read", "time"), ("Meds", "check"), ("Skincare", "checklist"), ("Call family", "weekly")] {
             launch(fixture: false, dark: true)
             app.buttons["menu-button"].tap()
             XCTAssertTrue(app.buttons["menu-habitsAndTasks"].waitForExistence(timeout: 3))
@@ -633,9 +633,10 @@ final class DayDetailsUITests: XCTestCase {
             XCTAssertTrue(history.waitForExistence(timeout: 5))
             XCTAssertEqual(history.label, "Add", "\(name): History's Add")
             history.tap()
-            XCTAssertTrue(app.navigationBars[add].waitForExistence(timeout: 3), "\(name): Add opens \(add)")
-            app.buttons["record-cancel"].tap()
-            XCTAssertTrue(app.navigationBars[add].waitForNonExistence(timeout: 3), "\(name): closed untouched")
+            XCTAssertTrue(app.descendants(matching: .any)["day-calendar"].firstMatch.waitForExistence(timeout: 3), "\(name): Add asks which day")
+            XCTAssertNotNil(app.pickCalendarDay(), "\(name): a day to pick")
+            XCTAssertTrue(result.waitForExistence(timeout: 5), "\(name): the picked day opens Day details")
+            close()
             let days = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'habit-day-' AND enabled == YES"))
             XCTAssertTrue(days.firstMatch.waitForExistence(timeout: 5), "\(name): History's days")
             // Newest first: the second row is an earlier day.

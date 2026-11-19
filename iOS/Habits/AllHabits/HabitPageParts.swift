@@ -123,12 +123,19 @@ struct HabitHistoryTab: View {
     /// The same months with only the days that have a note (`HabitPageModel`), for With Notes.
     let noteMonths: [HistoryMonth]
     let open: (LocalDay) -> Void
-    let goToDate: () -> Void
+    /// Scrolls the page to a month's card (nil: the newest, always on the page), then to a day's row in the middle
+    /// (`HistoryDayRow.scrollID`).
+    let scrollTo: (_ month: String?, _ day: String) -> Void
     let searchNotes: () -> Void
+    /// Archived: a card saying so, with Restore, above everything else (Figma's History · archived).
+    var restore: (() -> Void)? = nil
     @Environment(HabitStore.self) private var store
     /// Months folded or opened by hand while the page is open (a month's default is open for the newest two).
     @State private var toggled: Set<LocalDay> = []
     @State private var withNotes = false
+    @State private var choosingDay = false
+    /// The day Go to Date… found, lit in the habit's Fill for a moment so the eye finds it.
+    @State private var lit: LocalDay?
 
     var body: some View {
         if months.isEmpty {
@@ -141,6 +148,7 @@ struct HabitHistoryTab: View {
             .accessibilityIdentifier("history-empty")
         } else {
             let hasNotes = !noteMonths.isEmpty
+            if let restore { archived(restore).pageItem() }
             if hasNotes {
                 NotesSearchField(action: searchNotes)
                     .pageItem()
@@ -155,13 +163,14 @@ struct HabitHistoryTab: View {
                     .accessibilityAddTraits(withNotes ? .isSelected : [])
                     .accessibilityIdentifier("history-with-notes")
                 }
-                Button(action: goToDate) {
+                Button { choosingDay = true } label: {
                     Label("Go to Date…", systemImage: "calendar")
                 }
                 .buttonStyle(.bordered)
                 .tint(Color.ink)
                 .foregroundStyle(Color.primary)
                 .accessibilityIdentifier("history-go-to-date")
+                .dayCalendar(isPresented: $choosingDay, habit: habit, pick: show)
                 Spacer(minLength: 0)
             }
             .controlSize(.small)
@@ -171,13 +180,52 @@ struct HabitHistoryTab: View {
             let shown = withNotes ? noteMonths : months
             ForEach(Array(shown.enumerated()), id: \.element.id) { index, month in
                 let isOpen = (index < 2) != toggled.contains(month.first)
-                HistoryMonthCard(month: month, color: habit.color, isOpen: isOpen, open: open) {
+                HistoryMonthCard(month: month, color: habit.color, isOpen: isOpen, lit: lit, open: open) {
                     withAnimation(.snappy(duration: 0.25)) {
                         if toggled.contains(month.first) { toggled.remove(month.first) } else { toggled.insert(month.first) }
                     }
                 }
                 .pageItem()
             }
+        }
+    }
+
+    /// "Archived today" or "Archived on 3 Sep": what's kept, and Restore (Figma 1150:329659). Nothing can be logged
+    /// while it's archived, so the page has no Add, but every day still opens to read.
+    private func archived(_ restore: @escaping () -> Void) -> some View {
+        let day = store.archivedOn[habit.id]
+        let when = day.map { $0 == store.today() ? "Archived today" : "Archived on \(DayWords.dayMonth($0, calendar: store.calendar))" }
+        return CardNotice(symbol: "archivebox", title: when ?? "Archived", message: "Everything it recorded is kept. Restore it to log again.",
+                          problem: false, id: "history-archived") {
+            Button("Restore", action: restore)
+                .controlSize(.small)
+                .accessibilityIdentifier("history-restore")
+        }
+        .padding(WeekSpacing.card)
+        .background(Color.card, in: CardShape.shape)
+    }
+
+    /// Go to Date… (Figma's flow 202): the day's month opens if it was folded, and With Notes goes off if the day has no
+    /// note (Go to Date isn't a filter, but the day must be on the page); then the page scrolls the day to the middle
+    /// and lights it for a moment, then the light fades. Nothing else changes.
+    private func show(_ day: LocalDay) {
+        guard let month = months.first(where: { $0.days.contains { $0.day == day } }) else { return }
+        var still = Transaction()
+        still.disablesAnimations = true
+        withTransaction(still) {
+            if withNotes, !noteMonths.contains(where: { $0.days.contains { $0.day == day } }) { withNotes = false }
+            let shown = withNotes ? noteMonths : months
+            if let index = shown.firstIndex(where: { $0.first == month.first }), (index < 2) == toggled.contains(month.first) {
+                toggled.formSymmetricDifference([month.first])
+            }
+        }
+        Task { @MainActor in
+            await Task.yield()
+            scrollTo(month.first == months.first?.first ? nil : month.id, HistoryDayRow.scrollID(day))
+            try? await Task.sleep(for: .milliseconds(350))
+            withAnimation(.easeIn(duration: 0.2)) { lit = day }
+            try? await Task.sleep(for: .milliseconds(1200))
+            withAnimation(.easeOut(duration: 0.6)) { if lit == day { lit = nil } }
         }
     }
 
@@ -220,13 +268,15 @@ struct NotesSearchField: View {
     }
 }
 
-/// History's Add (Figma): Ink, floating at the bottom right over the page, as the app's main action there. It opens
-/// the same Add screen as everywhere (U22), on today, where the date can be changed to any day.
+/// History's Add (Figma's flow 203): Ink, floating at the bottom right over the page. It asks which day first, in the
+/// calendar, and opens that day's Day details, where +1, Log and Add a Note all are, so one Add covers logs and notes.
 struct HistoryAddButton: View {
-    let action: () -> Void
+    let habit: Habit
+    let open: (LocalDay) -> Void
+    @State private var choosing = false
 
     var body: some View {
-        Button(action: action) {
+        Button { choosing = true } label: {
             Label("Add", systemImage: "plus").foregroundStyle(Color.onInk)
         }
         .buttonStyle(.borderedProminent)
@@ -235,6 +285,7 @@ struct HistoryAddButton: View {
         .tint(Color.ink)
         .fontWeight(.semibold)
         .accessibilityIdentifier("history-add-entry")
+        .dayCalendar(isPresented: $choosing, habit: habit, pick: open)
     }
 }
 
@@ -243,6 +294,8 @@ struct HistoryMonthCard: View {
     let month: HistoryMonth
     let color: HabitColor
     let isOpen: Bool
+    /// Go to Date's day, lit for a moment.
+    var lit: LocalDay? = nil
     let open: (LocalDay) -> Void
     let toggle: () -> Void
 
@@ -275,7 +328,8 @@ struct HistoryMonthCard: View {
             if isOpen {
                 Divider().padding(.horizontal, WeekSpacing.card)
                 ForEach(month.days) { day in
-                    HistoryDayRow(day: day, color: color) { open(day.day) }
+                    HistoryDayRow(day: day, color: color, lit: lit == day.day) { open(day.day) }
+                        .id(HistoryDayRow.scrollID(day.day))
                     if day.id != month.days.last?.id {
                         // From the row's text to 16 before the edge.
                         Divider().padding(.leading, WeekSpacing.card + 36 + 16).padding(.trailing, WeekSpacing.card)
@@ -294,7 +348,11 @@ struct HistoryMonthCard: View {
 struct HistoryDayRow: View {
     let day: HistoryDay
     let color: HabitColor
+    var lit = false
     let action: () -> Void
+
+    /// The row's place on the page, for Go to Date's scroll.
+    static func scrollID(_ day: LocalDay) -> String { "history-day-" + day.key }
 
     var body: some View {
         Button(action: action) {
@@ -323,45 +381,12 @@ struct HistoryDayRow: View {
             .padding(.horizontal, WeekSpacing.card)
             .padding(.vertical, 15)
             .frame(minHeight: 72)
+            .background(lit ? color.fill : Color.clear)
             .contentShape(Rectangle())
         }
         .buttonStyle(PageRowStyle())
         .accessibilityElement(children: .combine)
         .accessibilityHint("Opens the day")
         .accessibilityIdentifier("habit-day-\(day.day.key)")
-    }
-}
-
-/// Go to Date (research History D): any day from the habit's start to today, logged or not. Tapping a day opens it.
-struct GoToDateSheet: View {
-    let habit: Habit
-    let pick: (LocalDay) -> Void
-    @Environment(HabitStore.self) private var store
-    @Environment(\.dismiss) private var dismiss
-    @State private var date = Date.now
-
-    var body: some View {
-        let calendar = store.calendar
-        let end = store.today().date(calendar: calendar)
-        let first = (habit.kind == .quit ? store.quitStartDay(of: habit) : store.startDay(of: habit)).date(calendar: calendar)
-        NavigationStack {
-            VStack(spacing: 0) {
-                DatePicker("Date", selection: $date, in: min(first, end)...max(first, end), displayedComponents: .date)
-                    .datePickerStyle(.graphical)
-                    .padding(.horizontal, WeekSpacing.card)
-                    .accessibilityIdentifier("go-to-date-picker")
-                Spacer(minLength: 0)
-            }
-            .onChange(of: date) { pick(LocalDay(date, calendar: calendar)) }
-            .navigationTitle("Go to Date")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Open") { pick(LocalDay(date, calendar: calendar)) }.fontWeight(.semibold)
-                }
-            }
-        }
-        .presentationDetents([.large])
     }
 }

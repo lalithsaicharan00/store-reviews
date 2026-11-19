@@ -22,13 +22,11 @@ struct HabitPageView: View {
     @State private var showPause = false
     /// An archived habit brought back past the free limit: the 6th-habit sheet first (Current Work 80).
     @State private var restoring: Habit?
-    @State private var showGoTo = false
     @State private var showNotesSearch = false
-    /// The day Notes search or Go to Date chose, opened once that page has gone (one sheet at a time).
+    /// The day Notes search chose, opened once that page has gone (one sheet at a time).
     @State private var pendingDay: LocalDay?
     @State private var confirmingDelete = false
     @State private var openDay: LocalDay?
-    @State private var addEntryDay: LocalDay?
     /// The All milestones page, pushed from Milestones' "See all": held here, not by the card, so it stays while the
     /// Progress tab redraws under it (U27).
     @State private var showMilestones = false
@@ -68,8 +66,19 @@ struct HabitPageView: View {
                     switch tabs.contains(tab) ? tab : .history {
                     case .history:
                         HabitHistoryTab(habit: habit, months: model.historyIsEmpty ? [] : model.history, noteMonths: model.noteHistory,
-                                        open: { openDay = $0 }, goToDate: { showGoTo = true },
-                                        searchNotes: { showNotesSearch = true })
+                                        open: { openDay = $0 },
+                                        scrollTo: { month, day in
+                                            // The month's card first, which the lazy stack may not have made yet, then its row.
+                                            // The newest month is always made, and its jump would show.
+                                            if let month { proxy.scrollTo(month, anchor: .top) }
+                                            Task { @MainActor in
+                                                // A turn wasn't enough for the card's rows to be laid out (seen on the Simulator).
+                                                try? await Task.sleep(for: .milliseconds(60))
+                                                withAnimation(.smooth(duration: 0.35)) { proxy.scrollTo(day, anchor: .center) }
+                                            }
+                                        },
+                                        searchNotes: { showNotesSearch = true },
+                                        restore: habit.archived ? { if !store.restore(habit) { restoring = habit } } : nil)
                     case .progress:
                         HabitProgressTab(habit: habit, model: model, start: overTime, openDay: { openDay = $0 },
                                          openMilestones: { showMilestones = true })
@@ -93,8 +102,9 @@ struct HabitPageView: View {
         .background(Color(.systemGroupedBackground))
         // History's Add floats over the page at the bottom right (Figma), in reach of the thumb.
         .overlay(alignment: .bottomTrailing) {
-            if tabs.contains(.history) && (tab == .history || !tabs.contains(tab)) {
-                HistoryAddButton { addEntryDay = today }
+            // Archived: nothing can be logged, so no Add (Figma's History · archived).
+            if tabs.contains(.history) && (tab == .history || !tabs.contains(tab)) && !habit.archived {
+                HistoryAddButton(habit: habit) { openDay = $0 }
                     .padding(.trailing, 16)
                     .padding(.bottom, 8)
             }
@@ -120,15 +130,8 @@ struct HabitPageView: View {
             ToolbarItem(placement: .topBarTrailing) { menu(habit, today: today) }
         }
         .sheet(item: $openDay) { DaySheet(habit: habit, day: $0) }
-        .sheet(item: $addEntryDay) { AddLogView(habit: habit, day: $0, source: .manual) }
         .fullScreenCover(isPresented: $showNotesSearch, onDismiss: openPendingDay) {
             NotesSearchPage(habit: habit, months: model.noteHistory) { pendingDay = $0 }
-        }
-        .sheet(isPresented: $showGoTo, onDismiss: openPendingDay) {
-            GoToDateSheet(habit: habit) { day in
-                pendingDay = day
-                showGoTo = false
-            }
         }
         .onPerfCommand { action in
             switch action {
@@ -149,8 +152,8 @@ struct HabitPageView: View {
                 dismiss()
                 store.delete([habit])
             }
-            if !habit.archived { Button("Archive Instead") { store.archive([habit]) } }
         } message: {
+            // Cancel and Delete only (D9); Archive is the row above Delete in the ⋯ menu.
             Text("Its history and notes are deleted too, and this can't be undone. Archiving stops it and keeps its history.")
         }
     }

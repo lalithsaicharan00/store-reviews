@@ -196,6 +196,11 @@ struct TodayView: View {
                 store.setNote("Started keeping a glass by the bed.", of: habit, on: today.adding(days: -10, calendar: store.calendar))
                 await store.flush()
             }
+            // `-habit-archived`: archive it first (Figma's History · archived).
+            if arguments.contains("-habit-archived") {
+                store.archive([habit])
+                await store.flush()
+            }
             menu.place = .habitsAndTasks
             var path = NavigationPath([MenuPlace.habitsAndTasks])
             path.append(habit.id)
