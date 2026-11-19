@@ -70,6 +70,45 @@ final class TasksUITests: XCTestCase {
         shot(app, "tasks-all-types")
     }
 
+    /// Task details (Figma 1136:9271): a one-time task not done yet is planned with nothing done; done, one Done card
+    /// whose day opens Day details; repeating, a card per year that folds; Delete asks with Cancel and Delete only.
+    func testTaskDetailsStates() {
+        func open(_ name: String) -> XCUIApplication {
+            let app = XCUIApplication(); app.launchArguments = ["-uitest", "-task-demo", "-open-habit", name]
+            app.launch()
+            // The bar's title is cut at 15 letters, so the header names it.
+            XCTAssertTrue(app.descendants(matching: .any)["habit-header"].staticTexts[name].waitForExistence(timeout: 15),
+                          "\(name) opens on Task details")
+            return app
+        }
+        var app = open("Car service")
+        XCTAssertTrue(app.descendants(matching: .any)["task-planned"].waitForExistence(timeout: 5), "Planned card")
+        XCTAssertTrue(app.descendants(matching: .any)["task-nothing-done"].exists, "Nothing Done Yet")
+        XCTAssertFalse(app.segmentedControls["habit-tabs"].exists, "A task has no Progress | History")
+        XCTAssertTrue(app.buttons["task-add-note"].exists)
+
+        app = open("Book flights")
+        let done = app.buttons["task-group-Done"]
+        XCTAssertTrue(done.waitForExistence(timeout: 5), "Done card")
+        XCTAssertTrue(app.staticTexts["Window seats, both ways."].exists, "The day's note under it")
+        app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'task-day-'")).firstMatch.tap()
+        XCTAssertTrue(app.buttons["Undo Done"].waitForExistence(timeout: 5), "The day opens Day details")
+
+        app = open("Replace the water filter")
+        let year = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'task-group-20'")).firstMatch
+        XCTAssertTrue(year.waitForExistence(timeout: 5), "A card per year")
+        let days = app.buttons.matching(NSPredicate(format: "identifier BEGINSWITH 'task-day-'"))
+        let before = days.count
+        year.tap()
+        XCTAssertTrue(days.count < before, "The year folds: \(before) → \(days.count)")
+        app.buttons["habit-menu"].tap(); app.buttons["Delete"].tap()
+        let alert = app.alerts.firstMatch
+        XCTAssertTrue(alert.waitForExistence(timeout: 5))
+        XCTAssertEqual(alert.buttons.count, 2, "Cancel and Delete only (D9)")
+        alert.buttons["Cancel"].tap()
+        XCTAssertTrue(app.descendants(matching: .any)["habit-header"].waitForExistence(timeout: 5), "Cancel keeps the task")
+    }
+
     func testCreateTaskFromTasksAndEditSurvivesRelaunch() {
         let app = XCUIApplication()
         app.launchArguments = ["-dbname", "uitest-tasks", "-reset-db", "-empty", "-free"]

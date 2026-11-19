@@ -43,7 +43,8 @@ struct HabitPageView: View {
 
     var body: some View {
         if let habit = store.habits.first(where: { $0.id == id }) {
-            page(habit)
+            // A task has no Progress, only its days (Figma's Task details).
+            if habit.kind == .task { TaskPageView(task: habit) } else { page(habit) }
         } else {
             ContentUnavailableView("Habit Deleted", systemImage: "trash")
         }

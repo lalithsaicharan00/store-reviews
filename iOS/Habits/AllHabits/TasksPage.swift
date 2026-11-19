@@ -412,14 +412,14 @@ struct ArchivedTasksLink: Hashable {}
     }
 
     /// "5:00 PM · Evening", "Morning", "Anytime".
-    private static func when(_ task: Habit, _ store: HabitStore) -> String {
+    static func when(_ task: Habit, _ store: HabitStore) -> String {
         let part = store.section(task.parts.first ?? .anytime).name
         guard let minute = task.dueMinute ?? task.reminders.first?.minuteOfDay else { return part }
         return DaySection.clock(minute) + " · " + part
     }
 
     /// "Done today", "8:00 AM · Next today", "Every 3 days · Next Sun, 25 Oct".
-    private static func next(_ task: Habit, _ store: HabitStore) -> String {
+    static func next(_ task: Habit, _ store: HabitStore) -> String {
         let calendar = store.calendar
         let today = store.today()
         if store.isDone(task, on: today) && store.isDue(task, on: today) { return "Done today" }

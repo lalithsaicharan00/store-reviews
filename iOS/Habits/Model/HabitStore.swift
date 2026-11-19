@@ -2753,6 +2753,15 @@ final class HabitStore {
             pause(swim, from: today.adding(days: -30, calendar: calendar), through: today.adding(days: -24, calendar: calendar))
             await flush()
         }
+        if arguments.contains("-task-demo") {
+            let today = today()
+            if let flights = habits.first(where: { $0.name == "Book flights" }) { setNote("Window seats, both ways.", of: flights, on: today) }
+            if let filter = habits.first(where: { $0.name == "Replace the water filter" }) {
+                setNote("New filter from the hardware shop.", of: filter, on: today.adding(days: -40, calendar: calendar))
+                setNote("Two days early; the water tasted off.", of: filter, on: today.adding(days: -160, calendar: calendar))
+            }
+            await flush()
+        }
         if ProcessInfo.processInfo.arguments.contains("-longtext") {
             // Every section name at its limit, to test layouts.
             let long = ["Before breakfast", "Lunch break walk", "Once kids sleep"] // 16, 16, 15: at the limit
@@ -2925,6 +2934,25 @@ final class HabitStore {
                     entries.append(Entry(habitID: running.id, day: day, value: 1))
                 }
                 if d % 3 != 1 { entries.append(Entry(habitID: cycle.id, day: day, value: Double([8, 11, 14, 16, 18, 21, 26][d % 7]))) }
+            }
+        }
+        if ProcessInfo.processInfo.arguments.contains("-task-demo") {
+            // Task details' pictures (Figma 1136:9271): a one-time task not done yet, one done today with a note, and a
+            // repeating one done four times this year and twice last year, some with notes (added once saved, `seedDemo`).
+            func at(_ day: LocalDay, _ hour: Int, _ minute: Int) -> Date {
+                cal.date(from: DateComponents(year: day.year, month: day.month, day: day.day, hour: hour, minute: minute)) ?? now
+            }
+            let car = Habit(name: "Car service", symbol: "car.fill", color: .blue, kind: .task, parts: [.morning],
+                            dueDay: today.adding(days: 5, calendar: cal), remind: false, createdAt: ago(days: 3))
+            let flights = Habit(name: "Book flights", symbol: "airplane", color: .cyan, kind: .task, dueDay: today, remind: false,
+                                createdAt: ago(days: 10))
+            let filter = Habit(name: "Replace the water filter", symbol: "drop.fill", color: .teal, kind: .task,
+                               frequency: .calendar(CalendarSchedule(unit: .month, interval: 2, dates: [today.day])), remind: false, createdAt: ago(days: 400))
+            habits.append(contentsOf: [car, flights, filter])
+            entries.append(Entry(habitID: flights.id, day: today, value: 1, createdAt: min(now, at(today, 9, 12))))
+            for (d, hour, minute) in [(40, 18, 40), (101, 10, 5), (160, 20, 20), (218, 9, 0), (330, 8, 30), (390, 19, 15)] {
+                let day = today.adding(days: -d, calendar: cal)
+                entries.append(Entry(habitID: filter.id, day: day, value: 1, createdAt: at(day, hour, minute)))
             }
         }
         if ProcessInfo.processInfo.arguments.contains("-perf-history") {
