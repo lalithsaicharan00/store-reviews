@@ -1,0 +1,31 @@
+# Evidence: What People Actually Pay For
+
+Hand labels and the scripts that count them. Run every script from this folder with `python3 -I <script>`. The
+scripts read the review files in `Research/App Store Reviews/` directly, or the text files here.
+
+## App 1 — Habit Tracker – Goal Tracker & ADHD Planner
+
+| File | What it is |
+|---|---|
+| `1-payer-final-ids.json` | The 962 + 1 reviews that say they paid. Line n of the labels = position n in this list. |
+| `1-trigger-codes.py` | What made each one pay, labelled by hand from the full text (`T`; codes explained at the top). |
+| `1-trigger-tally.py` | Counts by group and reason: all storefronts, outside China, US, China. |
+| `1-family-share-read.txt` | The payers coded family, share, health, Watch or other, in full, for the "set aside" table. |
+| `1-together-scan.py` | Finds candidate reviews about doing habits with other people (11 languages). Writes `1-together-read.txt`, `1-together-ids.json` and a sample of what the search left out. |
+| `1-together-candidates.json` | The broader first search, used only to sample what the narrow search missed. |
+| `1-together-read.txt` | The 1,011 candidates, oldest first (`idx\|review_id\|country\|rating\|month\| title \| text`). |
+| `1-together-codes.py` | Hand labels for each candidate (`K`; codes explained at the top). |
+| `1-together-tally.py` | Counts: all, outside China, China, US. |
+| `1-together-excluded-sample*.txt` | Two random samples of reviews the search left out, read by hand to estimate what was missed (about 2.5%). |
+
+## App 7 — HabitKit
+
+| File | What it is |
+|---|---|
+| `7-all-reviews.txt` | All 2,993 reviews, App Store (A) and Play (P), oldest first (`n\|store\|country or language\|rating\|month\| text`). |
+| `7-all-ids.json` | `[store, review_id]` for each line. |
+| `7-codes.py` | Hand labels (`K`): `pay=Y/I/F`, `why=…`, `disc=…` (explained at the top). |
+| `7-tally.py` | Payers, reasons and how people found the app. |
+
+The one-off counts in the report (the cap and widget complaints by word search, payers by country and language) were
+run by hand from these files and are marked as word searches where they are.
