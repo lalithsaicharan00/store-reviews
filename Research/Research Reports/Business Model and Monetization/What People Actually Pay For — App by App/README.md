@@ -37,6 +37,7 @@ The end goal is a plan that holds a **one-time purchase and a subscription** tog
 | App | Payers read | What made them pay, once the giveaway list is set aside | Anything new worth building? |
 |---|---|---|---|
 | 1. Habit Tracker – Goal Tracker & ADHD Planner (App Store) | 962 | Goodwill and a low one-time price; buying at the purchase screen; the family plan (a pricing tier, not a feature); **doing habits together, ~20** | **Doing habits together** is the only candidate. It's small, real, and needs a server, so it would belong in a subscription. Not yet. |
+| 2. Daily Habits (App Store) | 44 | Cheap, one-time, worth it 16; already owns the developer's other apps 5; Calendar sync 2; Watch 2; no ads 1 | Nothing new. This app is closest to our plan (unlimited habits free, ~$4 one-time Pro), and with nothing basic locked, almost every reason is price and goodwill. |
 | 7. HabitKit (App Store + Play) | 297 | Goodwill (worth it, cheap, support the developer, one-time price, design) 134; locked widgets, cap and stats 58; bought at once 20 | Nothing new. |
 
 **Across both apps, goodwill is the largest named reason.** People pay because the app is good and the price
@@ -150,6 +151,48 @@ it belongs in the **subscription**, because its cost recurs. Its useful core is 
 - no feed.
 
 Keep it as a candidate and check it against the next apps.
+
+---
+
+## App 2 — Daily Habits
+
+App Store, all 517 reviews read one by one. Labels: `Evidence/2-codes.py`; recount with `Evidence/2-tally.py`.
+Report: [`App Store Reports/02…`](<../../../App Store Reports/02. Daily Habits - Habit Tracker - Habit List and Routine Tracker (REPORT).md>).
+
+**Why it matters here: it's the app closest to our plan.**
+- **Free:** unlimited habits, reminders, widgets, the Watch app and a free Groups feature.
+- **Pro:** a one-time purchase of about $3.99 that adds sync between devices, sending upcoming habits to Apple's
+  Calendar, extended statistics, a passcode lock and no ads.
+- **Status:** no update since May 2021.
+
+### Who paid and why
+
+**44 say they paid** (3.16★, pulled down by Pro features that broke). 8 more intend to, and 4 got Pro free in the
+launch promotion. 26 of the 44 say why.
+
+| What made them pay | Payers | Reviews |
+|---|---|---|
+| **Price and goodwill:** cheap 11, worth it 6, one-time 5, support 1, used it long 1 | **16** | "it's cheap and it has one time fee. I bought it because of that" (9923794823); "used it half a year, recently bought… the best price for the quality" (5263275131, translated) |
+| **Already owns the developer's other apps,** or wants them to work together (Be Focused, Focus Matrix) | 5 | 7232398007, 8106352419, 8731669029, 13788341591, 2109039905 |
+| Sending habits to Apple's Calendar | 2 | 1663634672, 5403701988; both say it broke |
+| Apple Watch | 2 | 1816542296, 4402829597; both say it broke |
+| No ads | 1 | 5727003954 ("a cheap upgrade of 1€ you can remove ads and sync") |
+| Widgets, sync (on the giveaway list) | 1 each | — |
+
+One more is telling: "paying only removes the ads, I didn't feel much benefit" (4025884406, translated).
+
+### What this app adds to the picture
+
+- **Nothing new to build.**
+  - Owning the developer's other apps doesn't apply to us, since we're one app.
+  - Calendar sync and the Watch are two reviews each, and both are out of scope.
+  - We have no ads to remove.
+- **With nothing basic locked, people pay for the price and the goodwill.** Unlimited habits free is this app's most
+  loved theme (30 reviews, 4.97★ in its report). The payers who give a reason talk about a cheap, one-time price.
+- **The cost is a low payment rate and low payer ratings.** About 1 in 12 reviewers say they paid. Payers rate it
+  lower than the app overall, because what Pro promised (sync, calendar, Watch) broke.
+- **Doing habits together:** the free Groups feature appears in only 6 reviews (5 like it, 1 broken, 2380499734: "we
+  each have to create our own habits instead of sharing"). Nobody paid for it, since it was free.
 
 ---
 

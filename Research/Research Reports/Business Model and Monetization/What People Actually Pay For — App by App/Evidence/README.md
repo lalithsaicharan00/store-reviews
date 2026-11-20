@@ -18,6 +18,15 @@ scripts read the review files in `Research/App Store Reviews/` directly, or the 
 | `1-together-tally.py` | Counts: all, outside China, China, US. |
 | `1-together-excluded-sample*.txt` | Two random samples of reviews the search left out, read by hand to estimate what was missed (about 2.5%). |
 
+## App 2 — Daily Habits
+
+| File | What it is |
+|---|---|
+| `2-all-reviews.txt` | All 517 reviews, oldest first (`n\|country\|rating\|month\| title \| text`). |
+| `2-all-ids.json` | Review ID for each line. |
+| `2-codes.py` | Hand labels (`K`): `pay=Y/I/F`, `why=…`, `tog=…` (explained at the top). |
+| `2-tally.py` | Payers, reasons, and the ones outside price, goodwill and the giveaway list. |
+
 ## App 7 — HabitKit
 
 | File | What it is |
