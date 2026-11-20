@@ -27,6 +27,15 @@ scripts read the review files in `Research/App Store Reviews/` directly, or the 
 | `2-codes.py` | Hand labels (`K`): `pay=Y/I/F`, `why=…`, `tog=…` (explained at the top). |
 | `2-tally.py` | Payers, reasons, and the ones outside price, goodwill and the giveaway list. |
 
+## Calendar sync (all habit apps)
+
+| File | What it is |
+|---|---|
+| `cal-read.txt` | 830 habit-app reviews mentioning calendar sync or integration (`idx\|store\|app\|review_id\|country or language\|rating\|month\| text`). |
+| `cal-ids.json` | `[store, app, review_id]` for each line. |
+| `cal-codes.py` | Hand labels: direction, stance, payment, which calendar (explained at the top). |
+| `cal-tally.py` | The counts in the report. |
+
 ## App 7 — HabitKit
 
 | File | What it is |

@@ -38,6 +38,7 @@ The end goal is a plan that holds a **one-time purchase and a subscription** tog
 |---|---|---|---|
 | 1. Habit Tracker – Goal Tracker & ADHD Planner (App Store) | 962 | Goodwill and a low one-time price; buying at the purchase screen; the family plan (a pricing tier, not a feature); **doing habits together, ~20** | **Doing habits together** is the only candidate. It's small, real, and needs a server, so it would belong in a subscription. Not yet. |
 | 2. Daily Habits (App Store) | 44 | Cheap, one-time, worth it 16; already owns the developer's other apps 5; Calendar sync 2; Watch 2; no ads 1 | Nothing new. This app is closest to our plan (unlimited habits free, ~$4 one-time Pro), and with nothing basic locked, almost every reason is price and goodwill. |
+| *Calendar sync, all habit apps* | 310 reviews about it | Asked for 261 times; paid for because of it 3; would pay 11 | A request, not a reason people pay. If built, read-only first (show calendar events on Today). |
 | 7. HabitKit (App Store + Play) | 297 | Goodwill (worth it, cheap, support the developer, one-time price, design) 134; locked widgets, cap and stats 58; bought at once 20 | Nothing new. |
 
 **Across both apps, goodwill is the largest named reason.** People pay because the app is good and the price
@@ -193,6 +194,51 @@ One more is telling: "paying only removes the ads, I didn't feel much benefit" (
   lower than the app overall, because what Pro promised (sync, calendar, Watch) broke.
 - **Doing habits together:** the free Groups feature appears in only 6 reviews (5 like it, 1 broken, 2380499734: "we
   each have to create our own habits instead of sharing"). Nobody paid for it, since it was free.
+
+---
+
+## A closer look: Calendar sync
+
+Asked by the user on 20 Nov 2026 after app 2: "What about this? Sending habits to Apple Calendar?"
+
+Every habit-app review in our data that mentions calendar sync or integration was found with an English word search
+(pure to-do and school-planner apps were left out) and read by hand: 830 candidates. **310 are about connecting a
+habit app to a calendar.** Another 124 only say "I can do this in my calendar app for free". Labels:
+`Evidence/cal-codes.py`; recount with `Evidence/cal-tally.py`.
+
+| | Reviews |
+|---|---|
+| **Ask for it** | **261** (3.96★; 199 on Play, 111 on the App Store among all 310): mostly HabitNow (80) and Habitica (32), then Productive, Habitify, Routine Planner, Me+, RoutineFlow |
+| Use it and like it | 21 |
+| **Say it's broken or made a mess** | 16, plus about 11 in app 2's own reviews |
+| Don't want habits in their calendar | 12 ("I downloaded the separate tracker because I want my calendar just for work", b74a0821…) |
+| Say they **paid because of it** | **3** (Habitify c4a4c703…, refunded within an hour; app 2's 1663634672 and 5403701988), and 2 of the 3 say it broke |
+| Say they would pay if it existed | 11 ("I would happily pay for this app if I could sync it with my Google calendar", 420ddc3b…) |
+| Left, or won't use the app, without it | 11 |
+
+- **Which calendar:** Google 171, Apple 29, Outlook 6.
+- **Which way:**
+  - Most don't say (165).
+  - 52 want their **calendar events shown in the app**, to plan habits around appointments: "read my calendar
+    events and add them to the days as tasks I can check off" (3a1643d0…).
+  - 44 want **habits written into their calendar**, often for time-blocking.
+- **Writing into someone's calendar is where it breaks:**
+  - duplicates every day (Habitify b7bed9d5…, 12668301832);
+  - "about 20 copies of each item" (1508808010);
+  - "App has ruined my phone calendar by adding blank events" (1650678342);
+  - every habit scheduled as an hour-long event (4494723296).
+
+  Feature Ledger C072 already says writes to a shared system store must be exact and reversible.
+
+**Verdict.** This is a real, steady **request**, mostly from people who plan their whole day (habits plus tasks,
+especially on Android). It is not a reason people pay: 3 people out of 310 said they paid for it, and 11 said they
+would. If it's ever built:
+
+- **Start read-only:** show today's calendar events on Today. It needs no server, so it could be a one-time Plus extra.
+- **Leave writing into calendars out,** unless it can be exact and reversible.
+
+**How firm this is:** the word search was English (it also caught "Google Calendar" written inside other
+languages), so other languages are undercounted.
 
 ---
 
