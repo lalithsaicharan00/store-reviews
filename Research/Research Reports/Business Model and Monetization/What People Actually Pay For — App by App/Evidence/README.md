@@ -36,6 +36,18 @@ scripts read the review files in `Research/App Store Reviews/` directly, or the 
 | `cal-codes.py` | Hand labels: direction, stance, payment, which calendar (explained at the top). |
 | `cal-tally.py` | The counts in the report. |
 
+## App 3 — Days Since
+
+| File | What it is |
+|---|---|
+| `3-pay-read.txt` | The 951 reviews with a word about paying, price, buying or donating, oldest first (`n\|country\|rating\|month\| title \| text`). |
+| `3-pay-ids.json` | Review ID for each line (one JSON list). |
+| `3-codes.py` | Hand labels (`K`): `pay=Y/I/D`, `why=…` (explained at the top). Lines with no label say nothing about paying for this app. |
+| `3-tally.py` | Payers, would-pay, donate, reasons, and the payers outside price, goodwill and the giveaway list. |
+
+The 1★–2★ counts before and after the widget lock, and the money-saved count, are word searches over all 10,621
+reviews in `reviews.jsonl`, marked as such in the report.
+
 ## App 7 — HabitKit
 
 | File | What it is |

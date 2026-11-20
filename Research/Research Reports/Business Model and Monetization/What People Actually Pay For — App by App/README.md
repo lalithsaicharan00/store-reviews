@@ -38,10 +38,11 @@ The end goal is a plan that holds a **one-time purchase and a subscription** tog
 |---|---|---|---|
 | 1. Habit Tracker – Goal Tracker & ADHD Planner (App Store) | 962 | Goodwill and a low one-time price; buying at the purchase screen; the family plan (a pricing tier, not a feature); **doing habits together, ~20** | **Doing habits together** is the only candidate. It's small, real, and needs a server, so it would belong in a subscription. Not yet. |
 | 2. Daily Habits (App Store) | 44 | Cheap, one-time, worth it 16; already owns the developer's other apps 5; Calendar sync 2; Watch 2; no ads 1 | Nothing new. This app is closest to our plan (unlimited habits free, ~$4 one-time Pro), and with nothing basic locked, almost every reason is price and goodwill. |
+| 3. Days Since (App Store) | 82 | Price and goodwill 31; widgets (locked in July 2025) 14; reminders 5; colours 4; goals 2 | Nothing new. Locking the once-free widgets brought a wave of 1★ reviews (1★–2★ from 2.1% to 6.9%). |
 | *Calendar sync, all habit apps* | 310 reviews about it | Asked for 261 times; paid for because of it 3; would pay 11 | A request, not a reason people pay. If built, read-only first (show calendar events on Today). |
 | 7. HabitKit (App Store + Play) | 297 | Goodwill (worth it, cheap, support the developer, one-time price, design) 134; locked widgets, cap and stats 58; bought at once 20 | Nothing new. |
 
-**Across both apps, goodwill is the largest named reason.** People pay because the app is good and the price
+**Across every app so far, goodwill is the largest named reason.** People pay because the app is good and the price
 feels fair, usually a small one-time price, at a moment when something is there to buy. Goodwill alone, with
 nothing to buy, is a different story: see "[A tip jar instead of Plus?](#a-tip-jar-instead-of-plus)".
 
@@ -194,6 +195,76 @@ One more is telling: "paying only removes the ads, I didn't feel much benefit" (
   lower than the app overall, because what Pro promised (sync, calendar, Watch) broke.
 - **Doing habits together:** the free Groups feature appears in only 6 reviews (5 like it, 1 broken, 2380499734: "we
   each have to create our own habits instead of sharing"). Nobody paid for it, since it was free.
+
+---
+
+## App 3 — Days Since
+
+App Store. It has 10,621 reviews. Every review with a word about paying, pricing, buying or donating was read in full, 951 in all.
+Labels: `Evidence/3-codes.py`; recount with `Evidence/3-tally.py`.
+Report: [`App Store Reports/03…`](<../../../App Store Reports/03. Days Since - Quit Habit Tracker - Sober Streak Day Counter (REPORT).md>).
+
+**Why it matters here.** It's a "days since" counter, mostly for quitting things, and its history is unusual:
+- **Free until late 2022:** fully free, no purchases.
+- **Then Premium, later the "Count Up Club":** about $6 a month, $18 a year or $50 lifetime. Locked:
+  - goals;
+  - reminders;
+  - colours and app icons;
+  - backup and iCloud;
+  - Siri Shortcuts;
+  - the Watch;
+  - **from July 2025, widgets**, which had been free.
+
+It shows both before and after.
+
+### Who paid and why
+
+**82 say they paid** (3.87★). 47 more say they would, and 9 asked for a way to donate. 50 of the 82 say why.
+
+| What made them pay | Payers | Reviews |
+|---|---|---|
+| **Price and goodwill:** worth it 17, cheap 7, support the developer 4, used it long 4, a discount 3, one-time 3, money it saved them 1 | **31** | "I was hesitant at first to pay for a counter app but… I keep coming back… Supporting developers that create high quality apps is a must" (9948694045); "they've saved me way more than that for the year" (9466347369) |
+| **The giveaway list:** widgets 14, backup 1 | 15 | "pay for the pro version in order to be able to customize my widget" (12936970266) |
+| Reminders | 5 | "the reminders are a great feature" after an overdose (12308505754). Two of the five complain about them. One cancelled because they couldn't repeat every 14 days (10142749961), and one says the paid reminders make no sound (10246644188). |
+| Colours | 4 | "I can customize the colors of my counter" (11787136840); "the base colors were way too bright for me… It's not necessary" (13602265269) |
+| Goals (a target number of days) | 2 | "The goals are 100% worth upgrading for" (13144761902); 14392573700 |
+| Apple Watch | 2 | 10507899228 (out of scope, D16) |
+| Didn't choose to: forgot to cancel the trial | 2 | 11618250403, 12144029927 |
+| One each | | bought at once; kept it after the trial; "an honest developer" (9489905182); shared through Family Sharing (13571741107); **expected a community and found none** (13955344492); paid only because years of data were in it, under protest at the widget lock (12870203346) |
+| Paid, never says why | 32 | |
+
+**Would pay (47)** mostly name price:
+- cheap 9;
+- to support the developer 7;
+- if one-time 5;
+- worth it 3.
+
+Then reminders 3, a check-in streak 2, and one each for iPad, Watch, sync, backup, Shortcuts and seeing all counters at once.
+**The 9 who wanted to donate** wrote in 2021–2022, while the app was free, except one in 2025.
+
+### What this app adds to the picture
+
+- **Nothing new to build.** Outside price, goodwill and the giveaway list, there are only three features:
+  - reminders (5);
+  - colours (4);
+  - goals (2).
+
+  We give reminders and colours free. A habit's goal and its milestones are already part of every habit. Each is a
+  handful of reviews, and two of the five reminder payers are complaints. The rest:
+  - **A community:** one person paid expecting one.
+  - **A check-in streak:** two would pay for one, which is simply what a habit tracker does.
+  - **Money saved by quitting:** asked for in about 12 reviews (word search), with no payer.
+- **Taking a free feature away cost more than it earned.**
+  - **Before:** in the year before the widget lock, 47 of 2,288 reviews were 1★ or 2★ (2.1%).
+  - **After:** from July 2025, 167 of 2,404 were (6.9%), and 90 of those mention widgets (word search over all
+    reviews).
+  - **Paid under protest:** "I'll pay the $18/year because I'm used to this… but I'm leaving a 1 star review"
+    (12870203346).
+
+  This is the strongest evidence so far for our rule: **give the basics away from the start, and never take one back.**
+- **The goodwill was there before there was anything to buy.** The donate requests came while it was free: "Have you
+  thought about making a donate button?" (6826653115). Once there was something to buy, it became the largest named
+  reason to pay, as in apps 1, 2 and 7.
 
 ---
 
