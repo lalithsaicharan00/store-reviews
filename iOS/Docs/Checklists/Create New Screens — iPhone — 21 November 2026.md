@@ -27,7 +27,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **Quit or Cut Down** (`1061:2101`), with the example chips
 - [x] **How Do You Want to Track It?** (`1062:2`)
 - [x] **What Kind of Task?** (`1109:2`)
-- [ ] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
+- [x] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
 - [ ] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
 - [ ] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
 - [ ] **Colour** (`1074:161496`)
@@ -42,6 +42,14 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [ ] UI tests that read Create New's old words: the "New" bar title (gone), "Build or maintain", "Quit or cut down",
   "Cut down" (now title case) and the question words (`NewHabitUITests`, `NewFlowUITests` and the others that open +).
   No tests run in the design phase; update them all in one go before the first run.
+
+## Left for the logic pass
+
+- [ ] A routine with no set time (Set a Time off). The model still reads a section with no start as Anytime
+  (`DaySection.isAnytime`), and `SectionPlan`, `saveSections` and `timedSections` unwrap every other section's
+  start, so New Routine's Add waits for the switch until routines have their own "no time" and their place (after
+  the timed ones, before Anytime).
+- [ ] All Day as a built-in routine, and a habit with two or more reminders going into it by itself.
 
 ## What was done, screen by screen
 
@@ -101,3 +109,29 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   until the Create new form step redraws it; that step decides whether the picker goes.
 - **Checked on the Simulator:** light and dark against the Figma screenshot; On Repeat opens the form on "On a
   schedule".
+
+### Add a Routine: New Routine (`4761:33352`, `4761:33668`) and its banner — done 21 Nov
+
+- **Built as:** `SectionEditor` (Today/DaySections.swift), redrawn as Figma's Edit routine, Mode=New. A `Form`, so iOS
+  draws the cards, separators, the switch and the compact time picker: Name (placeholder "Name", 16 characters), then
+  **Time** with **Set a Time** (System Green, off by default as in Figma) and, when on, **Starts**, then **Your day**:
+  every routine with its times as they'll be, the new one marked "New". ✕ to cancel, Add to save, title New Routine
+  (Edit Routine for a saved one).
+- **No Ends picker:** a routine ends when the next one starts (Android A122). The page gives `SectionPlan` the next
+  routine's start as the end, so the plan it already had does the rest. The footer says what happens before anything
+  is saved: "Ends at 6:00 PM, when Evening starts. Afternoon will now end at 1:00 PM." (or "…, at the end of your
+  day."). It replaces the old "Split …?" question: Undo on the banner puts everything back.
+- **Section headers** ("Time", "Your day") are `FormHeader`: Subheadline Semibold, Secondary Label, sentence case.
+  `Color(.secondaryLabel)`, not `.secondary`: the hierarchical style dims again on top of the header's own grey, so it
+  came out lighter than Figma's.
+- **The banner:** `CreatedRoutine` (its ID, name and the list as it was) goes back through `onSaved`, and
+  `.routineCreatedBanner($created)` floats Figma's Banner ("“Meds” created · Undo") at the bottom of the page the
+  person comes back to, for 4 seconds, as the app's other banners do. Undo saves the old list back, so a routine the
+  new one cut short gets its times back. It's a modifier each opener attaches, not one app-wide banner, because each
+  opener is a different stack (Create New's sheet, the habit form's Time of Day page, Edit Today, Settings' Times of
+  Day) and the banner belongs to the page the person is on. Attached on all four; Habit details has no way to add a
+  routine yet.
+- **Set a Time off can't be saved yet** (see "Left for the logic pass"): Add waits for the switch.
+- **Checked on the Simulator:** both variants against the Figma screenshots, light and dark; Add brings back Create
+  New with the banner; Undo (tried with the banner held 30 seconds, then set back to 4) removed Meds and gave
+  Afternoon back its 12–6. Edit Today's and the habit form's banners are wired but not looked at yet.

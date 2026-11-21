@@ -16,6 +16,8 @@ struct ArrangeDayView: View {
     @Environment(HabitStore.self) private var store
     @State private var adding = false
     @State private var editing: DaySection?
+    /// A routine made from Add Routine: its banner floats here once New Routine closes.
+    @State private var createdRoutine: CreatedRoutine?
     /// How many times each row was put back after a drop that changes nothing (into or out of Quitting, or the empty
     /// routine's own placeholder). The List has already drawn the row where it was dropped, and a list whose data
     /// didn't change never draws it again, so the row gets a new identity and goes back where it belongs (seen on the
@@ -46,11 +48,12 @@ struct ArrangeDayView: View {
         .navigationTitle("Edit Today")
         .navigationBarTitleDisplayMode(.inline)
         .sheet(isPresented: $adding) {
-            NavigationStack { SectionEditor(existing: nil) { _ in } }
+            NavigationStack { SectionEditor(existing: nil) { createdRoutine = $0 } }
         }
         .sheet(item: $editing) { section in
             NavigationStack { SectionEditor(existing: section) { _ in } }
         }
+        .routineCreatedBanner($createdRoutine)
     }
 
     // MARK: The rows

@@ -115,6 +115,8 @@ struct NewItemChoices: View {
     /// Plus bought or room made in that sheet: the choice goes ahead once the sheet has closed.
     @State private var unlocked: Kind?
     @State private var pushed: Kind?
+    /// A routine made from Add a Routine: its banner floats here once New Routine closes.
+    @State private var createdRoutine: CreatedRoutine?
 
     private enum Kind: Hashable, Identifiable {
         case good, bad
@@ -141,7 +143,7 @@ struct NewItemChoices: View {
             }
             Section {
                 NavigationLink {
-                    SectionEditor(existing: nil) { _ in }
+                    SectionEditor(existing: nil) { createdRoutine = $0 }
                 } label: {
                     ChoiceLabel(icon: "list.bullet", title: "Add a Routine", detail: "Habits you do together, like a bedtime routine.")
                 }
@@ -161,6 +163,7 @@ struct NewItemChoices: View {
         }) { kind in
             SixthHabitSheet(reason: .sixth) { unlocked = kind }
         }
+        .routineCreatedBanner($createdRoutine)
         .onPerfCommand { action in if action == .openSixthHabit { sixthHabit = .good } }
         .analyticsScreen(.newHabit)
         .navigationBarTitleDisplayMode(.inline)
@@ -388,6 +391,8 @@ struct HabitForm: View {
     @State private var often = OftenDraft()
     /// Tasks: once on a date, or on a schedule.
     @State private var taskRepeats = false
+    /// A routine made from the Time of Day page: its banner floats there once New Routine closes.
+    @State private var createdRoutine: CreatedRoutine?
     /// A checklist's steps.
     @State private var items: [Step] = []
     @State private var quitSince = Date.now
@@ -1107,8 +1112,9 @@ struct HabitForm: View {
             // Pushed from here, so saving comes back to this list with the new one ticked (attached to
             // the form, it replaced this screen and Save jumped back to the form; found 28 Sep).
             .navigationDestination(isPresented: $addingSection) {
-                SectionEditor(existing: nil) { id in choose(id) }
+                SectionEditor(existing: nil) { created in choose(created.id); createdRoutine = created }
             }
+            .routineCreatedBanner($createdRoutine)
         }
     }
 

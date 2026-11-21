@@ -7,6 +7,7 @@ struct TimesOfDayList: View {
     @Environment(HabitStore.self) private var store
     @State private var editing: DaySection?
     @State private var adding = false
+    @State private var createdRoutine: CreatedRoutine?
 
     var body: some View {
         List {
@@ -39,8 +40,9 @@ struct TimesOfDayList: View {
             SectionEditor(existing: section) { _ in }
         }
         .navigationDestination(isPresented: $adding) {
-            SectionEditor(existing: nil) { _ in }
+            SectionEditor(existing: nil) { createdRoutine = $0 }
         }
+        .routineCreatedBanner($createdRoutine)
     }
 
     private func timeRange(_ section: DaySection) -> String {
@@ -50,32 +52,42 @@ struct TimesOfDayList: View {
     }
 }
 
-/// Add or edit one time of day: a name, when it starts and when it ends. Times that overlap other times of day split
-/// them (the user, 3 Oct 2026): the form shows how the whole day will look, and asks before splitting (`SectionPlan`).
+/// New Routine and Edit Routine (Figma's Edit routine, 830:265; New: 4761:33352 with a time, 4761:33668 without).
+///
+/// A `Form`, not Figma's stacked frames: the Name card, the Time card and Your day are its sections, so iOS draws the
+/// cards, separators, switch and compact time picker, and Dynamic Type and VoiceOver come with them.
+///
+/// Only Starts is picked: a routine ends when the next one starts (the user, 10 Nov 2026, Android A122), so the page
+/// asks `SectionPlan` with the next routine's start as the end. A start inside another routine makes that one end
+/// there; the line under Starts says so before anything changes, and Undo on the "created" banner puts it back. That
+/// line and the banner's Undo replace the old "Split …?" question.
+///
+/// Set a Time starts off, as in Figma (Calendar's All-day, Reminders' Time). A routine with no set time can't be saved
+/// yet: the model still reads a section with no start as Anytime. Until the logic pass gives routines their own "no
+/// time", Add waits for the switch (Create New checklist, "Left for the logic pass").
 struct SectionEditor: View {
     let existing: DaySection?
-    /// Called with the saved section's ID.
-    let onSaved: (String) -> Void
+    /// Called once it's saved: its ID and name, and the list as it was, for the banner's Undo.
+    let onSaved: (CreatedRoutine) -> Void
 
     @Environment(HabitStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var name: String
+    @State private var hasTime: Bool
     @State private var start: Date
-    @State private var end: Date
     @State private var confirmDelete = false
-    @State private var confirmSplit = false
     @State private var newID = UUID().uuidString
     @FocusState private var nameFocused: Bool
 
-    init(existing: DaySection?, onSaved: @escaping (String) -> Void) {
+    init(existing: DaySection?, onSaved: @escaping (CreatedRoutine) -> Void) {
         self.existing = existing
         self.onSaved = onSaved
         _name = State(initialValue: existing?.name ?? "")
-        // A new one: the next whole hour, for two hours.
+        // Every saved routine has a time today; a new one starts without, as in Figma.
+        _hasTime = State(initialValue: existing != nil)
+        // A new one: the next whole hour.
         let hour = Calendar.current.component(.hour, from: .now)
-        let startMinute = existing?.start ?? ((hour + 1) % 24) * 60
-        _start = State(initialValue: Self.date(startMinute))
-        _end = State(initialValue: Self.date(existing.map { _ in startMinute + 60 } ?? startMinute + 120))
+        _start = State(initialValue: Self.date(existing?.start ?? ((hour + 1) % 24) * 60))
     }
 
     private static func date(_ minutes: Int) -> Date {
@@ -88,110 +100,179 @@ struct SectionEditor: View {
     }
 
     private var trimmed: String { TextLimit.clean(name, TextLimit.section) }
+    private var dayEnd: Int { 24 * 60 + store.settings.dayEndHour * 60 }
+
+    /// The whole day with this routine in it: it runs from Starts until the next routine starts, or to the day's end.
     private var plan: SectionPlan {
-        let subject = DaySection(id: existing?.id ?? newID, name: trimmed.isEmpty ? "New time of day" : trimmed, start: nil, end: nil)
-        return SectionPlan.make(sections: store.sections, subject: subject, start: minutes(start), end: minutes(end),
-                                defaultEnd: 24 * 60 + store.settings.dayEndHour * 60)
+        let s = minutes(start)
+        let others = store.timedSections.filter { $0.section.id != existing?.id }
+        let end = others.compactMap(\.section.start).filter { $0 > s }.min()
+            ?? others.last.map { max($0.end, s + 15) } ?? dayEnd
+        let subject = DaySection(id: existing?.id ?? newID, name: trimmed.isEmpty ? "New Routine" : trimmed, start: nil, end: nil)
+        return SectionPlan.make(sections: store.sections, subject: subject, start: s, end: end, defaultEnd: dayEnd)
     }
 
     var body: some View {
         let plan = plan
-            Form {
-                Section {
-                    TextField("e.g. Before work", text: $name)
-                        .focused($nameFocused)
-                        .limitText($name, to: TextLimit.section)
-                        .submitLabel(.done)
-                        .accessibilityLabel("Name")
-                        .accessibilityIdentifier("section-name-field")
-                } footer: {
-                    if let note = TextLimit.note(name, TextLimit.section) { Text(note) }
-                }
-                Section {
+        Form {
+            Section {
+                TextField("Name", text: $name)
+                    .focused($nameFocused)
+                    .limitText($name, to: TextLimit.section)
+                    .submitLabel(.done)
+                    .accessibilityIdentifier("section-name-field")
+            } footer: {
+                if let note = TextLimit.note(name, TextLimit.section) { Text(note) }
+            }
+            Section {
+                Toggle("Set a Time", isOn: $hasTime.animation())
+                    .tint(.green)
+                    .accessibilityIdentifier("section-set-time")
+                if hasTime {
                     DatePicker("Starts", selection: $start, displayedComponents: .hourAndMinute)
-                    DatePicker("Ends", selection: $end, displayedComponents: .hourAndMinute)
-                } footer: {
-                    if let problem = plan.problem { Text(problem).foregroundStyle(.red) }
-                    else { Text("Habits can still be ticked at any time; the time of day only orders Today and marks what's Now.") }
                 }
+            } header: {
+                FormHeader("Time")
+            } footer: {
+                Text(hasTime ? (plan.problem ?? endsText(plan)) : "Turn on to choose when this routine starts.")
+            }
+            if hasTime {
                 Section {
                     ForEach(plan.rows) { row in
-                        PlanRow(row: row)
+                        DayRow(row: row, isNew: existing == nil)
                     }
                 } header: {
-                    Text("Your day")
-                } footer: {
-                    if !plan.split.isEmpty {
-                        Text("Times of day that overlap are split, so each part of the day is in one only.")
-                    }
-                }
-                if existing != nil {
-                    Section {
-                        Button("Delete Time of Day", role: .destructive) { confirmDelete = true }
-                    }
+                    FormHeader("Your day")
                 }
             }
-            .navigationTitle(existing == nil ? "New Time of Day" : "Edit Time of Day")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(existing == nil ? "Add" : "Save") {
-                        if plan.split.isEmpty { save(plan) } else { confirmSplit = true }
-                    }
+            if existing != nil {
+                Section {
+                    Button("Delete Routine", role: .destructive) { confirmDelete = true }
+                }
+            }
+        }
+        .contentMargins(.top, 16, for: .scrollContent)
+        .navigationTitle(existing == nil ? "New Routine" : "Edit Routine")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel", systemImage: "xmark") { dismiss() }
+            }
+            ToolbarItem(placement: .confirmationAction) {
+                Button(existing == nil ? "Add" : "Save") { save(plan) }
                     .fontWeight(.semibold)
-                    .disabled(trimmed.isEmpty || plan.problem != nil)
+                    .disabled(trimmed.isEmpty || !hasTime || plan.problem != nil)
                     .accessibilityIdentifier("section-save")
-                }
             }
-            // Before splitting: every time of day that changes, with its new times (the user, 3 Oct 2026).
-            .confirmationDialog("Split \(HabitCopy.join(plan.split.map(\.name)))?", isPresented: $confirmSplit, titleVisibility: .visible) {
-                Button(existing == nil ? "Split and Add \(trimmed)" : "Split and Save") { save(plan) }
-                    .accessibilityIdentifier("section-split-confirm")
-                Button("Cancel", role: .cancel) {}
-            } message: {
-                Text(plan.rows.filter { $0.isSubject || $0.changed }.map { "\($0.name): \($0.range)" }.joined(separator: "\n"))
+        }
+        .confirmationDialog("Delete \(existing?.name ?? "")?", isPresented: $confirmDelete, titleVisibility: .visible) {
+            Button("Delete Routine", role: .destructive) {
+                store.saveSections(store.sections.filter { $0.id != existing?.id })
+                dismiss()
             }
-            .confirmationDialog("Delete \(existing?.name ?? "")?", isPresented: $confirmDelete, titleVisibility: .visible) {
-                Button("Delete Time of Day", role: .destructive) {
-                    store.saveSections(store.sections.filter { $0.id != existing?.id })
-                    dismiss()
-                }
-            } message: {
-                Text("Its habits move to Anytime. Nothing else changes.")
-            }
-            .task { if existing == nil { nameFocused = true } }
-            .navigationBarBackButtonHidden()
+        } message: {
+            Text("Its habits move to Anytime. Nothing else changes.")
+        }
+        .task { if existing == nil { nameFocused = true } }
+        .navigationBarBackButtonHidden()
+    }
+
+    /// "Ends at 6:00 AM, when Morning starts." and, for each routine this one cuts short, "Morning will now end at
+    /// 7:00 AM." (Figma's footer; the user, 10 Nov 2026).
+    private func endsText(_ plan: SectionPlan) -> String {
+        guard let subject = plan.subject else { return "" }
+        let next = plan.rows.first { $0.start == subject.end && !$0.isSubject }
+        var text = "Ends at \(DaySection.clock(subject.end))" + (next.map { ", when \($0.name) starts." } ?? ", at the end of your day.")
+        for row in plan.split {
+            text += " \(row.name) will now \(row.oldStart == row.start ? "end at \(DaySection.clock(row.end))" : "start at \(DaySection.clock(row.start))")."
+        }
+        return text
     }
 
     private func save(_ plan: SectionPlan) {
-        guard plan.problem == nil, !trimmed.isEmpty else { return }
+        guard plan.problem == nil, !trimmed.isEmpty, hasTime else { return }
+        let before = store.sections
         store.saveSections(plan.sections)
-        onSaved(existing?.id ?? newID)
+        onSaved(CreatedRoutine(id: existing?.id ?? newID, name: trimmed, before: before))
         dismiss()
     }
 }
 
-/// One time of day in the form's "Your day": its new times, and what they were if they change.
-private struct PlanRow: View {
+/// A section's header in Figma's forms: Subheadline Semibold in Secondary Label, sentence case ("Time", "Your day").
+private struct FormHeader: View {
+    let text: String
+    init(_ text: String) { self.text = text }
+    var body: some View {
+        // Secondary Label itself: the hierarchical `.secondary` dims again on top of the header's own grey.
+        Text(text).font(.subheadline.weight(.semibold)).foregroundStyle(Color(.secondaryLabel)).textCase(nil)
+    }
+}
+
+/// One routine in "Your day": its name, its times as they will be, and "New" on the one being added.
+private struct DayRow: View {
     let row: SectionPlan.Row
+    let isNew: Bool
 
     var body: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 1) {
-                Text(row.name).fontWeight(row.isSubject ? .semibold : .regular).lineLimit(1)
-                if row.isSubject {
-                    Text(row.oldRange == nil ? "New" : row.changed ? "Was \(row.oldRange!)" : "No change")
-                        .font(.footnote).foregroundStyle(.secondary)
-                } else if row.changed, let old = row.oldRange {
-                    Text("Was \(old)").font(.footnote).foregroundStyle(.secondary)
-                }
+        HStack(spacing: 16) {
+            VStack(alignment: .leading, spacing: 0) {
+                Text(row.name).lineLimit(1)
+                Text("\(DaySection.clock(row.start)) – \(DaySection.clock(row.end))")
+                    .font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
             }
             Spacer(minLength: 8)
-            Text(row.range).monospacedDigit().foregroundStyle(row.isSubject || row.changed ? Color.primary : .secondary)
-                .lineLimit(1).fixedSize()
+            if row.isSubject && isNew {
+                Text("New").foregroundStyle(.secondary)
+            }
         }
         .accessibilityElement(children: .combine)
         .accessibilityIdentifier("plan-row-\(row.name)")
+    }
+}
+
+/// A routine just made or saved, for the "“Meds” created · Undo" banner: Undo puts the whole list back as it was,
+/// so any routine the new one cut short gets its times back too.
+struct CreatedRoutine: Equatable, Identifiable {
+    let id: String
+    let name: String
+    let before: [DaySection]
+}
+
+extension View {
+    /// "“Meds” created · Undo", where the person is (the user, 10 Nov 2026: making a routine shows a banner and goes
+    /// nowhere else). Each page New Routine opens from keeps the routine in its own state and attaches this, so the
+    /// banner floats over whichever page the person comes back to, Figma's Banner at the bottom, gone after 4 seconds.
+    func routineCreatedBanner(_ created: Binding<CreatedRoutine?>) -> some View {
+        modifier(RoutineCreatedBanner(created: created))
+    }
+}
+
+private struct RoutineCreatedBanner: ViewModifier {
+    @Binding var created: CreatedRoutine?
+    @Environment(HabitStore.self) private var store
+
+    func body(content: Content) -> some View {
+        content
+            .overlay(alignment: .bottom) {
+                if let created {
+                    Banner(text: "“\(created.name)” created") {
+                        Button("Undo") {
+                            store.saveSections(created.before)
+                            withAnimation { self.created = nil }
+                        }
+                        .accessibilityIdentifier("routine-created-undo")
+                    }
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 8)
+                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                }
+            }
+            .animation(.default, value: created?.id)
+            .task(id: created?.id) {
+                guard created != nil else { return }
+                try? await Task.sleep(for: .seconds(4))
+                guard !Task.isCancelled else { return }
+                withAnimation { created = nil }
+            }
     }
 }
