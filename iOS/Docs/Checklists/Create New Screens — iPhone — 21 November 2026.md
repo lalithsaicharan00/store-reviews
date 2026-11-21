@@ -1,0 +1,61 @@
+Written by Claude (Claude Code), 21 November 2026.
+
+# Create New screens — iPhone — 21 November 2026
+
+The user, 21 Nov 2026 (Figma section `1061:2015`, "create new components"): update the iPhone app's Create New screens
+to the Figma design, **UI only** for now (logic comes later), one screen at a time, in a loop a minute apart. In Figma
+every page is a component; in code, build it the production SwiftUI way and write down why
+([From Figma to SwiftUI](<../From Figma to SwiftUI — Read the Design, Build It the iOS Way.md>)).
+
+Branch `ios-update`, worktree `Research/Temp/ios-update-wt`. Each screen is checked on the Simulator against a Figma
+screenshot of the same variant. Not yet on the real iPhone (U9).
+
+## The user's points
+
+- [ ] 1. Figma's page components become ordinary SwiftUI screens; what was done and why is written below, per screen.
+- [ ] 2. Time of Day is gone: a habit's row is **Routine**, and there's **Add a Routine** (New Routine).
+- [ ] 3. Add a Task opens its own page first, **What Kind of Task?** (Once or On Repeat), then the task form.
+- [ ] 4. Making a routine from anywhere (Create New, the habit form, Today, Habit details) goes back to where the
+  person was and shows a banner with the routine's name ("“Meds” created · Undo"), nothing else.
+- [ ] 5. **All Day** and **Anytime** are built in: several reminders put a habit in All Day by itself, none or one
+  leaves it where it is (Anytime by default). Morning, Afternoon, Evening: one choice only.
+- [ ] 6. How Often's pages: Figma's new spacing.
+
+## The screens, in the user's order
+
+- [x] **What Do You Want to Do?** (`1061:2016`)
+- [ ] **Quit or Cut Down** (`1061:2101`), with the example chips
+- [ ] **How Do You Want to Track It?** (`1062:2`)
+- [ ] **What Kind of Task?** (`1109:2`)
+- [ ] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
+- [ ] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
+- [ ] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
+- [ ] **Colour** (`1074:161496`)
+- [ ] **How Often** (`1075:161386`, 15 variants)
+- [ ] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
+- [ ] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
+- [ ] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
+- [ ] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
+
+## What was done, screen by screen
+
+### What Do You Want to Do? (`1061:2016`) — done 21 Nov
+
+- **Built as:** the existing `NewItemChoices` screen, an inset-grouped `List` (not Figma's stacked frames): one Section
+  for the heading, one card for Build or Maintain, Quit or Cut Down and Add a Task, and its own card for Add a Routine
+  (a routine is its own thing, the user, 10 Nov). The list draws the cards, separators and chevrons; we draw none.
+- **The heading** ("What Do You Want to Do?", Title 2 Bold) is `PageHeading`, a clear first row with no insets, so it
+  sits on the cards' edge at every text size. Not a section header (iOS fades and capitalises those) and not the
+  navigation title (Figma's bar has none). `defaultMinListRowHeight` 0 so the list's 44-point minimum doesn't add 16
+  under it; `listSectionSpacing(24)` is Figma's 24 between blocks. Every create new page with a heading reuses it.
+- **A choice row** is `ChoiceLabel`, shared by the choice pages: the symbol in Secondary Label at Title 3 in a
+  24-point column that scales with text (`@ScaledMetric`), the title in Body (was Semibold), one Subheadline line in
+  Secondary Label. The list's own row insets, never Figma's 12 (From Figma to SwiftUI).
+- **Close** is the glass ✕ (`Button("Close", systemImage: "xmark")`, `.cancellationAction`), as every sheet in the
+  app closes; the word Cancel is gone.
+- **Gone:** the "N of 5 free habits used" footer (no Plus in the iPhone's designs, 10 Nov). The 6th-habit check
+  itself is logic and stays for now.
+- **For now, until their own steps:** Add a Task still opens the task form (What Kind of Task? comes next in this
+  list); Add a Routine opens the old time-of-day editor (New Routine and its banner are their own step).
+- **Checked on the Simulator** (iPhone 17 Pro, iOS 26): light, dark and Accessibility Large against the Figma
+  screenshot. Debug launch to reach it: `-uitest -open-new`.

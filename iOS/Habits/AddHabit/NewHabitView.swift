@@ -93,7 +93,8 @@ struct NewItemView: View {
         NavigationStack {
             NewItemChoices(name: name, onAdded: { onAdded($0); dismiss() })
                 .toolbar {
-                    ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                    // Figma 1061:2016: a glass ✕, as every sheet in the app closes (Day details, the timer).
+                    ToolbarItem(placement: .cancellationAction) { Button("Close", systemImage: "xmark") { dismiss() } }
                 }
         }
     }
@@ -120,25 +121,37 @@ struct NewItemChoices: View {
         var id: Self { self }
     }
 
+    /// Figma 1061:2016. The heading is the page's first row, not a section header and not a navigation title: iOS
+    /// fades and capitalises a section header, and Figma's bar has no title (Rulebook, 19 Nov: a line that introduces
+    /// a `List` is an ordinary clear row). Habits and tasks share one card; a routine is its own thing (the user,
+    /// 10 Nov 2026), so Add a Routine has a card of its own.
     var body: some View {
         List {
             Section {
-                habitChoice(.good, ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or maintain", detail: "A habit you want to start or keep doing."))
-                habitChoice(.bad, ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or cut down", detail: "A habit you want to stop or do less."))
+                PageHeading("What Do You Want to Do?")
+            }
+            Section {
+                habitChoice(.good, ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or Maintain", detail: "A habit you want to start or keep doing."))
+                habitChoice(.bad, ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or Cut Down", detail: "A habit you want to stop or do less."))
                 NavigationLink {
                     BuiltWhenShown { form(.task) }
                 } label: {
-                    ChoiceLabel(icon: ItemType.task.icon, title: "Add a task", detail: "Something to get done, once or on repeat. No habit progress, streaks or stats.")
-                }
-            } header: {
-                // No examples on this screen: the labels name what the user wants to do (copy report).
-                QuestionHeader("What do you want to do?")
-            } footer: {
-                if !store.isPlus {
-                    Text("\(store.activeHabitCount) of \(HabitStore.freeHabitLimit) free habits used. Tasks are always free.").formNote()
+                    ChoiceLabel(icon: "calendar.badge.checkmark", title: "Add a Task", detail: "Something to get done, once or on repeat.")
                 }
             }
+            Section {
+                NavigationLink {
+                    SectionEditor(existing: nil) { _ in }
+                } label: {
+                    ChoiceLabel(icon: "list.bullet", title: "Add a Routine", detail: "Habits you do together, like a bedtime routine.")
+                }
+                .accessibilityIdentifier("new-routine")
+            }
         }
+        .listSectionSpacing(24)
+        .contentMargins(.top, 0, for: .scrollContent)
+        // The heading row is one line of Title 2; the list's 44-point minimum row would add 16 under it.
+        .environment(\.defaultMinListRowHeight, 0)
         .navigationDestination(for: Kind.self) { kind in questions(kind) }
         .navigationDestination(item: $pushed) { kind in questions(kind) }
         .sheet(item: $sixthHabit, onDismiss: {
@@ -150,7 +163,6 @@ struct NewItemChoices: View {
         }
         .onPerfCommand { action in if action == .openSixthHabit { sixthHabit = .good } }
         .analyticsScreen(.newHabit)
-        .navigationTitle("New")
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -221,30 +233,48 @@ struct QuestionHeader: View {
     }
 }
 
-/// A choice row: a plain icon in a fixed column, the title, one plain line and (on the second screens) a
-/// marked example. The separator starts at the text, as in Settings (research: "Goal Screen Round 2", T2).
+/// A page's own heading as the first row of a `List` (Figma's create new pages: Title 2 Bold, Label, 16 from the
+/// edge, the first card 24 under it). A clear row with the list's own leading inset, so it lines up with the cards'
+/// edge at every text size; its own Section so the gap under it is the list's section spacing.
+struct PageHeading: View {
+    let text: String
+    init(_ text: String) { self.text = text }
+    var body: some View {
+        Text(text)
+            .font(.title2.bold())
+            .foregroundStyle(Color.primary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityAddTraits(.isHeader)
+            .listRowBackground(Color.clear)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+    }
+}
+
+/// A choice row (Figma's List item · two lines): the symbol in Secondary Label at Title 3 in a fixed column, the title
+/// in Body, one Subheadline line in Secondary Label and (on the second screens) an example. The separator starts at
+/// the text, as in Settings.
 struct ChoiceLabel: View {
     let icon: String
     let title: String
     let detail: String
     var example: String? = nil
+    @ScaledMetric(relativeTo: .title3) private var iconColumn = 24.0
 
     var body: some View {
-        HStack(spacing: 14) {
+        HStack(spacing: 16) {
             Image(systemName: icon)
-                .font(.system(size: 22, weight: .regular))
-                .foregroundStyle(Color.primary)
-                .frame(width: 30)
+                .font(.title3)
+                .foregroundStyle(.secondary)
+                .frame(width: iconColumn)
                 .accessibilityHidden(true)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(title).font(.body.weight(.semibold))
+            VStack(alignment: .leading, spacing: 0) {
+                Text(title).font(.body).foregroundStyle(Color.primary)
                 Text(detail).font(.subheadline).foregroundStyle(.secondary)
                 if let example { Text("Example: \(example)").font(.subheadline).foregroundStyle(.secondary) }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
         }
-        .padding(.vertical, 8)
         .accessibilityElement(children: .combine)
     }
 }

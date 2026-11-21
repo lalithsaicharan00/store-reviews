@@ -169,6 +169,13 @@ struct TodayView: View {
             menu.place = place
             menu.path = NavigationPath([place])
         }
+        // Open Create New at launch for checking its pages on the Simulator: `-open-new`.
+        .task {
+            guard ProcessInfo.processInfo.arguments.contains("-open-new") else { return }
+            await AppModel.shared.ensureLoaded()
+            try? await Task.sleep(for: .milliseconds(600))
+            showNewHabit = true
+        }
         // Open one habit's page over Habits & Tasks for visual review in Simulator: `-open-habit Water`.
         .task {
             let arguments = ProcessInfo.processInfo.arguments
