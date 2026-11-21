@@ -28,7 +28,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **How Do You Want to Track It?** (`1062:2`)
 - [x] **What Kind of Task?** (`1109:2`)
 - [x] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
-- [ ] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
+- [x] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
 - [ ] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
 - [ ] **Colour** (`1074:161496`)
 - [ ] **How Often** (`1075:161386`, 15 variants)
@@ -39,6 +39,9 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 
 ## Left for the end of the loop
 
+- [ ] UI tests that read the habit form's old rows: the preview card and sentence (`today-preview`,
+  `habit-sentence`, gone), "Time of Day" (now Routine), "How much"/"How often" (title case), the Starts and Ends pages
+  (now pickers in the form), the task's Repeat picker (gone), "When you tap +" (off the form, `tap-adds-step`).
 - [ ] UI tests that read Create New's old words: the "New" bar title (gone), "Build or maintain", "Quit or cut down",
   "Cut down" (now title case) and the question words (`NewHabitUITests`, `NewFlowUITests` and the others that open +).
   No tests run in the design phase; update them all in one go before the first run.
@@ -50,6 +53,8 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   start, so New Routine's Add waits for the switch until routines have their own "no time" and their place (after
   the timed ones, before Anytime).
 - [ ] All Day as a built-in routine, and a habit with two or more reminders going into it by itself.
+- [ ] A one-time task with no date (the form's Date switch off). The model reads a task with no `dueDay` as a
+  repeating one, so for now it's saved with its date; the footer already says what No date will mean.
 
 ## What was done, screen by screen
 
@@ -135,3 +140,42 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - **Checked on the Simulator:** both variants against the Figma screenshots, light and dark; Add brings back Create
   New with the banner; Undo (tried with the banner held 30 seconds, then set back to 4) removed Meds and gave
   Afternoon back its 12–6. Edit Today's and the habit form's banners are wired but not looked at yet.
+
+### Create new form (`1065:2597`) — done 21 Nov
+
+- **Built as:** `HabitForm`, still one `Form` for every type, now laid out as Figma's seven variants: the name card,
+  the type's own card, Routine and Reminders, then Starts and Ends. iOS draws the cards, separators, chevrons, switches
+  and compact pickers. `listSectionSpacing(16)` and a 16 top margin are Figma's gaps (iOS's default is about twice).
+  Title: New Habit for every habit type (Cut Down too), New Task for tasks.
+- **Gone:** the preview card and the sentence under it. Figma's form has neither: each row says what's chosen. The
+  sentence's code stays, because the pages the form opens still pin it at their top until their own steps.
+- **Name card:** Name, Description (optional) for every type, quit included, then Icon | Colour, two buttons in one row
+  with a 28-tall divider, each with its own chevron (`RowChevron`, Footnote Semibold in Tertiary Label, as iOS draws
+  a link's). At the accessibility text sizes they stack as two rows, Figma's 200 % variant, chosen from
+  `dynamicTypeSize`, never `ViewThatFits` (S10).
+- **A row that opens a page** (`screenRow`) is Figma's two-line List item: the setting in Body, what's chosen under it in
+  Subheadline Secondary Label, as Settings' rows read. Words: How Much, How Long, Steps, Limit, How Often, Routine,
+  Reminders (title case); "Not set yet" and "None yet" until set.
+- **Starts and Ends are picked in place:** Starts is iOS's compact date picker (Started for a day in the past); Ends
+  is a menu `Picker`, Never or On a Date, in Secondary Label as Figma's value is; On a Date adds End Date under it.
+  The two pages they used to open are gone.
+- **Quit:** Started (date) and Time (time), two compact pickers on the one moment, footer "The run counts up from
+  here. A slip starts it again." No routine, reminders or dates.
+- **Cut Down:** Limit and How Often, then Reminders alone (a limit has no routine, 5 Oct), then Starts and Ends. The
+  old "It shows on Today under Quit or Cut Down" footer is gone with Figma.
+- **Task once:** Date and Time switches, System Green, each with its value under it once on, as Reminders' rows.
+  Tapping the value opens the picker in a popover under the row (`popover(arrowEdge: .top)` with
+  `presentationCompactAdaptation(.popover)`): the graphical calendar for Date, Figma's `Open=Date picker`, a wheel
+  for Time. Turning a switch on opens its picker. The pickers are tinted back to Ink: the switch's green tinted the
+  calendar's chosen day. Footer from Figma; with Date off it says the task stays on Tasks (U38).
+- **Task on repeat:** How Often and the Time switch in one card, footer "It comes back on the days you pick.", then
+  Routine and Reminders, Starts and Ends. Once or on repeat is chosen on What Kind of Task?, so the Repeat picker
+  is gone.
+- **The bar:** iOS's ‹ while nothing is typed; once something is, the same ‹ (and ✕ when editing) asks Discard
+  Changes / Keep Editing first, so nothing typed is lost to a tap (U18). Add as before.
+- **Off the form for now:** "When you tap +" isn't on Figma's form; it's How Much's "When you log it" (Figma
+  `1102:2613`) and moves there in that step. The Routine row still opens the old Time of Day page until the Routine
+  page step.
+- **Checked on the Simulator:** Track an Amount (light) against Figma's `Type=Amount`; Task once with its calendar
+  popover, choosing the 25th; Checklist and Quit in dark; Cut Down at Accessibility Large (stacked Icon and Colour);
+  ‹ after typing asks before discarding. Edit Habit uses the same form and wasn't looked at on its own.

@@ -398,6 +398,11 @@ struct HabitForm: View {
     @State private var quitSince = Date.now
     @State private var taskDate = Date.now
     @State private var taskHasTime = false
+    /// A one-time task with a date (Figma's Date switch, on by default). Off is "No date" (U38), which the model
+    /// can't store yet: saved with its date for now (Create New checklist, "Left for the logic pass").
+    @State private var taskHasDate = true
+    @State private var pickingTaskDate = false
+    @State private var pickingTaskTime = false
     @State private var taskTime = Calendar.current.date(bySettingHour: 9, minute: 0, second: 0, of: .now)!
 
     /// A repeating task's schedule (tasks keep their own Repeat screen, with "after it's done").
@@ -590,15 +595,15 @@ struct HabitForm: View {
     }
 
     var body: some View {
+        // Figma's Create new form (1065:2597): the name card, then the type's own card, then Routine and Reminders,
+        // then Starts and Ends. No preview card and no sentence any more: the rows say what's chosen.
         Form {
-            if isHabit || type == .task { previewSection }
             nameSection
             switch type {
             case .quit:
                 quitSection
             case .task:
                 taskSection
-                if taskRepeats { Section { repeatRow } }
                 Section {
                     timeOfDayRow
                     remindersRow
@@ -606,16 +611,10 @@ struct HabitForm: View {
                 if taskRepeats { startEndSection }
             default:
                 planSection
-                if type == .amount { tapSection }
                 if type == .cutBack {
-                    // A limit has no time of day: it's logged only when it happens, so on Today it sits under Quit or
-                    // Cut Down, never in a time of day where it reads as something to do (the user, 5 Oct 2026).
-                    Section {
-                        remindersRow
-                    } footer: {
-                        Text("It shows on Today under \(TodayView.quittingTitle). Log it only when it happens.").formNote()
-                            .accessibilityIdentifier("limit-place-note")
-                    }
+                    // A limit has no routine: it's logged only when it happens, so on Today it sits under Quit or
+                    // Cut Down, never in a routine where it reads as something to do (the user, 5 Oct 2026).
+                    Section { remindersRow }
                 } else {
                     Section {
                         timeOfDayRow
@@ -626,20 +625,29 @@ struct HabitForm: View {
             }
             if editing { editOutcomeSection }
         }
+        // Figma's 16 between cards and above the first; iOS's own default is about twice that.
+        .listSectionSpacing(16)
+        .contentMargins(.top, 16, for: .scrollContent)
         .accessibilityIdentifier("habit-form")
         .analyticsScreen(editing ? .habitDetail : type == .task ? .newTask : .newHabit)
-        .navigationTitle(editing ? (type == .task ? "Edit Task" : "Edit Habit") : isHabit && type != .cutBack ? "New Habit" : type.title)
+        .navigationTitle(editing ? (type == .task ? "Edit Task" : "Edit Habit") : type == .task ? "New Task" : "New Habit")
         .navigationBarTitleDisplayMode(.inline)
         .scrollDismissesKeyboard(.interactively)
+        // Figma's bar is ‹ and Add. iOS's own back button stays while nothing is typed; once something is, the same ‹
+        // asks first, so a swipe or a tap never loses a typed habit (U18).
         .navigationBarBackButtonHidden(hasChanges)
         .toolbar {
-            if hasChanges || editing {
+            if hasChanges {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") { if hasChanges { confirmDiscard = true } else { dismiss() } }
+                    Button(editing ? "Cancel" : "Back", systemImage: editing ? "xmark" : "chevron.backward") { confirmDiscard = true }
                         .confirmationDialog("Discard this?", isPresented: $confirmDiscard, titleVisibility: .hidden) {
                             Button("Discard Changes", role: .destructive) { dismiss() }
                             Button("Keep Editing", role: .cancel) {}
                         }
+                }
+            } else if editing {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel", systemImage: "xmark") { dismiss() }
                 }
             }
             ToolbarItem(placement: .confirmationAction) {
@@ -708,66 +716,87 @@ struct HabitForm: View {
 
     // MARK: Name, icon, colour
 
-    /// The name on its own row; icon and colour side by side below it, each opening a quick pick.
+    @Environment(\.dynamicTypeSize) private var textSize
+
+    /// Figma's first card: Name, Description (optional), then Icon | Colour, every type alike (quit too).
     private var nameSection: some View {
         Section {
             NameField(typed: typed, placeholder: type.namePlaceholder, focus: $focus, onPause: catchUpName)
-            HStack(spacing: 0) {
-                Button { focus = nil; showAppearance = true } label: {
-                    HStack(spacing: 10) {
-                        HabitIcon(symbol: symbol, color: color, size: 28)
-                        Text("Icon").foregroundStyle(Color.primary)
-                        Spacer(minLength: 0)
-                    }
-                    .contentShape(Rectangle())
+            TextField("Description (optional)", text: $descriptionText, axis: .vertical)
+                .lineLimit(1...4)
+                .focused($focus, equals: .description)
+                .limitText($descriptionText, to: TextLimit.descriptionText)
+                .accessibilityIdentifier("description-field")
+            // Two buttons in one row, each taking its own tap (`.borderless`), as decided on 6 Nov 2026. At the
+            // accessibility sizes they stack as two rows (Figma's 200 % variant): chosen from the text size, not
+            // `ViewThatFits`, which lays out both (S10).
+            if textSize.isAccessibilitySize {
+                iconButton
+                colourButton
+            } else {
+                HStack(spacing: 0) {
+                    iconButton
+                    Divider().frame(height: 28).padding(.horizontal, 12)
+                    colourButton
                 }
-                .buttonStyle(.borderless)
-                .accessibilityLabel("Icon")
-                Divider().padding(.horizontal, 12)
-                Button { focus = nil; showColors = true } label: {
-                    HStack(spacing: 10) {
-                        Circle().fill(color.color.gradient).frame(width: 24, height: 24)
-                        Text("Colour").foregroundStyle(Color.primary)
-                        Spacer(minLength: 0)
-                    }
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.borderless)
-                .accessibilityLabel("Colour, \(color.name)")
-            }
-            .frame(minHeight: 44)
-            if type != .quit {
-                TextField("Description (optional)", text: $descriptionText, axis: .vertical)
-                    .lineLimit(1...4)
-                    .focused($focus, equals: .description)
-                    .limitText($descriptionText, to: TextLimit.descriptionText)
-                    .accessibilityIdentifier("description-field")
             }
         } footer: {
             NameFooter(typed: typed, describing: focus == .description)
         }
     }
 
+    private var iconButton: some View {
+        Button { focus = nil; showAppearance = true } label: {
+            HStack(spacing: 10) {
+                HabitIcon(symbol: symbol, color: color, size: 28)
+                Text("Icon").foregroundStyle(Color.primary)
+                Spacer(minLength: 4)
+                RowChevron()
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.borderless)
+        .accessibilityLabel("Icon")
+    }
+
+    private var colourButton: some View {
+        Button { focus = nil; showColors = true } label: {
+            HStack(spacing: 10) {
+                Circle().fill(color.color.gradient).frame(width: 28, height: 28)
+                Text("Colour").foregroundStyle(Color.primary)
+                Spacer(minLength: 4)
+                RowChevron()
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.borderless)
+        .accessibilityLabel("Colour, \(color.name)")
+    }
+
     // MARK: Rows that open full screens
 
-    /// A row that opens its own full screen: the setting on the left, the choice on the right.
+    /// A row that opens its own full screen: the setting, and under it the choice in Subheadline Secondary Label
+    /// (Figma's two-line List item, as Settings' Wi-Fi rows read). iOS draws the chevron.
     private func screenRow<Destination: View>(_ title: String, value: String, @ViewBuilder destination: @escaping () -> Destination) -> some View {
         // Built when opened, not with the form: a link's destination is otherwise made on every redraw of the form,
         // reminders, date pickers and summaries included (Edit habit's first open, 701 ms, 1 Oct).
         NavigationLink {
             BuiltWhenShown(destination)
         } label: {
-            LabeledContent(title) {
-                Text(value).foregroundStyle(.secondary).multilineTextAlignment(.trailing)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(title)
+                Text(value).font(.subheadline).foregroundStyle(Color(.secondaryLabel))
                     .fixedSize(horizontal: false, vertical: true)
             }
+            .padding(.vertical, 2)
         }
+        .accessibilityElement(children: .combine)
         .accessibilityLabel("\(title), \(value)")
     }
 
     /// A repeating task's How often: the habit screen without counts, plus "After it's done" (29 Sep).
     private var repeatRow: some View {
-        screenRow("How often", value: often.often(hasAmount: false).label(hasAmount: false, weekStart: weekStart)) {
+        screenRow("How Often", value: often.often(hasAmount: false).label(hasAmount: false, weekStart: weekStart)) {
             HowOftenEditor(draft: $often, amountText: nil, checklist: false, limit: false, start: startDate,
                            weekStart: weekStart, sentence: screenText, task: true)
                 .onAppear { focus = nil }
@@ -820,12 +849,8 @@ struct HabitForm: View {
         return habit
     }
 
-    /// Before an amount is set, the preview card carries a stand-in amount (so it shows its + or ▶) and no line.
+    /// Before an amount is set, the sentence's habit carries a stand-in amount, so it reads with its +, ▶ or ✓.
     private static let standIn = 7_777_777.0
-    private var amountStandIn: String? {
-        guard hasAmount && amountValue == nil else { return nil }
-        return timed ? HabitCopy.minutes(Self.standIn) : HabitCopy.number(Self.standIn)
-    }
 
     /// The habit as the previews show it: "Your habit" until named, and the stand-in amount until set, so
     /// the row already has its +, ▶ or ✓.
@@ -842,49 +867,12 @@ struct HabitForm: View {
         return habit
     }
 
-    /// The visual preview: the habit drawn by Today's own row, under a centred "Preview" label.
-    private var previewSection: some View {
-        Section {
-            HabitRow(habit: previewHabit, day: LocalDay(.now), isToday: true, time: remind ? previewHabit.reminders.first : nil,
-                     lineOverride: amountStandIn == nil ? nil : "")
-                .allowsHitTesting(false)
-                .accessibilityElement(children: .combine)
-                .accessibilityLabel("Preview on Today")
-                .accessibilityIdentifier("today-preview")
-        } header: {
-            Text("Preview")
-                .frame(maxWidth: .infinity, alignment: .center)
-        } footer: {
-            // The text preview, right under the card: the whole habit once it has a name.
-            Group {
-                if shownTrimmedName.isEmpty {
-                    Text(type == .task ? "Enter a task name to see the preview." : "Enter a habit name to see the preview.")
-                        .font(.callout).foregroundStyle(.secondary)
-                } else {
-                    Text(fullSentence)
-                        .font(.system(.title3, design: .rounded).weight(.bold))
-                        .foregroundStyle(Color.primary)
-                        .contentTransition(.opacity)
-                        .animation(.snappy, value: fullSentence)
-                }
-            }
-            .multilineTextAlignment(.center)
-            .fixedSize(horizontal: false, vertical: true)
-            .frame(maxWidth: .infinity)
-            // A little air under the card, and a clear gap before the name: the previews are one group.
-            .padding(.top, 10)
-            .padding(.bottom, 18)
-            .accessibilityAddTraits(.isHeader)
-            .accessibilityIdentifier("habit-sentence")
-        }
-    }
-
     /// How much, what + adds, and how often: the rows that make the sentence above, only as the type needs.
     private var planSection: some View {
         Section {
             switch type {
             case .amount, .cutBack:
-                screenRow(type == .cutBack ? "Limit" : "How much", value: amountValue == nil ? "Set" : plan.howMuchLabel) {
+                screenRow(type == .cutBack ? "Limit" : "How Much", value: amountValue == nil ? "Not set yet" : plan.howMuchLabel) {
                     HowMuchEditor(mode: type == .cutBack ? .limit : .amount, amount: $amountText, unit: $unit, hours: $hours,
                                   minutes: $minutes, usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint,
                                   limitInMinutes: type == .cutBack ? original.map { if case .duration = $0.kind { true } else { false } } : nil)
@@ -892,14 +880,14 @@ struct HabitForm: View {
                 }
                 .accessibilityIdentifier("how-much-row")
             case .time:
-                screenRow("How long", value: amountValue == nil ? "Set" : plan.howMuchLabel) {
+                screenRow("How Long", value: amountValue == nil ? "Not set yet" : plan.howMuchLabel) {
                     HowMuchEditor(mode: .time, amount: $amountText, unit: $unit, hours: $hours, minutes: $minutes,
                                   usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint)
                         .onAppear { focus = nil }
                 }
                 .accessibilityIdentifier("how-much-row")
             case .checklist:
-                screenRow("Steps", value: filledItems.isEmpty ? "Add" : filledItems.count == 1 ? "1 step" : "\(filledItems.count) steps") {
+                screenRow("Steps", value: filledItems.isEmpty ? "None yet" : filledItems.count == 1 ? "1 step" : "\(filledItems.count) steps") {
                     Form { ChecklistItemsSection(items: $items) }
                         .stickySentence(screenText, id: "screen-sentence")
                         .navigationTitle("Steps")
@@ -909,7 +897,7 @@ struct HabitForm: View {
             default:
                 EmptyView()
             }
-            screenRow("How often", value: plan.often.label(hasAmount: plan.hasAmount, checklist: plan.checklist, weekStart: weekStart)) {
+            screenRow("How Often", value: plan.often.label(hasAmount: plan.hasAmount, checklist: plan.checklist, weekStart: weekStart)) {
                 HowOftenEditor(draft: $often, amountText: amountWords, checklist: plan.checklist, limit: type == .cutBack,
                                start: startDate, weekStart: weekStart, sentence: screenText, amountExpected: hasAmount)
                     .onAppear { focus = nil }
@@ -918,6 +906,8 @@ struct HabitForm: View {
         }
     }
 
+    /// Not on Figma's form (1065:2597): it moves to the How Much page as "When you log it" (Figma 1102:2613) in that
+    /// page's own step. Kept here, unused, until then.
     /// What + does on Today, chosen, never a hidden rule: add a set step ("+1 glass", good for small counts),
     /// or type the amount each time (good for big or odd amounts: steps, ml). Research: "Logging a Count — One
     /// Tap or Type" (13 reviews want one tap; "tapping +1 80 times for an 80m run is exhausting"), Round 3 §1.3
@@ -960,68 +950,43 @@ struct HabitForm: View {
             : date.formatted(.dateTime.day().month(.abbreviated).year())
     }
 
-    /// Starts and Ends, in words ("Today", "Never"); each opens its own screen to pick a date.
+    /// Figma's last card: Starts, iOS's compact date picker (the grey capsule says it can be changed), and Ends, a
+    /// pop-up button (Never or On a Date, ⌃⌄ as iOS draws a menu picker). On a Date adds the end's own compact
+    /// picker under it, as Calendar's Repeat › End Repeat does. No pages to open: one choice each, picked in place.
     private var startEndSection: some View {
         Section {
             // "Started" for a day in the past, as a person would say it.
-            screenRow(startDate < trackingToday ? "Started" : "Starts", value: dayWords(startDate)) {
-                Form {
-                    Section {
-                        DatePicker("Starts", selection: $startDate, displayedComponents: .date)
-                            .datePickerStyle(.graphical)
-                            .accessibilityIdentifier("start-date-picker")
-                    } footer: {
-                        Text("A start date in the past lets you tick the days since then.").formNote()
+            DatePicker(startDate < trackingToday ? "Started" : "Starts", selection: $startDate, displayedComponents: .date)
+                .accessibilityIdentifier("starts-row")
+            Picker("Ends", selection: Binding(get: { hasEnd }, set: { on in
+                withAnimation {
+                    if on && endDate <= startDate {
+                        endDate = Calendar.current.date(byAdding: .day, value: 30, to: startDate) ?? startDate
                     }
-                    if !Calendar.current.isDate(startDate, inSameDayAs: trackingToday) {
-                        Section {
-                            Button("Start Today") { startDate = trackingToday }
-                        }
-                    }
+                    hasEnd = on
                 }
-                .stickySentence(screenText, id: "screen-sentence")
-                .navigationTitle("Starts")
-                .navigationBarTitleDisplayMode(.inline)
-                .onAppear { focus = nil }
+            })) {
+                Text("Never").tag(false)
+                Text("On a Date").tag(true)
             }
-            .accessibilityIdentifier("starts-row")
-            screenRow("Ends", value: hasEnd ? dayWords(endDate) : "Never") {
-                Form {
-                    Section {
-                        CheckRow(title: "Never", selected: !hasEnd) { withAnimation { hasEnd = false } }
-                        CheckRow(title: "On a Date", selected: hasEnd) {
-                            withAnimation {
-                                if !hasEnd && endDate <= startDate {
-                                    endDate = Calendar.current.date(byAdding: .day, value: 30, to: startDate) ?? startDate
-                                }
-                                hasEnd = true
-                            }
-                        }
-                    }
-                    if hasEnd {
-                        Section {
-                            DatePicker("Ends", selection: $endDate, in: startDate..., displayedComponents: .date)
-                                .datePickerStyle(.graphical)
-                                .accessibilityIdentifier("end-date-picker")
-                        } footer: {
-                            Text("After \(endDate.formatted(.dateTime.day().month(.wide))), it leaves Today. Its history stays.").formNote()
-                        }
-                    }
-                }
-                .stickySentence(screenText, id: "screen-sentence")
-                .navigationTitle("Ends")
-                .navigationBarTitleDisplayMode(.inline)
-                .onAppear { focus = nil }
-            }
+            .pickerStyle(.menu)
+            // Figma's value is grey, as Calendar's End Repeat: a value, not the page's main action.
+            .tint(Color(.secondaryLabel))
             .accessibilityIdentifier("ends-row")
+            if hasEnd {
+                DatePicker("End Date", selection: $endDate, in: startDate..., displayedComponents: .date)
+                    .accessibilityIdentifier("end-date-picker")
+            }
         }
     }
 
+    /// Figma's quit card: when it started, the day and the time as two compact pickers on one moment.
     private var quitSection: some View {
         Section {
-            DatePicker("Started", selection: $quitSince, in: ...Date.now)
+            DatePicker("Started", selection: $quitSince, in: ...Date.now, displayedComponents: .date)
+            DatePicker("Time", selection: $quitSince, in: ...Date.now, displayedComponents: .hourAndMinute)
         } footer: {
-            Text("The counter runs from here. It shows on Today under Quit or Cut Down, counting up.").formNote()
+            Text("The run counts up from here. A slip starts it again.").formNote()
         }
     }
 
@@ -1037,23 +1002,65 @@ struct HabitForm: View {
         return original?.dueDay.map { min(today, Calendar.current.startOfDay(for: $0.date())) } ?? today
     }
 
-    /// A task: once on a date, or on repeat. Never progress or stats (the user's decision).
+    /// A task's own card. Once (Figma `Type=Task once`): Date and Time switches, each with its value under it
+    /// once on, as Reminders' Date and Time rows; tapping the value opens the picker in a popover over the form
+    /// (`Open=Date picker`). On Repeat (`Type=Task on repeat`): How Often, then the Time switch. Once or on repeat is
+    /// chosen on What Kind of Task? before the form, so the old Repeat picker is gone.
     private var taskSection: some View {
         Section {
-            Picker("Repeat", selection: $taskRepeats.animation()) {
-                Text("Never").tag(false)
-                Text("On a schedule").tag(true)
+            if taskRepeats {
+                repeatRow
+            } else {
+                Toggle(isOn: $taskHasDate.animation()) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Date")
+                        if taskHasDate {
+                            Button(dayWords(taskDate)) { focus = nil; pickingTaskDate = true }
+                                .font(.subheadline)
+                                .foregroundStyle(Color(.secondaryLabel))
+                                .buttonStyle(.borderless)
+                                // Under the row, as Figma's Open=Date picker. The switch's green would tint the
+                                // calendar too, so it's set back to Ink, as every picker in the app.
+                                .popover(isPresented: $pickingTaskDate, arrowEdge: .top) {
+                                    DatePicker("Date", selection: $taskDate, in: earliestTaskDate..., displayedComponents: .date)
+                                        .datePickerStyle(.graphical)
+                                        .labelsHidden()
+                                        .tint(.ink)
+                                        .frame(width: 320)
+                                        .padding(8)
+                                        .presentationCompactAdaptation(.popover)
+                                }
+                        }
+                    }
+                }
+                .tint(.green)
+                .onChange(of: taskHasDate) { if taskHasDate { pickingTaskDate = true } }
             }
-            if !taskRepeats {
-                DatePicker("Date", selection: $taskDate, in: earliestTaskDate..., displayedComponents: .date)
+            Toggle(isOn: $taskHasTime.animation()) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Time")
+                    if taskHasTime {
+                        Button(taskTime.formatted(date: .omitted, time: .shortened)) { focus = nil; pickingTaskTime = true }
+                            .font(.subheadline)
+                            .foregroundStyle(Color(.secondaryLabel))
+                            .buttonStyle(.borderless)
+                            .popover(isPresented: $pickingTaskTime, arrowEdge: .top) {
+                                DatePicker("Time", selection: $taskTime, displayedComponents: .hourAndMinute)
+                                    .datePickerStyle(.wheel)
+                                    .labelsHidden()
+                                    .tint(.ink)
+                                    .padding(8)
+                                    .presentationCompactAdaptation(.popover)
+                            }
+                    }
+                }
             }
-            Toggle("Time", isOn: $taskHasTime.animation()).tint(.green)
-            if taskHasTime {
-                DatePicker("At", selection: $taskTime, displayedComponents: .hourAndMinute)
-            }
+            .tint(.green)
+            .onChange(of: taskHasTime) { if taskHasTime { pickingTaskTime = true } }
         } footer: {
-            Text((taskRepeats ? "It comes back on the days you pick below."
-                  : "If it isn't done, it moves forward to today until it is.") + " Tasks don't have progress or stats.").formNote()
+            Text(taskRepeats ? "It comes back on the days you pick."
+                 : taskHasDate ? "If it isn’t done on its day, it carries over to the next day until it’s done."
+                 : "With no date, it stays on Tasks and never shows on Today.").formNote()
         }
     }
 
@@ -1085,7 +1092,7 @@ struct HabitForm: View {
     /// Where it's displayed on Today (never the goal). Its own full screen: the parts of the day, any
     /// number of them, then "Or", then Anytime (GOV.UK's exclusive-checkbox pattern).
     private var timeOfDayRow: some View {
-        screenRow("Time of Day", value: timeOfDaySummary) {
+        screenRow("Routine", value: timeOfDaySummary) {
             Form {
                 Section {
                     ForEach(store.sections.filter { !$0.isAnytime }) { section in
@@ -1943,4 +1950,15 @@ struct BuiltWhenShown<Content: View>: View {
     private let build: () -> Content
     init(_ build: @escaping () -> Content) { self.build = build }
     var body: some View { build() }
+}
+
+/// The chevron a list draws on a link, for a button that leads on but isn't a `NavigationLink` (Icon and Colour
+/// open sheets). Footnote Semibold in Tertiary Label, as iOS draws its own.
+struct RowChevron: View {
+    var body: some View {
+        Image(systemName: "chevron.forward")
+            .font(.footnote.weight(.semibold))
+            .foregroundStyle(Color(.tertiaryLabel))
+            .accessibilityHidden(true)
+    }
 }
