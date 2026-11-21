@@ -288,6 +288,13 @@ final class DurationPickerView: UIPickerView {
 
     required init?(coder: NSCoder) { fatalError() }
 
+    /// Changes a unit's word ("hour" for 1, "hours" otherwise), keeping its place beside the band.
+    func setUnit(_ text: String, at component: Int) {
+        guard unitLabels.indices.contains(component), unitLabels[component].text != text else { return }
+        unitLabels[component].text = text
+        setNeedsLayout()
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
         // Each unit sits just after its column's number, in the band. The column is found from its shown row, so the

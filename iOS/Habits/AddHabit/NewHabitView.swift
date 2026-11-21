@@ -890,7 +890,11 @@ struct HabitForm: View {
             case .checklist:
                 screenRow("Steps", value: filledItems.isEmpty ? "None yet" : filledItems.count == 1 ? "1 step" : "\(filledItems.count) steps") {
                     Form { ChecklistItemsSection(items: $items) }
-                        .stickySentence(screenText, id: "screen-sentence")
+                        .listSectionSpacing(24)
+                        .contentMargins(.top, 16, for: .scrollContent)
+                        // Edit mode for the grabbers only (the rows have `.onMove` and no `.onDelete`, so iOS draws no
+                        // ⊖ of its own); the red ⊖ is RemoveButton, which removes at once, as Figma's row does.
+                        .environment(\.editMode, .constant(.active))
                         .navigationTitle("Steps")
                         .navigationBarTitleDisplayMode(.inline)
                 }
@@ -1592,32 +1596,35 @@ private struct NameFooter: View {
 
 // MARK: - Rows
 
-/// The checklist's items, on the pushed Items screen. It keeps its own focus, so Add Item puts the
-/// cursor in the new row (the form's focus doesn't reach a pushed screen; found on the iPhone, 28 Sep).
+/// The checklist's steps (Figma 1104:163327): one card, each step a row with the red ⊖ before it and a grabber after
+/// it, an empty one showing "Step N", then Add Step, and the note under the card. No header: the page's title says it.
+/// It keeps its own focus, so Add Step puts the cursor in the new row (the form's focus doesn't reach a pushed screen;
+/// found on the iPhone, 28 Sep), and return on a step adds the next one.
 struct ChecklistItemsSection: View {
     @Binding var items: [Step]
     @FocusState private var focused: UUID?
 
     var body: some View {
         Section {
-            ForEach($items) { $item in
-                HStack(spacing: 12) {
-                    RemoveButton(label: "Remove \(item.name.isEmpty ? "step" : item.name)") {
+            ForEach(Array($items.enumerated()), id: \.element.id) { index, $item in
+                HStack(spacing: 16) {
+                    RemoveButton(label: "Remove \(item.name.isEmpty ? "step \(index + 1)" : item.name)") {
                         withAnimation { items.removeAll { $0.id == item.id } }
                     }
-                    TextField(items.first?.id == item.id ? "e.g. Dishes" : "Next step", text: $item.name)
+                    TextField("Step \(index + 1)", text: $item.name)
                         .focused($focused, equals: item.id)
                         .limitText($item.name, to: TextLimit.checklistPart)
                         .submitLabel(.next)
                         .onSubmit(addItem)
+                        .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                        .accessibilityIdentifier("step-field")
                 }
             }
-            .onDelete { items.remove(atOffsets: $0) }
-            AddRow(title: "Add Step", action: addItem)
-        } header: {
-            Text("Steps")
+            .onMove { items.move(fromOffsets: $0, toOffset: $1) }
+            PlusRow(title: "Add Step", action: addItem)
+                .accessibilityIdentifier("add-step")
         } footer: {
-            Text("A few steps to tick. They reset each time it comes round, and the habit is done when every step is ticked.").formNote()
+            Text("Up to \(TextLimit.checklistPart) letters a step. Each step is ticked on its own.")
         }
     }
 
@@ -1658,41 +1665,6 @@ extension View {
 extension Text {
     /// The sentences under a form group: a size people can read at a glance, not the tiny default.
     func formNote() -> some View { font(.callout).foregroundStyle(.secondary) }
-}
-
-/// A number the whole row edits: tap anywhere in the row to type. Empty until the user types;
-/// the grey placeholder is only a hint.
-struct NumberRow: View {
-    let title: String
-    @Binding var value: Double?
-    let placeholder: String
-    let suffix: String
-    var focus: FocusState<HabitForm.Field?>.Binding
-    let field: HabitForm.Field
-    /// What's typed. The value follows it key by key, so the previews update as the person types (29 Sep);
-    /// a number-formatted field only committed on leaving it.
-    @State private var text = ""
-
-    var body: some View {
-        HStack(spacing: 6) {
-            Text(title).lineLimit(1).fixedSize()
-            Spacer(minLength: 16)
-            // Not fixedSize: a field sized to its placeholder clipped what was typed (reported 28 Sep).
-            TextField(placeholder, text: $text)
-                .onAppear { text = value.map(GoalNumber.text) ?? "" }
-                .onChange(of: text) { value = GoalNumber.parse(text).flatMap { $0 > 0 ? $0 : nil } }
-                .keyboardType(.decimalPad)
-                .multilineTextAlignment(.trailing)
-                .focused(focus, equals: field)
-                .frame(minWidth: 44, maxWidth: 160)
-                .font(.body.monospacedDigit().weight(.semibold))
-                .accessibilityLabel(title)
-            if !suffix.isEmpty { Text(suffix).foregroundStyle(.secondary).lineLimit(1).truncationMode(.tail) }
-        }
-        .frame(minHeight: 44)
-        .contentShape(Rectangle())
-        .onTapGesture { focus.wrappedValue = field }
-    }
 }
 
 /// A list row chosen with a checkmark, like Settings and Clock's Repeat: the whole row is the button.

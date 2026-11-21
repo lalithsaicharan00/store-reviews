@@ -35,7 +35,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
 - [x] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
 - [x] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
-- [ ] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
+- [x] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
 
 ## Left for the end of the loop
 
@@ -54,6 +54,11 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   `much-number`), "Optional" (now *No unit*), "No Unit" (now *No unit*), "When you tap +" / "Add a set amount" /
   "Each tap adds" (now How Much's *When you log it*, *One tap adds a set amount*, *Each Tap Adds*, `tap-step`), and a
   unit tapped on the Unit page, which now stays on the page (tap Back).
+- [ ] UI tests that read How Long, Limit and Steps' old words: Scroll | Type (`duration-entry-mode`, gone),
+  `hours-wheel` and `minutes-wheel` (now one `duration-wheel`), "Time" as How Long's header (gone), Time on the Unit
+  page (now Limit's own *Amount | Time*, `limit-kind`), the sticky sentence on these pages (`much-summary`,
+  `screen-sentence`, gone), the Steps header and "e.g. Dishes"/"Next step" (now *Step N*, `step-field`), and Add Step
+  (now a plain + row, `add-step`).
 
 ## Left for the logic pass
 
@@ -350,3 +355,34 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - **Checked on the Simulator:** How Much typing (empty 0 with the cursor, 8 typed) and keyboard down, Unit with No
   unit, Creating your own, prayers added and ticked, and Searching "bo" (bottles, books). Dark is checked with the
   next screen's build.
+
+### How Long (`1103:3208`), Limit (`1105:3190`) and Steps (`1104:163327`) — done 21 Nov
+
+- **How Long is one card with Clock's timer wheels, then Quick picks.** Figma's two variants (Wheels, Quick pick) are
+  the one screen: a pick turns the wheel and a turn of the wheel lights the pick that matches. The wheel is
+  `MinutesWheel` (`UIViewRepresentable` over `DurationPickerView`, the Log screen's wheel): one band across hours and
+  min, the minutes going round, *hour* for 1 and *hours* otherwise, 216 tall. UIKit's because two SwiftUI wheels draw
+  two bands (the Rulebook's Repeat on a date). Hours run to 23 for a day and 99 for longer periods. Scroll | Type
+  and the sticky sentence are gone (Figma has neither); a day's most is still checked on saving.
+- **Quick picks are Small capsule buttons that wrap** (`WrapLayout`, the app's first flow layout), the chosen one
+  Prominent in Ink, the others Ink at 18 % (`QuickPickStyle`: one style with a flag, because `.borderedProminent`
+  and `.bordered` are different types). How Long: 5, 10, 15, 20, 30, 45 min, 1 h. **They're the wheel section's
+  footer, not a section of their own:** a list row clips its content to its rounded card even with a clear
+  background, which cut the corners off the first button of each line. In Figma they start at the card's edge, 16
+  left of the header and the note, hence `.padding(.horizontal, -16)`.
+- **Limit has Amount | Time at the top** (iOS's segmented control), only on a new limit: one being edited keeps its
+  side, as a habit's type never changes (D6). Time moved here off the Unit page. **At most** heads the card. Amount:
+  the Amount field and Unit, as How Much, footer *Log it only when it happens…*. Time: the wheel (a new one starts at
+  1 hour) and Quick picks 15, 30, 45 min, 1 h, 1 h 30 min, 2 h, 3 h, footer *Log time spent, or use the timer…*. A
+  limit in time is still stored as minutes with the time unit. Switching sides keeps what each had, so going back and
+  forth loses nothing. The segment's section has no spacing under it, so At most sits close as in Figma.
+- **Steps is one card:** each step a row with the red ⊖ (removes at once, as before), the step, and iOS's grabber to
+  reorder (`.onMove` in edit mode with no `.onDelete`, so iOS draws no ⊖ of its own); an empty step says *Step N*;
+  the separator starts at the words; then Add Step as a plain + row (`PlusRow`), and the footer *Up to 24 letters a
+  step. Each step is ticked on its own.* No header (the title says it) and no sticky sentence. Return on a step adds
+  the next one.
+- `NumberRow` had no callers left after How Much and was removed.
+- **Checked on the Simulator:** How Long empty, then 10 min picked (the wheel turned to 0 hours 10 min); Limit
+  Amount (keypad up) and Time (1 hour, 1 h chosen); Steps with Dishes and an empty Step 2; Steps in dark. Typing a
+  second step straight after return lost its letters on the Simulator's fast typing (the new row takes focus a turn
+  later); check it by hand on the phone.

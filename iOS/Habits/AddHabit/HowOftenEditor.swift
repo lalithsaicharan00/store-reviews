@@ -405,6 +405,8 @@ struct HowMuchEditor: View {
     /// The suggested step, shown in the step box until one is typed.
     var stepPlaceholder = "1"
     @FocusState private var focus: Field?
+    /// A new limit's other side (amount and unit) while the segment shows this one.
+    @State private var otherSide: (String, String)?
 
     private var limit: Bool { mode == .limit }
 
@@ -423,10 +425,10 @@ struct HowMuchEditor: View {
 
     var body: some View {
         Group {
-            if mode == .amount {
-                amountForm
-            } else {
-                otherForm
+            switch mode {
+            case .amount: amountForm
+            case .time: timeForm
+            case .limit: limitForm
             }
         }
         .navigationTitle(limit ? "Limit" : mode == .time ? "How Long" : "How Much")
@@ -439,7 +441,7 @@ struct HowMuchEditor: View {
             }
         }
         // The amount starts filled with a suggestion, so the keyboard comes up with it selected.
-        .task { if mode != .time { focus = .amount } }
+        .task { if mode == .amount || (mode == .limit && !limitInTime) { focus = .amount } }
     }
 
     // MARK: How much (Figma 1102:2782)
@@ -479,57 +481,101 @@ struct HowMuchEditor: View {
         .contentMargins(.top, 16, for: .scrollContent)
     }
 
-    // MARK: How long and Limit (their own screens come next in the Create New pass)
+    // MARK: How long (Figma 1103:3208)
 
-    private var otherForm: some View {
+    /// One card with Clock's timer wheels (hours · min in one band), then Quick picks under it. The wheel and the
+    /// picks set the same hours and minutes, so a pick turns the wheel and a turn of the wheel lights the pick that
+    /// matches; Figma's Wheels and Quick pick variants are those two states of this one screen.
+    private var timeForm: some View {
         Form {
-            // From the New Habit form the sentence is pinned at the top instead (`stickySentence` below).
-            if sentence == nil {
+            Section {
+                MinutesWheel(total: durationMinutes, maxHours: period == .day ? 23 : 99)
+                    .frame(height: 216)
+                    .listRowInsets(EdgeInsets())
+            } footer: {
+                QuickPicks(picks: [5, 10, 15, 20, 30, 45, 60], total: durationMinutes,
+                           note: "The timer on Today counts up to it.")
+            }
+        }
+        .listSectionSpacing(24)
+        .contentMargins(.top, 16, for: .scrollContent)
+    }
+
+    /// How long's hours and minutes as one number of minutes, for the wheel and the picks.
+    private var durationMinutes: Binding<Int> {
+        Binding(get: {
+            Int(GoalNumber.parse(hours, decimals: 0) ?? 0) * 60 + min(59, Int(GoalNumber.parse(minutes, decimals: 0) ?? 0))
+        }, set: { value in
+            hours = String(value / 60)
+            minutes = String(value % 60)
+        })
+    }
+
+    // MARK: Limit (Figma 1105:3190)
+
+    /// Amount | Time at the top (a new limit only: one being edited keeps its side, Rulebook D6), then At most: the
+    /// Amount field and Unit, as How Much, or the wheels and Quick picks, as How Long. Figma's Kind=Amount and Kind=Time
+    /// are the segment's two states. Switching keeps what each side had, so going back and forth loses nothing.
+    private var limitForm: some View {
+        Form {
+            if limitInMinutes == nil {
                 Section {
-                    VStack(spacing: 4) {
-                        Text(readBack ?? "—")
-                            .font(.system(.largeTitle, design: .rounded).weight(.bold).monospacedDigit())
-                            .foregroundStyle(readBack == nil ? .tertiary : .primary)
-                            .multilineTextAlignment(.center)
-                            .fixedSize(horizontal: false, vertical: true)
-                        if readBack == nil {
-                            Text(mode == .time ? "Set the time below." : "Type the amount below.").font(.title3).foregroundStyle(.secondary)
-                        }
+                    Picker("Limit", selection: limitKind) {
+                        Text("Amount").tag(false)
+                        Text("Time").tag(true)
                     }
-                    .frame(maxWidth: .infinity)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityIdentifier("much-summary")
+                    .pickerStyle(.segmented)
+                    .accessibilityIdentifier("limit-kind")
                 }
                 .listRowBackground(Color.clear)
+                .listRowInsets(EdgeInsets())
+                // Figma's At most sits close under the segment: the header brings its own room above it.
+                .listSectionSpacing(0)
             }
-            if mode == .time {
-                DurationInput(hours: $hours, minutes: $minutes, period: period, header: "Time",
-                              note: "Time it with ▶ on Today, or type the time.")
+            if limitInTime {
+                Section {
+                    MinutesWheel(total: limitMinutes, maxHours: period == .day ? 23 : 99)
+                        .frame(height: 216)
+                        .listRowInsets(EdgeInsets())
+                } header: {
+                    Text("At most")
+                } footer: {
+                    QuickPicks(picks: [15, 30, 45, 60, 90, 120, 180], total: limitMinutes,
+                               note: "Log time spent, or use the timer. A day at or under the limit counts toward the streak.")
+                }
             } else {
                 Section {
-                    LabeledContent("No more than") {
-                        TextField(hint ?? "e.g. 2", text: $amount)
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.trailing)
-                            .font(.body.monospacedDigit().weight(.semibold))
-                            .focused($focus, equals: .amount)
-                            .frame(minWidth: 44, maxWidth: 160)
-                            .accessibilityLabel("Limit")
-                            .accessibilityIdentifier("much-number")
-                    }
+                    AmountTypingField(text: $amount, placeholder: "0", label: "Limit", focus: $focus)
+                        .listRowInsets(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+                        .listRowSeparator(.hidden)
                     unitLink
                 } header: {
-                    Text("Limit")
+                    Text("At most")
                 } footer: {
-                    Text(entryError ?? (unit == HabitPlan.timeUnit
-                        ? "In minutes: 90 is 1 h 30 min. Time it with ▶ on Today, or type the minutes." + (limitInMinutes == true ? " A limit in minutes stays in minutes, so its past days keep their meaning." : "")
-                        : "The unit is optional. Up to 2 decimal places.")).formNote()
+                    Text(entryError ?? "Log it only when it happens. A day at or under the limit counts toward the streak.")
                 }
             }
         }
-        .listSectionSpacing(.compact)
-        .contentMargins(.top, 4, for: .scrollContent)
-        .stickySentence(sentence, id: "much-summary")
+        .listSectionSpacing(24)
+        .contentMargins(.top, 16, for: .scrollContent)
+    }
+
+    /// A limit in time is stored as minutes with the time unit; a counted one as a number with its own unit.
+    private var limitInTime: Bool { unit == HabitPlan.timeUnit }
+
+    private var limitKind: Binding<Bool> {
+        Binding(get: { limitInTime }, set: { toTime in
+            guard toTime != limitInTime else { return }
+            let other = otherSide
+            otherSide = (amount, unit)
+            amount = other?.0 ?? (toTime ? "60" : "")
+            unit = other?.1 ?? (toTime ? HabitPlan.timeUnit : "")
+            focus = toTime ? nil : .amount
+        })
+    }
+
+    private var limitMinutes: Binding<Int> {
+        Binding(get: { Int(GoalNumber.parse(amount, decimals: 0) ?? 0) }, set: { amount = String($0) })
     }
 
     @ViewBuilder private var unitLink: some View {
@@ -538,8 +584,8 @@ struct HowMuchEditor: View {
                 .accessibilityIdentifier("much-unit")
         } else {
             NavigationLink {
-                UnitPicker(unit: $unit, used: usedUnits, mode: limit ? .limit : .amount, allowsNone: true,
-                           allowsTime: limit && limitInMinutes == nil)
+                // Time is the Limit page's own segment now, so the unit list never offers it.
+                UnitPicker(unit: $unit, used: usedUnits, mode: limit ? .limit : .amount, allowsNone: true)
             } label: {
                 LabeledContent("Unit") {
                     Text(unit.isEmpty ? "No unit" : unit)
@@ -614,6 +660,176 @@ private struct StepBoxRow: View {
         }
         .contentShape(Rectangle())
         .onTapGesture { focus.wrappedValue = .step }
+    }
+}
+
+/// Quick picks under a wheel (Figma's How long and Limit pages): Small capsule buttons that wrap, the chosen one
+/// Prominent in Ink and the rest Bordered, as the app's quick picks are; then the page's note. It's the wheel section's
+/// footer, not a section of its own: a list row clips its content to its rounded card even with a clear background,
+/// which cut the corners off the first button of each line. In Figma the picks start at the card's edge, 20 left of
+/// the header and the note (a footer sits 16 in), hence the negative padding.
+private struct QuickPicks: View {
+    let picks: [Int]
+    @Binding var total: Int
+    let note: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Quick picks")
+                .font(.headline)
+                .foregroundStyle(Color(.secondaryLabel))
+                .padding(.top, 16)
+                .accessibilityAddTraits(.isHeader)
+            WrapLayout(spacing: 8) {
+                ForEach(picks, id: \.self) { minutes in
+                    let chosen = minutes == total
+                    Button(HabitCopy.minutes(Double(minutes))) { total = minutes }
+                        .buttonStyle(QuickPickStyle(chosen: chosen))
+                        .accessibilityAddTraits(chosen ? .isSelected : [])
+                }
+            }
+            .padding(.horizontal, -16)
+            Text(note)
+        }
+    }
+}
+
+/// A Small capsule Button, Prominent (Ink, On Ink words) when chosen and Bordered (Ink at 18 %) when not. One style
+/// with a flag, because `.borderedProminent` and `.bordered` are different types and can't be swapped by a ternary.
+private struct QuickPickStyle: ButtonStyle {
+    let chosen: Bool
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.subheadline)
+            .foregroundStyle(chosen ? Color.onInk : Color.ink)
+            .padding(.horizontal, 10)
+            .frame(minHeight: 28)
+            .background(chosen ? Color.ink : Color.ink.opacity(0.18), in: .capsule)
+            .opacity(configuration.isPressed ? 0.7 : 1)
+            .contentShape(.capsule)
+    }
+}
+
+/// Lays its children out in rows, left to right, starting a new row when one is full (the quick picks).
+struct WrapLayout: Layout {
+    var spacing: CGFloat = 8
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let rows = arrange(width: proposal.width ?? .infinity, subviews: subviews)
+        let height = rows.map(\.height).reduce(0, +) + spacing * CGFloat(max(0, rows.count - 1))
+        return CGSize(width: proposal.width ?? rows.map(\.width).max() ?? 0, height: height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var y = bounds.minY
+        for row in arrange(width: bounds.width, subviews: subviews) {
+            var x = bounds.minX
+            for index in row.indices {
+                let size = subviews[index].sizeThatFits(.unspecified)
+                subviews[index].place(at: CGPoint(x: x, y: y), proposal: ProposedViewSize(size))
+                x += size.width + spacing
+            }
+            y += row.height + spacing
+        }
+    }
+
+    private struct Row { var indices: [Int] = []; var width: CGFloat = 0; var height: CGFloat = 0 }
+
+    private func arrange(width: CGFloat, subviews: Subviews) -> [Row] {
+        var rows: [Row] = [Row()]
+        for index in subviews.indices {
+            let size = subviews[index].sizeThatFits(.unspecified)
+            if !rows[rows.count - 1].indices.isEmpty, rows[rows.count - 1].width + spacing + size.width > width {
+                rows.append(Row())
+            }
+            var row = rows[rows.count - 1]
+            row.width += (row.indices.isEmpty ? 0 : spacing) + size.width
+            row.height = max(row.height, size.height)
+            row.indices.append(index)
+            rows[rows.count - 1] = row
+        }
+        return rows.filter { !$0.indices.isEmpty }
+    }
+}
+
+/// Clock's timer wheels for a number of minutes (Figma's Duration picker, hours · min): one band across both, the
+/// minutes going round and the hours not, the unit beside each number ("1 hour", "0 min"). UIKit's picker, because
+/// two SwiftUI wheels draw two bands (Rulebook, Repeat on a date); it shares `DurationPickerView` with the Log screen's
+/// wheel. Changed from outside (a quick pick), it turns to the new value.
+struct MinutesWheel: UIViewRepresentable {
+    @Binding var total: Int
+    let maxHours: Int
+
+    func makeCoordinator() -> Coordinator { Coordinator(self) }
+
+    func makeUIView(context: Context) -> DurationPickerView {
+        let picker = DurationPickerView(units: ["hours", "min"])
+        picker.dataSource = context.coordinator
+        picker.delegate = context.coordinator
+        picker.accessibilityIdentifier = "duration-wheel"
+        picker.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        picker.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        context.coordinator.show(total, in: picker, animated: false)
+        return picker
+    }
+
+    func updateUIView(_ picker: DurationPickerView, context: Context) {
+        context.coordinator.parent = self
+        context.coordinator.show(total, in: picker, animated: true)
+    }
+
+    final class Coordinator: NSObject, UIPickerViewDataSource, UIPickerViewDelegate {
+        var parent: MinutesWheel
+        private static let laps = 100
+        private var shown: Int?
+
+        init(_ parent: MinutesWheel) { self.parent = parent }
+
+        private func middleRow(for minute: Int) -> Int { 60 * (Self.laps / 2) + minute }
+
+        func show(_ total: Int, in picker: DurationPickerView, animated: Bool) {
+            guard shown != total else { return }
+            shown = total
+            picker.selectRow(min(total / 60, parent.maxHours), inComponent: 0, animated: animated)
+            picker.selectRow(middleRow(for: total % 60), inComponent: 1, animated: animated)
+            picker.setUnit(total / 60 == 1 ? "hour" : "hours", at: 0)
+        }
+
+        func numberOfComponents(in pickerView: UIPickerView) -> Int { 2 }
+
+        func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+            component == 0 ? parent.maxHours + 1 : 60 * Self.laps
+        }
+
+        func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat { 112 }
+
+        func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+            DurationPickerView.rowHeight
+        }
+
+        func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int,
+                        reusing view: UIView?) -> UIView {
+            let cell = view as? DurationPickerView.Row ?? DurationPickerView.Row()
+            cell.frame = CGRect(x: 0, y: 0, width: 112, height: DurationPickerView.rowHeight)
+            let value = component == 0 ? row : row % 60
+            cell.number.text = String(value)
+            cell.accessibilityLabel = "\(value) " + (value == 1 ? ["hour", "minute"] : ["hours", "minutes"])[component]
+            return cell
+        }
+
+        func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+            let hours = pickerView.selectedRow(inComponent: 0)
+            let minutes = pickerView.selectedRow(inComponent: 1) % 60
+            if component == 1 { pickerView.selectRow(middleRow(for: minutes), inComponent: 1, animated: false) }
+            (pickerView as? DurationPickerView)?.setUnit(hours == 1 ? "hour" : "hours", at: 0)
+            shown = hours * 60 + minutes
+            parent.total = hours * 60 + minutes
+        }
+
+        func pickerView(_ pickerView: UIPickerView, accessibilityLabelForComponent component: Int) -> String? {
+            ["Hours", "Minutes"][component]
+        }
     }
 }
 
