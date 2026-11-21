@@ -372,8 +372,16 @@ private struct FullWidthLine: ViewModifier {
 
 /// "How much" (an amount with an optional unit), "How long" (hours and minutes, for Time it) or "Limit"
 /// (Cut down). The type chosen before the form decides which.
+///
+/// How much is Figma's How much page (1102:2782): one card with the amount as the biggest thing on the screen (the
+/// Amount field, 56 Bold, centred, the keypad up from the start) and the Unit row under it, then "When you log it",
+/// which says what + does on Today. In Figma the page is one component with Typing and Keyboard down variants; here
+/// they're the one screen with its keyboard up or down, never two views. The Unit row pushes the Unit page, so it
+/// keeps the push chevron instead of Figma's pop-up chevron: a pop-up opens a menu where it is, and the unit list has
+/// search and a field of its own, which a menu can't hold.
 struct HowMuchEditor: View {
     enum Mode { case amount, time, limit }
+    enum Field: Hashable { case amount, step }
 
     let mode: Mode
     @Binding var amount: String
@@ -390,7 +398,13 @@ struct HowMuchEditor: View {
     /// A limit being edited: true if it's in minutes, false if it counts something; nil when it's new. Its unit stays on
     /// that side, so past minutes never turn into counts or back (Rulebook D6; report "Time Limits", 4 Oct 2026).
     var limitInMinutes: Bool? = nil
-    @FocusState private var typing: Bool
+    /// How much only: what + does on Today. Off adds the step; on asks how much each time (29 Sep).
+    var asksEachTime: Binding<Bool>? = nil
+    /// How much only: what each tap adds; nil keeps the suggested step.
+    var step: Binding<Double?>? = nil
+    /// The suggested step, shown in the step box until one is typed.
+    var stepPlaceholder = "1"
+    @FocusState private var focus: Field?
 
     private var limit: Bool { mode == .limit }
 
@@ -408,6 +422,66 @@ struct HowMuchEditor: View {
     }
 
     var body: some View {
+        Group {
+            if mode == .amount {
+                amountForm
+            } else {
+                otherForm
+            }
+        }
+        .navigationTitle(limit ? "Limit" : mode == .time ? "How Long" : "How Much")
+        .navigationBarTitleDisplayMode(.inline)
+        .scrollDismissesKeyboard(.interactively)
+        .selectsNumbersOnFocus()
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                if focus != nil { Spacer(); Button("Done") { focus = nil }.fontWeight(.semibold) }
+            }
+        }
+        // The amount starts filled with a suggestion, so the keyboard comes up with it selected.
+        .task { if mode != .time { focus = .amount } }
+    }
+
+    // MARK: How much (Figma 1102:2782)
+
+    private var amountForm: some View {
+        Form {
+            Section {
+                AmountTypingField(text: $amount, placeholder: "0", label: "Amount", focus: $focus)
+                    .listRowInsets(EdgeInsets(top: 20, leading: 20, bottom: 0, trailing: 20))
+                    .listRowSeparator(.hidden)
+                unitLink
+            } footer: {
+                Text(entryError ?? "Up to 2 decimal places. The unit is optional.")
+            }
+            if let asksEachTime {
+                Section {
+                    CheckRow(title: "One tap adds a set amount", selected: !asksEachTime.wrappedValue) {
+                        withAnimation { asksEachTime.wrappedValue = false }
+                    }
+                    // The step belongs to the choice above it, so no line between them (Figma's option block).
+                    .listRowSeparator(asksEachTime.wrappedValue ? .automatic : .hidden, edges: .bottom)
+                    .accessibilityIdentifier("tap-adds-step")
+                    if !asksEachTime.wrappedValue, let step {
+                        StepBoxRow(value: step, placeholder: stepPlaceholder, focus: $focus)
+                    }
+                    CheckRow(title: "Type the amount each time", selected: asksEachTime.wrappedValue) {
+                        if focus == .step { focus = nil }
+                        withAnimation { asksEachTime.wrappedValue = true }
+                    }
+                    .accessibilityIdentifier("tap-asks")
+                } header: {
+                    Text("When you log it")
+                }
+            }
+        }
+        .listSectionSpacing(24)
+        .contentMargins(.top, 16, for: .scrollContent)
+    }
+
+    // MARK: How long and Limit (their own screens come next in the Create New pass)
+
+    private var otherForm: some View {
         Form {
             // From the New Habit form the sentence is pinned at the top instead (`stickySentence` below).
             if sentence == nil {
@@ -433,21 +507,21 @@ struct HowMuchEditor: View {
                               note: "Time it with ▶ on Today, or type the time.")
             } else {
                 Section {
-                    LabeledContent(limit ? "No more than" : "Amount") {
-                        TextField(hint ?? (limit ? "e.g. 2" : "e.g. 8"), text: $amount)
+                    LabeledContent("No more than") {
+                        TextField(hint ?? "e.g. 2", text: $amount)
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.trailing)
                             .font(.body.monospacedDigit().weight(.semibold))
-                            .focused($typing)
+                            .focused($focus, equals: .amount)
                             .frame(minWidth: 44, maxWidth: 160)
-                            .accessibilityLabel(limit ? "Limit" : "Amount")
+                            .accessibilityLabel("Limit")
                             .accessibilityIdentifier("much-number")
                     }
                     unitLink
                 } header: {
-                    Text(limit ? "Limit" : "Amount")
+                    Text("Limit")
                 } footer: {
-                    Text(entryError ?? (limit && unit == HabitPlan.timeUnit
+                    Text(entryError ?? (unit == HabitPlan.timeUnit
                         ? "In minutes: 90 is 1 h 30 min. Time it with ▶ on Today, or type the minutes." + (limitInMinutes == true ? " A limit in minutes stays in minutes, so its past days keep their meaning." : "")
                         : "The unit is optional. Up to 2 decimal places.")).formNote()
                 }
@@ -456,17 +530,6 @@ struct HowMuchEditor: View {
         .listSectionSpacing(.compact)
         .contentMargins(.top, 4, for: .scrollContent)
         .stickySentence(sentence, id: "much-summary")
-        .navigationTitle(limit ? "Limit" : mode == .time ? "How Long" : "How Much")
-        .navigationBarTitleDisplayMode(.inline)
-        .scrollDismissesKeyboard(.interactively)
-        .selectsNumbersOnFocus()
-        .toolbar {
-            ToolbarItemGroup(placement: .keyboard) {
-                if typing { Spacer(); Button("Done") { typing = false }.fontWeight(.semibold) }
-            }
-        }
-        // The amount starts filled with a suggestion, so the keyboard comes up with it selected.
-        .task { if mode != .time { typing = true } }
     }
 
     @ViewBuilder private var unitLink: some View {
@@ -479,8 +542,7 @@ struct HowMuchEditor: View {
                            allowsTime: limit && limitInMinutes == nil)
             } label: {
                 LabeledContent("Unit") {
-                    Text(unit.isEmpty ? "Optional" : unit)
-                        .foregroundStyle(unit.isEmpty ? .tertiary : .secondary)
+                    Text(unit.isEmpty ? "No unit" : unit)
                 }
             }
             .accessibilityIdentifier("much-unit")
@@ -492,6 +554,66 @@ struct HowMuchEditor: View {
         guard !text.isEmpty else { return nil }
         guard let n = GoalNumber.parse(text), n > 0 else { return "Enter a number above 0, with up to 2 decimal places." }
         return nil
+    }
+}
+
+/// Figma's Amount field (4292:2568) on a page that sets a number: 56 Bold, centred, the field as wide as what's typed so
+/// the number and its cursor stay centred, and a tap anywhere on its row gives it the keyboard. The Log screen's
+/// `AmountNumberField` is the same face on a record draft; this one types into a plain string binding.
+struct AmountTypingField: View {
+    @Binding var text: String
+    let placeholder: String
+    let label: String
+    var focus: FocusState<HowMuchEditor.Field?>.Binding
+
+    var body: some View {
+        ZStack {
+            Text(text.isEmpty ? placeholder : text).hidden().padding(.horizontal, 4)
+            TextField(placeholder, text: $text)
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.center)
+                .focused(focus, equals: .amount)
+                .accessibilityLabel(label)
+                .accessibilityIdentifier("much-number")
+        }
+        .font(CustomText.amount(56))
+        .lineLimit(1)
+        .minimumScaleFactor(0.5)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity)
+        .contentShape(Rectangle())
+        .onTapGesture { focus.wrappedValue = .amount }
+    }
+}
+
+/// "Each Tap Adds" with its number in a small grey box (Figma's Step, 72 × 40, Tertiary System Fill, the number at its
+/// trailing edge), as Calendar and Clock box a value that's typed in place. The value follows the text key by key.
+private struct StepBoxRow: View {
+    @Binding var value: Double?
+    let placeholder: String
+    var focus: FocusState<HowMuchEditor.Field?>.Binding
+    @State private var text = ""
+
+    var body: some View {
+        HStack(spacing: 16) {
+            Text("Each Tap Adds")
+            Spacer(minLength: 0)
+            // The suggested step is the value each tap adds until another is typed, so it reads as a value (Label),
+            // not as a hint.
+            TextField("", text: $text, prompt: Text(placeholder).foregroundStyle(Color.primary))
+                .onAppear { text = value.map(GoalNumber.text) ?? "" }
+                .onChange(of: text) { value = GoalNumber.parse(text).flatMap { $0 > 0 ? $0 : nil } }
+                .keyboardType(.decimalPad)
+                .multilineTextAlignment(.trailing)
+                .focused(focus, equals: .step)
+                .padding(.trailing, 12)
+                .frame(width: 72, height: 40)
+                .background(Color(.tertiarySystemFill), in: .rect(cornerRadius: 8))
+                .accessibilityLabel("Each Tap Adds")
+                .accessibilityIdentifier("tap-step")
+        }
+        .contentShape(Rectangle())
+        .onTapGesture { focus.wrappedValue = .step }
     }
 }
 

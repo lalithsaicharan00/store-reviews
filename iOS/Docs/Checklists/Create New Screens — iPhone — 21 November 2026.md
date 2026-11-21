@@ -34,7 +34,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **How Often** (`1075:161386`, 15 variants)
 - [x] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
 - [x] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
-- [ ] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
+- [x] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
 - [ ] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
 
 ## Left for the end of the loop
@@ -50,6 +50,10 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   swipe, or VoiceOver's Delete action), "Reminder Says" as a left label, and the notifications prompt, which now
   comes when Remind Me is turned on (a test that turns it on must answer iOS's alert or start with permission
   granted).
+- [ ] UI tests that read How Much and Unit's old words: "Amount" (the label is gone; the field is still
+  `much-number`), "Optional" (now *No unit*), "No Unit" (now *No unit*), "When you tap +" / "Add a set amount" /
+  "Each tap adds" (now How Much's *When you log it*, *One tap adds a set amount*, *Each Tap Adds*, `tap-step`), and a
+  unit tapped on the Unit page, which now stays on the page (tap Back).
 
 ## Left for the logic pass
 
@@ -319,3 +323,30 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   the All Day line, the menu with its second lines, dark, and the Routine page in All Day (ticked, the rest greyed,
   its footer). Not checked: Don't Allow (the switch going back off), and a swipe to delete.
 
+
+### How Much (`1102:2782`) and Unit (`1102:3316`) — done 21 Nov
+
+- **How Much is a plain `Form`, its two variants (Typing, Keyboard down) the one screen with the keypad up or down.**
+  One card: the **Amount field** (Figma `4292:2568`: 56 Bold, centred, the field as wide as what's typed so the
+  number and cursor stay centred, a tap anywhere on the row focuses it; `AmountTypingField`), then **Unit**. Footer
+  *Up to 2 decimal places. The unit is optional.* No sticky sentence and no read-back above it (Figma has neither).
+  The keypad comes up on opening, as before.
+- **The Unit row pushes the Unit page, so it keeps iOS's push chevron, not Figma's pop-up ⌃⌄:** a pop-up opens a
+  menu in place, and the unit list has search and a field of its own, which a menu can't hold. Its value says
+  *No unit* when there's none (was *Optional*).
+- **When you log it** moved here from the habit form (where it was hidden since the form step): *One tap adds a set
+  amount* with **Each Tap Adds** under it, its number in a 72 × 40 Tertiary System Fill box at the trailing edge
+  (`StepBoxRow`; the suggested step reads as a value in Label, since it's what each tap adds until another is
+  typed), no line between the choice and its step, then *Type the amount each time*. Only for Track an Amount, not a
+  limit. The old footer is gone (Figma has none). `NumberRow` and `tapSection` left the form.
+- **Unit is a `List` with iOS's own search** (`searchable`, always under the bar, *Search units*), as the Icon page.
+  Its four variants are the list's states: **No unit** (Your own: No unit ✓, the person's units, *Create Your Own
+  Unit* with a plain + as Add a Time, footer), **Creating your own** (*e.g. prayers* and Done open above Create Your
+  Own Unit), **Searching** (only matching units under their kinds; nothing matches → iOS's search empty state) and
+  **Own unit added** (the new unit joins Your own, ticked). **Choosing moves the tick and stays on the page,** as
+  Settings' choice lists do (it used to go back at once), so making a unit lands on Figma's Own unit added. Searching
+  hides the bar, as iOS's search does on every page (Figma keeps it).
+- `PlusRow` is the one component for a plain-+ add row (Add a Time, Create Your Own Unit).
+- **Checked on the Simulator:** How Much typing (empty 0 with the cursor, 8 typed) and keyboard down, Unit with No
+  unit, Creating your own, prayers added and ticked, and Searching "bo" (bottles, books). Dark is checked with the
+  next screen's build.

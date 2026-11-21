@@ -872,8 +872,11 @@ struct HabitForm: View {
             case .amount, .cutBack:
                 screenRow(type == .cutBack ? "Limit" : "How Much", value: amountValue == nil ? "Not set yet" : plan.howMuchLabel) {
                     HowMuchEditor(mode: type == .cutBack ? .limit : .amount, amount: $amountText, unit: $unit, hours: $hours,
-                                  minutes: $minutes, usedUnits: store.usedUnits, period: amountPeriod, sentence: screenText, hint: amountHint,
-                                  limitInMinutes: type == .cutBack ? original.map { if case .duration = $0.kind { true } else { false } } : nil)
+                                  minutes: $minutes, usedUnits: store.usedUnits, period: amountPeriod,
+                                  sentence: type == .cutBack ? screenText : nil, hint: amountHint,
+                                  limitInMinutes: type == .cutBack ? original.map { if case .duration = $0.kind { true } else { false } } : nil,
+                                  asksEachTime: type == .amount ? $asksHowMuch : nil, step: $step,
+                                  stepPlaceholder: HabitCopy.number(plan.stepValue))
                         .onAppear { focus = nil }
                 }
                 .accessibilityIdentifier("how-much-row")
@@ -901,35 +904,6 @@ struct HabitForm: View {
                     .onAppear { focus = nil }
             }
             .accessibilityIdentifier("how-often-row")
-        }
-    }
-
-    /// Not on Figma's form (1065:2597): it moves to the How Much page as "When you log it" (Figma 1102:2613) in that
-    /// page's own step. Kept here, unused, until then.
-    /// What + does on Today, chosen, never a hidden rule: add a set step ("+1 glass", good for small counts),
-    /// or type the amount each time (good for big or odd amounts: steps, ml). Research: "Logging a Count — One
-    /// Tap or Type" (13 reviews want one tap; "tapping +1 80 times for an 80m run is exhausting"), Round 3 §1.3
-    /// (19 statements type the odd amount, 13 want a step of their own). Tapping the habit always types.
-    private var tapSection: some View {
-        Section {
-            CheckRow(title: "Add a set amount", selected: !asksHowMuch) { withAnimation { asksHowMuch = false } }
-                .accessibilityIdentifier("tap-adds-step")
-            if !asksHowMuch {
-                NumberRow(title: "Each tap adds", value: $step, placeholder: HabitCopy.number(plan.stepValue),
-                          suffix: HabitCopy.unitWord(plan.stepValue, plan.unit), focus: $focus, field: .increment)
-                    .padding(.leading, 22)
-                    .font(.subheadline)
-            }
-            CheckRow(title: "Type the amount each time", selected: asksHowMuch) {
-                focus = nil
-                withAnimation { asksHowMuch = true }
-            }
-            .accessibilityIdentifier("tap-asks")
-        } header: {
-            Text("When you tap +")
-        } footer: {
-            Text(asksHowMuch ? "Tap + to type how much you did."
-                 : "Each tap on + adds \(HabitCopy.amount(plan.stepValue, plan.unit)).").formNote()
         }
     }
 
@@ -1228,14 +1202,8 @@ struct HabitForm: View {
                         removeReminder(reminder.id)
                     }
                 }
-                Button(action: addReminder) {
-                    HStack(spacing: 16) {
-                        Image(systemName: "plus").font(.title3).foregroundStyle(.secondary).frame(width: 24)
-                        Text("Add a Time").foregroundStyle(Color.primary)
-                            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
-                    }
-                }
-                .accessibilityIdentifier("add-reminder")
+                PlusRow(title: "Add a Time", action: addReminder)
+                    .accessibilityIdentifier("add-reminder")
             } header: {
                 Text("Remind me at")
             } footer: {
@@ -1775,6 +1743,23 @@ struct RemoveButton: View {
     }
 }
 
+/// A row that adds one more of something to the list it ends: a plain + in Secondary Label, 16 before the words
+/// (Figma's Add a Time and Create Your Own Unit rows), as Clock adds an alarm time. Its separator starts at the words.
+struct PlusRow: View {
+    let title: String
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 16) {
+                Image(systemName: "plus").font(.title3).foregroundStyle(.secondary).frame(width: 24)
+                Text(title).foregroundStyle(Color.primary)
+                    .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+            }
+        }
+    }
+}
+
 /// The green ⊕ row that adds to an editable list.
 struct AddRow: View {
     let title: String
@@ -1966,9 +1951,9 @@ struct UnitPicker: View {
     /// A limit can be time ("Social media: at most 30 min a day"): users show time limits for screens, TV and games are
     /// a real need (report "Time Limits — Should Cut Down Allow Time?", 4 Oct 2026). Not when editing a counted limit.
     var allowsTime = false
-    @Environment(\.dismiss) private var dismiss
     @State private var creating = false
     @State private var custom = ""
+    @State private var search = ""
     @FocusState private var typing: Bool
 
     private static var metric: Bool { Locale.current.measurementSystem != .us }
@@ -2006,73 +1991,109 @@ struct UnitPicker: View {
         }
     }
 
+    /// The person's own units: ones used before that aren't in the lists, and the one just made here.
+    private var own: [String] {
+        let known = Set(groups.flatMap(\.1))
+        var list = used.reversed().filter { !known.contains($0) && !["minutes", "hours"].contains($0) }
+        let chosen = unit.trimmingCharacters(in: .whitespaces)
+        if !chosen.isEmpty, !known.contains(chosen), !list.contains(chosen) { list.append(chosen) }
+        return list
+    }
+
+    private var query: String { search.trimmingCharacters(in: .whitespaces) }
+
+    private func matches(_ value: String) -> Bool { value.localizedCaseInsensitiveContains(query) }
+
+    /// Figma's Unit page (1102:3316): search, Your own (No unit, the person's units, Create Your Own Unit), then the
+    /// usual units by kind. Its four variants are this one list's states: nothing typed, a unit being made (the field
+    /// opens above Create Your Own Unit), a search (only the matching units, under their kinds) and a unit just made
+    /// (it joins Your own, ticked). Choosing moves the tick and stays on the page, as Settings' choice lists do; Back
+    /// returns to How Much. The search is iOS's own (`searchable`, always shown under the bar), as on the Icon page.
     var body: some View {
         List {
-            Section {
-                if creating {
-                    HStack {
-                        TextField("e.g. prayers", text: $custom)
-                            .focused($typing)
-                            .limitText($custom, to: TextLimit.unit)
-                            .submitLabel(.done)
-                            .onSubmit(useCustom)
-                            .accessibilityIdentifier("custom-unit")
-                        Button("Done", action: useCustom).fontWeight(.semibold)
-                            .disabled(custom.trimmingCharacters(in: .whitespaces).isEmpty)
-                    }
-                } else {
-                    AddRow(title: "Create Your Own Unit") {
-                        withAnimation { creating = true }
-                        typing = true
-                    }
-                    .accessibilityIdentifier("create-unit")
+            if query.isEmpty {
+                ownSection
+                ForEach(groups, id: \.0) { group in
+                    Section(group.0) { ForEach(group.1, id: \.self, content: row) }
                 }
-                if allowsNone {
-                    Button {
-                        unit = ""
-                        dismiss()
-                    } label: {
-                        HStack {
-                            Text("No Unit").foregroundStyle(Color.primary)
-                            Spacer(minLength: 16)
-                            if unit.trimmingCharacters(in: .whitespaces).isEmpty { Image(systemName: "checkmark").foregroundStyle(Color.ink).fontWeight(.semibold) }
-                        }
-                    }
-                    .accessibilityIdentifier("no-unit")
+            } else {
+                let mine = own.filter(matches)
+                if !mine.isEmpty { Section("Your own") { ForEach(mine, id: \.self, content: row) } }
+                ForEach(groups, id: \.0) { group in
+                    let hits = group.1.filter(matches)
+                    if !hits.isEmpty { Section(group.0) { ForEach(hits, id: \.self, content: row) } }
                 }
-                let known = Set(groups.flatMap(\.1))
-                ForEach(used.reversed().filter { !known.contains($0) && !["minutes", "hours"].contains($0) }, id: \.self, content: row)
-            } header: {
-                Text("Your own")
-            } footer: {
-                Text(TextLimit.note(custom, TextLimit.unit) ?? "Anything you count, in a word or two: prayers, laps, sets.")
-            }
-            ForEach(groups, id: \.0) { group in
-                Section(group.0) { ForEach(group.1, id: \.self, content: row) }
             }
         }
+        .overlay {
+            if !query.isEmpty, !own.contains(where: matches), !groups.contains(where: { $0.1.contains(where: matches) }) {
+                ContentUnavailableView.search(text: query)
+            }
+        }
+        .listSectionSpacing(24)
+        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search units")
         .navigationTitle("Unit")
         .navigationBarTitleDisplayMode(.inline)
     }
 
-    private func row(_ value: String) -> some View {
-        Button {
-            unit = value
-            dismiss()
-        } label: {
-            HStack {
-                Text(value).foregroundStyle(Color.primary).lineLimit(1)
-                Spacer(minLength: 16)
-                if value == unit { Image(systemName: "checkmark").foregroundStyle(Color.ink).fontWeight(.semibold) }
+    private var ownSection: some View {
+        Section {
+            if allowsNone {
+                choiceRow("No unit", chosen: unit.trimmingCharacters(in: .whitespaces).isEmpty) { unit = "" }
+                    .accessibilityIdentifier("no-unit")
             }
+            ForEach(own, id: \.self, content: row)
+            if creating {
+                HStack(spacing: 16) {
+                    TextField("e.g. prayers", text: $custom)
+                        .focused($typing)
+                        .limitText($custom, to: TextLimit.unit)
+                        .submitLabel(.done)
+                        .onSubmit(useCustom)
+                        .accessibilityIdentifier("custom-unit")
+                        .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                    // Borderless, so only the word takes its tap and the field keeps the rest of the row.
+                    Button("Done", action: useCustom)
+                        .buttonStyle(.borderless)
+                        .disabled(custom.trimmingCharacters(in: .whitespaces).isEmpty)
+                        .tint(Color.ink)
+                }
+            }
+            PlusRow(title: "Create Your Own Unit") {
+                withAnimation { creating = true }
+                typing = true
+            }
+            .accessibilityIdentifier("create-unit")
+        } header: {
+            Text("Your own")
+        } footer: {
+            Text(TextLimit.note(custom, TextLimit.unit) ?? "Anything you count, in a word or two: prayers, laps, sets.")
         }
     }
 
+    private func row(_ value: String) -> some View {
+        choiceRow(value, chosen: value == unit) { unit = value }
+    }
+
+    private func choiceRow(_ title: String, chosen: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack {
+                Text(title).foregroundStyle(Color.primary).lineLimit(1)
+                Spacer(minLength: 16)
+                Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink).opacity(chosen ? 1 : 0)
+            }
+        }
+        .accessibilityAddTraits(chosen ? .isSelected : [])
+    }
+
+    /// The new unit joins Your own, ticked, and the field closes; the page stays (Figma's Own unit added).
     private func useCustom() {
         let value = TextLimit.clean(custom, TextLimit.unit)
         guard !value.isEmpty else { return }
         unit = value
-        dismiss()
+        custom = ""
+        typing = false
+        withAnimation { creating = false }
     }
 }
 
