@@ -160,7 +160,8 @@ nonisolated struct WidgetSnapshot: Codable, Sendable {
     var generated: Date
     var timeZone: String
     var locale: String
-    var plus: Bool
+    // `plus` went on 21 Nov 2026: every feature is free, widgets included, and no widget ever read it. A snapshot written
+    // by an older build still reads (Codable ignores the extra key).
     /// Before 9 Oct 2026, "Content hidden": no items, and taps refused. The app no longer writes it (Current Work 58);
     /// kept so a snapshot written by an older build still reads.
     var hidden: Bool

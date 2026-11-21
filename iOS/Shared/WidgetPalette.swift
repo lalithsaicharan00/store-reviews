@@ -23,6 +23,11 @@ nonisolated enum WidgetPalette {
     static let container = Color(UIColor { $0.userInterfaceStyle == .dark
         ? UIColor(red: 0x1C / 255, green: 0x1C / 255, blue: 0x1E / 255, alpha: 1)
         : UIColor(red: 0xF2 / 255, green: 0xF2 / 255, blue: 0xF7 / 255, alpha: 1) })
+    /// A list's count pill (Figma's Count, 21 Nov 2026): Tertiary System Fill as it shows over the widget's white
+    /// (#EFEFF0), painted solid so a row's tap can draw the new count on an identical pill over it (W12). Dark: #3A3A3C.
+    static let countPill = Color(UIColor { $0.userInterfaceStyle == .dark
+        ? UIColor(red: 0x3A / 255, green: 0x3A / 255, blue: 0x3C / 255, alpha: 1)
+        : UIColor(red: 0xEF / 255, green: 0xEF / 255, blue: 0xF0 / 255, alpha: 1) })
     static let emptyDayLight = 0xDEDEE3, emptyDayDark = 0x2C2C2E
     /// ✕, ⏩ and ⏸ on a grey square; the dashed and today outlines (#86868B: 3.25:1 on the week card).
     static let signLight = 0x6C6C70, signDark = 0x98989F

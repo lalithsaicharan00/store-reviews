@@ -29,7 +29,7 @@ extension HabitStore {
                 return WidgetFrame(day: day.key, start: bounds.lowerBound, end: bounds.upperBound.addingTimeInterval(1), items: [])
             }
             return WidgetSnapshot(generated: now, timeZone: calendar.timeZone.identifier, locale: Locale.current.identifier,
-                                  plus: isPlus, hidden: true, weekdays: weekdays, frames: frames)
+                                  hidden: true, weekdays: weekdays, frames: frames)
         }
         prepareWidgetContext(now: now)
         let active = habits.filter { !$0.archived }
@@ -61,7 +61,7 @@ extension HabitStore {
         }
         let taskCards = cards.filter { $0 != .quittingCard }
         return WidgetSnapshot(
-            generated: now, timeZone: calendar.timeZone.identifier, locale: Locale.current.identifier, plus: isPlus, hidden: false,
+            generated: now, timeZone: calendar.timeZone.identifier, locale: Locale.current.identifier, hidden: false,
             sections: cards.map { WidgetSection(id: $0, name: widgetCardName($0)) },
             taskSections: taskCards.map { WidgetSection(id: $0, name: widgetCardName($0)) },
             choices: active.filter { $0.kind != .task }.map { WidgetChoice(id: $0.id.uuidString, name: $0.name, symbol: $0.symbol) },

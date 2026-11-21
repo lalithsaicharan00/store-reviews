@@ -257,12 +257,17 @@ nonisolated struct WeekWidgetProvider: AppIntentTimelineProvider {
 
 // MARK: - Widgets
 
+// The gallery's and Edit Widget's words are Figma's (native components 1255:3030, 21 Nov 2026): each widget's name in
+// title case (One Habit, Today, This Week, Tasks), and the one line under it, which iOS shows in the gallery and again
+// at the top of the Edit Widget card. Every widget is free (the user, 21 Nov 2026): nothing here or in the views asks
+// for Plus.
+
 struct TodayPhoneWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: PhoneWidgetKind.agenda, intent: AgendaWidgetConfiguration.self, provider: AgendaWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .habits)
         }.configurationDisplayName("Today")
-            .description("Your habits for today, or one section of your day. Tap to log.")
+            .description("Today’s habits, or one part of your day.")
             .contentMarginsDisabled()
             .supportedFamilies([.systemMedium, .systemLarge])
     }
@@ -272,7 +277,7 @@ struct TasksPhoneWidget: Widget {
         AppIntentConfiguration(kind: PhoneWidgetKind.tasks, intent: TasksWidgetConfiguration.self, provider: TasksWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .tasks)
         }.configurationDisplayName("Tasks")
-            .description("Today's tasks, or one section's. Tap to check them off.")
+            .description("Today’s tasks. Tap to tick them off.")
             .contentMarginsDisabled()
             .supportedFamilies([.systemMedium, .systemLarge])
     }
@@ -281,8 +286,8 @@ struct ItemPhoneWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: PhoneWidgetKind.item, intent: ItemWidgetConfiguration.self, provider: ItemWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .item)
-        }.configurationDisplayName("One habit")
-            .description("One habit's progress today. Touch and hold, then Edit Widget to choose the habit.")
+        }.configurationDisplayName("One Habit")
+            .description("One habit’s progress today. Tap its button to log.")
             .contentMarginsDisabled()
             .supportedFamilies([.systemSmall, .accessoryCircular, .accessoryInline])
     }
@@ -291,8 +296,8 @@ struct WeekPhoneWidget: Widget {
     var body: some WidgetConfiguration {
         AppIntentConfiguration(kind: PhoneWidgetKind.history, intent: HistoryWidgetConfiguration.self, provider: WeekWidgetProvider()) {
             PhoneWidgetView(entry: $0, layout: .week)
-        }.configurationDisplayName("This week")
-            .description("One habit: today's progress and the week so far.")
+        }.configurationDisplayName("This Week")
+            .description("One habit: today and the week so far.")
             .contentMarginsDisabled()
             .supportedFamilies([.systemMedium])
     }
@@ -517,32 +522,33 @@ struct WidgetRoundFace: View {
         .contentShape(Rectangle())
     }
 
+    /// Today's `RoundActionButton` at 34 (Figma's Round button, 21 Nov 2026): a symbol 14 Bold, "+1" 13 Bold.
     @ViewBuilder private var glyph: some View {
-        let glyphSize: CGFloat = size >= 44 ? 20 : 17
+        let glyphSize: CGFloat = 14
         switch item.action {
         case .add where item.type == "check":
             // A check habit counted several times, or toward a week or month goal: a ✓ that adds one check, never a
             // +1 (the user, 7 Oct 2026, Current Work 64). It fills only when the goal is met.
-            Image(systemName: "checkmark").font(.system(size: glyphSize, weight: .semibold))
+            Image(systemName: "checkmark").font(.system(size: glyphSize, weight: .bold))
         case .add:
-            Text(item.actionText ?? "+1").font(.system(size: size >= 44 ? 17 : 15, weight: .semibold).monospacedDigit())
+            Text(item.actionText ?? "+1").font(.system(size: 13, weight: .bold).monospacedDigit())
                 .lineLimit(1).minimumScaleFactor(0.55).padding(.horizontal, 3)
         case .check:
-            Image(systemName: "checkmark").font(.system(size: glyphSize, weight: .semibold))
+            Image(systemName: "checkmark").font(.system(size: glyphSize, weight: .bold))
         case .timerStart:
-            Image(systemName: "play.fill").font(.system(size: glyphSize - 2, weight: .semibold))
+            Image(systemName: "play.fill").font(.system(size: glyphSize, weight: .bold))
         case .timerPause:
-            Image(systemName: "pause.fill").font(.system(size: glyphSize - 2, weight: .semibold))
+            Image(systemName: "pause.fill").font(.system(size: glyphSize, weight: .bold))
         case .open:
             if item.state == nil, item.route?.hasPrefix("oftenenough://timer/") == true {
-                Image(systemName: item.timerClock == nil ? "play.fill" : "pause.fill").font(.system(size: glyphSize - 2, weight: .semibold))
+                Image(systemName: item.timerClock == nil ? "play.fill" : "pause.fill").font(.system(size: glyphSize, weight: .bold))
             // LOCKED (widget taps, 8 Oct 2026): a number to type shows a plain +; ↗ only for steps and quit (W8). Read iOS/Docs/Widgets — Taps and Updates (Locked).md before changing; what it does needs the user's say-so to change, speed work that keeps it doesn't (§8).
             } else if item.state == nil, item.route?.hasPrefix("oftenenough://log/") == true {
                 // A number typed in the app: a plain +, as on Today's row (the user, 8 Oct 2026). The arrow stays for
                 // what opens a screen of its own (a checklist's steps, a quit habit's slip).
-                Image(systemName: "plus").font(.system(size: glyphSize, weight: .semibold))
+                Image(systemName: "plus").font(.system(size: glyphSize, weight: .bold))
             } else {
-                Image(systemName: "arrow.up.right").font(.system(size: glyphSize - 2, weight: .semibold))
+                Image(systemName: "arrow.up.right").font(.system(size: glyphSize, weight: .bold))
             }
         }
     }
@@ -666,6 +672,21 @@ struct WidgetCardToggleStyle<Content: View>: ToggleStyle {
 
 // MARK: - Pieces
 
+/// A habit's icon as Today draws it (Figma's Habit icon): a circle in the habit's colour with the symbol in white. One
+/// Habit 40 (glyph 18), This Week 44 (20), a list row 32 (15). Accentable, so a tinted Home Screen keeps it readable.
+struct WidgetHabitIcon: View {
+    let item: WidgetItem
+    let size: CGFloat
+    let glyph: CGFloat
+    var body: some View {
+        Image(systemName: item.symbol).font(.system(size: glyph, weight: .regular)).symbolVariant(.fill)
+            .foregroundStyle(.white)
+            .frame(width: size, height: size)
+            .background(Circle().fill(WidgetPalette.main(item.color)).widgetAccentable())
+            .accessibilityHidden(true)
+    }
+}
+
 /// A quit run, live: "15d 22:36:35". The day count is redrawn at each new day (a timeline entry); the clock runs itself.
 struct QuitClock: View {
     let start: Date
@@ -694,14 +715,16 @@ struct WidgetValueLine: View {
     }
 }
 
-/// A bar (Small 18 pt, weekly 8 pt): the habit's colour toward its goal, a limit's neutral grey, capped at full.
+/// A bar (8 pt on One Habit and This Week, Figma 21 Nov 2026): the habit's colour toward its goal, a limit's neutral
+/// grey, capped at full, on a System Fill track (Figma's Progress bar: never the habit's Fill, so it reads the same on
+/// white and on grey).
 struct WidgetBar: View {
     let fraction: Double
     let color: Color
     let height: CGFloat
     var body: some View {
         ZStack(alignment: .leading) {
-            Capsule().fill(Color(.tertiarySystemFill))
+            Capsule().fill(Color(.systemFill))
             GeometryReader { proxy in
                 let f = min(1, max(0, fraction))
                 if f > 0 {
@@ -720,12 +743,15 @@ struct WidgetMessage: View {
     let symbol: String?
     let title: String
     let subtitle: String
+    /// Figma's list Message (1240:393): an optional symbol (20, Secondary Label), the headline (Body), the line
+    /// (Footnote, Secondary Label), centred, 4 apart.
     var body: some View {
         VStack(spacing: 4) {
-            if let symbol { Image(systemName: symbol).font(.title3).foregroundStyle(.secondary) }
-            Text(title).font(.headline).multilineTextAlignment(.center)
-            Text(subtitle).font(.caption.weight(.medium)).foregroundStyle(.secondary).multilineTextAlignment(.center)
+            if let symbol { Image(systemName: symbol).font(.system(size: 20)).foregroundStyle(.secondary) }
+            Text(title).font(.body).multilineTextAlignment(.center)
+            Text(subtitle).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
         }
+        .padding(.horizontal, 16)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .accessibilityElement(children: .combine)
     }
@@ -782,10 +808,10 @@ struct ListWidget: View {
         let counted = items.filter(\.counts)
         let done = counted.filter(\.countsDone).count
         // A row's tap redraws this header with the new "N of M done" at once (Current Work 66).
-        let patch = WidgetHeaderPatch(top: large ? 16 : 12, height: large ? 44 : 22,
+        let patch = WidgetHeaderPatch(top: 12, height: large ? 44 : 28,
                                       header: { header(counted: counted.count, done: $0, page: page, pages: pages, live: false, covering: done) },
                                       done: done, columns: 1, columnGap: 16, leading: 16)
-        VStack(alignment: .leading, spacing: large ? 10 : 12) {
+        VStack(alignment: .leading, spacing: large ? 8 : 4) {
             header(counted: counted.count, done: done, page: page, pages: pages)
             if entry.status != .ready || entry.frame == nil || entry.viewMissing || items.isEmpty {
                 message
@@ -795,7 +821,7 @@ struct ListWidget: View {
                 WidgetMessage(symbol: "checklist", title: left == 0 ? "All done" : left == 1 ? "1 task left" : "\(left) tasks left",
                               subtitle: "Open Often Enough")
             } else {
-                VStack(spacing: 12) {
+                VStack(spacing: large ? 2 : 4) {
                     ForEach(0..<slots, id: \.self) { slot in
                         if slot < shown.count {
                             WidgetListRow(item: shown[slot], day: entry.frame?.day ?? "", date: entry.date,
@@ -809,11 +835,12 @@ struct ListWidget: View {
                 .frame(maxHeight: .infinity)
             }
         }
-        .padding(large ? 16 : 12)
+        .padding(.horizontal, 16).padding(.vertical, 12)
         .coordinateSpace(.named("widgetList"))
     }
 
-    private var title: String { entry.status == .ready ? entry.viewName : tasks ? "Tasks" : "Today" }
+    /// The routine's name; Today or Tasks when the widget can't say (hidden, stale, or its routine deleted, as Figma).
+    private var title: String { entry.status == .ready && !entry.viewMissing ? entry.viewName : tasks ? "Tasks" : "Today" }
 
     private func header(counted: Int, done: Int, page: Int, pages: Int, live: Bool = true, covering: Int? = nil) -> ListHeader {
         ListHeader(entry: entry, title: title, large: large, counted: counted, done: done, page: page, pages: pages, live: live,
@@ -827,7 +854,7 @@ struct ListWidget: View {
         case .stale: WidgetMessage(symbol: "arrow.clockwise", title: "Open to update", subtitle: "Data unavailable")
         case .ready:
             if entry.viewMissing {
-                WidgetMessage(symbol: nil, title: "Section unavailable", subtitle: "Touch and hold · Edit Widget")
+                WidgetMessage(symbol: nil, title: "Routine deleted", subtitle: "Tap to choose another")
             } else if tasks {
                 WidgetMessage(symbol: nil, title: entry.view == WidgetListSection.today ? "No tasks today" : "No \(entry.viewName.lowercased()) today",
                               subtitle: "Add one in the app")
@@ -858,43 +885,50 @@ struct ListHeader: View {
 
     var body: some View {
         let count = counted == 0 || entry.status != .ready || entry.viewMissing ? nil : "\(done) of \(counted) done"
+        // Figma's Widget · List header (1240:488): 8 in from the rows' edge; Medium is the title (Body), its count on a
+        // pill, then ‹ 1/3 ›; Large is the title (Headline) with the count under it, then ‹ 1/2 ›.
         HStack(alignment: .center, spacing: 8) {
             titleLink(count)
             Spacer(minLength: 4)
+            if !large, let count { countText(count) }
             if pages > 1 && entry.status == .ready {
                 pager.opacity(live ? 1 : 0)
-            } else if let count {
-                countText(count)
             }
         }
-        .frame(height: large ? 44 : 22)
+        .padding(.horizontal, 8)
+        .frame(height: large ? 44 : 28)
         .accessibilityElement(children: .contain)
     }
 
     /// "2 of 5 done" on a pill of the colour nearest the widget's own background: a row's tap draws the new count on
     /// the same pill exactly over it (Current Work 66), since a widget can't paint the system's background itself.
+    ///
+    /// Medium's pill is Figma's (Caption 1 Semibold on a radius-10 pill), painted solid (`WidgetPalette.countPill`, the
+    /// Tertiary System Fill grey over white), not see-through: a row's tap draws the new count on an identical pill
+    /// over this one (W12), and a see-through pill would let the old count show through. Large draws the count with no
+    /// pill, as Figma, on the widget's own white (`tertiarySystemBackground`; a faint pill in dark, W12's known limit).
     private func countText(_ count: String) -> some View {
-        ZStack(alignment: .trailing) {
+        ZStack(alignment: large ? .leading : .trailing) {
             if let covering, counted > 0 { Text("\(covering) of \(counted) done").hidden() }
             Text(count)
         }
-        .font(.footnote.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1)
-        .padding(.horizontal, 4)
-        .background(Capsule().fill(Color(.tertiarySystemBackground)))
+        .font(.caption.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1)
+        .padding(.horizontal, large ? 0 : 8).padding(.vertical, large ? 0 : 2)
+        .background {
+            if large { Rectangle().fill(Color(.tertiarySystemBackground)) }
+            else { RoundedRectangle(cornerRadius: 10, style: .continuous).fill(WidgetPalette.countPill) }
+        }
     }
 
     @ViewBuilder private func titleLink(_ count: String?) -> some View {
         let label = Group {
-            if large && pages > 1 {
+            if large {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(title).font(.title2.weight(.semibold)).lineLimit(1).opacity(live ? 1 : 0)
+                    Text(title).font(.headline).lineLimit(1).opacity(live ? 1 : 0)
                     if let count { countText(count) }
                 }
             } else {
-                HStack(alignment: .firstTextBaseline, spacing: 8) {
-                    Text(title).font(large ? .title2.weight(.semibold) : .headline).lineLimit(1).opacity(live ? 1 : 0)
-                    if pages > 1, let count { countText(count) }
-                }
+                Text(title).font(.body).lineLimit(1).opacity(live ? 1 : 0)
             }
         }
         if live { Link(destination: WidgetLinks.view(entry.view)) { label } } else { label }
@@ -903,16 +937,18 @@ struct ListHeader: View {
     private var pager: some View {
         HStack(spacing: 0) {
             pageButton("chevron.left", to: page - 1, enabled: page > 0, label: "Previous page")
-            Text("\(page + 1)/\(pages)").font(.footnote.weight(.semibold)).monospacedDigit().frame(minWidth: 28)
+            Text("\(page + 1)/\(pages)").font(.caption.weight(.semibold)).foregroundStyle(.secondary).monospacedDigit()
                 .accessibilityLabel("Page \(page + 1) of \(pages)")
             pageButton("chevron.right", to: page + 1, enabled: page + 1 < pages, label: "Next page")
         }
     }
 
     @ViewBuilder private func pageButton(_ symbol: String, to page: Int, enabled: Bool, label: String) -> some View {
-        let face = Image(systemName: symbol).font(.system(size: 17, weight: .semibold))
+        // Figma's Symbol button, 34 wide; the touch stays 44 tall even where Medium's header is 28.
+        let face = Image(systemName: symbol).font(.system(size: 17, weight: .regular))
             .foregroundStyle(enabled ? AnyShapeStyle(.primary) : AnyShapeStyle(.tertiary))
-            .frame(width: 44, height: 44).contentShape(Rectangle())
+            .frame(width: 34, height: 44).contentShape(Rectangle())
+            .padding(.vertical, large ? 0 : -8)
         if live && enabled && !entry.sample {
             #if DEBUG
             if WidgetProbe.pageMode == "live" {
@@ -973,39 +1009,50 @@ struct WidgetRowContent: View {
     var live = true
     @Environment(\.colorScheme) private var scheme
 
+    /// Figma's Widget · List row (1238:429, 21 Nov 2026): 8 in, the habit's icon (32), 12, the name (Subheadline
+    /// Semibold) over its line (Footnote, Secondary Label), the streak (🔥 and the number, Caption 1 Semibold; habits
+    /// only), and the round button (34) 8 from the row's end, over the row's fill.
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 12) {
             if live {
                 Link(destination: item.url) { identity.contentShape(Rectangle()) }
-                WidgetActionButton(item: item, day: day, size: 32, sample: sample)
+                WidgetActionButton(item: item, day: day, size: 34, sample: sample)
             } else {
                 identity
-                WidgetRoundFace(item: item, size: 32)
+                WidgetRoundFace(item: item, size: 34)
             }
         }
-        .padding(.leading, 8)
+        // The button's circle sits 8 from the row's end: its 44 target leaves 5 of that.
+        .padding(.leading, 8).padding(.trailing, 3)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background { fill }
         .accessibilityElement(children: .contain)
     }
 
     private var identity: some View {
-        HStack(spacing: 10) {
-            Image(systemName: item.symbol).font(.system(size: 20, weight: .medium))
-                .foregroundStyle(WidgetPalette.main(item.color)).widgetAccentable()
-                .frame(width: 28, height: 28)
-            VStack(alignment: .leading, spacing: 1) {
+        HStack(spacing: 12) {
+            WidgetHabitIcon(item: item, size: 32, glyph: 15)
+            VStack(alignment: .leading, spacing: 0) {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     // Names hidden: the icon, the line and the button tell rows apart (report §6a).
-                    if !item.name.isEmpty { Text(item.name).font(.headline).lineLimit(1) }
+                    if !item.name.isEmpty { Text(item.name).font(.subheadline.weight(.semibold)).lineLimit(1) }
                     if item.type == "quit", item.state == nil, item.quitStart != nil {
                         Spacer(minLength: 4)
-                        Text(WidgetLive.quitLine(item, at: date)).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1)
+                        Text(WidgetLive.quitLine(item, at: date)).font(.caption.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1)
                     }
                 }
                 lineView.lineLimit(1)
             }
             Spacer(minLength: 0)
+            if let streak = item.streak, !item.isTask, item.type != "quit" {
+                HStack(spacing: 2) {
+                    Text("🔥")
+                    Text(streak).monospacedDigit()
+                }
+                .font(.caption.weight(.semibold))
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel("Streak \(streak)")
+            }
         }
     }
 
@@ -1045,13 +1092,13 @@ struct SmallWidget: View {
             } else if entry.status == .stale || entry.frame == nil {
                 recovery("arrow.clockwise", "Open to update", "Data unavailable", button: true)
             } else if entry.noHabits {
-                recovery("list.bullet", "No habits yet", "Start in the app", button: true)
+                recovery("list.bullet", "No habits yet", "Start one in the app", button: true)
             } else if entry.selection == nil {
-                recovery("list.bullet", "Choose a habit", "Edit Widget", button: true)
+                recovery("list.bullet", "Choose a habit", "Tap to choose", button: true)
             } else if let item = entry.selected {
                 card(item)
             } else {
-                recovery("list.bullet", "Choose a habit", "Habit unavailable", button: true)
+                recovery("list.bullet", "Choose a habit", "Habit removed", button: true)
             }
         }
         .padding(16)
@@ -1064,30 +1111,36 @@ struct SmallWidget: View {
         }
     }
 
+    /// Figma 1235:46 (Kind=Habit): the habit's icon (40) and the round button (34, in its 44 target, its circle flush
+    /// with the card's 16 inset), then the name (Body), the status (Subheadline, Secondary Label), and the bar or band
+    /// 12 under it.
     private func cardContent(_ item: WidgetItem, live: Bool) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
-                Image(systemName: item.symbol).font(.system(size: 24, weight: .medium))
-                    .foregroundStyle(WidgetPalette.main(item.color)).widgetAccentable()
+                WidgetHabitIcon(item: item, size: 40, glyph: 18)
                 Spacer(minLength: 0)
-                if live {
-                    WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample, small: true)
-                } else {
-                    WidgetRoundFace(item: item, size: 44)
+                Group {
+                    if live {
+                        WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 34, sample: entry.sample, small: true)
+                    } else {
+                        WidgetRoundFace(item: item, size: 34)
+                    }
                 }
+                .padding(.trailing, -5)
             }
+            .frame(height: 40)
             Spacer(minLength: 4)
-            if !item.name.isEmpty { Text(item.name).font(.headline).lineLimit(1) }
+            if !item.name.isEmpty { Text(item.name).font(.body).lineLimit(1) }
             Group {
                 if item.type == "quit", let start = item.quitStart, item.state == nil {
-                    QuitClock(start: start, date: entry.date).font(.subheadline.weight(.semibold))
+                    // Figma: the run is the status line itself, Subheadline in Secondary Label.
+                    QuitClock(start: start, date: entry.date).font(.subheadline).foregroundStyle(.secondary)
                 } else {
-                    WidgetValueLine(item: item, text: item.value).font(.subheadline)
+                    WidgetValueLine(item: item, text: item.value).font(.subheadline).foregroundStyle(.secondary)
                 }
             }
             .lineLimit(1).minimumScaleFactor(0.8)
-            .padding(.top, 2)
-            bottom(item).padding(.top, 10)
+            bottom(item).padding(.top, 12)
         }
         .accessibilityElement(children: .contain)
     }
@@ -1095,32 +1148,36 @@ struct SmallWidget: View {
     /// The bar toward the goal (or a limit's grey bar); with no bar, a capsule of supporting text.
     @ViewBuilder private func bottom(_ item: WidgetItem) -> some View {
         if item.state == nil, item.type != "quit", let fraction = WidgetLive.fraction(item, at: entry.date, card: true) {
-            WidgetBar(fraction: fraction, color: item.limitFill ? WidgetPalette.limitFill : WidgetPalette.main(item.color), height: 18)
+            WidgetBar(fraction: fraction, color: item.limitFill ? WidgetPalette.limitFill : WidgetPalette.main(item.color), height: 8)
         } else {
+            // Figma's Band: Caption 1 Semibold in Secondary Label on Tertiary System Fill, radius 10.
             let text = item.type == "quit" && item.state == nil ? WidgetLive.quitLine(item, at: entry.date) : (item.caption ?? "")
-            Text(text.isEmpty ? " " : text).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1)
+            Text(text.isEmpty ? " " : text).font(.caption.weight(.semibold)).foregroundStyle(.secondary).lineLimit(1)
                 .minimumScaleFactor(0.8)
-                .frame(maxWidth: .infinity, minHeight: 18)
-                .background(Capsule().fill(Color(.tertiarySystemFill)))
+                .padding(.horizontal, 8).padding(.vertical, 2)
+                .frame(maxWidth: .infinity)
+                .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(Color(.tertiarySystemFill)))
         }
     }
 
     /// A recovery card: a generic symbol, a title, a caption, and the arrow to the setup guide (choose, unavailable),
     /// or no button at all (hidden: unlock in the app).
+    /// Figma 1235:46 (Kind=Message): a plain symbol (20, Secondary Label) where the habit's icon goes, the round
+    /// button's circle with ↗ (the card opens the app), then the title (Body) and what to do (Subheadline, Secondary).
     private func recovery(_ symbol: String, _ title: String, _ caption: String, button: Bool) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
-                Image(systemName: symbol).font(.system(size: 24, weight: .medium)).foregroundStyle(.secondary)
+                Image(systemName: symbol).font(.system(size: 20)).foregroundStyle(.secondary).frame(width: 24, height: 24)
                 Spacer(minLength: 0)
                 if button {
-                    Image(systemName: "arrow.up.right").font(.system(size: 18, weight: .semibold)).foregroundStyle(WidgetPalette.ink)
-                        .frame(width: 44, height: 44).background(Circle().fill(Color(.tertiarySystemFill)))
+                    Image(systemName: "arrow.up.right").font(.system(size: 14, weight: .bold)).foregroundStyle(WidgetPalette.ink)
+                        .frame(width: 34, height: 34).background(Circle().fill(Color(.tertiarySystemFill)))
                 }
             }
-            .frame(minHeight: 44)
+            .frame(height: 40)
             Spacer(minLength: 4)
-            Text(title).font(.headline).lineLimit(2).minimumScaleFactor(0.8)
-            Text(caption).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1).padding(.top, 2)
+            Text(title).font(.body).lineLimit(2).minimumScaleFactor(0.8)
+            Text(caption).font(.subheadline).foregroundStyle(.secondary).lineLimit(2)
         }
         .accessibilityElement(children: .combine)
     }
@@ -1131,7 +1188,7 @@ struct SmallWidget: View {
 struct WeekWidget: View {
     let entry: PhoneWidgetEntry
     @ScaledMetric(relativeTo: .title) private var bigSize: CGFloat = 26
-    @ScaledMetric(relativeTo: .caption2) private var dayNameSize: CGFloat = 10
+    @ScaledMetric(relativeTo: .caption2) private var dayNameSize: CGFloat = 11
 
     var body: some View {
         Group {
@@ -1140,15 +1197,15 @@ struct WeekWidget: View {
             } else if entry.status == .stale || entry.frame == nil {
                 recovery("arrow.clockwise", "Open to update", "Data unavailable", "Open the app to refresh this widget.")
             } else if entry.noHabits {
-                recovery("list.bullet", "No habits yet", "Start in the app", "Create a habit in the app, then choose it here.")
+                recovery("list.bullet", "No habits yet", "Start one in the app", "Create a habit in the app, then choose it here.")
             } else if let item = entry.selected {
                 card(item)
             } else {
-                recovery("list.bullet", "Choose a habit", entry.selection == nil ? "Not selected" : "Habit unavailable",
-                         "Touch and hold the widget, then Edit Widget to pick a habit.")
+                recovery("list.bullet", "Choose a habit", entry.selection == nil ? "Not chosen yet" : "Habit unavailable",
+                         "Tap to choose the habit this widget shows.")
             }
         }
-        .padding(12)
+        .padding(.horizontal, 16).padding(.vertical, 12)
     }
 
     /// The card as one switch (Current Work 66): its round button takes the touch and the whole card shows the tap.
@@ -1158,6 +1215,9 @@ struct WeekWidget: View {
         }
     }
 
+    /// Figma 1243:857 (Kind=Habit): the habit on its grey card (96 wide); then today's number (Title 2) and unit
+    /// (Subheadline, Secondary Label) with the round button (34, flush with the 16 inset), the bar (8), and the week
+    /// on its own grey card, 8 apart.
     private func cardContent(_ item: WidgetItem, live: Bool) -> some View {
         HStack(spacing: 12) {
             habitCard(item)
@@ -1165,38 +1225,41 @@ struct WeekWidget: View {
                 HStack(alignment: .center, spacing: 8) {
                     today(item)
                     Spacer(minLength: 0)
-                    if live {
-                        WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 44, sample: entry.sample)
-                    } else {
-                        WidgetRoundFace(item: item, size: 44)
+                    Group {
+                        if live {
+                            WidgetActionButton(item: item, day: entry.frame?.day ?? "", size: 34, sample: entry.sample)
+                        } else {
+                            WidgetRoundFace(item: item, size: 34)
+                        }
                     }
+                    .padding(.trailing, -5).padding(.vertical, -5)
                 }
                 if item.state == nil, let fraction = WidgetLive.fraction(item, at: entry.date, card: true) {
                     WidgetBar(fraction: fraction, color: item.limitFill ? WidgetPalette.limitFill : WidgetPalette.main(item.color), height: 8)
                 } else {
-                    Capsule().fill(Color(.tertiarySystemFill)).frame(height: 8)
+                    Capsule().fill(Color(.systemFill)).frame(height: 8)
                 }
                 WidgetWeekStrip(item: item, weekdays: entry.weekdays, dayNameSize: dayNameSize)
+                    .padding(.vertical, 10)
                     .frame(maxHeight: .infinity)
                     .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(WidgetPalette.container))
             }
         }
     }
 
+    /// The left card: the habit's icon (44), its name (Subheadline Semibold), and the streak or a caption, 6 apart.
     private func habitCard(_ item: WidgetItem) -> some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 6) {
             Spacer(minLength: 0)
-            Image(systemName: item.symbol).font(.system(size: 34, weight: .medium))
-                .foregroundStyle(WidgetPalette.main(item.color)).widgetAccentable()
-                .frame(height: 44)
+            WidgetHabitIcon(item: item, size: 44, glyph: 20)
             if !item.name.isEmpty {
-                Text(item.name).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center).lineLimit(2)
+                Text(item.name).font(.subheadline.weight(.semibold)).multilineTextAlignment(.center).lineLimit(1)
                     .minimumScaleFactor(0.85)
             }
             underName(item)
             Spacer(minLength: 0)
         }
-        .padding(.horizontal, 6)
+        .padding(.horizontal, 8)
         .frame(width: 96)
         .frame(maxHeight: .infinity)
         .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(WidgetPalette.container))
@@ -1207,9 +1270,9 @@ struct WeekWidget: View {
     @ViewBuilder private func underName(_ item: WidgetItem) -> some View {
         if item.type == "quit" {
             Text(item.state == nil ? WidgetLive.quitLine(item, at: entry.date) : (item.quitBestText ?? "Quitting"))
-                .font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
+                .font(.footnote).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
         } else if item.limit, let caption = item.caption, item.state == nil {
-            Text(caption).font(.caption.weight(.medium)).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
+            Text(caption).font(.footnote).foregroundStyle(.secondary).lineLimit(1).minimumScaleFactor(0.8)
         } else if let streak = item.streak {
             HStack(spacing: 2) {
                 Text("🔥").font(.caption)
@@ -1229,34 +1292,37 @@ struct WeekWidget: View {
             }
         } else if item.state != nil {
             VStack(alignment: .leading, spacing: 0) {
-                Text(item.big).font(.system(size: bigSize, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.7)
+                Text(item.big).font(.title2).lineLimit(1).minimumScaleFactor(0.7)
                 if let caption = item.caption, caption != item.big {
                     Text(caption).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
                 }
             }
         } else if item.goal.isEmpty {
-            Text(item.big).font(.system(size: bigSize, weight: .semibold)).lineLimit(1).minimumScaleFactor(0.6)
+            Text(item.big).font(.title2).lineLimit(1).minimumScaleFactor(0.6)
         } else {
+            // Figma: the number in Title 2 Regular, 6 before the unit in Subheadline, Secondary Label.
             let long = item.big.count + item.goal.count > 16
             let big: Text = item.timerClock.map { Text($0, style: .timer).monospacedDigit() } ?? Text(item.big)
-            (big.font(.system(size: long ? bigSize * 0.85 : bigSize, weight: .semibold))
+            (big.font(long ? .title3 : .title2)
                 + Text(" " + item.goal).font(long ? .footnote : .subheadline).foregroundStyle(.secondary))
                 .lineLimit(1).minimumScaleFactor(0.7)
         }
     }
 
+    /// Figma 1243:857 (Kind=Message): a plain symbol (20) on the left card; the headline (Headline) and line
+    /// (Subheadline, Secondary Label), then what to do on a grey card (Footnote, centred).
     private func recovery(_ symbol: String, _ title: String, _ subtitle: String, _ instruction: String) -> some View {
         HStack(spacing: 12) {
-            Image(systemName: symbol).font(.system(size: 30, weight: .medium)).foregroundStyle(.secondary)
+            Image(systemName: symbol).font(.system(size: 20)).foregroundStyle(.secondary)
                 .frame(width: 96).frame(maxHeight: .infinity)
                 .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(WidgetPalette.container))
             VStack(alignment: .leading, spacing: 8) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(title).font(.title3.weight(.semibold)).lineLimit(1).minimumScaleFactor(0.8)
+                    Text(title).font(.headline).lineLimit(1).minimumScaleFactor(0.8)
                     Text(subtitle).font(.subheadline).foregroundStyle(.secondary).lineLimit(1)
                 }
                 Text(instruction).font(.footnote).foregroundStyle(.secondary).multilineTextAlignment(.center)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity).padding(8)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity).padding(.horizontal, 16)
                     .background(RoundedRectangle(cornerRadius: 16, style: .continuous).fill(WidgetPalette.container))
             }
         }
@@ -1287,7 +1353,7 @@ struct WidgetWeekStrip: View {
             .frame(height: 22)
             HStack(spacing: 0) {
                 ForEach(Array(weekdays.prefix(7).enumerated()), id: \.offset) { index, name in
-                    Text(name).font(.system(size: dayNameSize, weight: index == item.weekToday ? .semibold : .medium))
+                    Text(name).font(.system(size: dayNameSize, weight: .semibold))
                         .foregroundStyle(index == item.weekToday ? .primary : .secondary)
                         .lineLimit(1).minimumScaleFactor(0.7)
                         .frame(maxWidth: .infinity)

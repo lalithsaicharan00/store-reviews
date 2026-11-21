@@ -702,7 +702,7 @@ struct WidgetRenderCheck: View {
                 PhoneWidgetView(entry: entry(discreet ? (discreetFrame ?? frame) : frame), layout: layout, familyOverride: family)
                     .frame(width: size.width, height: size.height)
                     .background(Color(.systemBackground))
-                    .clipShape(RoundedRectangle(cornerRadius: [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) ? 8 : 22,
+                    .clipShape(RoundedRectangle(cornerRadius: [.accessoryInline, .accessoryCircular, .accessoryRectangular].contains(family) ? 8 : 28,
                                                 style: .continuous))
                     .background(Color(.secondarySystemBackground))
                     .environment(\.colorScheme, dark ? .dark : .light)
@@ -727,9 +727,10 @@ struct WidgetRenderCheck: View {
     }
     private var size: CGSize {
         return switch family {
-        case .systemSmall: .init(width: 158, height: 158)
-        case .systemMedium: .init(width: 338, height: 158)
-        case .systemLarge: .init(width: 338, height: 354)
+        // Figma's sizes on the 402-wide Home Screen (Small 164, Medium 349 × 164, Large 349 × 365).
+        case .systemSmall: .init(width: 164, height: 164)
+        case .systemMedium: .init(width: 349, height: 164)
+        case .systemLarge: .init(width: 349, height: 365)
         case .accessoryInline: .init(width: 234, height: 26)
         case .accessoryCircular: .init(width: 72, height: 72)
         default: .init(width: 160, height: 72)

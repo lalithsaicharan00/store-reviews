@@ -33,11 +33,19 @@ nonisolated struct WidgetSelectionQuery: EntityStringQuery {
     func suggestedEntities() async throws -> [WidgetSelection] {
         (WidgetDisk.read()?.choices ?? []).map { WidgetSelection(id: $0.id, name: $0.name, symbol: $0.symbol) }
     }
+    /// A new One Habit or This Week starts on the first habit, never empty (Rulebook, iPhone widgets, 10–11 Nov 2026:
+    /// "there's no setup screen of ours, so a new widget starts on something"); Edit Widget changes it.
+    func defaultResult() async -> WidgetSelection? {
+        try? await suggestedEntities().first
+    }
 }
 
-/// What a habit list shows: Today (every section, the default) or one of Today's cards.
+/// What a habit list shows: All of Today (the default) or one routine (Figma's Edit Widget card and Routine list,
+/// 1255:3030: All of Today, All Day, Morning, Afternoon, Evening, Anytime, in Today's order).
 nonisolated struct WidgetListSection: AppEntity {
-    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Section"
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Routine"
+    /// The default choice's words, the same on both lists.
+    static let allOfToday = "All of Today"
     static let defaultQuery = WidgetListSectionQuery()
     static let today = "today"
     var id: String
@@ -48,20 +56,22 @@ nonisolated struct WidgetListSectionQuery: EntityQuery {
     func entities(for identifiers: [String]) async throws -> [WidgetListSection] {
         let sections = WidgetDisk.read()?.sections ?? []
         return identifiers.map { id in
-            id == WidgetListSection.today ? WidgetListSection(id: id, name: "Today")
-                : WidgetListSection(id: id, name: sections.first { $0.id == id }?.name ?? "Section unavailable")
+            id == WidgetListSection.today ? WidgetListSection(id: id, name: WidgetListSection.allOfToday)
+                : WidgetListSection(id: id, name: sections.first { $0.id == id }?.name ?? "Routine unavailable")
         }
     }
     func suggestedEntities() async throws -> [WidgetListSection] {
-        [WidgetListSection(id: WidgetListSection.today, name: "Today")]
+        [WidgetListSection(id: WidgetListSection.today, name: WidgetListSection.allOfToday)]
             + (WidgetDisk.read()?.sections ?? []).map { WidgetListSection(id: $0.id, name: $0.name) }
     }
-    func defaultResult() async -> WidgetListSection? { WidgetListSection(id: WidgetListSection.today, name: "Today") }
+    func defaultResult() async -> WidgetListSection? {
+        WidgetListSection(id: WidgetListSection.today, name: WidgetListSection.allOfToday)
+    }
 }
 
-/// What a task list shows: all of today's tasks (the default) or one time of day's.
+/// What a task list shows: all of today's tasks (the default, "All of Today") or one routine's.
 nonisolated struct WidgetTaskSection: AppEntity {
-    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Section"
+    static let typeDisplayRepresentation: TypeDisplayRepresentation = "Routine"
     static let defaultQuery = WidgetTaskSectionQuery()
     var id: String
     var name: String
@@ -71,15 +81,17 @@ nonisolated struct WidgetTaskSectionQuery: EntityQuery {
     func entities(for identifiers: [String]) async throws -> [WidgetTaskSection] {
         let sections = WidgetDisk.read()?.taskSections ?? []
         return identifiers.map { id in
-            id == WidgetListSection.today ? WidgetTaskSection(id: id, name: "All tasks")
-                : WidgetTaskSection(id: id, name: sections.first { $0.id == id }?.name ?? "Section unavailable")
+            id == WidgetListSection.today ? WidgetTaskSection(id: id, name: WidgetListSection.allOfToday)
+                : WidgetTaskSection(id: id, name: sections.first { $0.id == id }?.name ?? "Routine unavailable")
         }
     }
     func suggestedEntities() async throws -> [WidgetTaskSection] {
-        [WidgetTaskSection(id: WidgetListSection.today, name: "All tasks")]
+        [WidgetTaskSection(id: WidgetListSection.today, name: WidgetListSection.allOfToday)]
             + (WidgetDisk.read()?.taskSections ?? []).map { WidgetTaskSection(id: $0.id, name: $0.name) }
     }
-    func defaultResult() async -> WidgetTaskSection? { WidgetTaskSection(id: WidgetListSection.today, name: "All tasks") }
+    func defaultResult() async -> WidgetTaskSection? {
+        WidgetTaskSection(id: WidgetListSection.today, name: WidgetListSection.allOfToday)
+    }
 }
 
 /// The Small one-habit widget and the Lock Screen circle and line.
@@ -91,14 +103,14 @@ struct ItemWidgetConfiguration: WidgetConfigurationIntent {
 /// The habit lists (Medium and Large) and the Lock Screen's Today rectangle and line.
 struct AgendaWidgetConfiguration: WidgetConfigurationIntent {
     static let title: LocalizedStringResource = "Today"
-    static let description = IntentDescription("Show all of Today, or one section of your day.")
-    @Parameter(title: "Show") var view: WidgetListSection?
+    static let description = IntentDescription("Today’s habits, or one part of your day.")
+    @Parameter(title: "Routine") var view: WidgetListSection?
 }
 /// The task lists (Medium and Large).
 struct TasksWidgetConfiguration: WidgetConfigurationIntent {
     static let title: LocalizedStringResource = "Tasks"
-    static let description = IntentDescription("Show all of today's tasks, or one section's.")
-    @Parameter(title: "Show") var view: WidgetTaskSection?
+    static let description = IntentDescription("Today’s tasks. Tap to tick them off.")
+    @Parameter(title: "Routine") var view: WidgetTaskSection?
 }
 /// The weekly Medium: one habit, this week.
 struct HistoryWidgetConfiguration: WidgetConfigurationIntent {
