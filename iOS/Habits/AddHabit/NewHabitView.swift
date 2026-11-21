@@ -679,14 +679,10 @@ struct HabitForm: View {
                 IconSheet(symbol: $symbol) { pickedSymbol = true }
             }
         }
+        // Figma's Colour (1074:161496): a short sheet floating on glass with ✕ and the title, then the swatches. A tap
+        // picks and closes, so there's no Done. One height, so iOS draws no drag handle.
         .sheet(isPresented: $showColors) {
-            NavigationStack {
-                Form { ColorGrid(selection: Binding(get: { color }, set: { color = $0; showColors = false })) }
-                    .navigationTitle("Colour")
-                    .navigationBarTitleDisplayMode(.inline)
-                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showColors = false } } }
-            }
-            .presentationDetents([.height(260)])
+            ColourSheet(selection: Binding(get: { color }, set: { color = $0; showColors = false }))
         }
         // The name field's typing pause (in `NameField`) is cancelled when a screen opens over the form, so the previews catch up at once when the
         // form is back, or when the name field is left: never "Enter a habit name" under a typed name (merge, 1 Oct).
@@ -1668,13 +1664,46 @@ struct AddRow: View {
 // MARK: - Pickers
 
 /// 13 system colours as circles, like the Reminders list sheet.
+/// The Colour sheet's page: its own bar (✕, Colour) over the swatches, and no background of its own, so the sheet's
+/// Liquid Glass shows through as Figma's Medium sheet does. Its height is the swatches' own, measured, so it fits two
+/// rows at any text size; at the largest sizes it scrolls.
+struct ColourSheet: View {
+    @Binding var selection: HabitColor
+    @Environment(\.dismiss) private var dismiss
+    @State private var height: CGFloat = 220
+
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                ColorGrid(selection: $selection)
+                    .padding(.horizontal, 18)
+                    .padding(.top, 8)
+                    .padding(.bottom, 24)
+                    .onGeometryChange(for: CGFloat.self) { $0.size.height } action: { height = $0 + 64 }
+            }
+            .scrollBounceBehavior(.basedOnSize)
+            .navigationTitle("Colour")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Close", systemImage: "xmark") { dismiss() }
+                }
+            }
+        }
+        .presentationDetents([.height(height)])
+    }
+}
+
+/// Figma's Colour swatch (1074:161495): a 34 circle in a 44 touch area, seven to a row, 12 between rows. The chosen
+/// one has the 3 pt System Gray 3 ring and a white checkmark on the colour, so it reads without the ring too.
+/// A fixed palette, so not iOS's `ColorPicker`.
 struct ColorGrid: View {
     @Binding var selection: HabitColor
 
     var body: some View {
-        // A plain Grid inside the form's row, never a lazy one (the List self-sizing loop, 2 Oct 2026).
+        // A plain Grid, never a lazy one: 13 swatches, sized up front (S13).
         let colors = HabitColor.allCases
-        Grid(horizontalSpacing: 10, verticalSpacing: 12) {
+        Grid(horizontalSpacing: 0, verticalSpacing: 12) {
             ForEach(Array(stride(from: 0, to: colors.count, by: 7)), id: \.self) { start in
                 GridRow {
                     ForEach(colors[start..<min(start + 7, colors.count)], id: \.self) { c in
@@ -1683,23 +1712,26 @@ struct ColorGrid: View {
                 }
             }
         }
-        .padding(.vertical, 6)
     }
 
     private func swatch(_ c: HabitColor) -> some View {
-                Button { selection = c } label: {
-                    Circle().fill(c.color.gradient)
-                        .frame(width: 34, height: 34)
-                        .overlay {
-                            if c == selection {
-                                Circle().stroke(Color(.systemGray3), lineWidth: 3).padding(-5)
-                            }
-                        }
-                        .frame(width: 44, height: 44)
+        Button { selection = c } label: {
+            Circle().fill(c.color)
+                .frame(width: 34, height: 34)
+                .overlay {
+                    if c == selection {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(.white)
+                        Circle().stroke(Color(.systemGray3), lineWidth: 3).padding(-5)
+                    }
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel(c.name)
-                .accessibilityAddTraits(c == selection ? .isSelected : [])
+                .frame(width: 44, height: 44)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(c.name)
+        .accessibilityAddTraits(c == selection ? .isSelected : [])
     }
 }
 

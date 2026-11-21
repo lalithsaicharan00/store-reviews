@@ -30,7 +30,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
 - [x] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
 - [x] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
-- [ ] **Colour** (`1074:161496`)
+- [x] **Colour** (`1074:161496`)
 - [ ] **How Often** (`1075:161386`, 15 variants)
 - [ ] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
 - [ ] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
@@ -204,3 +204,21 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - **Checked on the Simulator:** light against the Figma screenshot (Mind's star with the ring); picked the outlined
   heart, Done, the form showed it; dark with the ring on the saved icon; searched "book" (Mind and Faith and Reflection,
   filled and outlined).
+
+### Colour (`1074:161496`, Colour swatch) — done 21 Nov
+
+- **Built as:** `ColourSheet` (AddHabit/NewHabitView.swift), a sheet with its own `NavigationStack`: ✕
+  (`Button("Close", systemImage: "xmark")`, `.cancellationAction`) and the title Colour, no Done. A tap on a colour
+  picks it and closes the sheet, because the colour shows at once on the form and one tap is the whole job; Figma's
+  page has no Done.
+- **Height:** iOS's Medium detent is half the screen, far taller than two rows, so the sheet's height is the grid's
+  own (`onGeometryChange`, plus 64 for the bar) through `.presentationDetents([.height(_)])`. iOS 26 floats a sheet
+  that isn't full height on glass, 8 in from the sides, as Figma draws it. At large text the grid grows and the sheet
+  with it; a `ScrollView` takes over past the screen.
+- **The grid** is a plain `Grid` (fixed, 13 colours: no lazy grid, S13), 7 to a row, 12 between rows, 18 at the sides,
+  8 on top, 24 below, in the palette's order (Red to Grey).
+- **A swatch** is `ColorGrid`'s button: a 34 circle in a 44 touch area. The chosen one has a white checkmark (16,
+  Semibold) and a 3 pt System Gray 3 ring 5 outside it, the same ring as the Icon picker. VoiceOver reads the colour's
+  name and Selected. A fixed palette, so not iOS's `ColorPicker`.
+- **Checked on the Simulator:** light against Figma (Yellow chosen), picked Indigo and the sheet closed with the form's
+  Icon and Colour in indigo, dark with the ring on Indigo.
