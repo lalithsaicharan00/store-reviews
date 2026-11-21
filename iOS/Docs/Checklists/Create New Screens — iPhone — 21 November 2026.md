@@ -33,7 +33,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **Colour** (`1074:161496`)
 - [x] **How Often** (`1075:161386`, 15 variants)
 - [x] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
-- [ ] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
+- [x] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
 - [ ] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
 - [ ] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
 
@@ -45,6 +45,11 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [ ] UI tests that read Create New's old words: the "New" bar title (gone), "Build or maintain", "Quit or cut down",
   "Cut down" (now title case) and the question words (`NewHabitUITests`, `NewFlowUITests` and the others that open +).
   No tests run in the design phase; update them all in one go before the first run.
+- [ ] UI tests that read the Reminders page's old words: "Add Reminder"/"Add Another Reminder" (now Add a Time,
+  `add-reminder`), "A Notification"/"An Alarm" (now a menu row, values in sentence case), the − remove button (now a
+  swipe, or VoiceOver's Delete action), "Reminder Says" as a left label, and the notifications prompt, which now
+  comes when Remind Me is turned on (a test that turns it on must answer iOS's alert or start with permission
+  granted).
 
 ## Left for the logic pass
 
@@ -288,6 +293,29 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   Routine and the Time=None footer were already Figma's.
 - **Checked on the Simulator:** the Routine page in light and dark, one choice (Evening replaced Morning), New Routine
   with a 20-letter name (red line), Edit Routine for Morning from Edit Today in dark (Editing, Delete Routine). **Not
-  checked:** the several-reminders state, which needs two reminders and the notifications permission first; it's
-  checked with the Reminders screen next.
+  checked here:** the several-reminders state; it was checked with the Reminders screen (below).
+
+### Reminders (`1100:2996`) and Allow Notifications? (`1164:344717`) — done 21 Nov
+
+- **A plain `Form`**, as the other pages: Figma's page component is iOS's own list. No sticky sentence and no
+  Outcome footer (Figma has neither). Sections 24 apart, 16 from the bar.
+- **Off:** Remind Me alone, *Reminders are off. Turning on Remind Me asks once to send you notifications.*
+- **Allow Notifications?** is iOS's own alert, so nothing is drawn for it: turning Remind Me on asks there and then
+  (`remindTurned`, Rulebook U37), where before it was asked only on saving. Not allowed, the switch goes back off and
+  the footer says notifications are off, with Open Settings (in Ink).
+- **Remind me at:** each time is a row with a clock and the time as its words (Figma `1100:2915`), not a compact
+  picker's pill. A tap opens a wheel under it, as Calendar's Starts does, and closes it again; a swipe deletes it,
+  as Clock's alarms do, because Figma has no − button (`ReminderTimeRow`; VoiceOver has a Delete action). **Add a
+  Time** has a plain `plus` in Secondary Label, as Figma, not the Ink ⊕ of New Routine. Separators start at the words.
+- **All Day line:** with two or more times, *You’ve added more than one reminder, so this habit goes in All Day.*
+- **How:** Remind Me With and If Not Done, Remind Again are Figma's Menu rows (`MenuValueRow`): the value under the
+  name, iOS's up-and-down chevrons, the menu opening from the row (`1100:162805`). **Remind Me With's choices are
+  `Toggle`s with two `Text`s and an `Image` as the label's own children:** a `Picker` in a menu, or a `Label` around
+  the words, drops the second line (*In your notifications*, *Rings until you stop it*), seen on the Simulator.
+  Footer *Not sent on a day it’s already done.* (not for a limit, which has no Remind Again).
+- **Reminder Says:** a speech bubble and the field across the row, placeholder *Reminder Says (optional)*; footer
+  *Shown instead of the name when names are hidden outside the app.*
+- **Checked on the Simulator:** Off, iOS's alert on turning on, On, Add a Time, a time's wheel opening and closing,
+  the All Day line, the menu with its second lines, dark, and the Routine page in All Day (ticked, the rest greyed,
+  its footer). Not checked: Don't Allow (the switch going back off), and a swipe to delete.
 

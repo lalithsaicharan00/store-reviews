@@ -425,6 +425,8 @@ struct HabitForm: View {
     @State private var followUp: Int?
 
     @State private var notificationsDenied = false
+    /// The reminder whose wheel is open on the Reminders page, if any.
+    @State private var editingTime: UUID?
     @State private var alarmsDenied = false
     @State private var confirmDiscard = false
     @FocusState private var focus: Field?
@@ -1152,50 +1154,109 @@ struct HabitForm: View {
     }
 
     /// Reminders on their own screen (the user's choice, 29 Sep); the row says when.
+    /// Figma's Reminders page (`1100:2996`: Off, On, On with the menu open) is a page component; here it's a plain
+    /// `Form`, so iOS draws the cards, headers, footers, lines and the menu. No sticky sentence (Figma has none).
     private var remindersRow: some View {
         screenRow("Reminders", value: remindersSummary) {
             Form { remindersSections }
-                .stickySentence(isHabit || type == .task ? screenText : nil, id: "screen-sentence")
+                .listSectionSpacing(24)
+                .contentMargins(.top, 16, for: .scrollContent)
                 .navigationTitle("Reminders")
                 .navigationBarTitleDisplayMode(.inline)
-                .onAppear { focus = nil }
+                .onAppear { focus = nil; editingTime = nil }
         }
         .accessibilityIdentifier("reminders-row")
     }
 
-    /// Reminders: one by default, any number more, each inside a chosen time of day. How to be reminded
-    /// sits in the section right below, close together, and only while there's a reminder.
+    /// "A notification" or "An alarm": the value under Remind Me With.
+    private var alertValue: String { alert == .alarm ? "An alarm" : "A notification" }
+
+    /// "Never", "Every 15 min": the value under If Not Done, Remind Again.
+    private var followUpValue: String {
+        switch followUp {
+        case nil: "Never"
+        case 60?: "Every hour"
+        case let minutes?: "Every \(minutes) min"
+        }
+    }
+
+    /// Turning Remind Me on asks for notifications there and then, once (Rulebook U37): iOS's own alert is Figma's
+    /// "Allow notifications?" (`1164:344717`). Not allowed, the switch goes back off and the footer says why.
+    private func remindTurned(on: Bool) {
+        guard on else { editingTime = nil; return }
+        // Turning it on brings one reminder per chosen routine, unless the person already set their own.
+        if times.isEmpty || !remindersEdited { syncReminders(force: true) }
+        Task {
+            let allowed = await scheduler.requestPermission()
+            notificationsDenied = !allowed
+            if !allowed { withAnimation { remindOn = false } }
+        }
+    }
+
+    /// Reminders: Remind Me, then Remind me at (the times, Add a Time), How (with what, and again if not done), and
+    /// the person's own words. Each time is a row that opens a wheel under it when tapped, as Calendar's Starts
+    /// and Ends do, because Figma draws the time as the row's words, not a picker's pill; a swipe deletes it, as in
+    /// Clock's alarms (Figma has no − button).
     @ViewBuilder
     private var remindersSections: some View {
         Section {
             Toggle("Remind Me", isOn: $remindOn.animation())
                 .tint(.green)
-                // Turning it on brings one reminder per chosen time of day, unless the person already set their own.
-                .onChange(of: remindOn) { if remindOn && (times.isEmpty || !remindersEdited) { syncReminders(force: true) } }
-        } header: {
-            Text("Reminders")
+                .onChange(of: remindOn) { remindTurned(on: remindOn) }
         } footer: {
-            if !remindOn { Text("No reminders. You'll see it on Today.").formNote() }
+            if notificationsDenied {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text("Notifications are off for Often Enough, so reminders can’t arrive. Turn them on in Settings.")
+                    Button("Open Settings") {
+                        if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                    }
+                    .font(.footnote.weight(.semibold))
+                    .tint(Color.ink)
+                }
+            } else if !remindOn {
+                Text("Reminders are off. Turning on Remind Me asks once to send you notifications.")
+            }
         }
         if remindOn {
             Section {
                 ForEach($times) { $reminder in
-                    HStack(spacing: 12) {
-                        RemoveButton(label: "Remove reminder") { removeReminder(reminder.id) }
-                        // Only the user's own change marks reminders as edited, not the form following Time of Day.
-                        DatePicker(label(for: reminder), selection: Binding(get: { reminder.time }, set: { reminder.time = $0; remindersEdited = true }),
-                                   in: range(for: reminder.part), displayedComponents: .hourAndMinute)
+                    ReminderTimeRow(time: Binding(get: { reminder.time }, set: { reminder.time = $0; remindersEdited = true }),
+                                    range: range(for: reminder.part), label: label(for: reminder),
+                                    open: editingTime == reminder.id) {
+                        withAnimation { editingTime = editingTime == reminder.id ? nil : reminder.id }
+                    } delete: {
+                        removeReminder(reminder.id)
                     }
                 }
-                AddRow(title: times.isEmpty ? "Add Reminder" : "Add Another Reminder", action: addReminder)
+                Button(action: addReminder) {
+                    HStack(spacing: 16) {
+                        Image(systemName: "plus").font(.title3).foregroundStyle(.secondary).frame(width: 24)
+                        Text("Add a Time").foregroundStyle(Color.primary)
+                            .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                    }
+                }
+                .accessibilityIdentifier("add-reminder")
+            } header: {
+                Text("Remind me at")
+            } footer: {
+                // Two or more reminders put a habit in All Day by itself (Android A120); the page says so.
+                if times.count >= 2 {
+                    Text("You’ve added more than one reminder, so this habit goes in All Day.")
+                }
             }
-            .listSectionSpacing(.compact)
             if !times.isEmpty {
                 Section {
                     if ReminderScheduler.alarmsAvailable {
-                        Picker("Remind Me With", selection: $alert) {
-                            Text("A Notification").tag(AlertStyle.notification)
-                            Text("An Alarm").tag(AlertStyle.alarm)
+                        MenuValueRow(title: "Remind Me With", value: alertValue) {
+                            // Toggles, not a Picker: a Picker in a menu drops each choice's second line. A menu takes
+                            // the title, second line and symbol from the label's own children (two Texts and an Image);
+                            // wrapped in a Label, the second line was dropped too.
+                            Toggle(isOn: Binding(get: { alert == .notification }, set: { if $0 { alert = .notification } })) {
+                                Text("A notification"); Text("In your notifications"); Image(systemName: "bell")
+                            }
+                            Toggle(isOn: Binding(get: { alert == .alarm }, set: { if $0 { alert = .alarm } })) {
+                                Text("An alarm"); Text("Rings until you stop it"); Image(systemName: "alarm")
+                            }
                         }
                         .onChange(of: alert) {
                             guard alert == .alarm else { return }
@@ -1208,33 +1269,26 @@ struct HabitForm: View {
                     }
                     // A limit is never "not done", so it never reminds again.
                     if type != .cutBack {
-                        Picker("If Not Done, Remind Again", selection: $followUp) {
-                            Text("Never").tag(Int?.none)
-                            Text("Every 15 min").tag(Int?.some(15))
-                            Text("Every 30 min").tag(Int?.some(30))
-                            Text("Every hour").tag(Int?.some(60))
-                        }
-                    }
-                } footer: {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text(Outcome.reminders(draft, store: store, alarmsAvailable: ReminderScheduler.alarmsAvailable)).formNote()
-                        if notificationsDenied {
-                            Text("Notifications are off for Often Enough, so these won't arrive. Turn them on in Settings.").formNote()
-                            Button("Open Settings") {
-                                if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                        MenuValueRow(title: "If Not Done, Remind Again", value: followUpValue) {
+                            Picker("If Not Done, Remind Again", selection: $followUp) {
+                                Text("Never").tag(Int?.none)
+                                Text("Every 15 min").tag(Int?.some(15))
+                                Text("Every 30 min").tag(Int?.some(30))
+                                Text("Every hour").tag(Int?.some(60))
                             }
-                            .font(.callout.weight(.semibold))
                         }
                     }
+                } header: {
+                    Text("How")
+                } footer: {
+                    if type != .cutBack { Text("Not sent on a day it’s already done.") }
                 }
-                .listSectionSpacing(.compact)
                 // The person's own words for these reminders (Privacy & Security spec §3.7), under the times.
                 Section {
                     ReminderSaysField(words: reminderWords, focus: $focus)
                 } footer: {
-                    Text("Shown in this habit's reminders. When names are hidden outside the app, it's shown instead of the name.").formNote()
+                    Text("Shown instead of the name when names are hidden outside the app.")
                 }
-                .listSectionSpacing(.compact)
             }
         }
     }
@@ -1471,23 +1525,89 @@ private struct NameField: View {
 }
 
 /// The Reminder Says field on its own row, so typing redraws only it (S11); one line, 24 characters (U6).
+/// Figma: a speech bubble, then the field across the row, its placeholder the row's name.
 private struct ReminderSaysField: View {
     let words: ReminderWords
     var focus: FocusState<HabitForm.Field?>.Binding
 
     var body: some View {
         @Bindable var words = words
-        HStack(spacing: 12) {
-            Text("Reminder Says").layoutPriority(1)
-            TextField("Your words, e.g. The usual", text: $words.text)
-                .multilineTextAlignment(.trailing)
+        HStack(spacing: 16) {
+            Image(systemName: "bubble.left").font(.title3).foregroundStyle(.secondary).frame(width: 24)
+                .accessibilityHidden(true)
+            TextField("Reminder Says (optional)", text: $words.text)
                 .focused(focus, equals: .reminderText)
                 .limitText($words.text, to: TextLimit.reminderText)
                 .submitLabel(.done)
                 .onSubmit { focus.wrappedValue = nil }
                 .accessibilityLabel("Reminder Says")
                 .accessibilityIdentifier("reminder-says-field")
+                .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
         }
+    }
+}
+
+/// One reminder on the Reminders page: a clock, then its time as the row's words (Figma `1100:2915`). A tap opens
+/// a wheel under it, as Calendar's Starts does; a swipe deletes it, as Clock's alarms do.
+private struct ReminderTimeRow: View {
+    @Binding var time: Date
+    let range: ClosedRange<Date>
+    let label: String
+    let open: Bool
+    let toggle: () -> Void
+    let delete: () -> Void
+
+    var body: some View {
+        Button(action: toggle) {
+            HStack(spacing: 16) {
+                Image(systemName: "clock").font(.title3).foregroundStyle(.secondary).frame(width: 24)
+                Text(time.formatted(date: .omitted, time: .shortened)).foregroundStyle(Color.primary)
+                    .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
+                Spacer(minLength: 0)
+            }
+            .contentShape(Rectangle())
+        }
+        .accessibilityLabel(label)
+        .accessibilityValue(time.formatted(date: .omitted, time: .shortened))
+        .accessibilityHint(open ? "Closes the time picker" : "Opens the time picker")
+        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
+            Button("Delete", systemImage: "trash", role: .destructive, action: delete)
+        }
+        .accessibilityAction(named: "Delete", delete)
+        if open {
+            DatePicker(label, selection: $time, in: range, displayedComponents: .hourAndMinute)
+                .datePickerStyle(.wheel)
+                .labelsHidden()
+                .frame(maxWidth: .infinity)
+        }
+    }
+}
+
+/// A form row whose value sits under its name, with iOS's up-and-down chevrons, opening a menu of choices from the
+/// row itself (Figma's Menu row, `1100:2943`; the menu `1100:162805`). The choices are a `Picker`, so the menu ticks
+/// the chosen one (a choice with a second line is a `Toggle` instead, so the line shows).
+private struct MenuValueRow<Choices: View>: View {
+    let title: String
+    let value: String
+    @ViewBuilder let choices: () -> Choices
+
+    var body: some View {
+        Menu {
+            choices()
+        } label: {
+            HStack(spacing: 16) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text(title).foregroundStyle(Color.primary)
+                    Text(value).font(.subheadline).foregroundStyle(.secondary)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.up.chevron.down")
+                    .font(.footnote.weight(.semibold))
+                    .foregroundStyle(.tertiary)
+            }
+            .contentShape(Rectangle())
+        }
+        .accessibilityValue(value)
     }
 }
 
