@@ -24,7 +24,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 ## The screens, in the user's order
 
 - [x] **What Do You Want to Do?** (`1061:2016`)
-- [ ] **Quit or Cut Down** (`1061:2101`), with the example chips
+- [x] **Quit or Cut Down** (`1061:2101`), with the example chips
 - [ ] **How Do You Want to Track It?** (`1062:2`)
 - [ ] **What Kind of Task?** (`1109:2`)
 - [ ] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
@@ -36,6 +36,12 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [ ] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
 - [ ] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
 - [ ] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
+
+## Left for the end of the loop
+
+- [ ] UI tests that read Create New's old words: the "New" bar title (gone), "Build or maintain", "Quit or cut down",
+  "Cut down" (now title case) and the question words (`NewHabitUITests`, `NewFlowUITests` and the others that open +).
+  No tests run in the design phase; update them all in one go before the first run.
 
 ## What was done, screen by screen
 
@@ -59,3 +65,15 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   list); Add a Routine opens the old time-of-day editor (New Routine and its banner are their own step).
 - **Checked on the Simulator** (iPhone 17 Pro, iOS 26): light, dark and Accessibility Large against the Figma
   screenshot. Debug launch to reach it: `-uitest -open-new`.
+
+### Quit or Cut Down? (`1061:2101`) — done 21 Nov
+
+- **Built as:** the second question page (`question(_:_:)` in `NewItemChoices`), now the same page as the first:
+  `PageHeading("Quit or Cut Down?")`, then one card. The bar has only iOS's back button; the old title is gone.
+- **The example** is `ExampleTag`, Figma's Tag: "e.g. Smoking", "e.g. Coffee, 2 a day", Footnote in Label on a
+  Secondary System Fill capsule, 8 under the description. iOS has no chip on iPhone and this isn't one: it can't be
+  tapped, it only reads, so it's a plain `Text` with a capsule background, inside the row's one accessibility element.
+- **Words from Figma:** Quit "Stop completely. Track the time since you stopped."; Cut Down (title case) "Set a
+  maximum and log how much." `ItemType.example` now holds only the example ("Smoking"); the tag adds "e.g.".
+- **Checked on the Simulator:** light and dark against the Figma screenshot (`-uitest -open-new`, then Quit or Cut
+  Down).

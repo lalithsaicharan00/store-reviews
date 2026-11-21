@@ -14,7 +14,7 @@ enum ItemType: String, CaseIterable, Identifiable {
         case .amount: "Track an amount"
         case .time: "Time it"
         case .checklist: "Checklist"
-        case .cutBack: "Cut down"
+        case .cutBack: "Cut Down"
         case .quit: "Quit"
         case .task: "Task"
         }
@@ -28,7 +28,7 @@ enum ItemType: String, CaseIterable, Identifiable {
         case .time: "How long, with a timer."
         case .checklist: "A short list to tick off."
         case .cutBack: "Set a maximum and log how much."
-        case .quit: "Stop completely. Track time since you stopped."
+        case .quit: "Stop completely. Track the time since you stopped."
         case .task: "Something to get done."
         }
     }
@@ -41,8 +41,8 @@ enum ItemType: String, CaseIterable, Identifiable {
         case .amount: "Drink 8 glasses of water"
         case .time: "Meditate for 10 minutes"
         case .checklist: "Clean kitchen — dishes, sink, floor"
-        case .cutBack: "Log coffees, up to 2 a day"
-        case .quit: "Time since you last smoked"
+        case .cutBack: "Coffee, 2 a day"
+        case .quit: "Smoking"
         case .task: "Pay the rent"
         }
     }
@@ -170,7 +170,7 @@ struct NewItemChoices: View {
     private func questions(_ kind: Kind) -> some View {
         switch kind {
         case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
-        case .bad: question("What do you want to do?", [.quit, .cutBack])
+        case .bad: question("Quit or Cut Down?", [.quit, .cutBack])
         }
     }
 
@@ -195,9 +195,12 @@ struct NewItemChoices: View {
         }
     }
 
-    /// The second question: the same list style as the first.
+    /// The second question: the same page as the first, its heading the question (Figma 1061:2101, 1062:2).
     private func question(_ text: String, _ types: [ItemType]) -> some View {
         List {
+            Section {
+                PageHeading(text)
+            }
             Section {
                 ForEach(types) { type in
                     NavigationLink {
@@ -206,11 +209,11 @@ struct NewItemChoices: View {
                         ChoiceLabel(icon: type.icon, title: type.title, detail: type.summary, example: type.example)
                     }
                 }
-            } header: {
-                QuestionHeader(text)
             }
         }
-        .navigationTitle(types.contains(.quit) ? "Quit or cut down" : "Build or maintain")
+        .listSectionSpacing(24)
+        .contentMargins(.top, 0, for: .scrollContent)
+        .environment(\.defaultMinListRowHeight, 0)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -230,6 +233,21 @@ struct QuestionHeader: View {
             .textCase(nil)
             .padding(.bottom, 2)
             .accessibilityAddTraits(.isHeader)
+    }
+}
+
+/// A choice's example (Figma's Tag: "e.g. Smoking"): Footnote in Label on a Secondary System Fill capsule. iOS has no
+/// chip on iPhone, and this isn't one: it can't be tapped, it only reads. A capsule rather than "Example: …" text so
+/// the example reads apart from the description above it.
+struct ExampleTag: View {
+    let text: String
+    var body: some View {
+        Text(text)
+            .font(.footnote)
+            .foregroundStyle(Color.primary)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 2)
+            .background(Color(.secondarySystemFill), in: Capsule())
     }
 }
 
@@ -270,7 +288,7 @@ struct ChoiceLabel: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(title).font(.body).foregroundStyle(Color.primary)
                 Text(detail).font(.subheadline).foregroundStyle(.secondary)
-                if let example { Text("Example: \(example)").font(.subheadline).foregroundStyle(.secondary) }
+                if let example { ExampleTag(text: "e.g. \(example)").padding(.top, 8) }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
