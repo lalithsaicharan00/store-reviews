@@ -1,74 +1,155 @@
 import SwiftUI
 
-/// Picks the icon, and only the icon (colour is chosen on the form). Search, tap, done:
-/// picking goes back to the form (users asked to return automatically). Pushed, like every page in the flow.
+/// Figma's Icon picker (1074:932), as Reminders' New List picks: ✕, Icon and Done in the bar, search, then the icons
+/// by kind. A tap moves the ring; Done keeps it, ✕ leaves the icon as it was. So a person can look and change their
+/// mind, which the old tap-and-close couldn't (the page's ✕ and Done, the user, 10 Nov 2026).
 struct IconSheet: View {
     @Binding var symbol: String
-    /// The habit's colour, to show the chosen icon as it will look.
-    let color: HabitColor
     let onPick: () -> Void
     @Environment(\.dismiss) private var dismiss
     @State private var search = ""
+    /// The icon with the ring: the habit's own until a tap, saved only by Done.
+    @State private var chosen: String
+
+    init(symbol: Binding<String>, onPick: @escaping () -> Void) {
+        _symbol = symbol
+        self.onPick = onPick
+        _chosen = State(initialValue: symbol.wrappedValue)
+    }
+
+    /// Six to a row as Figma, each as wide as the row allows, 8 between rows.
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 6)
 
     var body: some View {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 22) {
-                    ForEach(IconLibrary.groups, id: \.name) { group in
-                        let symbols = group.symbols.filter { matches($0, group: group.name) }
-                        if !symbols.isEmpty {
-                            VStack(alignment: .leading, spacing: 10) {
-                                Text(group.name).font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
-                                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 10), count: 6), spacing: 10) {
-                                    ForEach(symbols, id: \.self) { s in
-                                        Button {
-                                            symbol = s
-                                            onPick()
-                                            dismiss()
-                                        } label: {
-                                            Image(systemName: s)
-                                                .font(.system(size: 20, weight: .semibold))
-                                                .foregroundStyle(s == symbol ? Color.white : Color.primary)
-                                                .frame(width: 48, height: 48)
-                                                .background(RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                                    .fill(s == symbol ? AnyShapeStyle(color.color.gradient) : AnyShapeStyle(Color(.tertiarySystemFill))))
-                                        }
-                                        .buttonStyle(.plain)
-                                        .accessibilityLabel(IconLibrary.spokenName(s))
-                                    }
+        ScrollView {
+            // A lazy grid is fine here: it's in a ScrollView, never in a List or Form row (S13). Ids are the symbol
+            // names, one type, and each group's are unique (S14).
+            LazyVStack(alignment: .leading, spacing: 24) {
+                ForEach(IconLibrary.groups, id: \.name) { group in
+                    let symbols = group.symbols.filter { matches($0, group: group.name) }
+                    if !symbols.isEmpty {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(group.name)
+                                .font(.subheadline.weight(.semibold))
+                                .foregroundStyle(Color(.secondaryLabel))
+                                .padding(.leading, 4)
+                                .accessibilityAddTraits(.isHeader)
+                            LazyVGrid(columns: columns, spacing: 8) {
+                                ForEach(symbols, id: \.self) { s in
+                                    IconChoice(symbol: s, selected: s == chosen) { chosen = s }
                                 }
                             }
                         }
                     }
                 }
-                .padding(20)
             }
-            .background(Color(.systemGroupedBackground))
-            .navigationTitle("Icon")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search icons")
+            .padding(.horizontal, 16)
+            .padding(.top, 8)
+            .padding(.bottom, 24)
+        }
+        .background(Color(.systemGroupedBackground))
+        .navigationTitle("Icon")
+        .navigationBarTitleDisplayMode(.inline)
+        // iOS's own search field under the bar (Figma's glass capsule): it keeps the keyboard, Cancel and clearing.
+        .searchable(text: $search, placement: .navigationBarDrawer(displayMode: .always), prompt: "Search icons")
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) {
+                Button("Cancel", systemImage: "xmark") { dismiss() }
+            }
+            // Plain glass with a Semibold word, as Add and Save are (Rulebook, 5 Nov 2026).
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Done") {
+                    symbol = chosen
+                    onPick()
+                    dismiss()
+                }
+                .fontWeight(.semibold)
+                .accessibilityIdentifier("icon-done")
+            }
+        }
     }
 
     private func matches(_ symbol: String, group: String) -> Bool {
         guard !search.isEmpty else { return true }
-        let words = IconLibrary.keywords[symbol, default: []] + [symbol, group]
+        let words = IconLibrary.keywords[IconLibrary.filled(symbol), default: []] + [symbol, group]
         return words.contains { $0.localizedCaseInsensitiveContains(search) }
+    }
+}
+
+/// Figma's Icon choice (4748:34294): a 38 grey circle (Tertiary System Fill) with the symbol in Ink, 20 pt Regular,
+/// filled or outlined as the symbol is. The chosen one has the Colour swatch's ring, System Gray 3, 3 wide, 5 outside
+/// the circle. The habit's colour isn't used here: it shows on the form.
+struct IconChoice: View {
+    let symbol: String
+    let selected: Bool
+    let action: () -> Void
+    @ScaledMetric(relativeTo: .title3) private var tile: CGFloat = 38
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.title3)
+                .foregroundStyle(Color.ink)
+                .frame(width: tile, height: tile)
+                .background(Circle().fill(Color(.tertiarySystemFill)))
+                .overlay {
+                    if selected { Circle().stroke(Color(.systemGray3), lineWidth: 3).padding(-5) }
+                }
+                .frame(width: tile + 10, height: tile + 10)
+                .frame(maxWidth: .infinity)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(IconLibrary.spokenName(symbol))
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 
 enum IconLibrary {
     struct Group { let name: String; let symbols: [String] }
 
+    /// Figma's Icon picker: filled and outlined side by side where SF Symbols has both (each checked by name on the
+    /// Mac, 21 Nov 2026), six to a row. Health, Fitness, Mind and Home are Figma's own lists (18, 12, 18, 18). The
+    /// groups after them aren't drawn in Figma (its page is cut where it scrolls); they keep the app's icons, now
+    /// paired, and Other holds the ones Figma's four left out, so no icon a name suggests goes missing.
     static let groups: [Group] = [
-        Group(name: "Health", symbols: ["heart.fill", "pills.fill", "cross.case.fill", "drop.fill", "lungs.fill", "brain.head.profile", "bandage.fill", "mouth.fill", "eye.fill", "bed.double.fill", "allergens", "stethoscope"]),
-        Group(name: "Fitness", symbols: ["figure.walk", "figure.run", "figure.flexibility", "figure.strengthtraining.traditional", "figure.yoga", "figure.pool.swim", "bicycle", "dumbbell.fill", "figure.hiking", "sportscourt.fill", "stopwatch.fill", "shoeprints.fill"]),
-        Group(name: "Mind", symbols: ["figure.mind.and.body", "book.fill", "brain", "pencil", "text.book.closed.fill", "lightbulb.fill", "music.note", "paintpalette.fill", "guitars.fill", "headphones", "character.book.closed.fill", "sparkles"]),
-        Group(name: "Home and Chores", symbols: ["house.fill", "washer.fill", "dishwasher.fill", "sink.fill", "refrigerator.fill", "trash.fill", "bed.double.fill", "leaf.fill", "pawprint.fill", "cart.fill", "tshirt.fill", "shower.fill"]),
-        Group(name: "Work and Study", symbols: ["laptopcomputer", "briefcase.fill", "envelope.fill", "phone.fill", "calendar", "checklist", "clock.fill", "chart.bar.fill", "graduationcap.fill", "dollarsign.circle.fill", "person.2.fill", "bubble.left.fill"]),
-        Group(name: "Faith and Reflection", symbols: ["hands.and.sparkles.fill", "book.closed.fill", "moon.stars.fill", "sun.max.fill", "sunrise.fill", "building.columns.fill", "heart.text.square.fill", "star.fill"]),
-        Group(name: "Food", symbols: ["fork.knife", "cup.and.saucer.fill", "carrot.fill", "fish.fill", "takeoutbag.and.cup.and.straw.fill", "birthday.cake.fill", "mug.fill", "wineglass"]),
-        Group(name: "Break a Habit", symbols: ["nosign", "smoke.fill", "iphone.slash", "gamecontroller.fill", "tv.fill", "cart.badge.minus", "hand.raised.fill", "bolt.slash.fill"]),
-        Group(name: "Other", symbols: ["flame.fill", "bolt.fill", "target", "flag.fill", "gift.fill", "camera.fill", "globe", "airplane", "car.fill", "tree.fill", "plus.forwardslash.minus", "timer"]),
+        Group(name: "Health", symbols: ["heart.fill", "heart", "drop.fill", "drop", "pills.fill", "pills",
+                                        "moon.fill", "moon", "leaf.fill", "leaf", "cross.fill", "cross",
+                                        "bandage.fill", "bandage", "syringe.fill", "syringe", "scalemass.fill", "figure.mind.and.body"]),
+        Group(name: "Fitness", symbols: ["figure.walk", "figure.run", "figure.hiking", "figure.pool.swim", "figure.flexibility", "figure.rower",
+                                         "dumbbell.fill", "dumbbell", "bicycle", "soccerball", "tennis.racket", "flame.fill"]),
+        Group(name: "Mind", symbols: ["star.fill", "star", "book.fill", "book", "lightbulb.fill", "lightbulb",
+                                      "graduationcap.fill", "graduationcap", "paintpalette.fill", "paintpalette",
+                                      "character.book.closed.fill", "character.book.closed",
+                                      "text.book.closed.fill", "text.book.closed", "pencil", "music.note", "brain.head.profile", "pianokeys"]),
+        Group(name: "Home", symbols: ["house.fill", "house", "washer.fill", "washer", "bubbles.and.sparkles.fill", "bubbles.and.sparkles",
+                                      "bed.double.fill", "bed.double", "shower.fill", "shower", "cart.fill", "cart",
+                                      "pawprint.fill", "pawprint", "tree.fill", "tree", "dollarsign.circle.fill", "dollarsign.circle"]),
+        Group(name: "Work and Study", symbols: ["briefcase.fill", "briefcase", "envelope.fill", "envelope", "phone.fill", "phone",
+                                                "clock.fill", "clock", "chart.bar.fill", "chart.bar", "person.2.fill", "person.2",
+                                                "bubble.left.fill", "bubble.left", "laptopcomputer", "calendar", "checklist"]),
+        Group(name: "Faith and Reflection", symbols: ["hands.and.sparkles.fill", "hands.and.sparkles", "book.closed.fill", "book.closed",
+                                                      "moon.stars.fill", "moon.stars", "sun.max.fill", "sun.max", "sunrise.fill", "sunrise",
+                                                      "building.columns.fill", "building.columns", "heart.text.square.fill", "heart.text.square"]),
+        Group(name: "Food", symbols: ["cup.and.saucer.fill", "cup.and.saucer", "carrot.fill", "carrot", "fish.fill", "fish",
+                                      "takeoutbag.and.cup.and.straw.fill", "takeoutbag.and.cup.and.straw", "birthday.cake.fill", "birthday.cake",
+                                      "mug.fill", "mug", "wineglass.fill", "wineglass", "fork.knife"]),
+        Group(name: "Break a Habit", symbols: ["smoke.fill", "smoke", "gamecontroller.fill", "gamecontroller", "tv.fill", "tv",
+                                               "hand.raised.fill", "hand.raised", "bolt.slash.fill", "bolt.slash",
+                                               "nosign", "iphone.slash", "cart.badge.minus"]),
+        Group(name: "Other", symbols: ["bolt.fill", "bolt", "flag.fill", "flag", "gift.fill", "gift", "camera.fill", "camera", "car.fill", "car",
+                                       "mouth.fill", "mouth", "eye.fill", "eye", "lungs.fill", "lungs", "cross.case.fill", "cross.case",
+                                       "allergens.fill", "allergens", "sportscourt.fill", "sportscourt", "stopwatch.fill", "stopwatch",
+                                       "guitars.fill", "guitars", "dishwasher.fill", "dishwasher", "sink.fill", "sink",
+                                       "refrigerator.fill", "refrigerator", "trash.fill", "trash", "tshirt.fill", "tshirt",
+                                       "figure.yoga", "figure.strengthtraining.traditional", "shoeprints.fill", "brain", "headphones", "sparkles",
+                                       "stethoscope", "target", "globe", "airplane", "flame", "plus.forwardslash.minus", "timer"]),
     ]
+
+    /// The filled name a keyword is kept under: an outlined symbol finds the same words as its filled one.
+    static func filled(_ symbol: String) -> String {
+        symbol.hasSuffix(".fill") || keywords[symbol] != nil ? symbol : symbol + ".fill"
+    }
 
     /// Extra words for search and suggestions.
     static let keywords: [String: [String]] = [
@@ -97,8 +178,10 @@ enum IconLibrary {
         "laptopcomputer": ["work", "code", "computer"], "clock.fill": ["time", "early"], "person.2.fill": ["friends", "social"],
     ]
 
+    /// "water", or the name in words. An outlined icon says so, since it sits beside its filled one.
     static func spokenName(_ symbol: String) -> String {
-        keywords[symbol]?.first ?? symbol.replacingOccurrences(of: ".fill", with: "").replacingOccurrences(of: ".", with: " ")
+        let base = keywords[filled(symbol)]?.first ?? symbol.replacingOccurrences(of: ".fill", with: "").replacingOccurrences(of: ".", with: " ")
+        return !symbol.hasSuffix(".fill") && keywords[symbol] == nil && keywords[symbol + ".fill"] != nil ? base + ", outlined" : base
     }
 }
 

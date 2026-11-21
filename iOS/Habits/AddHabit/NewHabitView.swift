@@ -674,9 +674,9 @@ struct HabitForm: View {
         }
         // Icon and colour are quick picks, so they pop up over the form (the user's choice).
         .sheet(isPresented: $showAppearance) {
+            // The page's own ✕ and Done (Figma 1074:932); Done saves the ring's icon and closes.
             NavigationStack {
-                IconSheet(symbol: $symbol, color: color) { pickedSymbol = true; showAppearance = false }
-                    .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { showAppearance = false } } }
+                IconSheet(symbol: $symbol) { pickedSymbol = true }
             }
         }
         .sheet(isPresented: $showColors) {

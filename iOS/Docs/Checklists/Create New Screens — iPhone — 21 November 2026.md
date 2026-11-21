@@ -29,7 +29,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **What Kind of Task?** (`1109:2`)
 - [x] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
 - [x] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
-- [ ] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
+- [x] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
 - [ ] **Colour** (`1074:161496`)
 - [ ] **How Often** (`1075:161386`, 15 variants)
 - [ ] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
@@ -179,3 +179,28 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - **Checked on the Simulator:** Track an Amount (light) against Figma's `Type=Amount`; Task once with its calendar
   popover, choosing the 25th; Checklist and Quit in dark; Cut Down at Accessibility Large (stacked Icon and Colour);
   ‹ after typing asks before discarding. Edit Habit uses the same form and wasn't looked at on its own.
+
+### Icon picker (`1074:932`, Icon choice `4748:34294`) — done 21 Nov
+
+- **Built as:** `IconSheet` (AddHabit/Appearance.swift), still a sheet over the form with its own `NavigationStack`, as
+  Reminders' New List opens its icons. ✕ (`Button("Cancel", systemImage: "xmark")`, `.cancellationAction`), Icon,
+  and Done (`.confirmationAction`, plain glass with a Semibold word, as Add and Save) in the bar.
+- **Picking changed:** a tap moves the ring, Done keeps it, ✕ leaves the icon as it was. It used to pick and close on
+  the first tap; Figma's page has ✕ and Done, so a person can look before choosing.
+- **Search** is iOS's own `.searchable` drawer, always showing: on iOS 26 it draws Figma's glass capsule under the bar,
+  and typing gives the bar to the field and a ✕ (the Rulebook's Active search), with the keyboard's Search key and
+  clearing for free. A search finds an outlined icon by its filled one's words (`IconLibrary.filled`).
+- **A choice** is `IconChoice`: a 38 circle of Tertiary System Fill with the symbol in Ink at Title 3 (20 pt), and on
+  the chosen one the Colour swatch's ring (System Gray 3, 3 wide, 5 outside). The circle scales with text
+  (`@ScaledMetric`). The habit's colour isn't used on the page; it shows on the form.
+- **The grid** is a `LazyVGrid` of six flexible columns, 8 between rows, inside a `ScrollView` (a lazy grid only in a
+  ScrollView, S13; ids are symbol names, S14). Group names are Subheadline Semibold in Secondary Label, 4 in.
+- **Icons:** filled and outlined side by side where SF Symbols has both (every name checked with
+  `NSImage(systemSymbolName:)` on the Mac). Health, Fitness, Mind and Home are Figma's lists exactly (18, 12, 18, 18;
+  "Home and Chores" is now Home). Figma's page is cut where it scrolls, so the groups after them keep the app's icons,
+  paired; **Other** now also holds what Figma's four left out (teeth, eyes, yoga, gym, dishes, bins and the rest), so
+  no icon a habit's name suggests is missing from the page. VoiceOver says "outlined" on an outlined icon.
+- **A habit keeps the style picked** (the Rulebook, 10 Nov): the form shows an outlined heart outlined.
+- **Checked on the Simulator:** light against the Figma screenshot (Mind's star with the ring); picked the outlined
+  heart, Done, the form showed it; dark with the ring on the saved icon; searched "book" (Mind and Faith and Reflection,
+  filled and outlined).
