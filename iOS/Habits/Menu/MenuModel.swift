@@ -56,8 +56,9 @@ import SwiftUI
 }
 
 /// Every page the ≡ menu reaches. The names are the pages' titles, so a row and the page it opens always say the same
-/// thing. The menu itself (Figma's Side menu, 17 Nov 2026) lists Habits & Tasks, Plus and Settings; the rest are
-/// Settings' rows (`settingsGroups`).
+/// thing. The menu itself (Figma's Side menu, 17 Nov 2026) lists Habits & Tasks, Plus and Settings; Settings
+/// (`SettingsPage`, 21 Nov 2026) opens Backup & Sync, Day Starts At, Week Starts On and Appearance. The other places are
+/// no longer listed anywhere; speed runs still open them, until the logic pass removes or rehomes them.
 enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     case habitsAndTasks, settings
     case progress, habits, tasks
@@ -71,9 +72,6 @@ enum MenuPlace: String, Hashable, CaseIterable, Identifiable {
     /// The menu's groups, separated by a gap like the iPhone's own Settings, ordered by importance: daily places, how the
     /// app works, your data (iCloud and backups matter to everyone, privacy to many), Plus, then Help and About. There's
     /// no account: iCloud & Backup replaced Account and Backup & Export (Architecture 11 §17, 10 Oct 2026).
-    /// Settings' rows, until Settings is built from its own Figma page: every page the menu used to list.
-    static let settingsGroups: [[MenuPlace]] = [[.progress], [.timesOfDay, .dayAndWeek, .reminders, .appearance],
-                                                [.backup, .privacy], [.help, .about]]
 
     var title: String {
         switch self {

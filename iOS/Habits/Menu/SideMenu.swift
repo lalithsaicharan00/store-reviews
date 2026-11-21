@@ -227,27 +227,6 @@ private struct SideMenu: View {
     }
 }
 
-/// Settings, until it's built from its own Figma page: every page the menu used to list, so none is out of reach.
-struct SettingsPage: View {
-    var body: some View {
-        List {
-            ForEach(MenuPlace.settingsGroups, id: \.self) { group in
-                Section {
-                    ForEach(group) { place in
-                        NavigationLink(value: place) {
-                            Label(place.title, systemImage: place.symbol)
-                        }
-                        .accessibilityIdentifier("menu-" + place.rawValue)
-                    }
-                }
-            }
-        }
-        .listStyle(.insetGrouped)
-        .navigationTitle("Settings")
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
 /// Habits & Tasks (Figma's Habits page, 6 Nov 2026): Habits | Tasks, the biggest control, pinned right under the bar so
 /// Tasks is always in view; then that list. The bar is ☰ and + with no title: the control says where you are. A place
 /// the menu opens stands in for Today, so ☰ opens the menu again rather than Back.
@@ -353,8 +332,8 @@ struct MenuPage: View {
         case .habits: HabitsAndTasksPage()
         case .tasks: HabitsAndTasksPage(start: .tasks)
         case .timesOfDay: TimesOfDayList()
-        case .dayAndWeek: DayAndWeekView()
-        case .appearance: AppearanceView()
+        case .dayAndWeek: DayStartsAtPage()
+        case .appearance: AppearancePage()
         case .plus: PlusPage()
         case .backup:
             // Without a database (it couldn't be opened) there's no backup centre; the older page says what's wrong.
