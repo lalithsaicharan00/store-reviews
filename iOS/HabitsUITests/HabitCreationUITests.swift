@@ -67,18 +67,18 @@ final class HabitCreationUITests: XCTestCase {
         sleep(1)
     }
 
-    /// + → Build or maintain → the type (or Quit or cut down → Cut down, or Add a task) → a name.
+    /// + → Build or Maintain → the type (or Quit or Cut Down → Cut down, or Add a task) → a name.
     private func start(_ kind: String, name: String) {
         taps = 0
         tap(app.navigationBars.buttons["New Habit"].firstMatch, scroll: false)
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
         switch kind {
-        case "Cut down":
-            tap(row("Quit or cut down,"), scroll: false); tap(row("Cut down,"), scroll: false)
+        case "Cut Down":
+            tap(row("Quit or Cut Down,"), scroll: false); tap(row("Cut Down,"), scroll: false)
         case "Task":
             tap(row("Add a task,"), scroll: false)
         default:
-            tap(row("Build or maintain,"), scroll: false); tap(row(kind + ","), scroll: false)
+            tap(row("Build or Maintain,"), scroll: false); tap(row(kind + ","), scroll: false)
         }
         type(name + "\n", into: app.descendants(matching: .any)["name-field"])
     }
@@ -96,7 +96,7 @@ final class HabitCreationUITests: XCTestCase {
     }
 
     private func often(_ choice: String, then steps: () -> Void = {}) {
-        tap(row("How often"))
+        tap(row("How Often"))
         XCTAssertTrue(app.navigationBars["How Often"].waitForExistence(timeout: 3))
         tap(app.buttons["often-" + choice])
         steps()
@@ -135,42 +135,41 @@ final class HabitCreationUITests: XCTestCase {
     // MARK: Every day, several a day, N a week
 
     func testDailyShapes() {
-        start("Check it off", name: "Make bed")                                    // F01
+        start("Check It Off", name: "Make bed")                                    // F01
         finish("Make bed every day, anytime", today: "Mark Make bed done", label: "F01-every-day")
 
-        start("Track an amount", name: "Drink water")                              // F02
+        start("Track an Amount", name: "Drink water")                              // F02
         amount("8", unit: "glasses")
         finish("Drink water 8 glasses a day, anytime", today: "Add 1 glass to Drink water", label: "F02-amount-a-day")
 
-        start("Check it off", name: "Brush teeth")                                 // F03
+        start("Check It Off", name: "Brush teeth")                                 // F03
         often("timesADay")
         // Several times a day is a +1 counter on Today (Rulebook U14: ✓ toggles, + adds).
         finish("Brush teeth twice a day, anytime", today: "Add 1 to Brush teeth", label: "F03-twice-a-day")
 
-        start("Time it", name: "Meditate")                                         // time
+        start("Time It", name: "Meditate")                                         // time
         tap(row("How long"))
-        tap(app.buttons["Type"].firstMatch, scroll: false)
-        type("10", into: app.textFields["duration-minutes"], clear: true)
+        tap(app.buttons["10 min"], scroll: false)
         back()
         finish("Meditate 10 min a day, anytime", today: "Start Meditate timer", label: "T1-timer")
     }
 
     func testWeeklyShapes() {
-        start("Check it off", name: "Gym")                                          // F04
+        start("Check It Off", name: "Gym")                                          // F04
         often("times")
         finish("Gym 3 times a week, anytime", today: "0/3 this week", label: "F04-3-times-a-week")
 
-        start("Track an amount", name: "Run")                                       // F05
+        start("Track an Amount", name: "Run")                                       // F05
         amount("5", unit: "km")
         often("times")
         finish("Run 5 km on 3 days a week, anytime", today: "Add 5 km to Run", label: "F05-amount-on-3-days")
 
-        start("Track an amount", name: "Read")                                      // F06
+        start("Track an Amount", name: "Read")                                      // F06
         amount("2", unit: "chapters")
         often("total-week")
         finish("Read 2 chapters a week, anytime", today: "0/2 chapters this week", label: "F06-amount-a-week")
 
-        start("Check it off", name: "Call mum")                                     // F07
+        start("Check It Off", name: "Call mum")                                     // F07
         often("times") { for _ in 0..<2 { tap(app.buttons["often-count-Decrement"]) } }
         finish("Call mum once a week, anytime", today: "0/1 this week", label: "F07-once-a-week")
     }
@@ -180,7 +179,7 @@ final class HabitCreationUITests: XCTestCase {
     func testSetDayShapes() {
         let today = cal.component(.weekday, from: .now)
         let full = cal.standaloneWeekdaySymbols
-        start("Check it off", name: "Laundry")                                      // F08
+        start("Check It Off", name: "Laundry")                                      // F08
         often("weekdays") {
             for day in [4, 7] where day != today { tap(app.buttons[full[day - 1]].firstMatch) }
             if ![4, 7].contains(today) { tap(app.buttons[full[today - 1]].firstMatch) }
@@ -188,7 +187,7 @@ final class HabitCreationUITests: XCTestCase {
         // Not due on other days, so Today shows it only on Wednesday or Saturday.
         finish("Laundry every Wednesday and Saturday, anytime", today: [4, 7].contains(today) ? "Laundry" : nil, label: "F08-set-weekdays")
 
-        start("Check it off", name: "Walk")                                          // six days
+        start("Check It Off", name: "Walk")                                          // six days
         often("weekdays") {
             // One more day first, then drop Monday if it's today, then the rest: all seven chosen at once turns the
             // days into "every day" and the weekday buttons go (failed every Monday, found 5 Oct 2026).
@@ -200,15 +199,15 @@ final class HabitCreationUITests: XCTestCase {
         // Not due on Mondays, so Today shows it every other day (failed on a Monday, 5 Oct 2026).
         finish("Walk every day except Monday, anytime", today: today == 2 ? nil : "Walk", label: "F08b-six-days")
 
-        start("Check it off", name: "Water plants")                                 // F09 days
+        start("Check It Off", name: "Water plants")                                 // F09 days
         often("everyDays") { increment("often-every-count", 1) }
         finish("Water plants every 3 days, anytime", today: "Water plants", label: "F09a-every-3-days")
 
-        start("Check it off", name: "Change sheets")                                 // F09 weeks
+        start("Check It Off", name: "Change sheets")                                 // F09 weeks
         often("everyWeeks")
         finish("Change sheets every other week, anytime", today: "Change sheets", label: "F09b-every-other-week")
 
-        start("Check it off", name: "Replace filter")                                // F09 months
+        start("Check It Off", name: "Replace filter")                                // F09 months
         often("everyMonths")
         XCTAssertTrue(sentence.hasPrefix("Replace filter on the") && sentence.contains("every 3 months"), sentence)
         finish(sentence, label: "F09c-every-3-months")
@@ -216,22 +215,22 @@ final class HabitCreationUITests: XCTestCase {
 
     func testMonthAndYearShapes() {
         let date = cal.component(.day, from: .now)
-        start("Check it off", name: "Pay rent")                                      // F10
+        start("Check It Off", name: "Pay rent")                                      // F10
         often("date") {
             if date != 1 { tap(app.buttons["Day 1"]); tap(app.buttons["Day \(date)"]) }
         }
         finish("Pay rent on the 1st of every month, anytime", today: date == 1 ? "Pay rent" : nil, label: "F10-monthly-date")
 
-        start("Check it off", name: "Hike")                                           // F11
+        start("Check It Off", name: "Hike")                                           // F11
         often("times") { tap(app.buttons["Month"].firstMatch); tap(app.buttons["often-count-Decrement"]) }
         finish("Hike twice a month, anytime", today: "0/2 this month", label: "F11-twice-a-month")
 
-        start("Track an amount", name: "Finish")                                      // F12
+        start("Track an Amount", name: "Finish")                                      // F12
         amount("2", unit: "books")
         often("total-month")
         finish("Finish 2 books a month, anytime", today: "0/2 books this month", label: "F12-amount-a-month")
 
-        start("Check it off", name: "Check-up")                                       // F13
+        start("Check It Off", name: "Check-up")                                       // F13
         often("date") {
             tap(app.buttons["Year"].firstMatch)
             tap(row("Month,")); tap(app.buttons["October"].firstMatch)
@@ -242,11 +241,11 @@ final class HabitCreationUITests: XCTestCase {
         }
         finish("Check-up every year on October 1, anytime", today: nil, label: "F13-yearly-date")
 
-        start("Check it off", name: "Swim")                                            // F14
+        start("Check It Off", name: "Swim")                                            // F14
         often("times") { tap(app.buttons["Year"].firstMatch); increment("often-count", 9) }
         finish("Swim 12 times a year, anytime", today: "0/12 this year", label: "F14-12-times-a-year")
 
-        start("Track an amount", name: "Read")                                        // F15
+        start("Track an Amount", name: "Read")                                        // F15
         amount("20", unit: "books")
         often("total-year")
         finish("Read 20 books a year, anytime", today: "0/20 books this year", label: "F15-amount-a-year")
@@ -258,24 +257,24 @@ final class HabitCreationUITests: XCTestCase {
         start("Checklist", name: "Clean kitchen")
         tap(row("Steps"))
         tap(app.buttons["Add Step"])
-        type("Dishes\n", into: app.textFields["e.g. Dishes"].firstMatch)
-        type("Sink\n", into: app.textFields["Next step"].firstMatch)
+        type("Dishes\n", into: app.textFields.matching(identifier: "step-field").element(boundBy: 0))
+        type("Sink\n", into: app.textFields.matching(identifier: "step-field").element(boundBy: 1))
         // Return adds the third row a moment later: wait for it, or "Floor" lands in Sink's field (main, 5 Oct 2026:
         // "2 steps", Today 0/2).
-        let fields = app.textFields.matching(identifier: "Next step")
-        let third = fields.element(boundBy: 1)
+        let fields = app.textFields.matching(identifier: "step-field")
+        let third = fields.element(boundBy: 2)
         XCTAssertTrue(third.waitForExistence(timeout: 3), "Return adds a third step row")
         type("Floor", into: third)
         XCTAssertEqual(third.value as? String, "Floor", "The third step is Floor")
         back()
         finish("Clean kitchen every day, anytime", today: "0/3 steps", label: "C1-checklist")
 
-        start("Cut down", name: "Coffee")
+        start("Cut Down", name: "Coffee")
         amount("2", unit: "coffees", limit: true)
-        finish("At most 2 coffees a day", title: "Cut down", today: "Coffee", label: "L1-cut-down")
+        finish("At most 2 coffees a day", today: "Coffee", label: "L1-cut-down")
 
-        start("Check it off", name: "Stretch")
-        tap(row("Time of Day"))
+        start("Check It Off", name: "Stretch")
+        tap(row("Routine"))
         tap(app.buttons["Morning"].firstMatch, scroll: false); tap(app.buttons["Evening"].firstMatch, scroll: false)
         back()
         tap(row("Reminders"))
@@ -295,7 +294,7 @@ final class HabitCreationUITests: XCTestCase {
 
         start("Task", name: "Replace brush")
         tap(row("Repeat,")); tap(app.buttons["On a schedule"].firstMatch, scroll: false)
-        tap(row("How often"))
+        tap(row("How Often"))
         tap(app.buttons["often-afterDone"])
         tap(app.buttons["Months"].firstMatch); increment("often-after-count", 2)
         back()
@@ -304,14 +303,14 @@ final class HabitCreationUITests: XCTestCase {
 
     /// Numbers: full and grouped in sentences ("10,000 steps"), "k" on Today's line and button ("1k/10k", "+1k").
     func testBigNumbers() {
-        start("Track an amount", name: "Walk")
+        start("Track an Amount", name: "Walk")
         amount("10000", unit: "steps")
         finish("Walk 10,000 steps a day, anytime", today: "0/10k steps", label: "N1-10k-steps")
         let plus = app.buttons["Add 1,000 steps to Walk"]
         XCTAssertTrue(plus.exists, "+ says its step in full for VoiceOver")
         plus.tap(); sleep(1)
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH '1k/10k steps'")).firstMatch.exists, "1,000 reads 1k on Today")
-        start("Track an amount", name: "Save")
+        start("Track an Amount", name: "Save")
         amount("1500")
         finish("Save 1,500 a day, anytime", today: "0/1.5k", label: "N2-1500")
         shot("N-today")

@@ -115,8 +115,8 @@ final class OnboardingUITests: XCTestCase {
 
         XCTAssertTrue(app.buttons["empty-new-habit"].waitForExistence(timeout: 5))
         app.buttons["empty-new-habit"].tap()
-        text(containing: "Build or maintain").tap()
-        text(containing: "Check it off").tap()
+        text(containing: "Build or Maintain").tap()
+        text(containing: "Check It Off").tap()
         let field = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 5))
         field.tap()

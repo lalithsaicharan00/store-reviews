@@ -37,9 +37,9 @@ final class FormWalkthroughUITests: XCTestCase {
         app.reveal(element)
     }
 
-    private func open(name: String, type: String = "Check it off") {
+    private func open(name: String, type: String = "Check It Off") {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        row("Build or maintain,").tap()
+        row("Build or Maintain,").tap()
         row(type + ",").tap()
         let field = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3))
@@ -48,9 +48,9 @@ final class FormWalkthroughUITests: XCTestCase {
     }
 
     private func pickParts(_ parts: [String]) {
-        scrollTo(row("Time of Day"))
-        row("Time of Day").tap()
-        XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
+        scrollTo(row("Routine"))
+        row("Routine").tap()
+        XCTAssertTrue(app.navigationBars["Routine"].waitForExistence(timeout: 3))
         for part in parts { app.buttons[part].firstMatch.tap() }
         shot("w-time-of-day-\(parts.joined(separator: "-"))")
         app.navigationBars.buttons["BackButton"].firstMatch.tap()
@@ -60,9 +60,9 @@ final class FormWalkthroughUITests: XCTestCase {
     func testCheckOffMorningAndEveningWithReminders() {
         open(name: "Brush teeth")
         shot("w01-default-anytime")
-        XCTAssertTrue(row("Time of Day, Anytime").exists, "Anytime is the default")
+        XCTAssertTrue(row("Routine, Anytime").exists, "Anytime is the default")
         pickParts(["Morning", "Evening"])
-        XCTAssertTrue(row("Time of Day, Morning and Evening").exists)
+        XCTAssertTrue(row("Routine, Morning and Evening").exists)
         // Reminders start off; turned on, there's one per time of day, labelled with its part.
         let reminders = row("Reminders")
         scrollTo(reminders)
@@ -85,9 +85,9 @@ final class FormWalkthroughUITests: XCTestCase {
 
     /// Parts of the day are multi-select for every type, amounts included.
     func testAmountPicksSeveralParts() {
-        open(name: "Water", type: "Track an amount")
+        open(name: "Water", type: "Track an Amount")
         pickParts(["Morning", "Afternoon"])
-        XCTAssertTrue(row("Time of Day, Morning and Afternoon").exists)
+        XCTAssertTrue(row("Routine, Morning and Afternoon").exists)
         shot("w06-amount-two-parts")
     }
 }

@@ -1729,6 +1729,8 @@ struct PlusRow: View {
                     .alignmentGuide(.listRowSeparatorLeading) { $0[.leading] }
             }
         }
+        // The plus symbol's own name is "Add": without this VoiceOver reads "Add, Add Step".
+        .accessibilityLabel(title)
     }
 }
 

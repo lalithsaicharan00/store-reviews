@@ -12,13 +12,17 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 
 ## The user's points
 
-- [ ] 1. Figma's page components become ordinary SwiftUI screens; what was done and why is written below, per screen.
-- [ ] 2. Time of Day is gone: a habit's row is **Routine**, and there's **Add a Routine** (New Routine).
+- [x] 1. Figma's page components become ordinary SwiftUI screens; what was done and why is written below, per screen.
+- [x] 2. Time of Day is gone: a habit's row is **Routine**, and there's **Add a Routine** (New Routine). (The habit form
+  and Create New; Settings, Edit Today and the other screens' words are the Rulebook's "still to do".)
 - [x] 3. Add a Task opens its own page first, **What Kind of Task?** (Once or On Repeat), then the task form.
-- [ ] 4. Making a routine from anywhere (Create New, the habit form, Today, Habit details) goes back to where the
-  person was and shows a banner with the routine's name ("“Meds” created · Undo"), nothing else.
-- [ ] 5. **All Day** and **Anytime** are built in: several reminders put a habit in All Day by itself, none or one
-  leaves it where it is (Anytime by default). Morning, Afternoon, Evening: one choice only.
+- [x] 4. Making a routine from anywhere (Create New, the habit form, Today, Habit details) goes back to where the
+  person was and shows a banner with the routine's name ("“Meds” created · Undo"), nothing else. One modifier,
+  `routineCreatedBanner`, on every place New Routine opens: Create New, the habit form's Routine page (so Habit
+  details › Edit too), Edit Today and Settings' routines. Checked on the Simulator from Create New and the habit form.
+- [x] 5. **All Day** and **Anytime** are built in: several reminders put a habit in All Day by itself, none or one
+  leaves it where it is (Anytime by default). Morning, Afternoon, Evening: one choice only. (The screens; All Day
+  in the model and the habit moving into it by itself are in "Left for the logic pass".)
 - [x] 6. How Often's pages: Figma's new spacing.
 
 ## The screens, in the user's order
@@ -39,26 +43,24 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 
 ## Left for the end of the loop
 
-- [ ] UI tests that read the habit form's old rows: the preview card and sentence (`today-preview`,
-  `habit-sentence`, gone), "Time of Day" (now Routine), "How much"/"How often" (title case), the Starts and Ends pages
-  (now pickers in the form), the task's Repeat picker (gone), "When you tap +" (off the form, `tap-adds-step`).
-- [ ] UI tests that read Create New's old words: the "New" bar title (gone), "Build or maintain", "Quit or cut down",
-  "Cut down" (now title case) and the question words (`NewHabitUITests`, `NewFlowUITests` and the others that open +).
-  No tests run in the design phase; update them all in one go before the first run.
-- [ ] UI tests that read the Reminders page's old words: "Add Reminder"/"Add Another Reminder" (now Add a Time,
-  `add-reminder`), "A Notification"/"An Alarm" (now a menu row, values in sentence case), the − remove button (now a
-  swipe, or VoiceOver's Delete action), "Reminder Says" as a left label, and the notifications prompt, which now
-  comes when Remind Me is turned on (a test that turns it on must answer iOS's alert or start with permission
-  granted).
-- [ ] UI tests that read How Much and Unit's old words: "Amount" (the label is gone; the field is still
-  `much-number`), "Optional" (now *No unit*), "No Unit" (now *No unit*), "When you tap +" / "Add a set amount" /
-  "Each tap adds" (now How Much's *When you log it*, *One tap adds a set amount*, *Each Tap Adds*, `tap-step`), and a
-  unit tapped on the Unit page, which now stays on the page (tap Back).
-- [ ] UI tests that read How Long, Limit and Steps' old words: Scroll | Type (`duration-entry-mode`, gone),
-  `hours-wheel` and `minutes-wheel` (now one `duration-wheel`), "Time" as How Long's header (gone), Time on the Unit
-  page (now Limit's own *Amount | Time*, `limit-kind`), the sticky sentence on these pages (`much-summary`,
-  `screen-sentence`, gone), the Steps header and "e.g. Dishes"/"Next step" (now *Step N*, `step-field`), and Add Step
-  (now a plain + row, `add-step`).
+- [x] The UI tests' renamed words, 21 Nov: Create New's title case (Build or Maintain, Quit or Cut Down, Track an
+  Amount, Check It Off, Time It, Cut Down), the first page found by its question (it has no bar title), its ✕ as
+  Close, the form's title New Habit for every habit, How Much, How Often, Routine and New Routine, Edit Routine, Add
+  a Time, No unit, Each Tap Adds, the steps by `step-field`, How Long's quick pick in place of Scroll | Type.
+  `PlusRow` now names itself ("Add Step", not "Add, Add Step"). The test target builds (`build-for-testing`); no
+  test has run (the design phase).
+- [ ] **UI tests that check something the form no longer has, rewritten with the first test run after the logic
+  pass** (which changes routines and All Day again, so rewriting them now would be done twice):
+  - the habit sentence (`habit-sentence`, `habit-sentence-note`) and the read-back (`much-summary`): about 55
+    assertions in `NewHabitUITests`, `HabitScenarioUITests`, `HabitCreationUITests`, `ScheduleUITests`,
+    `GoalFlowUITests`, `LongTextUITests` and `NewFlowUITests`. Check the rows' values instead (*How Much, 10
+    glasses*; *How Often, Every day*; *Routine, Anytime*), and Today's line where a test already does;
+  - two times of day for one habit (*Morning and Evening*: `NewHabitUITests`, `NewFlowUITests`,
+    `FormWalkthroughUITests`, `HabitCreationUITests`): now one choice, so one routine and its tick;
+  - Reminders' − button and "A Notification"/"An Alarm" rows (now a swipe and a menu), and a test that turns Remind
+    Me on must answer iOS's alert;
+  - Limit in time chosen on the Unit page (now Limit's *Amount | Time*, `limit-kind`);
+  - the How Long wheel read by `pickerWheels` (`duration-wheel`; check its value's words on the first run).
 
 ## Left for the logic pass
 

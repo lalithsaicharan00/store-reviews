@@ -79,7 +79,7 @@ final class TodayUITests: XCTestCase {
 
         // + opens New Habit.
         app.buttons["New Habit"].tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
         shot("06-new-habit")
     }
 

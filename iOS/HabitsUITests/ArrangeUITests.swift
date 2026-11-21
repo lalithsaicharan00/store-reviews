@@ -74,10 +74,10 @@ final class ArrangeUITests: XCTestCase {
         let evening = app.buttons["arrange-edit-Evening"]
         app.reveal(evening)
         evening.tap()
-        XCTAssertTrue(app.navigationBars["Edit Time of Day"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Routine"].waitForExistence(timeout: 3))
         XCTAssertTrue(any("plan-row-Evening").exists, "Your day, as it will look")
         shot("a03-edit-routine")
-        app.navigationBars["Edit Time of Day"].buttons["Cancel"].tap()
+        app.navigationBars["Edit Routine"].buttons["Cancel"].tap()
 
         app.buttons["arrange-done"].tap()
         XCTAssertTrue(app.buttons["arrange-button"].waitForExistence(timeout: 3), "Back to Today")
@@ -121,13 +121,13 @@ final class ArrangeUITests: XCTestCase {
         let add = app.buttons["arrange-add-section"]
         app.reveal(add)
         add.tap()
-        XCTAssertTrue(app.navigationBars["New Time of Day"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["New Routine"].waitForExistence(timeout: 3))
         let name = app.textFields["section-name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.typeText("Mid Morning")
         XCTAssertTrue(any("plan-row-Mid Morning").waitForExistence(timeout: 2), "The new one in Your day")
         shot("a07-new-time-of-day")
-        app.navigationBars["New Time of Day"].buttons["section-save"].tap()
+        app.navigationBars["New Routine"].buttons["section-save"].tap()
         let split = app.buttons["section-split-confirm"].firstMatch
         if split.waitForExistence(timeout: 2) {
             shot("a08-split-confirm")
@@ -143,9 +143,9 @@ final class ArrangeUITests: XCTestCase {
     func testHabitFormHasNoGroup() {
         launch()
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain,'")).firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off,'")).firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or Maintain,'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check It Off,'")).firstMatch.tap()
         XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         XCTAssertTrue(app.descendants(matching: .any)["habit-form"].waitForExistence(timeout: 3))
         XCTAssertFalse(app.buttons["group-row"].exists, "No Group row")

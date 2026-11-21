@@ -1,7 +1,7 @@
 import XCTest
 
 /// How much and How often (Round 3 design, built 29 Sep 2026; Round 4 layout the same day), and what + does
-/// on Today afterwards. Build or maintain → Track an amount → the form, whose amount starts as a suggestion.
+/// on Today afterwards. Build or Maintain → Track an Amount → the form, whose amount starts as a suggestion.
 /// Keeps a screenshot of each step.
 final class GoalFlowUITests: XCTestCase {
     override func record(_ issue: XCTIssue) {
@@ -47,18 +47,18 @@ final class GoalFlowUITests: XCTestCase {
         sleep(1)
     }
 
-    /// + → Build or maintain → Track an amount → the New Habit form → a name.
+    /// + → Build or Maintain → Track an Amount → the New Habit form → a name.
     private func newHabit(name: String) {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        row("Build or maintain,").tap()
-        row("Track an amount,").tap()
+        row("Build or Maintain,").tap()
+        row("Track an Amount,").tap()
         XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         let field = app.descendants(matching: .any)["name-field"]
         field.tap(); field.typeText(name + "\n")
     }
 
     private func openHowMuch() {
-        row("How much").tap()
+        row("How Much").tap()
         XCTAssertTrue(app.navigationBars["How Much"].waitForExistence(timeout: 3))
     }
 
@@ -113,7 +113,7 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertEqual(amount.value as? String, "7")
         shot("k02-replaced-7")
         back()
-        XCTAssertTrue(row("How much, 7 ml").waitForExistence(timeout: 3))
+        XCTAssertTrue(row("How Much, 7 ml").waitForExistence(timeout: 3))
         XCTAssertEqual(sentence, "Keys 7 ml a day, anytime")
         addHabit()
         // Any amount other than +'s step: the row opens its Day sheet, and Log manually there types it in Add log
@@ -142,7 +142,7 @@ final class GoalFlowUITests: XCTestCase {
         XCTAssertTrue(app.descendants(matching: .any)["much-summary"].label.contains("8"), "The number shows before any unit is chosen")
         shot("u01-number-no-unit")
         back()
-        XCTAssertTrue(row("How much, 8").exists)
+        XCTAssertTrue(row("How Much, 8").exists)
         XCTAssertEqual(sentence, "Pushups set 8 a day, anytime")
         XCTAssertTrue(app.navigationBars["New Habit"].buttons["Add"].isEnabled, "No unit needed to add it")
         addHabit()
@@ -192,7 +192,7 @@ final class GoalFlowUITests: XCTestCase {
         replace(amount, with: "2000")
         chooseUnit("ml")
         back()
-        let step = app.textFields["Each tap adds"]
+        let step = app.textFields["Each Tap Adds"]
         app.reveal(step)
         XCTAssertEqual(step.placeholderValue, "250", "A glass is suggested")
         step.tap(); step.typeText("500")
@@ -211,7 +211,7 @@ final class GoalFlowUITests: XCTestCase {
         replace(amount, with: "5")
         chooseUnit("km")
         back()
-        row("How often").tap()
+        row("How Often").tap()
         XCTAssertTrue(app.buttons["5 km a day"].exists)
         XCTAssertTrue(app.buttons["5 km a week"].exists)
         app.buttons["often-times"].tap()
@@ -219,7 +219,7 @@ final class GoalFlowUITests: XCTestCase {
         shot("o01-amount-on-days")
         back()
         XCTAssertEqual(sentence, "Run 5 km on 3 days a week, anytime")
-        XCTAssertEqual(app.textFields["Each tap adds"].placeholderValue, "5", "Each time, so + adds the whole 5 km")
+        XCTAssertEqual(app.textFields["Each Tap Adds"].placeholderValue, "5", "Each time, so + adds the whole 5 km")
     }
 
     /// The Unit screen: your own unit and the usual groups; no time (Time it is its own type).

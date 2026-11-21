@@ -19,13 +19,13 @@ final class PersistenceUITests: XCTestCase {
         return app
     }
 
-    /// New Habit → Build or maintain → Check it off → "Stretch" → Add; returns its tick button.
+    /// New Habit → Build or Maintain → Check It Off → "Stretch" → Add; returns its tick button.
     private func addStretch(_ app: XCUIApplication) -> XCUIElement {
         XCTAssertTrue(app.staticTexts["No Habits Yet"].waitForExistence(timeout: 5), "A fresh database starts empty")
         app.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or Maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check It Off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
@@ -89,9 +89,9 @@ final class PersistenceUITests: XCTestCase {
         shot("01-empty")
 
         app.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or Maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check It Off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()

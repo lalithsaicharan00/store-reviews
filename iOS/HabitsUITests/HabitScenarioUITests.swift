@@ -57,14 +57,14 @@ final class HabitScenarioUITests: XCTestCase {
         sleep(1)
     }
 
-    private func newHabit(_ name: String, cutDown: Bool = false, type: String = "Check it off") {
+    private func newHabit(_ name: String, cutDown: Bool = false, type: String = "Check It Off") {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
         if cutDown {
-            row("Quit or cut down,").tap()
-            row("Cut down,").tap()
+            row("Quit or Cut Down,").tap()
+            row("Cut Down,").tap()
         } else {
-            row("Build or maintain,").tap()
+            row("Build or Maintain,").tap()
             row(type + ",").tap()
         }
         let field = app.descendants(matching: .any)["name-field"]
@@ -92,7 +92,7 @@ final class HabitScenarioUITests: XCTestCase {
     }
 
     private func openOften() {
-        row("How often").tap()
+        row("How Often").tap()
         XCTAssertTrue(app.navigationBars["How Often"].waitForExistence(timeout: 3))
     }
 
@@ -121,7 +121,7 @@ final class HabitScenarioUITests: XCTestCase {
     }
 
     private func add(_ title: String = "New Habit") {
-        let title = app.navigationBars["Cut down"].exists ? "Cut down" : title
+        let title = app.navigationBars["Cut Down"].exists ? "Cut Down" : title
         let add = app.navigationBars[title].buttons["Add"]
         XCTAssertTrue(add.isEnabled, "Add is enabled")
         add.tap()
@@ -140,7 +140,7 @@ final class HabitScenarioUITests: XCTestCase {
     private func check(_ want: String, row oftenRow: String? = nil, today caption: String? = nil, due: Bool = true,
                        anytime: Bool = true, shotName: String) {
         XCTAssertEqual(sentence, want + (anytime ? ", anytime" : ""), "Form sentence")
-        if let oftenRow { XCTAssertTrue(row("How often, \(oftenRow)").exists, "How often row reads \"\(oftenRow)\"") }
+        if let oftenRow { XCTAssertTrue(row("How Often, \(oftenRow)").exists, "How often row reads \"\(oftenRow)\"") }
         shot(shotName + "-form")
         add()
         if let caption, due {
@@ -197,7 +197,7 @@ final class HabitScenarioUITests: XCTestCase {
         check("Stretch every day", row: "Every day", shotName: "s09-all-seven")
 
         // An amount on set days.
-        newHabit("Run", type: "Track an amount"); setAmount("5", unit: "km"); openOften(); chooseDays([2, 4, 6])
+        newHabit("Run", type: "Track an Amount"); setAmount("5", unit: "km"); openOften(); chooseDays([2, 4, 6])
         XCTAssertTrue(summary.localizedCaseInsensitiveContains("5 km every Monday, Wednesday and Friday"), summary)
         back()
         // Counted: the line is how far along today (one line per row; it's only on Today on its days).
@@ -240,7 +240,7 @@ final class HabitScenarioUITests: XCTestCase {
         back()
         check("Yoga 3 times a week", row: "3 times a week", today: "0/3 this week", shotName: "s17-3-times")
 
-        newHabit("Run", type: "Track an amount"); setAmount("5", unit: "km"); openOften(); scrollToTap(app.buttons["often-times"])
+        newHabit("Run", type: "Track an Amount"); setAmount("5", unit: "km"); openOften(); scrollToTap(app.buttons["often-times"])
         XCTAssertTrue(summary.localizedCaseInsensitiveContains("5 km on 3 days a week"), summary)
         shot("s18-amount-3-days-often")
         back()
@@ -252,11 +252,11 @@ final class HabitScenarioUITests: XCTestCase {
         back()
         check("Hike 12 times a year", shotName: "s19-12-a-year")
 
-        newHabit("Drink water", type: "Track an amount"); setAmount("2000", unit: "ml")
-        XCTAssertEqual(app.textFields["Each tap adds"].placeholderValue, "250")
+        newHabit("Drink water", type: "Track an Amount"); setAmount("2000", unit: "ml")
+        XCTAssertEqual(app.textFields["Each Tap Adds"].placeholderValue, "250")
         check("Drink water 2,000 ml a day", shotName: "s20-ml")
 
-        newHabit("Read", type: "Track an amount"); setAmount("12", unit: "books"); openOften(); scrollToTap(app.buttons["often-total-year"]); back()
+        newHabit("Read", type: "Track an Amount"); setAmount("12", unit: "books"); openOften(); scrollToTap(app.buttons["often-total-year"]); back()
         check("Read 12 books a year", row: "A year", shotName: "s21-books-year")
     }
 
@@ -271,7 +271,7 @@ final class HabitScenarioUITests: XCTestCase {
 
     /// The longest name (24) with the longest unit (12) and a long day list still reads as one sentence.
     func testLongest() {
-        newHabit("Evening wind-down routin", type: "Track an amount"); setAmount("12345.67")
+        newHabit("Evening wind-down routin", type: "Track an Amount"); setAmount("12345.67")
         openOften(); chooseDays([1, 4, 6, 7]); back()
         XCTAssertTrue(sentence.hasPrefix("Evening wind-down routin 12,345.67 every"), sentence)
         shot("s23-longest-form")
@@ -286,16 +286,16 @@ final class HabitScenarioUITests: XCTestCase {
     func testEachTypeStartsWithDefaults() {
         newHabit("Make bed")
         XCTAssertEqual(sentence, "Make bed every day, anytime")
-        XCTAssertFalse(row("How much").exists, "Check it off has no How much")
+        XCTAssertFalse(row("How Much").exists, "Check It Off has no How much")
         XCTAssertFalse(row("Steps").exists, "Steps only for a checklist")
-        XCTAssertFalse(app.textFields["Each tap adds"].exists)
+        XCTAssertFalse(app.textFields["Each Tap Adds"].exists)
         shot("r4-01-check-form")
         add()
 
-        newHabit("Walk", type: "Track an amount")
+        newHabit("Walk", type: "Track an Amount")
         XCTAssertEqual(sentence, "Walk every day, anytime", "Amounts start empty, left out of the sentence")
         XCTAssertFalse(app.navigationBars["New Habit"].buttons["Add"].isEnabled, "Needs an amount")
-        row("How much").tap()
+        row("How Much").tap()
         XCTAssertEqual(app.textFields["much-number"].placeholderValue, "e.g. 10000 steps", "The name's suggestion is only a hint")
         app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
         shot("r4-02-amount-form")
@@ -303,10 +303,10 @@ final class HabitScenarioUITests: XCTestCase {
         XCTAssertEqual(sentence, "Walk 10,000 steps a day, anytime")
         add()
 
-        newHabit("Meditate", type: "Time it")
+        newHabit("Meditate", type: "Time It")
         XCTAssertEqual(sentence, "Meditate every day, anytime")
         XCTAssertTrue(row("How long, Set").exists)
-        XCTAssertFalse(app.textFields["Each tap adds"].exists, "Time has ▶, not +")
+        XCTAssertFalse(app.textFields["Each Tap Adds"].exists, "Time has ▶, not +")
         shot("r4-03-time-form")
     }
 

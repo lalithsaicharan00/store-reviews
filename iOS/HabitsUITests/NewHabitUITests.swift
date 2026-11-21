@@ -61,7 +61,7 @@ final class NewHabitUITests: XCTestCase {
     /// + → the first question → (the second) → the form.
     private func open(_ first: String, _ second: String? = nil, title: String) {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
         // Choice rows read "Title, detail…": match the title and its comma, so "Quit" can't match
         // the Quit or Cut Down header behind the sheet.
         row(first + ",").tap()
@@ -87,7 +87,7 @@ final class NewHabitUITests: XCTestCase {
 
     /// How much → An amount → the number (and a unit from the list) → back to the form.
     private func setAmount(_ amount: String, unit: String? = nil) {
-        row("How much").tap()
+        row("How Much").tap()
         XCTAssertTrue(app.navigationBars["How Much"].waitForExistence(timeout: 3))
         replace(app.textFields["much-number"], with: amount)
         if let unit {
@@ -119,7 +119,7 @@ final class NewHabitUITests: XCTestCase {
 
     /// How often → a choice by its identifier ("often-times", "often-weekdays", "often-total-week"…).
     private func openOften() {
-        row("How often").tap()
+        row("How Often").tap()
         XCTAssertTrue(app.navigationBars["How Often"].waitForExistence(timeout: 3))
     }
 
@@ -134,15 +134,15 @@ final class NewHabitUITests: XCTestCase {
     /// An amount: empty until typed ("—"), with the name's suggestion only as a hint; the text preview, the
     /// step line and Today agree. Reminders start off.
     func testAmountWithReminderRemoved() {
-        open("Build or maintain", "Track an amount", title: "New Habit")
+        open("Build or Maintain", "Track an Amount", title: "New Habit")
         XCTAssertEqual(sentence, "Enter a habit name to see the preview.")
         type(name: "Drink water")
         XCTAssertEqual(sentence, "Drink water every day, anytime", "The amount is left out until typed: no dash")
         XCTAssertFalse(addButton.isEnabled, "No amount yet: no Add")
-        XCTAssertTrue(row("How much, Set").exists)
+        XCTAssertTrue(row("How Much, Set").exists)
         setAmount("10", unit: "glasses")
         XCTAssertEqual(sentence, "Drink water 10 glasses a day, anytime")
-        XCTAssertTrue(app.textFields["Each tap adds"].exists, "The step is shown on the form")
+        XCTAssertTrue(app.textFields["Each Tap Adds"].exists, "The step is shown on the form")
         let stepLine = text(startingWith: "Each tap on + adds 1 glass")
         app.reveal(stepLine)
         XCTAssertTrue(stepLine.exists)
@@ -173,14 +173,14 @@ final class NewHabitUITests: XCTestCase {
 
     /// Just do it, 3 times a week: every ✓ counts; Today shows 0/3 this week.
     func testCheckOffThreeTimesAWeek() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Gym")
         openOften()
         app.buttons["often-times"].tap()
         XCTAssertEqual(app.descendants(matching: .any)["often-summary"].label, "Gym 3 times a week, anytime")
         shot("06-how-often-times")
         back()
-        XCTAssertTrue(row("How often, 3 times a week").exists)
+        XCTAssertTrue(row("How Often, 3 times a week").exists)
         XCTAssertEqual(sentence, "Gym 3 times a week, anytime")
         addButton.tap()
         allowNotificationsIfAsked()
@@ -192,14 +192,14 @@ final class NewHabitUITests: XCTestCase {
 
     /// The user's example: "my weekly goal is two chapters".
     func testReadTwoChaptersAWeek() {
-        open("Build or maintain", "Track an amount", title: "New Habit")
+        open("Build or Maintain", "Track an Amount", title: "New Habit")
         type(name: "Read")
         setAmount("2", unit: "chapters")
         openOften()
         app.buttons["often-total-week"].tap()
         XCTAssertEqual(app.descendants(matching: .any)["often-summary"].label, "Read 2 chapters a week, anytime")
         back()
-        XCTAssertTrue(row("How often, A week").exists)
+        XCTAssertTrue(row("How Often, A week").exists)
         XCTAssertEqual(sentence, "Read 2 chapters a week, anytime")
         shot("24-read-two-chapters-a-week")
         addButton.tap()
@@ -212,17 +212,17 @@ final class NewHabitUITests: XCTestCase {
 
     /// The user's example: "run 5 miles every day"; and 10,000 steps gets a step people can see (+1,000), not a number pad.
     func testRunFiveMilesAndWalkTenThousandSteps() {
-        open("Build or maintain", "Track an amount", title: "New Habit")
+        open("Build or Maintain", "Track an Amount", title: "New Habit")
         type(name: "Run")
         setAmount("5", unit: "miles")
         XCTAssertEqual(sentence, "Run 5 miles a day, anytime")
         addButton.tap()
         allowNotificationsIfAsked()
-        open("Build or maintain", "Track an amount", title: "New Habit")
+        open("Build or Maintain", "Track an Amount", title: "New Habit")
         type(name: "Walk far") // the demo data has its own "Walk"
         setAmount("10000", unit: "steps")
         XCTAssertEqual(sentence, "Walk far 10,000 steps a day, anytime")
-        XCTAssertEqual(app.textFields["Each tap adds"].placeholderValue, "1,000")
+        XCTAssertEqual(app.textFields["Each Tap Adds"].placeholderValue, "1,000")
         addButton.tap()
         let plus = app.buttons["Add 1,000 steps to Walk far"]
         revealOnToday(plus)
@@ -237,7 +237,7 @@ final class NewHabitUITests: XCTestCase {
         let full = cal.standaloneWeekdaySymbols, short = cal.shortStandaloneWeekdaySymbols
         let today = cal.component(.weekday, from: .now)
         let days = [today, today % 7 + 1, (today + 1) % 7 + 1] // today and the next two days
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Run")
         openOften()
         app.revealAndTap(app.buttons["often-weekdays"])
@@ -245,7 +245,7 @@ final class NewHabitUITests: XCTestCase {
         back()
         let words = "every \(full[days[0] - 1]) to \(full[days[2] - 1])"
         XCTAssertEqual(sentence, "Run " + words + ", anytime")
-        XCTAssertTrue(row("How often, E" + words.dropFirst()).exists)
+        XCTAssertTrue(row("How Often, E" + words.dropFirst()).exists)
         shot("26-days-range-form")
         addButton.tap()
         allowNotificationsIfAsked()
@@ -263,7 +263,7 @@ final class NewHabitUITests: XCTestCase {
         let other = (today + 2) % 7 + 1 // two days after today: not next to it, so no range
         let start = cal.firstWeekday // the app's week start follows the phone's until changed
         let first = [today, other].sorted { (($0 - start + 7) % 7) < (($1 - start + 7) % 7) }
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Gym")
         openOften()
         app.revealAndTap(app.buttons["often-weekdays"])
@@ -274,21 +274,21 @@ final class NewHabitUITests: XCTestCase {
 
     /// Steps: done when every step is ticked; the How much row steps aside while there are steps.
     func testChecklist() {
-        open("Build or maintain", "Checklist", title: "New Habit")
+        open("Build or Maintain", "Checklist", title: "New Habit")
         type(name: "Clean kitchen")
         let steps = row("Steps")
         scrollTo(steps)
         steps.tap()
-        XCTAssertFalse(app.textFields["e.g. Dishes"].exists, "No empty step until Add Step")
+        XCTAssertFalse(app.textFields["step-field"].exists, "No empty step until Add Step")
         app.buttons["Add Step"].tap()
-        let item = app.textFields["e.g. Dishes"].firstMatch
+        let item = app.textFields.matching(identifier: "step-field").element(boundBy: 0)
         XCTAssertTrue(item.waitForExistence(timeout: 2))
         item.typeText("Dishes\n")
-        app.textFields["Next step"].firstMatch.typeText("Floor")
+        app.textFields.matching(identifier: "step-field").element(boundBy: 1).typeText("Floor")
         shot("07-checklist")
         back()
         XCTAssertTrue(row("Steps, 2 steps").exists)
-        XCTAssertFalse(row("How much").exists, "A checklist has Steps, not How much")
+        XCTAssertFalse(row("How Much").exists, "A checklist has Steps, not How much")
         XCTAssertEqual(sentence, "Clean kitchen every day, anytime")
         addButton.tap()
         allowNotificationsIfAsked()
@@ -312,7 +312,7 @@ final class NewHabitUITests: XCTestCase {
 
     /// Cut down: a maximum, and it can be a weekly total. The sentence says it.
     func testLimitCanBeAWeeklyTotal() {
-        open("Quit or cut down", "Cut down", title: "Cut down")
+        open("Quit or Cut Down", "Cut Down", title: "New Habit")
         type(name: "Cigarettes")
         row("Limit").tap()
         // The limit's number shows what's typed (the field isn't sized to its placeholder).
@@ -328,16 +328,16 @@ final class NewHabitUITests: XCTestCase {
         back()
         XCTAssertEqual(sentence, "Cigarettes: at most 20 a week")
         // No time of day: a limit is logged only when it happens and shows under Quit or Cut Down (5 Oct 2026).
-        XCTAssertFalse(app.staticTexts["Time of Day"].exists, "Cut down has no Time of Day")
+        XCTAssertFalse(app.staticTexts["Routine"].exists, "Cut down has no Routine")
         XCTAssertTrue(app.descendants(matching: .any)["limit-place-note"].exists)
-        XCTAssertTrue(app.navigationBars["Cut down"].buttons["Add"].isEnabled)
+        XCTAssertTrue(app.navigationBars["Cut Down"].buttons["Add"].isEnabled)
     }
 
     /// Cut down in time (4 Oct 2026, report "Time Limits — Should Cut Down Allow Time?"): "Social media: at most 30 min
     /// a day" is made from the Limit's units, times with ▶ on Today, and stays editable, its unit kept in minutes so its
     /// past days keep their meaning (D6).
     func testLimitCanBeTimeAndStaysEditable() {
-        open("Quit or cut down", "Cut down", title: "Cut down")
+        open("Quit or Cut Down", "Cut Down", title: "New Habit")
         type(name: "Social media")
         row("Limit").tap()
         replace(app.textFields["much-number"], with: "30")
@@ -348,7 +348,7 @@ final class NewHabitUITests: XCTestCase {
         minutes.tap()
         back()
         XCTAssertTrue(sentence.localizedCaseInsensitiveContains("at most 30 min a day"), sentence)
-        app.navigationBars["Cut down"].buttons["Add"].tap()
+        app.navigationBars["Cut Down"].buttons["Add"].tap()
         let play = app.buttons["Start Social media timer"]
         revealOnToday(play)
         XCTAssertTrue(play.exists, "A time limit times with ▶")
@@ -376,19 +376,19 @@ final class NewHabitUITests: XCTestCase {
 
     /// Two parts of the day: the same row in each, with one shared progress (spec §5).
     func testCheckOffInTwoTimesOfDay() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Brush teeth")
         openOften()
         app.buttons["often-timesADay"].tap()
         back()
         XCTAssertEqual(sentence, "Brush teeth twice a day, anytime")
-        row("Time of Day").tap()
-        XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
+        row("Routine").tap()
+        XCTAssertTrue(app.navigationBars["Routine"].waitForExistence(timeout: 3))
         app.buttons["Morning"].firstMatch.tap()
         app.buttons["Evening"].firstMatch.tap()
         back()
-        XCTAssertTrue(row("Time of Day, Morning and Evening").exists)
-        XCTAssertTrue(row("How often, Twice a day").exists, "Picking parts leaves how often alone")
+        XCTAssertTrue(row("Routine, Morning and Evening").exists)
+        XCTAssertTrue(row("How Often, Twice a day").exists, "Picking parts leaves how often alone")
         // One reminder per part of the day, labelled with its part (the Starts date is a picker too, so count by name).
         openReminders()
         app.switches["Remind Me"].firstMatch.switches.firstMatch.tap()
@@ -425,10 +425,10 @@ final class NewHabitUITests: XCTestCase {
     /// Time of Day: Anytime by default; picking a part clears Anytime, Anytime clears the parts, and
     /// unticking the last part goes back to Anytime. Never "Anytime, Morning".
     func testAnytimeNeverCombines() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Stretch")
-        XCTAssertTrue(row("Time of Day, Anytime").exists, "Anytime is the default")
-        row("Time of Day").tap()
+        XCTAssertTrue(row("Routine, Anytime").exists, "Anytime is the default")
+        row("Routine").tap()
         let anytime = app.buttons["Anytime"].firstMatch, morning = app.buttons["Morning"].firstMatch, evening = app.buttons["Evening"].firstMatch
         XCTAssertTrue(anytime.isSelected)
         morning.tap()
@@ -441,11 +441,11 @@ final class NewHabitUITests: XCTestCase {
         XCTAssertTrue(anytime.isSelected, "Unticking the last part goes back to Anytime")
         shot("28-anytime-alone")
         back()
-        XCTAssertTrue(row("Time of Day, Anytime").exists)
+        XCTAssertTrue(row("Routine, Anytime").exists)
     }
 
     func testIconSheetClosesOnPick() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Walk the dog")
         app.buttons["Icon"].tap()
         XCTAssertTrue(app.navigationBars["Icon"].waitForExistence(timeout: 3))
@@ -458,7 +458,7 @@ final class NewHabitUITests: XCTestCase {
     }
 
     func testQuitDiscard() {
-        open("Quit or cut down", "Quit", title: "Quit")
+        open("Quit or Cut Down", "Quit", title: "New Habit")
         type(name: "Sugar")
         XCTAssertTrue(app.staticTexts["Started"].exists)
         XCTAssertFalse(app.switches["Remind Me"].exists, "Quit has no reminders")
@@ -472,9 +472,9 @@ final class NewHabitUITests: XCTestCase {
 
     /// Your own unit: the green ⊕ row opens a field; the typed unit is used.
     func testCustomUnit() {
-        open("Build or maintain", "Track an amount", title: "New Habit")
+        open("Build or Maintain", "Track an Amount", title: "New Habit")
         type(name: "Pray")
-        row("How much").tap()
+        row("How Much").tap()
         replace(app.textFields["much-number"], with: "5")
         let done = app.toolbars.buttons["Done"].firstMatch
         if done.exists && done.isHittable { done.tap(); sleep(1) }
@@ -491,23 +491,22 @@ final class NewHabitUITests: XCTestCase {
 
     /// Time as the unit: hours and minutes, and ▶ on Today.
     func testTimeUnit() {
-        open("Build or maintain", "Time it", title: "New Habit")
+        open("Build or Maintain", "Time It", title: "New Habit")
         type(name: "Meditate")
         XCTAssertEqual(sentence, "Meditate every day, anytime", "The time is left out until set: no dash")
         row("How long").tap()
         XCTAssertFalse(app.buttons["much-unit"].exists, "Time it has no unit")
-        app.buttons["Type"].firstMatch.tap()
-        app.textFields["duration-minutes"].tap()
-        app.textFields["duration-minutes"].typeText(XCUIKeyboardKey.delete.rawValue + "10")
-        app.buttons["Scroll"].firstMatch.tap()
-        XCTAssertTrue(app.pickers.firstMatch.waitForExistence(timeout: 2), "Back to Scroll after typing (bug found 29 Sep)")
+        // One wheel and Quick picks (Figma 1103:3208, 21 Nov 2026): a pick turns the wheel.
+        app.buttons["10 min"].tap()
+        XCTAssertEqual(app.pickers["duration-wheel"].pickerWheels.element(boundBy: 1).value as? String, "10 minutes",
+                       "The pick turned the wheel")
         back()
         XCTAssertEqual(sentence, "Meditate 10 min a day, anytime")
-        XCTAssertFalse(app.textFields["Each tap adds"].exists, "Time has ▶, not +")
+        XCTAssertFalse(app.textFields["Each Tap Adds"].exists, "Time has ▶, not +")
     }
 
     func testDatesOfTheMonth() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Pay rent")
         openOften()
         app.revealAndTap(app.buttons["often-date"])
@@ -521,21 +520,21 @@ final class NewHabitUITests: XCTestCase {
 
     /// A new time of day from the form; on Today it's folded (not Now), with no ▶ until opened.
     func testNewTimeOfDayFromTheForm() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Pack lunch")
-        row("Time of Day").tap()
-        app.buttons["New Time of Day"].tap()
+        row("Routine").tap()
+        app.buttons["New Routine"].tap()
         let name = app.textFields["Name"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.typeText("Before work")
         shot("13-new-time-of-day")
         // "Add" now (3 Oct 2026); if its default times overlap another time of day, it asks before splitting it.
-        app.navigationBars["New Time of Day"].buttons["section-save"].tap()
+        app.navigationBars["New Routine"].buttons["section-save"].tap()
         let split = app.buttons["section-split-confirm"].firstMatch
         if split.waitForExistence(timeout: 2) { split.tap() }
         XCTAssertTrue(app.buttons["Before work"].waitForExistence(timeout: 3))
         back()
-        XCTAssertTrue(row("Time of Day, Before work").exists, "The new time of day is chosen")
+        XCTAssertTrue(row("Routine, Before work").exists, "The new time of day is chosen")
         addButton.tap()
         allowNotificationsIfAsked()
         let header = row("Before work")
@@ -556,7 +555,7 @@ final class NewHabitUITests: XCTestCase {
 
     /// Remind Me off hides the reminder rows and how to be reminded.
     func testRemindMeOffHidesTheRest() {
-        open("Build or maintain", "Check it off", title: "New Habit")
+        open("Build or Maintain", "Check It Off", title: "New Habit")
         type(name: "Stretch")
         scrollTo(row("Reminders"))
         XCTAssertTrue(row("Reminders, Off").exists, "Reminders start off")

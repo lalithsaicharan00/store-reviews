@@ -26,11 +26,11 @@ final class ScheduleUITests: XCTestCase {
     private func create(name: String = "Practice") {
         app.launch()
         app.navigationBars.buttons["New Habit"].tap()
-        row("Build or maintain,").tap()
-        row("Check it off,").tap()
+        row("Build or Maintain,").tap()
+        row("Check It Off,").tap()
         let field = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(field.waitForExistence(timeout: 3)); field.tap(); field.typeText(name + "\n")
-        row("How often").tap()
+        row("How Often").tap()
         XCTAssertTrue(app.navigationBars["How Often"].waitForExistence(timeout: 3))
     }
     private var summary: String { app.descendants(matching: .any)["often-summary"].label }
@@ -108,7 +108,7 @@ final class ScheduleUITests: XCTestCase {
         name.tap(); name.typeText("Replace filter\n")
         XCTAssertEqual(sentence, "Replace filter today")
         row("Repeat,").tap(); app.buttons["On a schedule"].firstMatch.tap()
-        row("How often").tap()
+        row("How Often").tap()
         XCTAssertFalse(app.buttons["often-timesADay"].exists, "No counts for a task")
         XCTAssertFalse(app.buttons["often-times"].exists, "No counts for a task")
         let after = app.buttons["often-afterDone"]
@@ -116,7 +116,7 @@ final class ScheduleUITests: XCTestCase {
         after.tap()
         XCTAssertEqual(summary, "Replace filter 1 week after it's done, anytime")
         shot("task-after-completion")
-        back(); XCTAssertTrue(row("How often, 1 week after it's done").exists)
+        back(); XCTAssertTrue(row("How Often, 1 week after it's done").exists)
     }
 
     func testLargeTextHowOften() {

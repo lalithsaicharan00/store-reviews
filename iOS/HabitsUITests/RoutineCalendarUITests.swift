@@ -226,8 +226,8 @@ final class RoutineCalendarUITests: XCTestCase {
         app.launchArguments = ["-uitest", "-empty"]
         app.launch()
         app.buttons["New Habit"].firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check it off'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or Maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Check It Off'")).firstMatch.tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()

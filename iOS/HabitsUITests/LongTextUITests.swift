@@ -40,7 +40,7 @@ final class LongTextUITests: XCTestCase {
     /// Every choice is on screen with no scrolling, on each question screen.
     func testChooserShowsEverything() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
         sleep(1) // let the sheet finish rising
         shot("01-chooser")
         let screen = app.windows.firstMatch.frame
@@ -51,15 +51,15 @@ final class LongTextUITests: XCTestCase {
                 XCTAssertLessThanOrEqual(row.frame.maxY, screen.maxY, "\(title) is visible without scrolling")
             }
         }
-        visible(["Build or maintain", "Quit or cut down", "Add a task"])
-        button(startingWith: "Build or maintain").tap()
-        XCTAssertTrue(app.navigationBars["Build or maintain"].waitForExistence(timeout: 3), "Build or maintain asks how to track it")
-        visible(["Check it off", "Track an amount", "Time it", "Checklist"])
+        visible(["Build or Maintain", "Quit or Cut Down", "Add a task"])
+        button(startingWith: "Build or Maintain").tap()
+        XCTAssertTrue(app.staticTexts["How Do You Want to Track It?"].waitForExistence(timeout: 3), "Build or Maintain asks how to track it")
+        visible(["Check It Off", "Track an Amount", "Time It", "Checklist"])
         shot("01b-build")
         app.navigationBars.buttons["BackButton"].firstMatch.tap()
-        button(startingWith: "Quit or cut down").tap()
-        XCTAssertTrue(app.navigationBars["Quit or cut down"].waitForExistence(timeout: 3))
-        visible(["Quit", "Cut down"])
+        button(startingWith: "Quit or Cut Down").tap()
+        XCTAssertTrue(app.staticTexts["Quit or Cut Down?"].waitForExistence(timeout: 3))
+        visible(["Quit", "Cut Down"])
     }
 
     func testTodayWithLongText() {
@@ -108,7 +108,7 @@ final class LongTextUITests: XCTestCase {
         let options = app.buttons["arrange-edit-Before breakfast"]
         app.reveal(options)
         options.tap()
-        XCTAssertTrue(app.navigationBars["Edit Time of Day"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.navigationBars["Edit Routine"].waitForExistence(timeout: 3))
         shot("07-section-editor")
         let field = app.textFields["section-name-field"]
         field.tap()
@@ -121,8 +121,8 @@ final class LongTextUITests: XCTestCase {
 
     func testFormWithLongText() {
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
-        button(startingWith: "Build or maintain").tap()
-        button(startingWith: "Track an amount").tap()
+        button(startingWith: "Build or Maintain").tap()
+        button(startingWith: "Track an Amount").tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 3))
         name.tap()
@@ -154,8 +154,8 @@ final class LongTextUITests: XCTestCase {
         app.navigationBars.buttons["BackButton"].firstMatch.tap(); sleep(1)
 
         // Time of Day: the long-named lunch section.
-        app.revealAndTap(button(startingWith: "Time of Day"))
-        XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
+        app.revealAndTap(button(startingWith: "Routine"))
+        XCTAssertTrue(app.navigationBars["Routine"].waitForExistence(timeout: 3))
         // The Time of Day row itself (the Today header behind the sheet also starts "Lunch break").
         let lunch = app.buttons["Lunch break walk"].firstMatch
         XCTAssertTrue(lunch.waitForExistence(timeout: 2))

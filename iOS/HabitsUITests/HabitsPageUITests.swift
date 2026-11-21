@@ -97,8 +97,8 @@ final class HabitsPageUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["No Results for “yoga”"].exists)
         shot("search-02-no-match")
         add.tap()
-        app.staticTexts["Build or maintain"].tap()
-        app.staticTexts["Check it off"].tap()
+        app.staticTexts["Build or Maintain"].tap()
+        app.staticTexts["Check It Off"].tap()
         XCTAssertTrue(app.textFields["yoga"].waitForExistence(timeout: 5) || app.staticTexts["yoga"].waitForExistence(timeout: 1),
                       "The name is filled in")
     }

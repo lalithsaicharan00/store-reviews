@@ -825,10 +825,10 @@ final class AppLockUITests: XCTestCase {
         let new = app.navigationBars.buttons["New Habit"].firstMatch
         XCTAssertTrue(new.waitForExistence(timeout: 10), labels(app))
         new.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 3))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 3))
         func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
-        row("Build or maintain,").tap()
-        row("Check it off,").tap()
+        row("Build or Maintain,").tap()
+        row("Check It Off,").tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 5), labels(app))
         name.tap(); name.typeText("Half typed")
@@ -885,7 +885,7 @@ final class AppLockUITests: XCTestCase {
         let new = app.navigationBars.buttons["New Habit"].firstMatch
         XCTAssertTrue(new.waitForExistence(timeout: 10), labels(app)); new.tap()
         func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
-        row("Build or maintain,").tap(); row("Check it off,").tap()
+        row("Build or Maintain,").tap(); row("Check It Off,").tap()
         let name = app.descendants(matching: .any)["name-field"]
         XCTAssertTrue(name.waitForExistence(timeout: 5)); name.tap(); name.typeText("Private habit\n")
         let reminders = app.descendants(matching: .any)["reminders-row"]

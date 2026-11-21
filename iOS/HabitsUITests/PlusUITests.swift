@@ -55,12 +55,12 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.navigationBars["Plus"].waitForExistence(timeout: 5), labels(app))
     }
 
-    /// New → Build or maintain, at 5 of 5: the 6th-habit sheet, straight away.
+    /// New → Build or Maintain, at 5 of 5: the 6th-habit sheet, straight away.
     private func openSixthHabitSheet(_ app: XCUIApplication) {
         app.buttons["New Habit"].firstMatch.tap()
-        XCTAssertTrue(app.navigationBars["New"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["What Do You Want to Do?"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.staticTexts["5 of 5 free habits used. Tasks are always free."].exists, labels(app))
-        button(startingWith: "Build or maintain", app).tap()
+        button(startingWith: "Build or Maintain", app).tap()
         XCTAssertTrue(app.staticTexts["Add a 6th habit"].waitForExistence(timeout: 5), labels(app))
     }
 
@@ -90,7 +90,7 @@ final class PlusUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["Your habits stay on your iPhone and in your own iCloud. We never see them."].exists)
         shot(app, "plus-07-plus-is-yours")
         app.buttons["plus-done"].tap()
-        let check = button(startingWith: "Check it off", app)
+        let check = button(startingWith: "Check It Off", app)
         XCTAssertTrue(check.waitForExistence(timeout: 5), "Back to the habit being added: \(labels(app))")
         check.tap()
         let name = app.descendants(matching: .any)["name-field"]
@@ -129,8 +129,8 @@ final class PlusUITests: XCTestCase {
         shot(app, "plus-06-delete-alert")
         alert.buttons["Cancel"].tap()
         app.buttons["make-room-archive-Read"].tap()
-        XCTAssertTrue(button(startingWith: "Check it off", app).waitForExistence(timeout: 8), "The new habit goes ahead: \(labels(app))")
-        XCTAssertTrue(app.navigationBars["Build or maintain"].exists, labels(app))
+        XCTAssertTrue(button(startingWith: "Check It Off", app).waitForExistence(timeout: 8), "The new habit goes ahead: \(labels(app))")
+        XCTAssertTrue(app.staticTexts["How Do You Want to Track It?"].exists, labels(app))
     }
 
     /// Screens 10 and 20: the Plus page with Plus chosen; Restore with nothing bought says so, with Contact Us.

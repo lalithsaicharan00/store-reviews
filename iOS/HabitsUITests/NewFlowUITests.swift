@@ -47,18 +47,18 @@ final class NewFlowUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
         shot("f01-what-to-create")
 
-        // Build or maintain asks how to track it, then the form (the user kept this step, 29 Sep).
-        row("Build or maintain").tap()
+        // Build or Maintain asks how to track it, then the form (the user kept this step, 29 Sep).
+        row("Build or Maintain").tap()
         XCTAssertTrue(app.staticTexts["How do you want to track it?"].waitForExistence(timeout: 3))
         shot("f02-how-to-track")
-        row("Check it off,").tap()
+        row("Check It Off,").tap()
         XCTAssertTrue(app.navigationBars["New Habit"].waitForExistence(timeout: 3))
         let field = app.descendants(matching: .any)["name-field"]
         field.tap(); field.typeText("Brush teeth\n")
         shot("f03-check-form")
         let form = app.collectionViews["habit-form"]
         // How often: 4 times a day.
-        row("How often").tap()
+        row("How Often").tap()
         XCTAssertTrue(app.navigationBars["How Often"].waitForExistence(timeout: 3))
         app.buttons["often-timesADay"].tap()
         app.buttons["often-per-day-Increment"].tap(); app.buttons["often-per-day-Increment"].tap()
@@ -66,14 +66,14 @@ final class NewFlowUITests: XCTestCase {
         back()
         XCTAssertEqual(app.descendants(matching: .any)["habit-sentence"].label, "Brush teeth 4 times a day, anytime")
         // Time of Day: Morning and Afternoon. The goal must stay 4.
-        row("Time of Day").tap()
-        XCTAssertTrue(app.navigationBars["Time of Day"].waitForExistence(timeout: 3))
+        row("Routine").tap()
+        XCTAssertTrue(app.navigationBars["Routine"].waitForExistence(timeout: 3))
         app.buttons["Morning"].firstMatch.tap()
         app.buttons["Afternoon"].firstMatch.tap()
         shot("f05-time-of-day-screen")
         back()
-        XCTAssertTrue(row("Time of Day, Morning and Afternoon").waitForExistence(timeout: 3))
-        XCTAssertTrue(row("How often, 4 times a day").exists, "Picking parts of the day leaves how often alone")
+        XCTAssertTrue(row("Routine, Morning and Afternoon").waitForExistence(timeout: 3))
+        XCTAssertTrue(row("How Often, 4 times a day").exists, "Picking parts of the day leaves how often alone")
         // Colour pops up.
         app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Colour'")).firstMatch.tap()
         XCTAssertTrue(app.navigationBars["Colour"].waitForExistence(timeout: 3))
@@ -93,12 +93,12 @@ final class NewFlowUITests: XCTestCase {
         // Reminders start off; on shows the rows, off hides them again.
         let remind = app.switches["Remind Me"].firstMatch
         remind.switches.firstMatch.tap()
-        XCTAssertTrue(app.buttons["Add Another Reminder"].waitForExistence(timeout: 2), "On shows the reminders")
+        XCTAssertTrue(app.buttons["Add a Time"].waitForExistence(timeout: 2), "On shows the reminders")
         remind.switches.firstMatch.tap()
-        XCTAssertFalse(app.buttons["Add Another Reminder"].waitForExistence(timeout: 1), "Reminders hide when the switch is off")
+        XCTAssertFalse(app.buttons["Add a Time"].waitForExistence(timeout: 1), "Reminders hide when the switch is off")
         shot("f06c-reminders-off-light")
         remind.switches.firstMatch.tap()
-        XCTAssertTrue(app.buttons["Add Another Reminder"].waitForExistence(timeout: 2), "Switching it back on shows the reminders again")
+        XCTAssertTrue(app.buttons["Add a Time"].waitForExistence(timeout: 2), "Switching it back on shows the reminders again")
         back()
         XCUIDevice.shared.appearance = .dark
         app.navigationBars["New Habit"].buttons["Add"].tap()
@@ -107,12 +107,12 @@ final class NewFlowUITests: XCTestCase {
 
         app.navigationBars.buttons["New Habit"].firstMatch.tap()
 
-        row("Quit or cut down").tap()
+        row("Quit or Cut Down").tap()
         XCTAssertTrue(app.staticTexts["What do you want to do?"].waitForExistence(timeout: 3))
         shot("f10-bad-habit")
-        row("Cut down").tap()
-        XCTAssertTrue(app.navigationBars["Cut down"].waitForExistence(timeout: 3))
-        for _ in 0..<3 where !app.navigationBars["New"].exists { back() }
+        row("Cut Down").tap()
+        XCTAssertTrue(app.navigationBars["Cut Down"].waitForExistence(timeout: 3))
+        for _ in 0..<3 where !app.staticTexts["What Do You Want to Do?"].exists { back() }
 
         row("Add a task").tap()
         XCTAssertTrue(app.navigationBars["Task"].waitForExistence(timeout: 3))

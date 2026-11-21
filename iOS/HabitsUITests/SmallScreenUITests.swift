@@ -317,7 +317,7 @@ final class SmallScreenUITests: XCTestCase {
         let new = app.navigationBars.buttons["New Habit"].firstMatch
         XCTAssertTrue(new.waitForExistence(timeout: 10)); new.tap()
         func row(_ prefix: String) -> XCUIElement { app.buttons.matching(NSPredicate(format: "label BEGINSWITH %@", prefix)).firstMatch }
-        row("Build or maintain,").tap(); row("Check it off,").tap()
+        row("Build or Maintain,").tap(); row("Check It Off,").tap()
         // A name first, as people fill the form; then the form itself scrolls to Reminders (drags that began on the
         // name field focused it and pulled the sheet down: runs 37881272574, 37883783862).
         let name = app.descendants(matching: .any)["name-field"]
@@ -359,12 +359,12 @@ final class SmallScreenUITests: XCTestCase {
             }
         }
         new.tap()
-        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or maintain'")).firstMatch.tap()
+        app.buttons.matching(NSPredicate(format: "label BEGINSWITH 'Build or Maintain'")).firstMatch.tap()
         fits(["plan-plus", "plus-buy", "plus-make-room"], "The 6th-habit sheet")
         shot("se-plus-sixth-habit")
         app.buttons["plus-close"].tap()
         XCTAssertTrue(app.buttons["plus-close"].waitForNonExistence(timeout: 5))
-        app.navigationBars["New"].buttons["Cancel"].tap()
+        app.buttons["Close"].tap()
         app.buttons["menu-button"].tap()
         let row = app.buttons["menu-plus"]
         if !row.waitForExistence(timeout: 3) || !row.isHittable { app.buttons["menu-today"].swipeUp() }
