@@ -708,7 +708,8 @@ struct HabitForm: View {
                 if type != .quit { syncReminders(force: true) }
             }
             notificationsDenied = await scheduler.isDenied()
-            alarmsDenied = scheduler.alarmsDenied()
+            // Said only for a habit set to An alarm (or one just tried): otherwise there is nothing to explain.
+            alarmsDenied = alert == .alarm && scheduler.alarmsDenied()
         }
     }
 
@@ -1149,6 +1150,13 @@ struct HabitForm: View {
     /// "A notification" or "An alarm": the value under Remind Me With.
     private var alertValue: String { alert == .alarm ? "An alarm" : "A notification" }
 
+    /// "Alarms are off for Often Enough, so Meds’ reminder comes as a notification."
+    private var alarmsOffLine: String {
+        let trimmed = name.trimmingCharacters(in: .whitespaces)
+        let whose = trimmed.isEmpty ? "this habit’s" : trimmed.hasSuffix("s") ? "\(trimmed)’" : "\(trimmed)’s"
+        return "Alarms are off for Often Enough, so \(whose) reminder comes as a notification."
+    }
+
     /// "Never", "Every 15 min": the value under If Not Done, Remind Again.
     private var followUpValue: String {
         switch followUp {
@@ -1232,6 +1240,14 @@ struct HabitForm: View {
                         }
                         .onChange(of: alert) {
                             guard alert == .alarm else { return }
+                            // Refused once, iOS never asks again: An alarm opens Often Enough's page in Settings, where
+                            // Alarms is (Notifications and Alarms §7, U40), and the reminder stays a notification.
+                            if scheduler.alarmsDenied() {
+                                alarmsDenied = true
+                                alert = .notification
+                                if let url = URL(string: UIApplication.openSettingsURLString) { UIApplication.shared.open(url) }
+                                return
+                            }
                             Task {
                                 let allowed = await scheduler.requestAlarmPermission()
                                 alarmsDenied = !allowed
@@ -1253,7 +1269,11 @@ struct HabitForm: View {
                 } header: {
                     Text("How")
                 } footer: {
-                    if type != .cutBack { Text("Not sent on a day it’s already done.") }
+                    VStack(alignment: .leading, spacing: 8) {
+                        // Alarms refused: the reminder comes as a notification, and the page says so (Figma, flow 278).
+                        if alarmsDenied && ReminderScheduler.alarmsAvailable { Text(alarmsOffLine) }
+                        if type != .cutBack { Text("Not sent on a day it’s already done.") }
+                    }
                 }
                 // The person's own words for these reminders (Privacy & Security spec §3.7), under the times.
                 Section {

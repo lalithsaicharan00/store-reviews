@@ -66,8 +66,9 @@ final class AlarmScheduler {
             records[id] = AlarmReminderRecord(alert)
             AlarmReminderRecord.save(records)
             do {
-                try await Self.schedule(id: id, title: AlarmReminderRecord.title(alert), action: Self.actionLabel(alert.habit),
-                                        tint: alert.habit.color.color, fire: alert.fire, target: alert.target)
+                // The tint is the habit's light shade, which reads on the alarm's black (Notifications and Alarms §5).
+                try await Self.schedule(id: id, title: AlarmReminderRecord.title(alert), action: Self.action(alert.habit),
+                                        tint: alert.habit.color.gradientTop, fire: alert.fire, target: alert.target)
             } catch AlarmManager.AlarmError.maximumLimitReached {
                 records.removeValue(forKey: id)
                 break
@@ -90,19 +91,37 @@ final class AlarmScheduler {
         })
     }
 
-    static func actionLabel(_ habit: Habit) -> String? {
+    /// The alarm's second button, beside the system's Stop (Notifications and Alarms §6): Done, "+1 glass", or Open and
+    /// Start for what needs the app. A limit or a quit habit has none (nothing invites more).
+    nonisolated struct Action: Sendable, Equatable {
+        let word: String
+        let symbol: String
+        /// Opens the app (Open: the habit's Day details; Start: its timer, started).
+        let opens: Bool
+        var starts: Bool { opens && symbol == "play.fill" }
+    }
+
+    static func action(_ habit: Habit) -> Action? {
+        if habit.atMost { return nil }
         switch habit.kind {
-        case .check, .task: return "Done"
+        case .check, .task: return Action(word: "Done", symbol: "checkmark", opens: false)
         // Names hidden outside the app: "+1", without the unit (Current Work 58).
-        case .amount(let unit, _): return habit.quickIncrement.map { "+" + (HideNames.isOn ? Format.amount($0) : HabitCopy.amount($0, unit)) }
-        default: return nil // timers and checklists require the app; no misleading Done button
+        case .amount(let unit, _):
+            guard let step = habit.quickIncrement else { return Action(word: "Open", symbol: "arrow.up.forward.app", opens: true) }
+            return Action(word: "+" + (HideNames.isOn ? Format.amount(step) : HabitCopy.amount(step, unit)), symbol: "plus", opens: false)
+        case .duration: return Action(word: "Start", symbol: "play.fill", opens: true)
+        case .checklist: return Action(word: "Open", symbol: "arrow.up.forward.app", opens: true)
+        case .quit: return nil
         }
     }
 
-    /// One fixed-date alarm: the habit's name, Stop, and Done (which marks the row done; Stop doesn't).
-    nonisolated private static func schedule(id: UUID, title: String, action: String?, tint: Color, fire: Date, target: ReminderTarget) async throws {
+    static func actionLabel(_ habit: Habit) -> String? { action(habit)?.word }
+
+    /// One fixed-date alarm: the habit's name, the system's Stop, and our second button, which stops the alarm itself
+    /// and then does its job (Stop never marks anything done). Its word is black: white doesn't read on the light tint.
+    nonisolated private static func schedule(id: UUID, title: String, action: Action?, tint: Color, fire: Date, target: ReminderTarget) async throws {
         let name = LocalizedStringResource(stringLiteral: title)
-        let done = action.map { AlarmButton(text: LocalizedStringResource(stringLiteral: $0), textColor: .white, systemImageName: "checkmark") }
+        let done = action.map { AlarmButton(text: LocalizedStringResource(stringLiteral: $0.word), textColor: .black, systemImageName: $0.symbol) }
         let alert: AlarmPresentation.Alert
         if let done, #available(iOS 26.1, *) {
             alert = AlarmPresentation.Alert(title: name, secondaryButton: done, secondaryButtonBehavior: .custom)
@@ -116,8 +135,13 @@ final class AlarmScheduler {
         }
         let attributes = AlarmAttributes<HabitAlarmData>(presentation: AlarmPresentation(alert: alert),
                                                          metadata: HabitAlarmData(habit: target.habit.uuidString), tintColor: tint)
+        let intent: (any LiveActivityIntent)? = switch action {
+        case .none: nil
+        case .some(let action) where action.opens: OpenHabitFromAlarmIntent(target: target, alarm: id, start: action.starts)
+        case .some: MarkHabitDoneIntent(target: target, alarm: id)
+        }
         let configuration = AlarmManager.AlarmConfiguration<HabitAlarmData>.alarm(
-            schedule: .fixed(fire), attributes: attributes, secondaryIntent: MarkHabitDoneIntent(target: target))
+            schedule: .fixed(fire), attributes: attributes, secondaryIntent: intent)
         _ = try await AlarmManager.shared.schedule(id: id, configuration: configuration)
     }
 
@@ -147,23 +171,63 @@ struct MarkHabitDoneIntent: LiveActivityIntent {
     @Parameter(title: "Section") var slot: String?
     @Parameter(title: "Configuration") var signature: String?
     @Parameter(title: "Event") var event: String?
+    @Parameter(title: "Alarm") var alarm: String?
 
     nonisolated init() {}
 
-    nonisolated init(target: ReminderTarget) {
+    nonisolated init(target: ReminderTarget, alarm: UUID? = nil) {
         habit = target.habit.uuidString
         time = target.time?.uuidString
         day = target.day.key
         slot = target.slot
         signature = target.signature; event = target.event
+        self.alarm = alarm?.uuidString
     }
 
     func perform() async throws -> some IntentResult {
         #if DEBUG
         WidgetTiming.mark("alarm done: intent ran")
         #endif
+        // A custom second button doesn't stop the alarm by itself: it rang on (Notifications and Alarms §5).
+        stopAlarm(alarm)
         if let id = UUID(uuidString: habit), let day = LocalDay(key: day) {
             await AppModel.shared.logFromReminder(ReminderTarget(habit: id, time: time.flatMap(UUID.init(uuidString:)), day: day, slot: slot, section: nil, signature: signature, event: event))
+        }
+        return .result()
+    }
+}
+
+/// Stops the ringing alarm a second button belongs to.
+nonisolated private func stopAlarm(_ alarm: String?) {
+    guard #available(iOS 26, *), let id = alarm.flatMap(UUID.init(uuidString:)) else { return }
+    try? AlarmManager.shared.stop(id: id)
+}
+
+/// The alarm's Open or Start: stops the alarm, then the app opens on the habit's Day details, or on its timer, started.
+struct OpenHabitFromAlarmIntent: LiveActivityIntent {
+    static let title: LocalizedStringResource = "Open Habit"
+    static let isDiscoverable = false
+    static let openAppWhenRun = true
+
+    @Parameter(title: "Habit") var habit: String
+    @Parameter(title: "Day") var day: String
+    @Parameter(title: "Alarm") var alarm: String?
+    @Parameter(title: "Start") var start: Bool
+
+    nonisolated init() {}
+
+    nonisolated init(target: ReminderTarget, alarm: UUID, start: Bool) {
+        habit = target.habit.uuidString
+        day = target.day.key
+        self.alarm = alarm.uuidString
+        self.start = start
+    }
+
+    func perform() async throws -> some IntentResult {
+        stopAlarm(alarm)
+        if let id = UUID(uuidString: habit), let day = LocalDay(key: day) {
+            let target = ReminderTarget(habit: id, time: nil, day: day, slot: nil, section: nil)
+            if start { await AppModel.shared.startTimer(from: target) } else { await AppModel.shared.open(target, section: nil) }
         }
         return .result()
     }

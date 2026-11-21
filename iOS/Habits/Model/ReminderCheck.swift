@@ -56,6 +56,32 @@ enum ReminderFixture {
     }
 }
 
+/// `-ring-soon <check|amount|typed|duration|checklist> [-ring-alarm]` with `-dbname <own>`: one habit of that kind whose
+/// reminder comes in a minute or two, as a notification or an alarm, on its own database (D8), to look at what iOS shows.
+enum RingSoonFixture {
+    static func install(in store: HabitStore, scheduler: ReminderScheduler) async {
+        let arguments = ProcessInfo.processInfo.arguments
+        guard let flag = arguments.firstIndex(of: "-ring-soon"), arguments.indices.contains(flag + 1) else { return }
+        let alarm = arguments.contains("-ring-alarm")
+        if alarm { _ = await scheduler.requestAlarmPermission() } else { _ = await scheduler.requestPermission() }
+        guard store.habits.isEmpty else { await scheduler.reconcile(store); return } // with -empty: once per database
+        let soon = Calendar.current.dateComponents([.hour, .minute], from: Date.now.addingTimeInterval(70))
+        let time = ReminderTime(hour: soon.hour ?? 9, minute: soon.minute ?? 0)
+        let (name, kind, goal): (String, HabitKind, Double) = switch arguments[flag + 1] {
+        case "amount": ("Water", .amount(unit: "glasses", increment: 1), 8)
+        case "typed": ("Walk", .amount(unit: "steps", increment: 0), 8000)
+        case "duration": ("Stretch", .duration, 10)
+        case "checklist": ("Skincare", .checklist, 1)
+        default: ("Meds", .check, 1)
+        }
+        var habit = Habit(name: name, symbol: "pills.fill", color: .purple, kind: kind, goal: goal,
+                          reminders: [time], remind: true, startsOn: store.today().adding(days: -1))
+        habit.alert = alarm ? .alarm : .notification
+        store.add(habit); await store.flush()
+        await scheduler.reconcile(store)
+    }
+}
+
 enum ReminderCheck {
     static var planningSummary = ""
     static func run() async -> [String] {
@@ -116,13 +142,14 @@ enum ReminderCheck {
         expect(scheduler.plan(store, now: now).allSatisfy { utc.component(.weekday, from: $0.fire) == utc.component(.weekday, from: day.date(calendar: utc)) }, "selected weekdays only")
         habit.frequency = .daily; store.update(habit); await store.flush()
 
-        // Same-minute grouping, limits and independent amount actions.
+        // Same-minute reminders each keep their own (Figma, flow 266), limits and independent amount actions.
         var amount = Habit(name: "Water", symbol: "drop", color: .blue, kind: .amount(unit: "L", increment: 0.25), goal: 2,
                            reminders: [ReminderTime(hour: 9, minute: 0)], remind: true, startsOn: day.adding(days: -2))
         store.add(amount); await store.flush()
         var requests = scheduler.requests(for: scheduler.plan(store, now: now), store: store)
-        expect(requests.count == 30 && requests.allSatisfy { $0.identifier.contains("group") }, "same-minute habits use one notification per day")
-        expect(requests.allSatisfy { $0.content.categoryIdentifier == "habit.group" }, "grouped alerts have no ambiguous Done action")
+        expect(requests.count == 60 && !requests.contains { $0.identifier.contains("group") }, "same-minute habits each keep their own notification")
+        expect(requests.contains { $0.content.categoryIdentifier == "habit.add." + amount.id.uuidString }
+               && requests.contains { $0.content.categoryIdentifier == "habit.single" }, "each same-minute reminder keeps its own action")
         let groupedPlan = scheduler.plan(store, now: now)
         expect(scheduler.requests(for: groupedPlan, store: store, limit: 2).map(\.identifier) == Array(requests.prefix(2)).map(\.identifier), "capacity keeps the earliest grouped requests")
         expect(scheduler.requests(for: groupedPlan, store: store, limit: 0).isEmpty, "zero capacity constructs no requests")
@@ -159,7 +186,8 @@ enum ReminderCheck {
             store.add(item); await store.flush()
             let itemPlan = scheduler.plan(store, now: now).filter { $0.habit.id == item.id }
             if kind == .quit { expect(itemPlan.isEmpty, "quit habits do not alert") }
-            else { expect(scheduler.requests(for: itemPlan, store: store).allSatisfy { $0.content.categoryIdentifier.isEmpty }, "duration/checklist open the app instead of a fake Done") }
+            else if kind == .duration { expect(scheduler.requests(for: itemPlan, store: store).allSatisfy { $0.content.categoryIdentifier == "habit.timer" }, "a time habit offers Start Timer and Log Minutes") }
+            else { expect(scheduler.requests(for: itemPlan, store: store).allSatisfy { $0.content.categoryIdentifier.isEmpty }, "a checklist opens the app instead of a fake Done") }
         }
 
         // Permission recovery, unrelated pending notifications, errors and alarm routing.
@@ -201,14 +229,15 @@ enum ReminderCheck {
         alarms.isAuthorized = true; await scheduler.reconcile(store, now: now)
         expect(!alarms.latest.isEmpty && !notes.requests.values.contains { ($0.content.userInfo["habit"] as? String) == habit.id.uuidString }, "authorized alarms avoid duplicate notifications")
         alarms.fail = true; await scheduler.reconcile(store, now: now)
-        expect(notes.requests.values.contains { ($0.content.userInfo["habit"] as? String) == habit.id.uuidString } || notes.requests.keys.contains { $0.contains("group") }, "failed alarms fall back to notifications")
+        expect(notes.requests.values.contains { ($0.content.userInfo["habit"] as? String) == habit.id.uuidString }, "failed alarms fall back to notifications")
         alarms.fail = false; alarms.budget = 1; await scheduler.reconcile(store, now: now)
         expect(scheduler.problem != nil, "alarm capacity fallback is disclosed")
 
         if #available(iOS 26, *) {
             expect(AlarmScheduler.actionLabel(amount)?.contains("0.25") == true, "alarm amount action names increment")
-            expect(AlarmScheduler.actionLabel(Habit(name: "Timer", symbol: "timer", color: .blue, kind: .duration)) == nil, "alarm timer has Stop without a misleading Done")
-            expect(AlarmScheduler.actionLabel(Habit(name: "Steps", symbol: "list.bullet", color: .blue, kind: .checklist)) == nil, "alarm checklist has no misleading Done")
+            expect(AlarmScheduler.action(Habit(name: "Timer", symbol: "timer", color: .blue, kind: .duration))?.starts == true, "alarm timer offers Start, which opens the app")
+            expect(AlarmScheduler.action(Habit(name: "Steps", symbol: "list.bullet", color: .blue, kind: .checklist))?.opens == true, "alarm checklist offers Open, not a misleading Done")
+            expect(AlarmScheduler.action(Habit(name: "Quit", symbol: "xmark", color: .blue, kind: .quit)) == nil, "alarm quit habit has Stop only")
         }
         if let alert = scheduler.plan(store, now: now).first(where: { $0.habit.id == alarmHabit.id }) {
             let record = AlarmReminderRecord(alert)
@@ -290,6 +319,29 @@ enum ReminderCheck {
         for _ in 0..<2 { store.logFromReminder(task, slot: nil, on: day, time: task.reminders[0].id, eventID: UUID(), now: now) }
         await store.flush()
         expect(store.entries.count == 1 && store.isDone(task, on: day), "Done retries never untick or duplicate a task")
+        // Log Steps and Log Minutes (Figma, flows 268–270): the number typed in the reply, once; no number, nothing.
+        let walk = Habit(name: "Walk", symbol: "figure.walk", color: .green, kind: .amount(unit: "steps", increment: 0), goal: 8000,
+                         reminders: [ReminderTime(hour: 9, minute: 0)], remind: true, startsOn: day.adding(days: -2))
+        let read = Habit(name: "Read", symbol: "book", color: .orange, kind: .duration, goal: 10,
+                         reminders: [ReminderTime(hour: 9, minute: 0)], remind: true, startsOn: day.adding(days: -2))
+        store.add(walk); store.add(read); await store.flush()
+        let typedEvent = UUID()
+        for _ in 0..<2 {
+            store.logFromReminder(walk, slot: nil, on: day, time: walk.reminders[0].id, eventID: typedEvent,
+                                  typed: ReminderScheduler.typedNumber("2,500 steps"), now: now)
+        }
+        store.logFromReminder(read, slot: nil, on: day, time: read.reminders[0].id, eventID: UUID(), typed: ReminderScheduler.typedNumber("15"), now: now)
+        store.logFromReminder(read, slot: nil, on: day, time: read.reminders[0].id, eventID: UUID(), typed: ReminderScheduler.typedNumber("soon"), now: now)
+        await store.flush()
+        expect(store.progress(of: walk, on: day) == 2500, "Log Steps saves the typed number once")
+        expect(store.progress(of: read, on: day) == 15, "Log Minutes saves the typed minutes; a reply with no number saves nothing")
+        expect(ReminderScheduler.typedNumber("0") == nil && ReminderScheduler.typedNumber("12.5") == 12.5, "typed numbers: zero ignored, decimals kept")
+        expect(ReminderScheduler.latestOfEach(["reminder.a.t.d", "reminder.a.t.d.f1", "reminder.a.t.d.f2", "reminder.b.t.d"])
+               == ["reminder.a.t.d.f2", "reminder.b.t.d"], "a follow-up replaces the reminder before it")
+        expect(ReminderScheduler.progressLine(walk, on: day, store: store) == "\(HabitCopy.number(2500)) of \(HabitCopy.amount(8000, "steps"))",
+               "a reminder says amounts in full (2,500 of 8,000 steps), never 8k")
+        expect(ReminderScheduler.progressLine(read, on: day, store: store) == "15 of 10 min", "a time habit's reminder says its minutes")
+        store.delete([walk, read]); await store.flush()
         let scheduler = ReminderScheduler(notifications: notes, alarms: FakeReminderAlarms())
         let content = UNMutableNotificationContent()
         content.userInfo = ReminderTarget(habit: task.id, time: task.reminders[0].id, day: day, slot: nil, section: nil).userInfo

@@ -2395,8 +2395,10 @@ final class HabitStore {
 
     /// A system action is an event. Its ID is saved before it appears in memory; replay checks
     /// include tombstones, so duplicate callbacks and retrying after undo are both harmless.
+    /// `typed`: a number typed in the reminder's reply field (Log Steps, Log Minutes), in the habit's unit (minutes for
+    /// a time habit); without one, the habit's one-tap step or tick.
     func logFromReminder(_ habit: Habit, slot: String?, on day: LocalDay, time: UUID? = nil,
-                         signature: String? = nil, eventID: UUID? = nil, now: Date = .now) {
+                         signature: String? = nil, eventID: UUID? = nil, typed: Double? = nil, now: Date = .now) {
         perform { [self] telemetry in
             let target = ReminderTarget(habit: habit.id, time: time, day: day, slot: slot, section: nil, signature: signature)
             guard canActOnReminder(target, now: now), let habit = habits.first(where: { $0.id == habit.id }) else { return }
@@ -2405,9 +2407,10 @@ final class HabitStore {
             guard !exists.boolValue else { return }
             let value: Double
             switch habit.kind {
-            case .amount:
-                guard let increment = habit.quickIncrement, increment.isFinite, increment > 0, increment <= GoalNumber.maximum else { return }
-                value = increment
+            case .amount, .duration:
+                guard let amount = typed ?? (habit.kind == .duration ? nil : habit.quickIncrement),
+                      amount.isFinite, amount > 0, amount <= GoalNumber.maximum else { return }
+                value = amount
             case .check, .task: value = 1
             default: return
             }

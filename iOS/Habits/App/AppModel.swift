@@ -13,6 +13,8 @@ final class AppRouter {
     /// A habit page to open (Siri or Shortcuts "Open a Habit").
     var openHabit: UUID?
     var widgetItem: UUID?
+    /// The day `widgetItem`'s Day details opens on, when it isn't today (a reminder from before the day's end).
+    var itemDay: LocalDay?
     var widgetToday = false
     /// A running timer's Live Activity was tapped: open that habit's timer screen.
     var timerHabit: UUID?
@@ -222,6 +224,7 @@ final class AppModel {
             #if DEBUG
             if ProcessInfo.processInfo.arguments.contains("-widget-fixture") { await WidgetFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-reminder-fixture") { await ReminderFixture.install(in: store) }
+            if ProcessInfo.processInfo.arguments.contains("-ring-soon") { await RingSoonFixture.install(in: store, scheduler: scheduler) }
             if ProcessInfo.processInfo.arguments.contains("-task-fixture") { await TaskFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-tasks-page-fixture") { await TasksPageFixture.install(in: store) }
             if ProcessInfo.processInfo.arguments.contains("-plus-fixture") { await PlusFixture.install(in: store) }
@@ -337,7 +340,7 @@ final class AppModel {
 
     /// A notification's Done or +1, or an alarm's Done: the same store method a tap on Today uses,
     /// but only ever adding. Then reminders are re-planned, which clears the row's follow-ups.
-    func logFromReminder(_ target: ReminderTarget, event: String? = nil) async {
+    func logFromReminder(_ target: ReminderTarget, event: String? = nil, typed: Double? = nil) async {
         #if DEBUG
         WidgetTiming.mark("reminder action: logging, app \(UIApplication.shared.applicationState == .active ? "in front" : "in the background")")
         #endif
@@ -345,7 +348,7 @@ final class AppModel {
         guard let habit = store.habits.first(where: { $0.id == target.habit }) else { return }
         let token = event ?? target.event ?? "reminder.\(target.habit).\(target.time?.uuidString ?? "legacy").\(target.day.key)"
         store.logFromReminder(habit, slot: target.slot, on: target.day, time: target.time, signature: target.signature,
-                              eventID: ReminderIdentity.actionID("action:" + token))
+                              eventID: ReminderIdentity.actionID("action:" + token), typed: typed)
         await store.flush()
         await scheduler.reconcile(store)
     }
@@ -368,9 +371,17 @@ final class AppModel {
         await timerPresence.sync(store)
     }
 
-    /// A tapped notification opens today's section.
+    /// A tapped reminder opens the habit's Day details for its day (Figma, flow 265); one with no habit, today's section.
     func open(_ target: ReminderTarget?, section: String?) {
-        router.focusSection = section ?? target?.section
+        guard let target else { router.focusSection = section; return }
+        router.itemDay = target.day
+        router.widgetItem = target.habit
+    }
+
+    /// A reminder's Start Timer: the app opens on the habit's timer, started, as a widget's ▶ with its screen does.
+    func startTimer(from target: ReminderTarget) {
+        router.startTimer = true
+        router.timerHabit = target.habit
     }
 
     /// A widget's ✓ or + (`WidgetLogIntent`), run in the app's process: written first, then the widgets show it, with
@@ -560,6 +571,14 @@ final class NotificationHandler: NSObject, @preconcurrency UNUserNotificationCen
         if action == ReminderScheduler.doneAction || action == ReminderScheduler.addAction {
             // Finish the write before returning, so iOS keeps the app awake until it's saved.
             if let target { await AppModel.shared.logFromReminder(target, event: response.notification.request.identifier) }
+        } else if action == ReminderScheduler.typedAction {
+            // Log Steps, Log Minutes: the number in the reply; with none, nothing is saved.
+            let text = (response as? UNTextInputNotificationResponse)?.userText ?? ""
+            if let target, let amount = ReminderScheduler.typedNumber(text) {
+                await AppModel.shared.logFromReminder(target, event: response.notification.request.identifier, typed: amount)
+            }
+        } else if action == ReminderScheduler.startTimerAction {
+            if let target { await AppModel.shared.startTimer(from: target) }
         } else if action == UNNotificationDefaultActionIdentifier, info[BackupCenter.notificationKey] != nil {
             // Straight to ≡ → iCloud & Backup, on Today's stack so Back is Today.
             await MainActor.run {
@@ -580,10 +599,6 @@ final class NotificationHandler: NSObject, @preconcurrency UNUserNotificationCen
         await model.ensureLoaded()
         if let target = ReminderTarget(userInfo: request.content.userInfo) {
             guard await model.store.canActOnReminder(target) else { return [] }
-        } else if let list = request.content.userInfo["habits"] as? String {
-            let ids = Set(list.split(separator: ",").compactMap { UUID(uuidString: String($0)) })
-            let valid = await MainActor.run { model.store.habits.contains { ids.contains($0.id) && !$0.archived && $0.remind && ($0.atMost || !model.store.isSatisfied($0, on: model.store.today())) && model.store.isDue($0, on: model.store.today()) } }
-            guard valid else { return [] }
         }
         return [.banner, .list, .sound]
     }

@@ -33,8 +33,13 @@ final class ReminderScheduler {
     nonisolated static let doneAction = "habit.done"
     nonisolated static let addAction = "habit.add"
     private static let singleCategory = "habit.single"
-    private static let groupCategory = "habit.group"
     private static let addCategoryPrefix = "habit.add."
+    private static let typedCategoryPrefix = "habit.typed."
+    private static let timerCategory = "habit.timer"
+    /// Log Steps, Log Minutes: a number typed in iOS's reply field.
+    nonisolated static let typedAction = "habit.typed"
+    /// Start Timer: opens the app on the habit's running timer.
+    nonisolated static let startTimerAction = "habit.startTimer"
 
     /// One planned alert: a time of one row on one day, or one of its repeats.
     struct Alert {
@@ -231,20 +236,14 @@ final class ReminderScheduler {
 
     // MARK: Notifications
 
-    /// Same-minute alerts share one notification ("Morning · Meds, Stretch +2"); one on its own keeps
-    /// its own, with Done or +1. Repeats are never grouped, so each stops on its own tick.
+    /// Every habit is its own reminder, with its own action; reminders of one routine pile together (`threadIdentifier`),
+    /// as iOS does (Figma, flow 266). Repeats are their own too, so each stops on its own tick.
     func requests(for alerts: [Alert], store: HabitStore, limit: Int = 60) -> [UNNotificationRequest] {
         guard limit > 0 else { return [] }
-        var buckets: [[Alert]] = alerts.filter { $0.followUp > 0 }.map { [$0] }
-        for (_, bucket) in Dictionary(grouping: alerts.filter { $0.followUp == 0 }, by: \.fire) {
-            buckets.append(bucket)
-        }
-        // Select the nearest requests before encoding content and configuration hashes. A
-        // large plan can contain thousands of alerts, but iOS keeps at most 60 of ours.
-        let nearest = buckets.map { bucket in
-            (bucket: bucket, id: bucket.count == 1 ? bucket[0].id : groupID(bucket[0]))
-        }.sorted { ($0.bucket[0].fire, $0.id) < ($1.bucket[0].fire, $1.id) }.prefix(limit)
-        return nearest.map { $0.bucket.count == 1 ? single($0.bucket[0], store: store) : group($0.bucket, store: store) }
+        // Select the nearest requests before encoding content. A large plan can contain thousands of alerts, but iOS keeps
+        // at most 60 of ours.
+        let nearest = alerts.sorted { ($0.fire, $0.id) < ($1.fire, $1.id) }.prefix(limit)
+        return nearest.map { single($0, store: store) }
     }
 
     private func single(_ alert: Alert, store: HabitStore) -> UNNotificationRequest {
@@ -258,11 +257,12 @@ final class ReminderScheduler {
             content.body = words.body
         } else {
             content.title = habit.name
-            // "Reminder says…", when set, instead of the usual line.
-            var body = habit.reminderText ?? reminderBody(habit, store: store)
+            // Figma (flows 265–274): the line under the name is where the habit stands that day, in words, since a
+            // notification has no progress bar ("Not done yet", "3 of 8 glasses", "2 of 3 this week"); a follow-up says
+            // "Still to do today". The plan is re-made on every change, so today's line is current when it comes.
+            var body = alert.followUp > 0 ? "Still to do today" : Self.progressLine(habit, on: alert.day, store: store)
             // A habit ticked per section says which tick this is.
             if alert.placement.slot != nil { body = "\(store.section(alert.placement.section).name) · \(body)" }
-            if alert.followUp > 0 { body = "Not done yet · \(body)" }
             content.body = body
         }
         content.sound = .default
@@ -270,31 +270,6 @@ final class ReminderScheduler {
         content.categoryIdentifier = Self.category(for: habit)
         content.userInfo = alert.target.userInfo
         return UNNotificationRequest(identifier: alert.id, content: content, trigger: trigger(alert.fire, store: store))
-    }
-
-    private func group(_ bucket: [Alert], store: HabitStore) -> UNNotificationRequest {
-        let first = bucket[0]
-        let names = bucket.map(\.habit.name)
-        let content = UNMutableNotificationContent()
-        if HideNames.isOn {
-            // "3 reminders · 8:00": no section or habit names (spec §3.7).
-            content.title = "\(bucket.count) reminders · \(DaySection.clock(first.time.minuteOfDay))"
-            content.body = ""
-        } else {
-            content.title = first.section.name
-            content.body = names.prefix(3).joined(separator: ", ") + (names.count > 3 ? " +\(names.count - 3)" : "")
-        }
-        content.sound = .default
-        content.threadIdentifier = first.section.id
-        content.categoryIdentifier = Self.groupCategory
-        content.userInfo = ["section": first.section.id, "day": first.day.key,
-                            "habits": bucket.map(\.habit.id.uuidString).joined(separator: ",")]
-        return UNNotificationRequest(identifier: groupID(first), content: content, trigger: trigger(first.fire, store: store))
-    }
-
-    private func groupID(_ first: Alert) -> String {
-        let hhmm = String(format: "%02d%02d", first.time.hour, first.time.minute)
-        return "\(Self.prefix)group.\(first.day.year)-\(first.day.month)-\(first.day.day).\(hhmm)"
     }
 
     private func trigger(_ fire: Date, store: HabitStore) -> UNCalendarNotificationTrigger {
@@ -318,27 +293,50 @@ final class ReminderScheduler {
         return (alert.habit.reminderText ?? "Reminder · \(clock)", "")
     }
 
-    private func reminderBody(_ habit: Habit, store: HabitStore) -> String {
-        let goal = store.goal(of: habit)
-        switch habit.kind {
-        case .amount(let unit, _): return habit.atMost ? "No more than \(HabitCopy.amount(goal, unit)) today"
-            : HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
-        case .duration: return HabitCopy.capitalized(HabitCopy.plan(habit, weekStart: store.settings.weekStart))
-        case .checklist: return habit.steps.count == 1 ? "1 step" : "\(habit.steps.count) steps"
-        case .task: return "To-do"
-        default: return "Time for \(habit.name.lowercased())"
+    /// The habit's progress on that day, in Figma's words: the same numbers Today and the widgets show
+    /// (`widgetItem`), said as a sentence.
+    static func progressLine(_ habit: Habit, on day: LocalDay, store: HabitStore) -> String {
+        if habit.kind == .task { return "Task for today" }
+        let item = store.widgetItem(habit, on: day, now: .now, isToday: day == store.today(), signature: "", showStreaks: false)
+        // A goal over a week, month or year: "2 of 3 this week", "3 of 8 glasses this week".
+        let goal = item.goal.hasPrefix("/ ") ? String(item.goal.dropFirst(2)) : item.goal
+        let periods = [" this week", " this month", " this year", " a week", " a month"]
+        let period = periods.contains { goal.hasSuffix($0) }
+        // An amount in full numbers, with the unit's own plural ("2,500 of 8,000 steps", "1 of 8 glasses", "$20 of $100"),
+        // where the widget shortens to "8k".
+        if case .amount(let unit, _) = habit.kind {
+            let done = store.progress(of: habit, on: day), target = store.goal(of: store.rule(habit, on: day))
+            let suffix = periods.first { goal.hasSuffix($0) } ?? ""
+            let trimmed = unit.trimmingCharacters(in: .whitespaces)
+            let first = HabitCopy.currencies.contains(trimmed) ? HabitCopy.amount(done, trimmed) : HabitCopy.number(done)
+            return "\(first) of \(HabitCopy.amount(target, trimmed))" + suffix
         }
+        // Minutes as Figma says them ("4 of 10 min"); from an hour, both in full ("1 h 12 min of 2 h").
+        if habit.kind == .duration {
+            let done = store.progress(of: habit, on: day), goal = store.goal(of: store.rule(habit, on: day))
+            let suffix = periods.first { goal == 0 ? false : item.goal.hasSuffix($0) } ?? ""
+            let line = done < 60 && goal < 60 ? "\(Int(done.rounded(.down))) of \(Format.minutes(goal))"
+                                              : "\(Format.minutes(done)) of \(Format.minutes(goal))"
+            return line + suffix
+        }
+        if period, !item.big.isEmpty { return "\(item.big) of \(goal)" }
+        // A once-a-day check: "Not done yet".
+        if item.value == "Not checked" || item.value == "Checked" || item.value.isEmpty { return "Not done yet" }
+        return item.value
     }
 
     // MARK: Actions
 
-    /// Check it off and to-dos get Done; an amount gets "+1 glass"; Time it and checklists open the app.
-    private static func category(for habit: Habit) -> String {
+    /// One action per kind (Figma, flows 265–272): Done on a check or a task (a week goal's Done adds one), "+1 glass" on an
+    /// amount with a step, Log Steps typed on one without, Start Timer and Log Minutes on a time habit. A checklist has none
+    /// (one tick would close it with steps left), nor does a limit or a quit habit (nothing invites more).
+    static func category(for habit: Habit) -> String {
+        if habit.atMost { return "" }
         switch habit.kind {
-        case .check, .task: singleCategory
-        // "Ask how much" has no one-tap step, so its reminder has no "+" action.
-        case .amount: habit.quickIncrement == nil ? "" : addCategoryPrefix + habit.id.uuidString
-        default: ""
+        case .check, .task: return singleCategory
+        case .amount: return (habit.quickIncrement == nil ? typedCategoryPrefix : addCategoryPrefix) + habit.id.uuidString
+        case .duration: return timerCategory
+        case .checklist, .quit: return ""
         }
     }
 
@@ -351,22 +349,50 @@ final class ReminderScheduler {
     static let previewPlaceholder = "Reminder"
 
     static func categories(for habits: [Habit], hidden: Bool) -> Set<UNNotificationCategory> {
+        func category(_ id: String, _ actions: [UNNotificationAction]) -> UNNotificationCategory {
+            UNNotificationCategory(identifier: id, actions: actions, intentIdentifiers: [],
+                                   hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: [])
+        }
+        // Symbols as in Figma: checkmark, plus, square.and.pencil, play.fill.
+        let done = UNNotificationAction(identifier: doneAction, title: "Done", options: [],
+                                        icon: UNNotificationActionIcon(systemImageName: "checkmark"))
+        let startTimer = UNNotificationAction(identifier: startTimerAction, title: "Start Timer", options: [.foreground],
+                                              icon: UNNotificationActionIcon(systemImageName: "play.fill"))
         var set: Set<UNNotificationCategory> = [
-            UNNotificationCategory(identifier: singleCategory, actions: [UNNotificationAction(identifier: doneAction, title: "Done", options: [])],
-                                   intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: []),
-            UNNotificationCategory(identifier: groupCategory, actions: [], intentIdentifiers: [],
-                                   hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: []),
+            category(singleCategory, [done]),
+            category(timerCategory, [startTimer, typed("Log Minutes", placeholder: "Minutes")]),
         ]
-        // An amount's button names its own step, so each amount habit has its own category. Names hidden: "+1", without
-        // the unit (spec §3.7, U16).
-        for habit in habits where !habit.archived {
-            guard case .amount(let unit, _) = habit.kind, let increment = habit.quickIncrement else { continue }
-            let title = "+" + (hidden ? Format.amount(increment) : HabitCopy.amount(increment, unit))
-            set.insert(UNNotificationCategory(identifier: addCategoryPrefix + habit.id.uuidString,
-                                              actions: [UNNotificationAction(identifier: addAction, title: title, options: [])],
-                                              intentIdentifiers: [], hiddenPreviewsBodyPlaceholder: previewPlaceholder, options: []))
+        // An amount's button names its own step or unit, so each amount habit has its own category. Names hidden: "+1"
+        // and "Log", without the unit (spec §3.7, U16).
+        for habit in habits where !habit.archived && !habit.atMost {
+            guard case .amount(let unit, _) = habit.kind else { continue }
+            if let increment = habit.quickIncrement {
+                let title = "+" + (hidden ? Format.amount(increment) : HabitCopy.amount(increment, unit))
+                set.insert(category(addCategoryPrefix + habit.id.uuidString,
+                                    [UNNotificationAction(identifier: addAction, title: title, options: [],
+                                                          icon: UNNotificationActionIcon(systemImageName: "plus"))]))
+            } else {
+                let name = unit.trimmingCharacters(in: .whitespaces)
+                let title = hidden || name.isEmpty ? "Log" : "Log " + name.prefix(1).uppercased() + name.dropFirst()
+                set.insert(category(typedCategoryPrefix + habit.id.uuidString,
+                                    [typed(title, placeholder: hidden || name.isEmpty ? "Amount" : name.prefix(1).uppercased() + name.dropFirst())]))
+            }
         }
         return set
+    }
+
+    /// A number typed in iOS's reply field ("Log Steps": placeholder "Steps", its button "Log").
+    private static func typed(_ title: String, placeholder: String) -> UNTextInputNotificationAction {
+        UNTextInputNotificationAction(identifier: typedAction, title: title, options: [],
+                                      icon: UNNotificationActionIcon(systemImageName: "square.and.pencil"),
+                                      textInputButtonTitle: "Log", textInputPlaceholder: placeholder)
+    }
+
+    /// The number in a reply ("2,500", "2500 steps", "12.5"); nothing when there's none, so nothing is saved.
+    nonisolated static func typedNumber(_ text: String) -> Double? {
+        let cleaned = text.replacingOccurrences(of: ",", with: "")
+        guard let range = cleaned.range(of: #"\d+(\.\d+)?"#, options: .regularExpression) else { return nil }
+        return Double(cleaned[range]).flatMap { $0 > 0 ? $0 : nil }
     }
 
     // MARK: Delivered
@@ -384,21 +410,32 @@ final class ReminderScheduler {
         return ids
     }
 
-    /// A row ticked: clear its reminders already on screen, and a grouped one once all its habits are done.
+    /// A row ticked: clear its reminders already on screen. A follow-up replaces the reminder before it (Figma, flow 273):
+    /// iOS can't hold two waiting reminders under one identifier, so each has its own, and the earlier ones on screen go
+    /// here, whenever the app runs (it re-plans on every change and on return).
     private func clearDelivered(_ store: HabitStore, now: Date) async {
         let done = doneTimeIDs(store, now: now)
-        let today = store.today(now: now)
         let delivered = await center.delivered()
+        let latest = Self.latestOfEach(delivered.map(\.identifier))
         let stale = delivered.filter { request in
             let id = request.identifier
             if id.hasPrefix(Self.prefix), let target = ReminderTarget(userInfo: request.content.userInfo),
                !store.canActOnReminder(target, now: now) { return true }
-            if done.contains(where: { id.hasPrefix($0) }) { return true }
-            guard id.hasPrefix(Self.prefix + "group."), let list = request.content.userInfo["habits"] as? String else { return false }
-            let ids = list.split(separator: ",").compactMap { UUID(uuidString: String($0)) }
-            return ids.contains { id in store.habits.first { $0.id == id }.map { $0.archived || !$0.remind || !store.isDue($0, on: today, now: now) } ?? true }
-                || ids.allSatisfy { id in store.habits.first { $0.id == id }.map { store.isSatisfied($0, on: today) } ?? true }
+            if id.hasPrefix(Self.prefix), !latest.contains(id) { return true }
+            return done.contains(where: { id.hasPrefix($0) })
         }
         center.removeDelivered(stale.map(\.identifier))
+    }
+
+    /// Of a reminder and its follow-ups (`….f1`, `….f2`), the newest one's identifier.
+    nonisolated static func latestOfEach(_ ids: [String]) -> Set<String> {
+        var best: [String: (k: Int, id: String)] = [:]
+        for id in ids {
+            var base = id, k = 0
+            if let dot = id.lastIndex(of: "."), id[id.index(after: dot)...].hasPrefix("f"),
+               let n = Int(id[id.index(dot, offsetBy: 2)...]) { base = String(id[..<dot]); k = n }
+            if (best[base]?.k ?? -1) < k { best[base] = (k, id) }
+        }
+        return Set(best.values.map(\.id))
     }
 }

@@ -346,8 +346,10 @@ struct TodayView: View {
         }
         guard let id = router.widgetItem else { return }
         router.widgetItem = nil
+        let day = router.itemDay ?? store.today()
+        router.itemDay = nil
         guard let habit = store.habits.first(where: { $0.id == id && !$0.archived }) else { menu.reset(); return }
-        let target = HabitStore.DayTarget(habitID: habit.id, day: store.today())
+        let target = HabitStore.DayTarget(habitID: habit.id, day: day)
         if store.dayTarget?.habitID == target.habitID && store.dayTarget?.day == target.day { return }
         replacingPresented { store.dayTarget = target }
     }

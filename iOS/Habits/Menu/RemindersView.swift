@@ -33,7 +33,7 @@ struct RemindersView: View {
                     }
                 }
             } header: { Text("On This iPhone") } footer: {
-                Text("Notifications respect silent mode, Focus and Scheduled Summary. An alarm is used only when you choose Alarm for that item and allow it on this iPhone.")
+                Text("Notifications respect silent mode, Focus and Scheduled Summary. An alarm is used only when you choose An alarm for a habit and allow it on this iPhone.")
             }
             if let problem = scheduler.problem {
                 Section {
