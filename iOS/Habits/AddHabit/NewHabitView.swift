@@ -134,7 +134,7 @@ struct NewItemChoices: View {
                 habitChoice(.good, ChoiceLabel(icon: "chart.line.uptrend.xyaxis", title: "Build or Maintain", detail: "A habit you want to start or keep doing."))
                 habitChoice(.bad, ChoiceLabel(icon: "chart.line.downtrend.xyaxis", title: "Quit or Cut Down", detail: "A habit you want to stop or do less."))
                 NavigationLink {
-                    BuiltWhenShown { form(.task) }
+                    taskKinds
                 } label: {
                     ChoiceLabel(icon: "calendar.badge.checkmark", title: "Add a Task", detail: "Something to get done, once or on repeat.")
                 }
@@ -208,6 +208,33 @@ struct NewItemChoices: View {
                     } label: {
                         ChoiceLabel(icon: type.icon, title: type.title, detail: type.summary, example: type.example)
                     }
+                }
+            }
+        }
+        .listSectionSpacing(24)
+        .contentMargins(.top, 0, for: .scrollContent)
+        .environment(\.defaultMinListRowHeight, 0)
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    /// What Kind of Task? (Figma 1109:2): the same choice page as the habit questions, two rows. Once or On Repeat
+    /// is the first thing that shapes a task, so it's asked before the form, as a habit's type is (the user, 21 Nov
+    /// 2026); the form then opens already set to it.
+    private var taskKinds: some View {
+        List {
+            Section {
+                PageHeading("What Kind of Task?")
+            }
+            Section {
+                NavigationLink {
+                    BuiltWhenShown { HabitForm(type: .task, name: name, onSaved: onAdded) }
+                } label: {
+                    ChoiceLabel(icon: "calendar", title: "Once", detail: "On one day, or with no date.", example: "Pick up parcel")
+                }
+                NavigationLink {
+                    BuiltWhenShown { HabitForm(type: .task, name: name, repeats: true, onSaved: onAdded) }
+                } label: {
+                    ChoiceLabel(icon: "calendar.badge.clock", title: "On Repeat", detail: "Comes back on the days you pick, or a while after it’s done.", example: "Water plants, every 3 days")
                 }
             }
         }
@@ -393,10 +420,12 @@ struct HabitForm: View {
     @FocusState private var focus: Field?
 
     /// A new habit or task: nothing is saved until Add, and amounts stay empty (C203, C292).
-    init(type: ItemType, name: String = "", onSaved: @escaping (UUID) -> Void) {
+    /// `repeats`: a task opened from What Kind of Task?'s On Repeat (Figma 1109:2) starts on a schedule.
+    init(type: ItemType, name: String = "", repeats: Bool = false, onSaved: @escaping (UUID) -> Void) {
         self.type = type
         self.onSaved = onSaved
         original = nil
+        _taskRepeats = State(initialValue: type == .task && repeats)
         let name = TextLimit.clean(name, TextLimit.name)
         _color = State(initialValue: .blue)
         let plainSymbol = type == .quit ? "nosign" : type == .task ? "calendar" : "star.fill"

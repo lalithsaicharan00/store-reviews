@@ -14,7 +14,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 
 - [ ] 1. Figma's page components become ordinary SwiftUI screens; what was done and why is written below, per screen.
 - [ ] 2. Time of Day is gone: a habit's row is **Routine**, and there's **Add a Routine** (New Routine).
-- [ ] 3. Add a Task opens its own page first, **What Kind of Task?** (Once or On Repeat), then the task form.
+- [x] 3. Add a Task opens its own page first, **What Kind of Task?** (Once or On Repeat), then the task form.
 - [ ] 4. Making a routine from anywhere (Create New, the habit form, Today, Habit details) goes back to where the
   person was and shows a banner with the routine's name ("“Meds” created · Undo"), nothing else.
 - [ ] 5. **All Day** and **Anytime** are built in: several reminders put a habit in All Day by itself, none or one
@@ -26,7 +26,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **What Do You Want to Do?** (`1061:2016`)
 - [x] **Quit or Cut Down** (`1061:2101`), with the example chips
 - [x] **How Do You Want to Track It?** (`1062:2`)
-- [ ] **What Kind of Task?** (`1109:2`)
+- [x] **What Kind of Task?** (`1109:2`)
 - [ ] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
 - [ ] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
 - [ ] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
@@ -88,3 +88,16 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   Workout: push-ups, squats). All four are free and carry no badge; each opens its form as before.
 - **Checked on the Simulator:** light and dark against the Figma screenshot (`-uitest -open-new`, then Build or
   Maintain).
+
+### What Kind of Task? (`1109:2`) — done 21 Nov
+
+- **Built as:** `taskKinds` in `NewItemChoices`, the same choice page as the habit questions (`PageHeading`, one card
+  of `ChoiceLabel` rows with `ExampleTag`). Add a Task now pushes it instead of the task form.
+- **Rows from Figma:** Once "On one day, or with no date." (`calendar`, e.g. Pick up parcel); On Repeat "Comes back
+  on the days you pick, or a while after it’s done." (`calendar.badge.clock`, e.g. Water plants, every 3 days).
+- **Why a page before the form:** once or on repeat is the first thing that shapes a task, as a type shapes a habit,
+  so it's asked first (the user, 21 Nov 2026). Each row opens `HabitForm(type: .task)`; On Repeat passes
+  `repeats: true`, a new argument that starts the form's `taskRepeats` on. The form still has its old Repeat picker
+  until the Create new form step redraws it; that step decides whether the picker goes.
+- **Checked on the Simulator:** light and dark against the Figma screenshot; On Repeat opens the form on "On a
+  schedule".
