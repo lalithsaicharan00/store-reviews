@@ -326,7 +326,7 @@ enum TextLimit {
     static func note(_ text: String, _ limit: Int) -> String? {
         let left = limit - text.count
         guard left <= 5 else { return nil }
-        return left <= 0 ? "That's the most: \(limit) characters." : left == 1 ? "1 character left" : "\(left) characters left"
+        return left <= 0 ? "That’s the most: \(limit) characters." : left == 1 ? "1 character left" : "\(left) characters left"
     }
 
     /// Trimmed and cut to `limit` characters.

@@ -107,7 +107,7 @@ enum Outcome {
     static func hours(_ section: DaySection, store: HabitStore) -> String? {
         guard let start = section.start,
               let end = store.timedSections.first(where: { $0.section.id == section.id })?.end else { return nil }
-        return "\(DaySection.clock(start))–\(DaySection.clock(end))"
+        return "\(DaySection.clock(start)) – \(DaySection.clock(end))"
     }
 
     /// "Morning and Evening", "9:00 AM, 12:00 PM and 3:00 PM", in the phone's language.

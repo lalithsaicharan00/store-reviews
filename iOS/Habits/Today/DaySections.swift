@@ -122,7 +122,10 @@ struct SectionEditor: View {
                     .submitLabel(.done)
                     .accessibilityIdentifier("section-name-field")
             } footer: {
-                if let note = TextLimit.note(name, TextLimit.section) { Text(note) }
+                // Figma's Error state: at the limit the line is red; the counts before it stay grey.
+                if let note = TextLimit.note(name, TextLimit.section) {
+                    Text(note).foregroundStyle(name.count >= TextLimit.section ? Color.red : Color(.secondaryLabel))
+                }
             }
             Section {
                 Toggle("Set a Time", isOn: $hasTime.animation())
@@ -139,7 +142,7 @@ struct SectionEditor: View {
             if hasTime {
                 Section {
                     ForEach(plan.rows) { row in
-                        DayRow(row: row, isNew: existing == nil)
+                        DayRow(row: row, mark: existing == nil ? "New" : "Editing")
                     }
                 } header: {
                     FormHeader("Your day")
@@ -208,10 +211,11 @@ private struct FormHeader: View {
     }
 }
 
-/// One routine in "Your day": its name, its times as they will be, and "New" on the one being added.
+/// One routine in "Your day": its name, its times as they will be, and "New" on the one being added or "Editing" on the
+/// one being edited (Figma's Edit routine, Mode=New and Mode=Edit).
 private struct DayRow: View {
     let row: SectionPlan.Row
-    let isNew: Bool
+    let mark: String
 
     var body: some View {
         HStack(spacing: 16) {
@@ -221,8 +225,8 @@ private struct DayRow: View {
                     .font(.subheadline).foregroundStyle(.secondary).monospacedDigit()
             }
             Spacer(minLength: 8)
-            if row.isSubject && isNew {
-                Text("New").foregroundStyle(.secondary)
+            if row.isSubject {
+                Text(mark).foregroundStyle(.secondary)
             }
         }
         .accessibilityElement(children: .combine)

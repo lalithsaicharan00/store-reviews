@@ -32,7 +32,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
 - [x] **Colour** (`1074:161496`)
 - [x] **How Often** (`1075:161386`, 15 variants)
-- [ ] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
+- [x] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
 - [ ] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
 - [ ] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
 - [ ] **How Long** (`1103:3208`), **Steps** (`1104:163327`), **Limit** (`1105:3190`)
@@ -52,7 +52,11 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   (`DaySection.isAnytime`), and `SectionPlan`, `saveSections` and `timedSections` unwrap every other section's
   start, so New Routine's Add waits for the switch until routines have their own "no time" and their place (after
   the timed ones, before Anytime).
-- [ ] All Day as a built-in routine, and a habit with two or more reminders going into it by itself.
+- [ ] All Day as a built-in routine, and a habit with two or more reminders going into it by itself. The Routine page
+  draws All Day from the reminders alone (`inAllDay`: Remind Me on with two or more times), so its row has no tap,
+  and the habit's `parts` keep whatever was chosen before. Once All Day is in the model it becomes an ordinary row.
+- [ ] `parts` is still an array (a habit could sit in several times of day); `choose` now writes one value. The model
+  and backup format go to one routine in the logic pass (Data Rules for Sync).
 - [ ] A one-time task with no date (the form's Date switch off). The model reads a task with no `dueDay` as a
   repeating one, so for now it's saved with its date; the footer already says what No date will mean.
 
@@ -261,3 +265,29 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   without set days, the 21st of every month (grid), the third Saturday (wheel), every year on November 21 (wheel), the
   task's list and 1 week after it's done in dark. Cut down's three "At most" rows weren't opened (only its headers
   changed).
+
+### Routine page (`4754:46072`) and Edit Routine (`830:265`) — done 21 Nov
+
+- **Routine page** (the habit form's Routine row, `timeOfDayRow`): Figma's page component is a plain `Form`, so iOS
+  draws the cards, lines and disabled text. One card of Checkmark rows: **All Day** *For habits with several
+  reminders*, **Anytime** *For habits with no set time*, then the person's routines by start (`timedSections`) with
+  their times; **New Routine** is its own card. No headers, no sticky sentence, no Outcome footer (Figma has none).
+  Title Routine. **One choice:** a tap replaces the choice (`choose`), so "Pick one or more" and "Or" are gone.
+- **Several reminders** (`4763:36841`): with two or more reminders All Day is ticked, every other row is disabled, and
+  New Routine's footer says *It has reminders at several times, so it’s in All Day. With one reminder or none, you can
+  choose another.* `CheckRow` now greys both lines to Tertiary Label when disabled (Figma's Enabled=False), read from
+  `isEnabled`, so every disabled CheckRow in the app gets it.
+- **Add row:** a filled ⊕ in Ink with On Ink, 16 before the words (Figma), not iOS's green: the chrome stays neutral
+  (the Rulebook, 5 Nov). `AddRow` is shared, so Add Reminder, Add Step, Create Your Own Unit and Edit Today's Add
+  Routine change with it.
+- **Hours** on the Routine page are "6:00 AM – 12:00 PM", spaced as Figma and Edit Routine's Your day
+  (`Outcome.hours`, used only there).
+- **Edit Routine** (`SectionEditor`): Your day marks the routine being edited **Editing** (Figma's Mode=Edit; New
+  stays on a new one), and the name's limit line turns red at 16 characters (Figma's Error state), grey before it.
+  `TextLimit.note` now says *That’s the most* with a curly apostrophe, so every name field's limit does. Delete
+  Routine and the Time=None footer were already Figma's.
+- **Checked on the Simulator:** the Routine page in light and dark, one choice (Evening replaced Morning), New Routine
+  with a 20-letter name (red line), Edit Routine for Morning from Edit Today in dark (Editing, Delete Routine). **Not
+  checked:** the several-reminders state, which needs two reminders and the notifications permission first; it's
+  checked with the Reminders screen next.
+

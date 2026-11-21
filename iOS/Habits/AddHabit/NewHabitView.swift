@@ -1067,50 +1067,57 @@ struct HabitForm: View {
     /// The habit as it would be saved, so the form's sentences use the same rules as Today.
     private var draft: Habit { makeHabit(name: shownTrimmedName) }
 
-    /// Tapping a time of day: the parts of the day always combine; Anytime stands alone.
+    /// Tapping a routine: a habit sits in one routine (the Rulebook, 6 Nov 2026; Android A118), so a tap replaces the
+    /// choice. `parts` stays an array for now; the logic pass turns it into one value.
     private func choose(_ id: String) {
-        if id == .anytime {
-            timesOfDay = [.anytime]
-        } else {
-            var chosen = timesOfDay.filter { $0 != .anytime }
-            if let i = chosen.firstIndex(of: id) { chosen.remove(at: i) } else { chosen.append(id) }
-            let order = store.sections.map(\.id)
-            timesOfDay = chosen.isEmpty ? [.anytime] : chosen.sorted { (order.firstIndex(of: $0) ?? 99) < (order.firstIndex(of: $1) ?? 99) }
-        }
+        timesOfDay = [id]
         syncReminders()
     }
 
-    /// "Anytime", "Morning", "Morning and Evening".
+    /// Two or more reminders put a habit in All Day by itself (Android A120). All Day isn't a routine in the model yet
+    /// (see the checklist's logic pass), so the page shows it from the reminders alone.
+    private var inAllDay: Bool { remindOn && times.count >= 2 }
+
+    /// "Anytime", "Morning", or "All Day" for a habit with several reminders.
     private var timeOfDaySummary: String {
-        HabitCopy.join(timesOfDay.map { store.section($0).name })
+        inAllDay ? "All Day" : HabitCopy.join(timesOfDay.map { store.section($0).name })
     }
 
-    /// Where it's displayed on Today (never the goal). Its own full screen: the parts of the day, any
-    /// number of them, then "Or", then Anytime (GOV.UK's exclusive-checkbox pattern).
+    /// The Routine page (Figma `4754:46072`): one card of Checkmark rows, All Day first, then Anytime, then the person's
+    /// routines by start, each with its times; New Routine is its own row under them. One choice. A habit with several
+    /// reminders is in All Day and the other rows can't be chosen; a footer says why and how to choose another.
+    /// Figma's page component is a plain list here: `Form` draws the cards, lines and disabled text.
     private var timeOfDayRow: some View {
         screenRow("Routine", value: timeOfDaySummary) {
             Form {
                 Section {
-                    ForEach(store.sections.filter { !$0.isAnytime }) { section in
-                        CheckRow(title: section.name, detail: Outcome.hours(section, store: store),
-                                 selected: timesOfDay.contains(section.id)) { choose(section.id) }
+                    // Built in and always first. Not a routine in the model yet: chosen by the reminders, not a tap.
+                    CheckRow(title: "All Day", detail: "For habits with several reminders", selected: inAllDay) {}
+                        .accessibilityIdentifier("routine-all-day")
+                    Group {
+                        CheckRow(title: "Anytime", detail: "For habits with no set time",
+                                 selected: !inAllDay && timesOfDay == [.anytime]) { choose(.anytime) }
+                            .accessibilityIdentifier("routine-anytime")
+                        ForEach(store.timedSections.map(\.section)) { section in
+                            CheckRow(title: section.name, detail: Outcome.hours(section, store: store),
+                                     selected: !inAllDay && timesOfDay == [section.id]) { choose(section.id) }
+                                .accessibilityIdentifier("routine-\(section.id)")
+                        }
                     }
-                } header: {
-                    Text("Pick one or more")
+                    .disabled(inAllDay)
                 }
                 Section {
-                    CheckRow(title: "Anytime", detail: "No set time", selected: timesOfDay == [.anytime]) { choose(.anytime) }
-                } header: {
-                    Text("Or")
-                }
-                Section {
-                    AddRow(title: "New Time of Day") { focus = nil; addingSection = true }
+                    AddRow(title: "New Routine") { focus = nil; addingSection = true }
+                        .accessibilityIdentifier("routine-new")
                 } footer: {
-                    Text(Outcome.timeOfDay(draft, store: store)).formNote()
+                    if inAllDay {
+                        Text("It has reminders at several times, so it’s in All Day. With one reminder or none, you can choose another.")
+                    }
                 }
             }
-            .stickySentence(isHabit || type == .task ? screenText : nil, id: "screen-sentence")
-            .navigationTitle("Time of Day")
+            .listSectionSpacing(16)
+            .contentMargins(.top, 16, for: .scrollContent)
+            .navigationTitle("Routine")
             .navigationBarTitleDisplayMode(.inline)
             // Pushed from here, so saving comes back to this list with the new one ticked (attached to
             // the form, it replaced this screen and Save jumped back to the form; found 28 Sep).
@@ -1606,13 +1613,18 @@ struct CheckRow: View {
     var detail: String? = nil
     let selected: Bool
     let action: () -> Void
+    @Environment(\.isEnabled) private var isEnabled
 
     var body: some View {
         Button(action: action) {
             HStack(spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(title).foregroundStyle(Color.primary)
-                    if let detail { Text(detail).font(.subheadline).foregroundStyle(.secondary) }
+                VStack(alignment: .leading, spacing: 0) {
+                    // Figma's Checkmark row, Enabled=False: both lines in Tertiary Label.
+                    Text(title).foregroundStyle(isEnabled ? Color.primary : Color(.tertiaryLabel))
+                    if let detail {
+                        Text(detail).font(.subheadline)
+                            .foregroundStyle(isEnabled ? Color(.secondaryLabel) : Color(.tertiaryLabel))
+                    }
                 }
                 Spacer(minLength: 8)
                 Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink).opacity(selected ? 1 : 0)
@@ -1650,10 +1662,12 @@ struct AddRow: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
+            // Figma's add row (New Routine): a filled ⊕ in Ink, as Contacts adds a phone, 16 before the words. The
+            // chrome stays neutral (the Rulebook, 5 Nov 2026), so not iOS's green.
+            HStack(spacing: 16) {
                 Image(systemName: "plus.circle.fill")
                     .symbolRenderingMode(.palette)
-                    .foregroundStyle(.white, .green)
+                    .foregroundStyle(Color.onInk, Color.ink)
                     .font(.title3)
                 Text(title).foregroundStyle(Color.primary)
             }
