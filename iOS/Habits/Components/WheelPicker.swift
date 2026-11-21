@@ -27,6 +27,7 @@ struct WheelPicker<First: Hashable, Second: Hashable>: UIViewRepresentable {
         picker.delegate = context.coordinator
         // Fit the card's width rather than ask for the picker's own.
         picker.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        picker.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return picker
     }
 

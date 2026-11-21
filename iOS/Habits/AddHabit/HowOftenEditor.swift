@@ -1,8 +1,15 @@
 import SwiftUI
 
-/// "How often": one list of sentence endings, each with the person's own amount in it ("2 chapters a week",
-/// "5 km on 3 days a week", "every Monday and Wednesday"), so what each choice means is read, not looked up
-/// (Round 3 design §2.5). Choosing never changes another row and never asks to confirm.
+/// How Often (Figma `1075:161386`, 21 Nov 2026): one inset-grouped list of choices, each a Checkmark row. Rhythms of
+/// one kind share a card (every day and several times a day; every few days, weeks and months), the rest have one
+/// each, 16 apart, with no headers: the choices' own words say what each is. A choice that isn't chosen says what kind
+/// it is ("Several times a day"); once chosen it says exactly what it is ("Twice a day"), and its settings open inside
+/// its card, under it, with no line between them. Choosing never changes another row and never asks to confirm.
+///
+/// Figma draws each option as a component with its controls stacked in one frame. Here each control is its own list
+/// row, so the list keeps its own row heights, insets, Dynamic Type and VoiceOver order; the lines Figma leaves out
+/// inside a chosen option are hidden per row (`inChoice`), and the lines it draws full width are moved out to the
+/// card's edges (`fullWidthLine`).
 struct HowOftenEditor: View {
     @Binding var draft: OftenDraft
     /// The amount as written ("2 chapters"), or nil for Just do it.
@@ -12,13 +19,10 @@ struct HowOftenEditor: View {
     let limit: Bool
     let start: Date
     let weekStart: Int
-    /// The whole habit as one sentence ("Read twice a day, morning and afternoon"), the same one the New Habit
-    /// form shows, so the result of each choice is read here (the user's request, 29 Sep).
-    var sentence: String? = nil
     /// An amount or time habit whose amount isn't typed yet: it still gets the amount choices.
     var amountExpected = false
     /// A repeating task: the same screen without counts (a task is ticked once each time it's due), plus
-    /// "After it's done" (29 Sep).
+    /// "A while after it's done" (29 Sep).
     var task = false
     @Environment(\.dynamicTypeSize) private var dynamicType
 
@@ -52,7 +56,7 @@ struct HowOftenEditor: View {
             } else if hasAmount {
                 amountChoices
             } else if task {
-                Section { choiceRow(.everyDay, "Every day") } header: { Text("Daily") }
+                Section { choiceRow(.everyDay, "Every day") }
             } else {
                 countChoices
             }
@@ -64,8 +68,9 @@ struct HowOftenEditor: View {
             }
             if task { afterDoneChoices }
         }
-        // Only the sentence, pinned while the choices scroll under it (the user, 29 Sep: no notes here).
-        .stickySentence(sentence ?? words(often), id: "often-summary")
+        // Figma: 16 between cards and 16 above the first, as the habit form.
+        .listSectionSpacing(16)
+        .contentMargins(.top, 16, for: .scrollContent)
         .onAppear { draft.seed(start: start, weekStart: weekStart) }
         // Tapping a number selects it, so typing replaces it.
         .selectsNumbersOnFocus()
@@ -75,29 +80,21 @@ struct HowOftenEditor: View {
     }
 
     // MARK: Choices
-    //
-    // Each section is one kind of rhythm. A choice's own settings sit indented right under it and show only
-    // while it's chosen, so they read as part of it (the user, 29 Sep). A choice that isn't chosen says what
-    // kind it is ("Several times a day"); once chosen it says exactly what it is ("Twice a day").
 
-    /// Just do it: every day, or several times a day.
+    /// Just do it: every day, or several times a day; or a number of times a week, month or year.
     @ViewBuilder private var countChoices: some View {
         Section {
             choiceRow(.everyDay, "Every day")
             choiceRow(.timesADay, draft.choice == .timesADay ? words(.timesADay(max(2, draft.perDay))) : "Several times a day")
             if draft.choice == .timesADay {
                 NumberStepper(title: "Times a day", value: $draft.perDay, range: 2...99)
-                .nested()
-                .accessibilityIdentifier("often-per-day")
+                    .inChoice()
+                    .accessibilityIdentifier("often-per-day")
             }
-        } header: {
-            Text("Daily")
         }
         Section {
             choiceRow(.times, draft.choice == .times ? words(countChoice) : "Times a week, month or year")
             if draft.choice == .times { countControls(days: false) }
-        } header: {
-            Text("A number of times")
         }
     }
 
@@ -110,39 +107,41 @@ struct HowOftenEditor: View {
                     draft.totalPeriod = period
                 }
             }
-        } header: {
-            Text("In total")
         }
         Section {
             choiceRow(.times, draft.choice == .times ? words(countChoice) : "Days a week, month or year")
             if draft.choice == .times { countControls(days: true) }
-        } header: {
-            Text("A number of days")
         }
     }
 
-    /// Certain days of the week.
+    /// Certain days of the week: Weekdays and Weekends (Small Bordered buttons), then the seven days.
     @ViewBuilder private var weekdayChoices: some View {
         Section {
             choiceRow(.weekdays, draft.choice == .weekdays ? words(.weekdays(draft.weekdays)) : "On certain days of the week")
             if draft.choice == .weekdays {
-                let quick = dynamicType.isAccessibilitySize
-                    ? AnyLayout(VStackLayout(alignment: .leading, spacing: 12))
-                    : AnyLayout(HStackLayout(spacing: 20))
-                quick {
-                    Button("Weekdays") { draft.weekdays = [2, 3, 4, 5, 6] }
-                    Button("Weekends") { draft.weekdays = [1, 7] }
+                VStack(alignment: .leading, spacing: 16) {
+                    let quick = dynamicType.isAccessibilitySize
+                        ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8))
+                        : AnyLayout(HStackLayout(spacing: 8))
+                    quick {
+                        Button("Weekdays") { draft.weekdays = [2, 3, 4, 5, 6] }
+                        Button("Weekends") { draft.weekdays = [1, 7] }
+                    }
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.capsule)
+                    .controlSize(.small)
+                    .font(.subheadline)
+                    .tint(Color.ink)
+                    WeekdayPicker(selection: Binding(get: { draft.weekdays }, set: { days in
+                        if days.count == 7 {
+                            draft.choice = .everyDay
+                            UIAccessibility.post(notification: .announcement, argument: "Every day selected")
+                        } else { draft.weekdays = days }
+                    }), firstWeekday: weekStart)
                 }
-                .buttonStyle(.borderless)
-                WeekdayPicker(selection: Binding(get: { draft.weekdays }, set: { days in
-                    if days.count == 7 {
-                        draft.choice = .everyDay
-                        UIAccessibility.post(notification: .announcement, argument: "Every day selected")
-                    } else { draft.weekdays = days }
-                }), firstWeekday: weekStart)
+                .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 24, trailing: 16))
+                .inChoice()
             }
-        } header: {
-            Text("Days of the week")
         }
     }
 
@@ -152,36 +151,35 @@ struct HowOftenEditor: View {
             choiceRow(.everyDays, draft.choice == .everyDays ? HabitCopy.capitalized(HabitCopy.everyN(draft.daysInterval, "day")) : "Every few days")
             if draft.choice == .everyDays {
                 NumberStepper(title: "Every", value: $draft.daysInterval, range: 2...365) { _ in "days" }
-                .nested()
-                .accessibilityIdentifier("often-every-count")
-                nextRow
+                    .inChoice()
+                    .accessibilityIdentifier("often-every-count")
             }
             choiceRow(.everyWeeks, draft.choice == .everyWeeks ? HabitCopy.capitalized(words(often)) : "Every few weeks")
             if draft.choice == .everyWeeks {
                 NumberStepper(title: "Every", value: $draft.weeksInterval, range: 1...52) { $0 == 1 ? "week" : "weeks" }
-                .nested()
-                .accessibilityIdentifier("often-weeks-count")
+                    .inChoice()
+                    .accessibilityIdentifier("often-weeks-count")
                 // Days are an add-on: off, it's every few weeks from the start date.
                 Toggle("On set days", isOn: Binding(get: { !draft.weeksDays.isEmpty }, set: { on in
                     withAnimation { draft.weeksDays = on ? [Calendar.current.component(.weekday, from: start)] : [] }
                 }))
                 .tint(.green)
-                .nested()
+                .inChoice()
                 .accessibilityIdentifier("often-weeks-days")
                 if !draft.weeksDays.isEmpty {
-                    WeekdayPicker(selection: $draft.weeksDays, firstWeekday: weekStart).nested()
+                    WeekdayPicker(selection: $draft.weeksDays, firstWeekday: weekStart)
+                        .listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 16, trailing: 16))
+                        // The line under it starts at the row's edge, not at the first letter inside a circle.
+                        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
+                        .inChoice()
                 }
-                nextRow
             }
             choiceRow(.everyMonths, draft.choice == .everyMonths ? HabitCopy.capitalized(HabitCopy.everyN(draft.monthsInterval, "month")) : "Every few months")
             if draft.choice == .everyMonths {
                 NumberStepper(title: "Every", value: $draft.monthsInterval, range: 1...24) { $0 == 1 ? "month" : "months" }
-                .nested()
-                .accessibilityIdentifier("often-months-count")
-                nextRow
+                    .inChoice()
+                    .accessibilityIdentifier("often-months-count")
             }
-        } header: {
-            Text("Every few days, weeks or months")
         }
     }
 
@@ -189,12 +187,7 @@ struct HowOftenEditor: View {
     @ViewBuilder private var dateChoices: some View {
         Section {
             choiceRow(.date, draft.choice == .date ? words(.calendar(draft.dateRule)) : "On a date each month or year")
-            if draft.choice == .date {
-                dateControls
-                nextRowFlat
-            }
-        } header: {
-            Text("On a date")
+            if draft.choice == .date { dateControls }
         } footer: {
             if let note = setDaysNote { Text(note).formNote() }
         }
@@ -204,39 +197,30 @@ struct HowOftenEditor: View {
     /// to-do reviews ("repeat from completion date": about 59 reviews across the corpora, many from Reminders).
     @ViewBuilder private var afterDoneChoices: some View {
         Section {
-            choiceRow(.afterDone, draft.choice == .afterDone ? HabitCopy.capitalized(words(often)) : "A while after it's done")
+            choiceRow(.afterDone, draft.choice == .afterDone ? HabitCopy.capitalized(words(often)) : "A while after it’s done")
             if draft.choice == .afterDone {
                 Picker("Unit", selection: $draft.afterUnit) {
-                    ForEach(ScheduleUnit.allCases) { Text($0.plural.capitalized).tag($0) }
+                    // Figma: Days | Weeks | Months. Years only for a task saved with it, so its choice still shows.
+                    ForEach([ScheduleUnit.day, .week, .month] + (draft.afterUnit == .year ? [.year] : [])) {
+                        Text($0.plural.capitalized).tag($0)
+                    }
                 }
                 .pickerStyle(.segmented)
+                .segmentRow()
+                .inChoice()
                 .accessibilityIdentifier("often-after-unit")
-                NumberStepper(title: "Again after", value: $draft.afterCount, range: 1...365) { $0 == 1 ? draft.afterUnit.rawValue : draft.afterUnit.plural }
-                .accessibilityIdentifier("often-after-count")
+                NumberStepper(title: "Again after", value: $draft.afterCount, range: 1...365)
+                    .inChoice()
+                    .accessibilityIdentifier("often-after-count")
             }
-        } header: {
-            Text("After it's done")
-        } footer: {
-            if draft.choice == .afterDone { Text("Counted from the day you tick it.").formNote() }
         }
-    }
-
-    /// The next day it's on, from the start date, for the set-day rhythms.
-    @ViewBuilder private var nextRow: some View {
-        if let next {
-            LabeledContent("Next", value: next).nested()
-        }
-    }
-
-    @ViewBuilder private var nextRowFlat: some View {
-        if let next { LabeledContent("Next", value: next) }
     }
 
     private var countChoice: HowOften {
         hasAmount ? .days(draft.countPeriod, draft.count) : .times(draft.countPeriod, draft.count)
     }
 
-    /// A one-choice section: its settings sit flush under it, not indented (the user, 29 Sep).
+    /// Week | Month | Year, then how many.
     @ViewBuilder private func countControls(days: Bool) -> some View {
         Picker("Each", selection: Binding(get: { draft.countPeriod }, set: { period in
             draft.countPeriod = period
@@ -245,103 +229,96 @@ struct HowOftenEditor: View {
             ForEach([GoalPeriod.week, .month, .year]) { Text($0.rawValue.capitalized).tag($0) }
         }
         .pickerStyle(.segmented)
+        .segmentRow()
+        .inChoice()
         .accessibilityIdentifier("often-count-period")
         NumberStepper(title: days ? "Days" : "Times", value: $draft.count, range: 1...draft.countMaximum(days: days))
-        .accessibilityIdentifier("often-count")
+            .inChoice()
+            .accessibilityIdentifier("often-count")
     }
 
-    /// "The [first ▾] [Saturday ▾]"; the row adds "of the month" after it, or under it on a narrow phone.
-    @ViewBuilder private var weekdayOfMonthPhrase: some View {
-        Text("The")
-        Picker("Which one", selection: $draft.dateRule.ordinal) {
-            ForEach([1, 2, 3, 4, 5, -1], id: \.self) { Text(HabitCopy.ordinalWord($0)).tag($0) }
-        }
-        .pickerStyle(.menu)
-        .labelsHidden()
-        .fixedSize()
-        .accessibilityIdentifier("often-weekday-ordinal")
-        Picker("Weekday", selection: $draft.dateRule.weekday) {
-            ForEach(1...7, id: \.self) { Text(HabitCopy.fullDays[$0 - 1]).tag($0) }
-        }
-        .pickerStyle(.menu)
-        .labelsHidden()
-        .fixedSize()
-        .accessibilityIdentifier("often-weekday-day")
-    }
-
+    /// Month | Year; a month's Repeat on (Dates, The last day, A weekday) and its dates grid or weekday wheel; a year's
+    /// month and date wheel. Two values that belong together are one Wheel picker (the Rulebook, 6 Nov 2026).
     @ViewBuilder private var dateControls: some View {
         Picker("Each", selection: Binding(get: { draft.dateRule.unit }, set: { draft.dateRule.unit = $0 })) {
             Text("Month").tag(ScheduleUnit.month)
             Text("Year").tag(ScheduleUnit.year)
         }
         .pickerStyle(.segmented)
+        .segmentRow()
+        .listRowSeparator(.hidden, edges: .top)
+        .modifier(FullWidthLine(on: draft.dateRule.unit == .year))
         .accessibilityIdentifier("often-date-unit")
         if draft.dateRule.unit == .month {
-            Picker("On", selection: $draft.dateRule.pattern) {
+            Picker("Repeat on", selection: $draft.dateRule.pattern) {
                 Text("Dates").tag(CalendarSchedule.MonthPattern.dates)
                 Text("The last day").tag(CalendarSchedule.MonthPattern.last)
                 Text("A weekday").tag(CalendarSchedule.MonthPattern.weekday)
             }
+            .pickerStyle(.menu)
+            .tint(Color.ink)
+            .modifier(FullWidthLine(on: draft.dateRule.pattern != .last))
+            .accessibilityIdentifier("often-date-pattern")
             switch draft.dateRule.pattern {
             case .dates:
                 MonthDatePicker(selection: $draft.dateRule.dates)
+                    .listRowInsets(EdgeInsets(top: 12, leading: 8, bottom: 12, trailing: 8))
                 if draft.dateRule.dates.contains(where: { $0 > 28 }) {
                     Picker("Shorter months", selection: $draft.dateRule.useLastDay) {
                         Text("Use the last day").tag(true)
                         Text("Skip that month").tag(false)
                     }
+                    .pickerStyle(.menu)
+                    .tint(Color.ink)
                 }
             case .last:
                 EmptyView()
             case .weekday:
-                // One row that reads as the phrase: "The [first] [Saturday] of the month". The first menu is which
-                // one of that weekday in the month (a weekday comes 4 or 5 times, so first to fifth, or the last);
-                // the second is the weekday itself, all seven. Two rows, "Which" and "Day", read as a mistake (29 Sep).
-                // Even gaps between every part; on a narrow phone only "of the month" moves to the next line.
-                ViewThatFits(in: .horizontal) {
-                    HStack(spacing: 8) {
-                        weekdayOfMonthPhrase
-                        Text("of the month")
-                    }
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack(spacing: 8) { weekdayOfMonthPhrase }
-                        Text("of the month")
-                    }
-                }
-                .accessibilityElement(children: .contain)
+                WheelPicker(first: [1, 2, 3, 4, 5, -1].map { ($0, HabitCopy.ordinalWord($0)) },
+                            second: (1...7).map { ($0, HabitCopy.fullDays[$0 - 1]) },
+                            firstSelection: $draft.dateRule.ordinal, secondSelection: $draft.dateRule.weekday,
+                            labels: ("Which one", "Weekday"))
+                    .frame(maxWidth: .infinity, minHeight: 216, maxHeight: 216)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
+                    .accessibilityIdentifier("often-weekday-wheel")
             }
-            NumberStepper(title: "Every", value: $draft.dateRule.interval, range: 1...12) { $0 == 1 ? "month" : "months" }
-            .accessibilityIdentifier("often-month-interval")
         } else {
-            Picker("Month", selection: Binding(get: { draft.dateRule.month }, set: { month in
-                draft.dateRule.month = month
-                draft.dateRule.day = min(draft.dateRule.day, daysIn(month: month))
-            })) {
-                ForEach(1...12, id: \.self) { Text(HabitCopy.monthNames[$0 - 1]).tag($0) }
-            }
-            Picker("Date", selection: $draft.dateRule.day) {
-                ForEach(1...daysIn(month: draft.dateRule.month), id: \.self) { Text(HabitCopy.ordinal($0)).tag($0) }
-            }
+            WheelPicker(first: (1...12).map { ($0, HabitCopy.monthNames[$0 - 1]) },
+                        second: (1...daysIn(month: draft.dateRule.month)).map { ($0, "\($0)") },
+                        firstSelection: Binding(get: { draft.dateRule.month }, set: { month in
+                            draft.dateRule.month = month
+                            draft.dateRule.day = min(draft.dateRule.day, daysIn(month: month))
+                        }),
+                        secondSelection: $draft.dateRule.day,
+                        labels: ("Month", "Date"))
+                .frame(maxWidth: .infinity, minHeight: 216, maxHeight: 216)
+                .listRowInsets(EdgeInsets(top: 0, leading: 8, bottom: 0, trailing: 8))
+                .accessibilityIdentifier("often-year-wheel")
             if draft.dateRule.month == 2 && draft.dateRule.day == 29 {
                 Picker("Years without 29 February", selection: $draft.dateRule.useLastDay) {
                     Text("Use 28 February").tag(true)
                     Text("Skip that year").tag(false)
                 }
+                .pickerStyle(.menu)
+                .tint(Color.ink)
             }
         }
     }
 
     // MARK: Rows and notes
 
-    /// A choice with a checkmark; tapping it picks it and runs `extra` (e.g. which period).
+    /// A choice with a checkmark; tapping it picks it and runs `extra` (e.g. which period). Chosen, the line under it
+    /// goes when settings open under it, so they read as part of it.
     private func choiceRow(_ choice: OftenDraft.Choice, _ title: String, selected: Bool? = nil, id: String? = nil,
                            extra: (() -> Void)? = nil) -> some View {
-        CheckRow(title: title, selected: selected ?? (draft.choice == choice)) {
+        let chosen = selected ?? (draft.choice == choice)
+        return CheckRow(title: title, selected: chosen) {
             withAnimation {
                 draft.choice = choice
                 extra?()
             }
         }
+        .listRowSeparator(chosen && choice != .everyDay && choice != .total ? .hidden : .automatic, edges: .bottom)
         .accessibilityIdentifier("often-" + (id ?? "\(choice)"))
     }
 
@@ -359,27 +336,37 @@ struct HowOftenEditor: View {
         return nil
     }
 
-    private var next: String? {
-        let format = Date.FormatStyle.dateTime.weekday(.abbreviated).day().month(.abbreviated)
-        switch often {
-        case .calendar(let rule):
-            return rule.next(from: LocalDay(.now), start: LocalDay(start), calendar: .current)?.date().formatted(format)
-        case .everyWeeks(let n):
-            // Every few weeks from the start date: the start itself, or the next one after today.
-            let cal = Calendar.current
-            var day = cal.startOfDay(for: start)
-            let today = cal.startOfDay(for: .now)
-            while day < today { day = cal.date(byAdding: .day, value: 7 * max(n, 1), to: day)! }
-            return day.formatted(format)
-        default:
-            return nil
-        }
-    }
-
     private func daysIn(month: Int) -> Int {
         let cal = Calendar.current
         let date = cal.date(from: DateComponents(year: 2024, month: month, day: 1))!
         return cal.range(of: .day, in: .month, for: date)!.count
+    }
+}
+
+private extension View {
+    /// A chosen option's own setting: no line above it, so it reads as part of the choice (Figma draws none inside an
+    /// option). The line under the last one stays, before the next choice in the card.
+    func inChoice() -> some View {
+        listRowSeparator(.hidden, edges: .top)
+    }
+
+    /// A segmented control in a choice: Figma's 12 above and 16 below, full width inside the card's 16.
+    func segmentRow() -> some View {
+        listRowInsets(EdgeInsets(top: 4, leading: 16, bottom: 12, trailing: 16))
+    }
+}
+
+/// Figma's full-width line, above a wheel or the dates grid: the list's line moved out to the card's edges.
+private struct FullWidthLine: ViewModifier {
+    let on: Bool
+    func body(content: Content) -> some View {
+        if on {
+            content
+                .alignmentGuide(.listRowSeparatorLeading) { _ in -16 }
+                .alignmentGuide(.listRowSeparatorTrailing) { d in d.width + 16 }
+        } else {
+            content
+        }
     }
 }
 
@@ -505,14 +492,6 @@ struct HowMuchEditor: View {
         guard !text.isEmpty else { return nil }
         guard let n = GoalNumber.parse(text), n > 0 else { return "Enter a number above 0, with up to 2 decimal places." }
         return nil
-    }
-}
-
-private extension View {
-    /// A choice's own setting, indented under it so it reads as part of that choice.
-    func nested() -> some View {
-        padding(.leading, 22)
-            .font(.subheadline)
     }
 }
 

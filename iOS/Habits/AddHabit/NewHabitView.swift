@@ -794,7 +794,7 @@ struct HabitForm: View {
     private var repeatRow: some View {
         screenRow("How Often", value: often.often(hasAmount: false).label(hasAmount: false, weekStart: weekStart)) {
             HowOftenEditor(draft: $often, amountText: nil, checklist: false, limit: false, start: startDate,
-                           weekStart: weekStart, sentence: screenText, task: true)
+                           weekStart: weekStart, task: true)
                 .onAppear { focus = nil }
         }
         .accessibilityIdentifier("how-often-row")
@@ -895,7 +895,7 @@ struct HabitForm: View {
             }
             screenRow("How Often", value: plan.often.label(hasAmount: plan.hasAmount, checklist: plan.checklist, weekStart: weekStart)) {
                 HowOftenEditor(draft: $often, amountText: amountWords, checklist: plan.checklist, limit: type == .cutBack,
-                               start: startDate, weekStart: weekStart, sentence: screenText, amountExpected: hasAmount)
+                               start: startDate, weekStart: weekStart, amountExpected: hasAmount)
                     .onAppear { focus = nil }
             }
             .accessibilityIdentifier("how-often-row")
@@ -1617,7 +1617,8 @@ struct CheckRow: View {
                 Spacer(minLength: 8)
                 Image(systemName: "checkmark").fontWeight(.semibold).foregroundStyle(Color.ink).opacity(selected ? 1 : 0)
             }
-            .frame(minHeight: 44)
+            // No minimum height of its own: the list's row already gives 15 above and below (52 for one line, Figma's
+            // Checkmark row), and a 44-point frame inside it made every row 74.
             .contentShape(Rectangle())
         }
         .accessibilityLabel(title)
@@ -1735,7 +1736,10 @@ struct ColorGrid: View {
     }
 }
 
-/// Seven toggles, starting from the user's week start.
+/// Figma's Day toggle, Week (`1075:1966`): seven 40-point circles from the person's week start, never stretched, the
+/// space left between them. A button that acts as a toggle, as Apple says to use outside a list: Tertiary System Fill,
+/// chosen Ink with the letter in On Ink. At the accessibility sizes the letters become the days' names, one under
+/// another, so they never shrink or clip.
 struct WeekdayPicker: View {
     @Binding var selection: Set<Int>
     let firstWeekday: Int
@@ -1745,71 +1749,72 @@ struct WeekdayPicker: View {
         let symbols = Calendar.current.veryShortStandaloneWeekdaySymbols
         let full = Calendar.current.standaloneWeekdaySymbols
         let order = (0..<7).map { (firstWeekday - 1 + $0) % 7 + 1 }
-        let layout = dynamicType.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: 6)) : AnyLayout(HStackLayout(spacing: 2))
+        let big = dynamicType.isAccessibilitySize
+        let layout = big ? AnyLayout(VStackLayout(alignment: .leading, spacing: 8)) : AnyLayout(HStackLayout(spacing: 0))
         layout {
-            ForEach(order, id: \.self) { day in
+            ForEach(Array(order.enumerated()), id: \.element) { index, day in
                 let on = selection.contains(day)
+                if index > 0 && !big { Spacer(minLength: 0) }
                 Button {
                     if on { if selection.count > 1 { selection.remove(day) } } else { selection.insert(day) }
                 } label: {
-                    Text(dynamicType.isAccessibilitySize ? full[day - 1] : symbols[day - 1])
+                    Text(big ? full[day - 1] : symbols[day - 1])
                         .font(.subheadline.weight(.semibold))
                         .foregroundStyle(on ? Color.onInk : Color.primary)
-                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .padding(.horizontal, big ? 16 : 0)
+                        .frame(minWidth: 40, minHeight: 40)
                         .background(Capsule().fill(on ? Color.ink : Color(.tertiarySystemFill)))
-                        .overlay(alignment: .topTrailing) {
-                            if on { Image(systemName: "checkmark.circle.fill").font(.caption2).foregroundStyle(Color.ink, Color(.systemBackground)).accessibilityHidden(true) }
-                        }
+                        .contentShape(Capsule())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(full[day - 1])
-                .accessibilityValue(on ? "Selected" : "Not selected")
                 .accessibilityAddTraits(on ? .isSelected : [])
             }
         }
-        .padding(.vertical, 4)
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
-/// 1–31, like the Calendar app's monthly repeat.
+/// Figma's Day toggle, Date (`1075:1966`): 1–31 seven a row, as iOS's graphical date picker draws a month: the number
+/// alone until chosen, then Body Medium in On Ink on a 40-point Ink circle; 8 between rows, the space left between
+/// columns. A plain `Grid`, never a lazy grid in a list row (S13). Four a row at the accessibility sizes.
 struct MonthDatePicker: View {
     @Binding var selection: Set<Int>
     @Environment(\.dynamicTypeSize) private var dynamicType
 
     var body: some View {
-        // Seven a row like the Calendar app (four at the accessibility sizes), in a plain Grid: an adaptive lazy grid's
-        // column count follows the row's width, which can send the form's list into an endless self-sizing loop
-        // (2 Oct 2026; Design Rules: never put a lazy grid inside a List row).
         let perRow = dynamicType.isAccessibilitySize ? 4 : 7
-        Grid(horizontalSpacing: 2, verticalSpacing: 6) {
+        Grid(horizontalSpacing: 0, verticalSpacing: 8) {
             ForEach(Array(stride(from: 1, through: 31, by: perRow)), id: \.self) { start in
                 GridRow {
-                    ForEach(start...min(start + perRow - 1, 31), id: \.self) { date in
-                        dateButton(date)
+                    ForEach(start..<(start + perRow), id: \.self) { date in
+                        if date <= 31 {
+                            dateButton(date).frame(maxWidth: .infinity)
+                        } else {
+                            Color.clear.frame(maxWidth: .infinity, maxHeight: 1)
+                        }
                     }
                 }
             }
         }
-        .padding(.vertical, 4)
     }
 
     private func dateButton(_ date: Int) -> some View {
-                let on = selection.contains(date)
-                return Button {
-                    if on { if selection.count > 1 { selection.remove(date) } } else { selection.insert(date) }
-                } label: {
-                    Text("\(date)")
-                        .font(.subheadline.weight(.semibold).monospacedDigit())
-                        .foregroundStyle(on ? Color.onInk : Color.primary)
-                        .frame(maxWidth: .infinity, minHeight: 44)
-                        .background(Capsule().fill(on ? Color.ink : Color(.tertiarySystemFill)))
-                        .overlay(alignment: .topTrailing) {
-                            if on { Image(systemName: "checkmark.circle.fill").font(.caption2).foregroundStyle(Color.ink, Color(.systemBackground)).accessibilityHidden(true) }
-                        }
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel("Day \(date)")
-                .accessibilityAddTraits(on ? .isSelected : [])
+        let on = selection.contains(date)
+        return Button {
+            if on { if selection.count > 1 { selection.remove(date) } } else { selection.insert(date) }
+        } label: {
+            Text("\(date)")
+                .font(on ? .body.weight(.medium) : .body)
+                .monospacedDigit()
+                .foregroundStyle(on ? Color.onInk : Color.primary)
+                .frame(minWidth: 40, minHeight: 40)
+                .background(Circle().fill(on ? Color.ink : Color.clear))
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Day \(date)")
+        .accessibilityAddTraits(on ? .isSelected : [])
     }
 }
 

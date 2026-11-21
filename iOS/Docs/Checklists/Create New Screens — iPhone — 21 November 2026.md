@@ -19,7 +19,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   person was and shows a banner with the routine's name ("“Meds” created · Undo"), nothing else.
 - [ ] 5. **All Day** and **Anytime** are built in: several reminders put a habit in All Day by itself, none or one
   leaves it where it is (Anytime by default). Morning, Afternoon, Evening: one choice only.
-- [ ] 6. How Often's pages: Figma's new spacing.
+- [x] 6. How Often's pages: Figma's new spacing.
 
 ## The screens, in the user's order
 
@@ -31,7 +31,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 - [x] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
 - [x] **Icon picker** (`1074:932`, Icon choice `4748:34294`)
 - [x] **Colour** (`1074:161496`)
-- [ ] **How Often** (`1075:161386`, 15 variants)
+- [x] **How Often** (`1075:161386`, 15 variants)
 - [ ] **Routine page** (`4754:46072`) and **Edit Routine** (`830:265`)
 - [ ] **Reminders** (`1100:2996`) and Allow Notifications? (`1164:344717`, iOS's own alert)
 - [ ] **How Much** (`1102:2782`) and **Unit** (`1102:3316`)
@@ -222,3 +222,42 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   name and Selected. A fixed palette, so not iOS's `ColorPicker`.
 - **Checked on the Simulator:** light against Figma (Yellow chosen), picked Indigo and the sheet closed with the form's
   Icon and Colour in indigo, dark with the ring on Indigo.
+
+### How Often (`1075:161386`, Day toggle `1075:1966`) — done 21 Nov
+
+- **Built as:** `HowOftenEditor` (AddHabit/HowOftenEditor.swift), still one inset-grouped `Form` pushed from the form's
+  How Often row. Figma draws each option as a component with its controls stacked in one frame; here every control is
+  its own list row, so the list keeps row heights, insets, Dynamic Type and VoiceOver order. The lines Figma leaves out
+  inside a chosen option are hidden per row (the chosen row's bottom line, each control's top line, `inChoice`), and the
+  two lines it draws full width (above the dates grid and the wheels) are moved out to the card's edges with the
+  separator alignment guides (`FullWidthLine`).
+- **Spacing:** no section headers ("Daily", "A number of times" … are gone), 16 between cards and 16 above the first
+  (`listSectionSpacing(16)`, `contentMargins(.top, 16)`), the cards Figma groups: Every day + Several times a day;
+  Times a week, month or year; On certain days; Every few days, weeks, months; On a date; a task's A while after it’s
+  done. Settings sit flush under their choice in Body, no longer indented in Subheadline.
+- **Gone, as in Figma:** the sentence pinned at the top (`stickySentence`, and the `sentence` argument), the Next row
+  under the set-day rhythms, the footer under A while after it’s done, and the Every N months stepper under On a date
+  (every few months on the start date's date is Every few months). The notes for 29–31 and 29 February stay: they only
+  show for those dates.
+- **On certain days:** Weekdays and Weekends are Small Bordered capsules tinted Ink (Ink at 18 %), Subheadline, 8 apart,
+  above the seven days.
+- **Day toggle** (shared, so ScheduleEditor gets it too): `WeekdayPicker` is seven 40-point circles, never stretched,
+  Tertiary System Fill, chosen Ink with On Ink, no tick badge; at the accessibility sizes the days' names stack.
+  `MonthDatePicker` is iOS's graphical date picker's look: the number alone, chosen Body Medium on an Ink circle, 8
+  between rows, a plain `Grid` (S13).
+- **On a date:** Month | Year; a month's Repeat on is a Pop-up button (`Picker(.menu)`, value in Ink): Dates (the
+  grid), The last day, A weekday. A weekday and a year's date are Figma's Wheel picker, one band across two wheels,
+  through `WheelPicker` (UIKit's `UIPickerView`: two SwiftUI wheels draw two bands, the Rulebook, 6 Nov): first |
+  Friday, November | 21. This removes the old `ViewThatFits` phrase row (S10) and the two Month and Date pop-ups.
+  `WheelPicker` now hugs loosely so its band fills the card, 8 in.
+- **A while after it’s done:** Days | Weeks | Months (Years only for a task already saved with it), then Again after
+  with no unit word, as Figma.
+- **CheckRow** lost its own 44-point minimum: inside a list row (15 above and below) it made every checkmark row 74
+  tall; now 52-ish for one line, Figma's Checkmark row. Every CheckRow in the app gets it.
+- **Left as they were (words come from the model, for the logic pass):** a task's "1 week after it's done" has a straight
+  apostrophe (`HowOften.phrase`), and Every few months chosen says "Every month", where Figma says "On the 23rd of every
+  month".
+- **Checked on the Simulator:** Every day, Twice a day, 3 times a week, Every Saturday, Every other week with and
+  without set days, the 21st of every month (grid), the third Saturday (wheel), every year on November 21 (wheel), the
+  task's list and 1 week after it's done in dark. Cut down's three "At most" rows weren't opened (only its headers
+  changed).
