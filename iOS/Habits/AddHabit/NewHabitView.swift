@@ -10,9 +10,9 @@ enum ItemType: String, CaseIterable, Identifiable {
     /// replaces "Count it" because amounts can be decimals and units like km, not only counts.
     var title: String {
         switch self {
-        case .doIt: "Check it off"
-        case .amount: "Track an amount"
-        case .time: "Time it"
+        case .doIt: "Check It Off"
+        case .amount: "Track an Amount"
+        case .time: "Time It"
         case .checklist: "Checklist"
         case .cutBack: "Cut Down"
         case .quit: "Quit"
@@ -26,7 +26,7 @@ enum ItemType: String, CaseIterable, Identifiable {
         case .doIt: "Done or not done."
         case .amount: "How many or how much."
         case .time: "How long, with a timer."
-        case .checklist: "A short list to tick off."
+        case .checklist: "One habit, several steps."
         case .cutBack: "Set a maximum and log how much."
         case .quit: "Stop completely. Track the time since you stopped."
         case .task: "Something to get done."
@@ -38,9 +38,9 @@ enum ItemType: String, CaseIterable, Identifiable {
     var example: String {
         switch self {
         case .doIt: "Make your bed"
-        case .amount: "Drink 8 glasses of water"
-        case .time: "Meditate for 10 minutes"
-        case .checklist: "Clean kitchen — dishes, sink, floor"
+        case .amount: "8 glasses of water"
+        case .time: "Meditate 10 min"
+        case .checklist: "Workout: push-ups, squats"
         case .cutBack: "Coffee, 2 a day"
         case .quit: "Smoking"
         case .task: "Pay the rent"
@@ -66,7 +66,7 @@ enum ItemType: String, CaseIterable, Identifiable {
         case .doIt: "checkmark.circle"
         case .amount: "number"
         case .time: "timer"
-        case .checklist: "list.bullet.clipboard"
+        case .checklist: "checklist"
         case .cutBack: "gauge.with.dots.needle.33percent"
         case .quit: "nosign"
         case .task: "calendar"
@@ -169,7 +169,7 @@ struct NewItemChoices: View {
     @ViewBuilder
     private func questions(_ kind: Kind) -> some View {
         switch kind {
-        case .good: question("How do you want to track it?", [.doIt, .amount, .time, .checklist])
+        case .good: question("How Do You Want to Track It?", [.doIt, .amount, .time, .checklist])
         case .bad: question("Quit or Cut Down?", [.quit, .cutBack])
         }
     }

@@ -25,7 +25,7 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
 
 - [x] **What Do You Want to Do?** (`1061:2016`)
 - [x] **Quit or Cut Down** (`1061:2101`), with the example chips
-- [ ] **How Do You Want to Track It?** (`1062:2`)
+- [x] **How Do You Want to Track It?** (`1062:2`)
 - [ ] **What Kind of Task?** (`1109:2`)
 - [ ] **Add a Routine** (New Routine: Edit routine `Mode=New`, `4761:33352`, `4761:33668`) and its banner
 - [ ] **Create new form** (`1065:2597`: seven types, the task's date picker, on repeat, 200 %)
@@ -77,3 +77,14 @@ screenshot of the same variant. Not yet on the real iPhone (U9).
   maximum and log how much." `ItemType.example` now holds only the example ("Smoking"); the tag adds "e.g.".
 - **Checked on the Simulator:** light and dark against the Figma screenshot (`-uitest -open-new`, then Quit or Cut
   Down).
+
+### How Do You Want to Track It? (`1062:2`) — done 21 Nov
+
+- **Built as:** the same question page as Quit or Cut Down? (`question(_:_:)`), `PageHeading` then one card of four
+  `ChoiceLabel` rows with their `ExampleTag`. No title in the bar, only iOS's back button.
+- **Words and symbols from Figma:** Check It Off "Done or not done." (`checkmark.circle`, e.g. Make your bed); Track an
+  Amount "How many or how much." (`number`, e.g. 8 glasses of water); Time It "How long, with a timer." (`timer`,
+  e.g. Meditate 10 min); Checklist "One habit, several steps." (`checklist`, was `list.bullet.clipboard`; e.g.
+  Workout: push-ups, squats). All four are free and carry no badge; each opens its form as before.
+- **Checked on the Simulator:** light and dark against the Figma screenshot (`-uitest -open-new`, then Build or
+  Maintain).
