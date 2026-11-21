@@ -39,6 +39,19 @@ nonisolated enum Palette {
     /// `iOS/Custom/On Ink`: words and icons on Ink. White in light mode, #1C1C1E in dark.
     static let onInk = dynamic(light: 0xFFFFFF, dark: 0x1C1C1E)
 
+    /// `iOS/Custom/Destructive`: the red of a delete or erase row. iOS's own Red in light mode; in dark mode the same
+    /// Red with less saturation and brightness (×0.84, ×0.86: iOS 26's #FF4245 becomes about #DB5355), because the
+    /// system's dark Red pulled the eye to Delete My Data and Erase All My Data before anything else on Backup & Sync
+    /// (the user, 21 Nov 2026: "too bright … catching too much attention"). Worked out from `.systemRed` at draw time, so
+    /// it follows iOS's Red from version to version; with Increase Contrast on it stays iOS's own, unsoftened.
+    static let destructive = Color(uiColor: UIColor { traits in
+        let red = UIColor.systemRed.resolvedColor(with: traits)
+        guard traits.userInterfaceStyle == .dark, traits.accessibilityContrast != .high else { return red }
+        var hue: CGFloat = 0, saturation: CGFloat = 0, brightness: CGFloat = 0, alpha: CGFloat = 0
+        red.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return UIColor(hue: hue, saturation: saturation * 0.84, brightness: brightness * 0.86, alpha: alpha)
+    })
+
     /// A colour from 0xRRGGBB, in sRGB.
     static func srgb(_ value: UInt32) -> UIColor {
         UIColor(red: CGFloat(value >> 16 & 0xFF) / 255, green: CGFloat(value >> 8 & 0xFF) / 255,
@@ -65,6 +78,8 @@ extension Color {
     static let ink = Palette.ink
     /// `iOS/Custom/On Ink` (`Palette.onInk`).
     static let onInk = Palette.onInk
+    /// `iOS/Custom/Destructive` (`Palette.destructive`): iOS's Red, softened in dark mode.
+    static let destructive = Palette.destructive
 }
 
 // MARK: - Habit colours

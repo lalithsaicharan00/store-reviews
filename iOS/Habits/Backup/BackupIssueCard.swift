@@ -17,7 +17,7 @@ struct BackupIssueSection: View {
             Section {
                 CardNotice(symbol: status.symbol, title: status.title, message: status.line, problem: status.needsYou,
                            id: "cloud-card") {
-                    Button("Open iCloud & Backup") { open() }
+                    Button("Open Backup & Sync") { open() }
                         .accessibilityIdentifier("cloud-card-open")
                 }
             }
