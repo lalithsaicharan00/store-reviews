@@ -1,0 +1,21 @@
+{
+  "app": "Routinery",
+  "sources": [
+    {
+      "store": "appstore",
+      "path": "Research/App Store Reviews/5. Routine Planner, Habit Tracker - Daily Time Management for ADHD/reviews.jsonl",
+      "app_id": "1450486923",
+      "listed_as": "Routine Planner, Habit Tracker",
+      "developer": "Routinery Corp.",
+      "collected": "2026-09-08"
+    },
+    {
+      "store": "play",
+      "path": "Research/Play Store Reviews/5. Routine Planner, Habit Tracker/reviews.jsonl",
+      "app_id": "com.alt.goodmorning",
+      "listed_as": "Routine Planner, Habit Tracker",
+      "developer": "Routinery Corp.",
+      "collected": "2026-09-08"
+    }
+  ]
+}
