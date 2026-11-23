@@ -1,18 +1,162 @@
 # Prompt: Label Every Review (Pass 1)
 
-Written by Claude (Claude Code), 22 November 2026, at the user's request. Prompt version **1** (the `prompt` field in
+Written by Claude (Claude Code), 22 November 2026, at the user's request. Prompt version **2** since 23 November 2026,
+when "Calls settled while labelling" was added (the `prompt` field in
 every label it makes). If you change the prompt, raise the version here and `PROMPT_VERSION` in `Tools/label.py`.
 
-Copy everything inside the box. Change the two lines at the top: the app, and the year (or `all`). To run several
-sessions at once, give each a different year; never two sessions on the same year.
+## How it runs (from 23 November 2026)
+
+One cycle labels and checks 50 reviews, then saves them to GitHub:
+
+1. **Two Sonnet agents label, side by side.** The main chat reserves two blocks of 25 reviews (`claim`) and starts two
+   Claude Sonnet 5.5 agents (high effort) at the same time, one per block. Each labels its 25 reviews one at a time,
+   in order, with the tool, exactly as the labeller's instructions say. Every label is saved in the year's files the
+   moment it's made, so nothing has to be handed over.
+2. **One Opus agent checks.** Once both have finished, a fresh Claude Opus 5.5 agent (high effort) reads the standard
+   (README and the labeller's instructions), checks the 50 new labels on two check pages (`page`: 25 reviews in full,
+   each with its label on one line), corrects wrong labels with `save --replace`, marks each page checked (`checked`),
+   and replies in one line.
+3. **The main chat commits and pushes** the checked labels to `main`, then starts the next cycle.
+
+**The main chat (Claude Opus 5.5, high effort) only orchestrates.** It reads only the agents' one-line replies and the
+tool's `status`. It never reads reviews, labels or check pages, so it grows by about 1,000 tokens per cycle and one
+chat can run a whole year. **Never more than two agents run at once**, and the checker never runs while a labeller
+does.
+
+Why these numbers:
+
+- **25 per Sonnet agent:** its chat grows about 2,000 tokens per review, so a fresh agent every 25 keeps each call
+  small.
+- **25 per page, 50 per checker:** a page of 25 is about 10,000–15,000 tokens, small enough to read every review and
+  label properly; a page with long reviews stops early (20,000 characters of review text) and the rest come on the
+  next page, so nothing is skimmed. Each checker re-reads the standard (about 15,000 tokens), so giving it two pages
+  halves that cost while keeping it small.
+- **One main chat per year:** it only holds short replies. Start a fresh one for the next year.
+
+Nothing is lost if a chat or agent stops: `status` shows, for every year, how many reviews are labelled and checked
+and any open claim with reviews still to label; the next chat finishes those first.
+
+## How to start a chat
+
+Start a fresh chat with Claude Opus 5.5 at high effort and paste this starter, changing the values in square
+brackets. The chat reads this file, so a rule added here reaches every later chat without changing the starter. Run
+one chat per year; never two chats on the same year.
 
 ````text
-APP: Routinery
-YEAR: all
+Orchestrate store review labelling. Read "Review Labels/Prompt.md" and follow everything inside its box "The
+orchestrator's instructions" exactly. Don't read the other boxes: the agents read those.
 
-You are labelling store reviews for the app named in APP above, in the repository at
-/Users/lalith/Desktop/store reviews. The folder is "Review Labels/". Read "Review Labels/README.md" first: it has the
-layout and every field. This prompt tells you how to do the reading.
+APP: [Routinery]
+YEAR: [2023]
+
+Repository: C:\Users\lalit\Desktop\store-reviews (Windows; Git Bash).
+````
+
+## The orchestrator's instructions (the main Opus chat)
+
+````text
+APP and YEAR are given in the starter message. Repository: C:\Users\lalit\Desktop\store-reviews. Run the tool from the
+repository root in Git Bash as: PYTHONUTF8=1 python "Review Labels/Tools/label.py" <command> "<APP>" …
+
+Your job is only to run agents and save their work. You never read reviews, labels, check pages or the other boxes in
+this file, and you never label or correct a label yourself. Keep this chat small: no summaries beyond the lines below.
+
+Never more than two agents at once. The two labellers run together; the checker runs only after both have finished,
+on its own; the commit comes only after the checker has finished. Wait for each step before the next.
+
+Repeat this cycle until the year is done:
+
+1. Run  status "<APP>". Read YEAR's line ("N of T labelled · C checked") and any "open claim" lines under it.
+   - Open claims with reviews left (a chat or agent stopped early): give those claims to the labellers in step 2
+     instead of making new ones.
+   - If C is less than N and there is no open claim: labels are waiting to be checked; go to step 3.
+   - If N equals T, C equals N and there is no open claim: the year is done; go to step 6.
+
+2. Labellers. Make two claims, one after the other:  claim "<APP>" --year <YEAR> --count 25  (each prints
+   "Claimed 25 reviews in <YEAR>: <CLAIM>"). If the year has fewer than 26 reviews left, make one claim and start one
+   labeller. Then start one labeller per claim in the same message, so they run side by side: the Agent tool,
+   subagent_type general-purpose, model sonnet, effort high, foreground. Give each exactly this brief, with APP, YEAR
+   and its own CLAIM filled in:
+
+     Label store reviews. Read "Review Labels/Prompt.md" and follow everything inside its box "The labeller's
+     instructions" exactly. APP: <APP>. YEAR: <YEAR>. CLAIM: <CLAIM>. Repository: C:\Users\lalit\Desktop\store-reviews
+     (Windows; Git Bash). Label every review in your claim, one at a time, saving each with the tool, until it says
+     the claim is done; then reply in one line: how many you saved, and the ids of any you found hard.
+
+   Wait for both. If one stops before its claim is done, start one labeller again for that claim.
+
+3. Checker. Start one checker on its own: the Agent tool, subagent_type general-purpose, model opus, effort high,
+   foreground. Give it exactly this brief, with APP and YEAR filled in:
+
+     Check store review labels. Read "Review Labels/Prompt.md" and follow everything inside its box "The checker's
+     instructions" exactly. APP: <APP>. YEAR: <YEAR>. Repository: C:\Users\lalit\Desktop\store-reviews (Windows; Git
+     Bash). Reply in one line, as that box says.
+
+4. Commit and push, once the checker has replied. Run  status "<APP>"  for the counts, then from the repository root:
+
+     git add "Review Labels/<APP>" "Review Labels/Prompt.md"
+     git commit -m "Review Labels: <APP> <YEAR> <N> of <T> labelled and checked [skip ci]" -m "Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>"
+     git pull --rebase origin main
+     git push origin main
+
+   Commit only those paths; never another session's files. If the pull or the push fails (a conflict, a rejection),
+   stop and tell the user in one line; never force a push.
+
+5. Write one line:  2023: 628 of 1,763 done, 4,723 left. Checked 50, corrected 4 (paid 2, still_using 2). Pushed.
+   Take the counts from status and the kinds from the checker's reply.
+
+   If the same kind of correction appears in two checkers' replies (or three times in one), add a rule for it before
+   the next cycle: read only the section "Calls settled while labelling" in this file, add one short line with the
+   date that would have prevented it, and say so in one line. The next commit carries it.
+
+6. Go back to step 1. When the year is done: write the final progress line, the total checked and corrected in this
+   chat and the main kinds of correction, and stop.
+````
+
+## The checker's instructions (the Opus agent)
+
+````text
+APP and YEAR are given in the message that started you. Repository: C:\Users\lalit\Desktop\store-reviews. Run the tool
+from the repository root in Git Bash as: PYTHONUTF8=1 python "Review Labels/Tools/label.py" <command> "<APP>" …
+
+You don't label reviews. Sonnet agents label them, one review at a time; you read every label they saved and correct
+the wrong ones. Accuracy is the point: a wrong paid status, an invented who or a missed problem spoils later research.
+
+First, read "Review Labels/README.md" and the box "The labeller's instructions" in this file, all of it, including
+"Calls settled while labelling". They are the standard you check against.
+
+Then, page by page:
+
+1. Run  page "<APP>" --year <YEAR>. It shows up to 25 saved labels not yet checked, each review in full with its label
+   on one line. If it says there is nothing to check, go to step 4.
+
+2. Read every review in full and its label against the standard. A label is wrong when it breaks a rule or misreads
+   the review: a wrong paid or still_using status, a who that isn't first-person or is guessed, a problem or liked
+   item that is missing, merged or invented, a claim from outside the review in note, nothing_useful set wrongly, the
+   wrong language. A call where two readings both fit the rules is not wrong: leave it. For each wrong label, send
+   the whole corrected label (all thirteen fields, as in the labeller's instructions) with
+   save "<APP>" --year <YEAR> --replace. Change only what is wrong; don't reword labels that are right.
+
+3. Run  checked "<APP>"  to mark the page checked. Go back to step 1.
+
+4. Reply in exactly one line:  Checked 50, corrected 4: paid 2, still_using 2 (ids: 9861014690, 05bae83b-…).
+   Name each kind of correction by its field. Don't commit, and never label a review that has no label yet.
+````
+
+## The labeller's instructions (the Sonnet agent)
+
+````text
+APP, YEAR and CLAIM are given in the message that started you. CLAIM is your own block of reviews: another labeller
+may be working on the next block at the same time, so add  --claim <CLAIM>  to every next and save (in place of
+--year), and stop when the tool says the claim is done. (Labelling in a chat of your own, with no CLAIM: use --year,
+and stop after the number of reviews the user gave.)
+
+You are labelling store reviews for the app named in APP, in the repository at C:\Users\lalit\Desktop\store-reviews
+(on the Mac: /Users/lalith/Desktop/store reviews). The folder is "Review Labels/". Read "Review Labels/README.md"
+first: it has the layout and every field. This prompt tells you how to do the reading.
+
+On Windows run the tool from the repository root in Git Bash as `PYTHONUTF8=1 python "Review Labels/Tools/label.py" …`
+(PYTHONUTF8=1 keeps Korean, Japanese and other scripts intact); on the Mac use `python3 "Review Labels/Tools/label.py" …`.
 
 ## Why
 
@@ -35,29 +179,34 @@ than speed.
 
 ## The loop
 
-1. Get the next review:
+1. Get the next review (from the repository root, /c/Users/lalit/Desktop/store-reviews):
 
-       cd "/Users/lalith/Desktop/store reviews"
-       python3 "Review Labels/Tools/label.py" next "<APP>"            # YEAR: all
-       python3 "Review Labels/Tools/label.py" next "<APP>" --year 2021  # one year
+       PYTHONUTF8=1 python "Review Labels/Tools/label.py" next "<APP>" --claim <CLAIM>   # an agent with a claim
+       PYTHONUTF8=1 python "Review Labels/Tools/label.py" next "<APP>" --year 2023       # a chat of your own
 
 2. Read it fully. Answer the questions below for this review only.
 
 3. Save its label by sending JSON on standard input (keep the quoted 'EOF' so apostrophes are safe):
 
-       python3 "Review Labels/Tools/label.py" save "<APP>" <<'EOF'
+       PYTHONUTF8=1 python "Review Labels/Tools/label.py" save "<APP>" --claim <CLAIM> <<'EOF'
        { …the label… }
        EOF
 
-   Add --year 2021 to save if you were given one year, so you stay inside it.
+   With no claim, use --year in its place (leave it out when YEAR is all).
 
 4. If it says NOT SAVED, fix exactly what it lists and save again. Never weaken a label just to get it saved (for
    example by dropping a true finding because its quote was hard to copy): copy the quote properly instead.
 
-5. A saved label prints the next review. Go back to step 2. Carry on until the tool says "All done".
+5. A saved label prints the next review. Go back to step 2. Carry on until the tool says the claim is done (or, in a
+   chat of your own, until you have saved the number the user gave, or the tool says "All done").
 
-To correct a label you already saved, send the whole corrected label with --replace. To look at one again:
-python3 "Review Labels/Tools/label.py" show "<APP>" <review_id>. To see progress: status "<APP>".
+When you stop: reply in one line, how many you saved and the ids of any you found hard (in a chat of your own, the
+progress line `2023: 603 of 1,763 done, 4,748 left.` from the tool's numbers, about every six reviews and at the
+end). Don't commit.
+
+To correct a label you already saved, send the whole corrected label with --replace (after the app name:
+`save "<APP>" --year 2023 --replace`). To look at one again: `show "<APP>" <review_id>`. To see progress:
+`status "<APP>"`.
 
 ## The label
 
@@ -166,14 +315,38 @@ note — one short sentence a later reader must know, or null: "sarcastic", "abo
   note.
 - A duplicate (the tool prints a NOTE): label it anyway, on its own.
 - A long review: read all of it. Long reviews hold the most about who and why.
+- An edited review (EDIT, UPDATE, "updating my review"): label every part, the newest update as carefully as the
+  original. Say in note which problems are from the older part if the update says they were fixed.
+
+### Calls settled while labelling (prompt 2, 23 November 2026)
+
+Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them so every label is made the same way.
+
+- who: first-person facts only. "Great for people with ADHD" is a general claim: note, not who. Devices they say
+  they use (a watch, an iPad) count as facts about themselves.
+- paid:
+  - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
+  - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
+    or "I won't until then" it is refused, the condition as why.
+  - A price complaint from someone who says they won't pay, or whom the price or paywall put off ("got pay walled
+    way too quick", "I will move on without a lifetime option") → refused, and a dislike in problems.
+  - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
+  - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
+- still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
+  with that line as the quote. quit only when they say they stopped, deleted, cancelled or uninstalled; a general
+  put-down ("pen and paper will do") isn't quit. A line like "I won't keep paying" or "I'm looking for something new"
+  is about_to_quit.
+- liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
+- note: only what the review says or how it reads. Never a claim from outside the review (what a version number
+  means, what other apps do), and never names or phone numbers.
+- Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
 
 ## Stopping and starting again
 
-Everything is saved after each review, so you can stop at any time. A new session runs the same prompt: next always
-gives the first review without a label. Never start a year that another session is reading.
+Everything is saved after each review, so you can stop at any time. A claim keeps its reviews for you: if you stop
+early, the next labeller carries on with the same claim. Never work on a claim or year that another labeller is on.
 
 ## When it says "All done"
 
-Run status "<APP>" and report, in plain words: how many reviews were labelled, any you found hard and why, and anything
-in the prompt or the fields that didn't fit what people wrote. Don't commit; the user decides.
+Reply as in "When you stop" above, adding anything in the prompt or the fields that didn't fit what people wrote.
 ````
