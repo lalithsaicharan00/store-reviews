@@ -387,6 +387,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   counts too ("no technical issues so far", "no ads").
   (23 Nov 2026, Routinery 2024, three in one check) Thanks to the developer or support for help or a fix is a liked
   item ("helpful support", "developer fixed a bug"; "Thank you so much for helping").
+  (23 Nov 2026, Routinery 2024, missed again) Last step for liked: drop any item that is a length of use ("a
+  week in") or names nothing ("makes all the difference"). A first day or first routine goes in how_long_used.
+  (24 Nov 2026, Routinery 2026, liked in two checks) Each liked quote shows the very thing its item names ("cute
+  design" needs the words about the design); "free of charge" said as praise is a liked item, with paid not_said.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
