@@ -341,6 +341,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   ("I feel so much more organized with this app", "elle m'aide vraiment à suivre mes routines") → using, even when
   the rest of the review is about price or the free version. It holds inside a bug report too ("now it just loads
   and loads when I open it", "notifications come while I'm doing a routine") → using.
+  (23 Nov 2026) A present-tense complaint about what the app does or fails to do for them now, in any language
+  ("no me notifica", "the alarm still rings") → using; not_said only when every line is past tense or general.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
