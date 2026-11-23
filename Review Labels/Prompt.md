@@ -336,6 +336,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - A price complaint from someone who says they won't pay, or whom the price or paywall put off ("got pay walled
     way too quick", "I will move on without a lifetime option") → refused, and a dislike in problems.
   - (23 Nov 2026) "I would love to upgrade, but [the price, glitches]" → refused, what holds them back as why.
+  - (24 Nov 2026, Routinery 2026) Put off by how paying works (a trial that renews by itself, a card asked for
+    up front) → refused, that as why.
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
     (23 Nov 2026, Routinery 2024, missed again) Praise of what's free ("great free usability", "all the essential
@@ -383,6 +385,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   about_to_quit. With no such line, any present-tense line about their own use → using, never not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
+  Advice to others ("everyone should try it") is never their own reason.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -420,6 +423,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) A quote starts and ends on whole words; never cut into a word.
   (23 Nov 2026, Routinery 2024, three in one check) If an item says more than its quote shows (stuck, then "kept
   going after restarting"), quote the longer unbroken part that shows it all, or cut the item to what the quote shows.
+  (24 Nov 2026, Routinery 2026, in problems, why_chose and liked across four checks) Last step before saving: read
+  each item against its quote alone. If it says more ("cannot be recovered" for "not sure how to get them back",
+  "sent feedback" with no such words), cut it to the reviewer's own words or lengthen the quote.
 - problems: (23 Nov 2026, Routinery 2024, five in one check) Before saving, check every clause for a separate
   complaint or plea, including side remarks and a closing request ("please be free the app"): each is its own item.
 
