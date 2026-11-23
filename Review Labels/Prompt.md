@@ -350,6 +350,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
   only in problems. A phrase that can be read two ways is called unclear in note, never settled as one reading.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
+  (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
+  Fixes they tried for one problem belong in that problem's item, not a new one.
 
 ## Stopping and starting again
 
