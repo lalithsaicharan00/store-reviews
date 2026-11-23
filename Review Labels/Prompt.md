@@ -338,6 +338,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
     why, never only in note. "Worth the subscription" with no purchase stated stays not_said.
     (23 Nov 2026, Routinery 2024, missed twice in one check) "The free limit is fine for me" → free, even when
     the rest of the review is about features or bugs.
+    (23 Nov 2026, Routinery 2024) "Glad I didn't pay" → free, never only in note. A request for a refund → paid
+    (nothing_useful false), the request as quote.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
   with that line as the quote. quit only when they say they stopped, deleted, cancelled or uninstalled; a general
   put-down ("pen and paper will do") isn't quit. A line like "I won't keep paying" or "I'm looking for something new"
