@@ -37,3 +37,7 @@ Core/fixtures/inputs/*
 
 # Over GitHub's 100 MB limit: kept as reviews.part-*.jsonl beside it
 Research/ADHD App Reviews/Play Store/69. Alarmy - Alarm Clock & Sleep/reviews.jsonl
+
+# Review Labels: a save in progress and an open check page (label.py); never committed
+Review Labels/**/.lock
+Review Labels/**/page.json

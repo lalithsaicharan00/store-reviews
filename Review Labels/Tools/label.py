@@ -1,31 +1,46 @@
 #!/usr/bin/env python3
 """Show one review at a time, check each label, save it.
 
-    python3 "Review Labels/Tools/label.py" next   <App> [--year YYYY]
-    python3 "Review Labels/Tools/label.py" save   <App> [--year YYYY] [--replace]  < label.json
+    python3 "Review Labels/Tools/label.py" claim  <App> --year YYYY [--count 25]
+    python3 "Review Labels/Tools/label.py" next   <App> [--year YYYY] [--claim ID]
+    python3 "Review Labels/Tools/label.py" save   <App> [--year YYYY] [--claim ID] [--replace]  < label.json
     python3 "Review Labels/Tools/label.py" check  <App>                            < label.json
     python3 "Review Labels/Tools/label.py" show   <App> <review_id>
     python3 "Review Labels/Tools/label.py" status <App>
+    python3 "Review Labels/Tools/label.py" page    <App> [--year YYYY] [--count 25]
+    python3 "Review Labels/Tools/label.py" checked <App> [--all]
 
+claim   reserves the next 25 reviews with no label and no claim, for one labeller,
+        and prints the claim's id. Two claims let two labellers work on one
+        year at once without clashing. A claim closes when all its reviews
+        have a label.
 next    prints the next review that has no label yet (oldest year first, oldest
-        review first), in full. With --year it stays inside that year.
+        review first), in full. With --year it stays inside that year; with
+        --claim it stays inside that claim. Without --claim it skips claimed reviews.
 save    reads the reader's label (JSON) on standard input, checks it, adds the
         facts copied from the review, appends it to <year>/labels.jsonl,
         updates <year>/progress.json, then prints the next review.
 check   the same checks as save, without saving.
 show    prints one review and its saved label, if any.
-status  how far each year has got.
+status  how far each year has got (labelled, and checked).
+page    for the checker: the oldest saved labels not yet checked (25, or fewer when
+        the reviews are long), each with its review in full and its label on one line.
+checked marks the labels the last page showed as checked (<year>/checked.jsonl).
+        --all marks every label saved so far; used once, for labels made before
+        checking began.
 
 The reader never writes to labels.jsonl or progress.json by hand.
 """
 import json
+import os
 import re
 import sys
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 SCHEMA = 1
-PROMPT_VERSION = 1
+PROMPT_VERSION = 2
 LABELS_ROOT = Path(__file__).resolve().parent.parent
 
 PAID = {"paid", "trial", "charged_unexpectedly", "refused", "free", "not_said"}
@@ -80,15 +95,74 @@ def find_review(app, review_id):
     return None, None
 
 
-def next_review(app, only_year=None):
+def next_review(app, only_year=None, claim=None):
+    """The next review to label: within a claim if one is given, otherwise the first one
+    that has no label and isn't reserved by an open claim."""
+    if claim:
+        y, ids = find_claim(app, claim)
+        if y is None:
+            return None, None
+        done = labelled_ids(app, y)
+        for r in reviews(app, y):
+            if r["review_id"] in ids and r["review_id"] not in done:
+                return y, r
+        return None, None
     for y in years(app):
         if only_year and y != only_year:
             continue
         done = labelled_ids(app, y)
+        reserved = {i for ids in read_claims(app, y).values() for i in ids}
         for r in reviews(app, y):
-            if r["review_id"] not in done:
+            if r["review_id"] not in done and r["review_id"] not in reserved:
                 return y, r
     return None, None
+
+
+# ---------- claims: two labellers on one year without clashing ----------
+
+def read_claims(app, year):
+    p = app_dir(app) / year / "claims.json"
+    return json.loads(p.read_text()) if p.exists() else {}
+
+
+def write_claims(app, year, claims):
+    p = app_dir(app) / year / "claims.json"
+    if claims:
+        p.write_text(json.dumps(claims, indent=1) + "\n")
+    elif p.exists():
+        p.unlink()
+
+
+def find_claim(app, claim):
+    for y in years(app):
+        c = read_claims(app, y)
+        if claim in c:
+            return y, set(c[claim])
+    return None, None
+
+
+def claim_left(app, year, claim):
+    done = labelled_ids(app, year)
+    return [i for i in read_claims(app, year).get(claim, []) if i not in done]
+
+
+class Lock:
+    """One writer at a time per year folder (two labellers save side by side)."""
+    def __init__(self, folder):
+        self.path = folder / ".lock"
+
+    def __enter__(self):
+        for _ in range(600):
+            try:
+                self.fd = os.open(self.path, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+                return self
+            except FileExistsError:
+                time.sleep(0.1)
+        sys.exit(f"NOT SAVED. {self.path} has been held for a minute. If no other save is running, delete it and save again.")
+
+    def __exit__(self, *exc):
+        os.close(self.fd)
+        os.remove(self.path)
 
 
 # ---------- printing ----------
@@ -129,7 +203,7 @@ def flat(s):
     return re.sub(r"\s+", " ", (s or "").translate(QUOTE_MAP)).strip().casefold()
 
 
-def check(app, lab, replace=False, only_year=None):
+def check(app, lab, replace=False, only_year=None, claim=None):
     errs = []
     if not isinstance(lab, dict):
         return ["The label must be one JSON object."], None, None
@@ -152,11 +226,11 @@ def check(app, lab, replace=False, only_year=None):
         errs.append("This review already has a label. Use --replace only to correct one on purpose.")
     else:
         # Strictly in order: only the review `next` shows can be labelled.
-        _, expected = next_review(app, only_year)
+        _, expected = next_review(app, only_year, claim)
         if expected is None or expected["review_id"] != r["review_id"]:
             want = expected["review_id"] if expected else "none (all done)"
             errs.append(f"Out of order. The next review to label is {want}. "
-                        f"Run `next` and label the review it shows.")
+                        f"Run `next`{' --claim ' + claim if claim else ''} and label the review it shows.")
     source = flat((r.get("title") or "") + "\n" + r["text"])
 
     def quote_ok(where, q):
@@ -298,6 +372,53 @@ def read_label_from_stdin():
         sys.exit(f"NOT SAVED. The label isn't valid JSON: {e}")
 
 
+# ---------- checking pages ----------
+
+PAGE_COUNT = 25          # labels per check page (one Sonnet batch)
+PAGE_MAX_CHARS = 20000   # a page stops early once its reviews' text passes this
+LABEL_ORDER = ["review_id", "language", "nothing_useful", "who", "why_chose", "chose_for", "liked",
+               "came_from", "paid", "problems", "how_long_used", "still_using", "note"]
+
+
+def checked_ids(app, year):
+    return {c["review_id"] for c in read_jsonl(app_dir(app) / year / "checked.jsonl")}
+
+
+def unchecked_ids(app, year):
+    return labelled_ids(app, year) - checked_ids(app, year)
+
+
+def mark_checked(app, year, ids):
+    if not ids:
+        return
+    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    with (app_dir(app) / year / "checked.jsonl").open("a") as out:
+        for i in ids:
+            out.write(json.dumps({"review_id": i, "checked_at": now}) + "\n")
+
+
+def unchecked_page(app, only_year, count, max_chars):
+    """The oldest saved labels not yet checked, in review order, within one year."""
+    for y in years(app):
+        if only_year and y != only_year:
+            continue
+        todo = unchecked_ids(app, y)
+        if not todo:
+            continue
+        labels = {l["review_id"]: l for l in read_jsonl(app_dir(app) / y / "labels.jsonl")}
+        shown, chars = [], 0
+        for r in reviews(app, y):
+            if r["review_id"] not in todo:
+                continue
+            size = len(r.get("title") or "") + len(r["text"])
+            if shown and (len(shown) >= count or chars + size > max_chars):
+                break
+            shown.append((r, labels[r["review_id"]]))
+            chars += size
+        return shown, y
+    return [], None
+
+
 # ---------- commands ----------
 
 def opt(args, name):
@@ -313,17 +434,42 @@ def main():
         sys.exit(__doc__)
     cmd, app = args[0], args[1]
     only_year = opt(args, "--year")
+    claim = opt(args, "--claim")
+    if claim and find_claim(app, claim)[0] is None:
+        sys.exit(f"No open claim {claim!r} in {app}. It may be finished: run status.")
+
+    def done_message():
+        if claim:
+            return f"Claim {claim} done: all its reviews have a label. Stop here."
+        return f"All done: every review{' in ' + only_year if only_year else ''} in {app} has a label."
 
     if cmd == "next":
-        y, r = next_review(app, only_year)
+        y, r = next_review(app, only_year, claim)
         if r is None:
-            print(f"All done: every review{' in ' + only_year if only_year else ''} in {app} has a label.")
+            print(done_message())
             return
         print_review(app, y, r)
 
+    elif cmd == "claim":
+        count = int(opt(args, "--count") or 25)
+        y, first = next_review(app, only_year)
+        if first is None:
+            print(f"Nothing to claim: every review{' in ' + only_year if only_year else ''} in {app} has a label or is claimed.")
+            return
+        with Lock(app_dir(app) / y):
+            claims = read_claims(app, y)
+            done = labelled_ids(app, y)
+            reserved = {i for ids in claims.values() for i in ids}
+            ids = [r["review_id"] for r in reviews(app, y)
+                   if r["review_id"] not in done and r["review_id"] not in reserved][:count]
+            cid = f"{y}-{datetime.now(timezone.utc).strftime('%H%M%S')}-{len(claims) + 1}"
+            claims[cid] = ids
+            write_claims(app, y, claims)
+        print(f"Claimed {len(ids)} reviews in {y}: {cid}")
+
     elif cmd in ("save", "check"):
         lab = read_label_from_stdin()
-        errs, year, r = check(app, lab, replace="--replace" in args, only_year=only_year)
+        errs, year, r = check(app, lab, replace="--replace" in args, only_year=only_year, claim=claim)
         if errs:
             print("NOT SAVED. Fix these and send the label again:")
             for e in errs:
@@ -334,19 +480,27 @@ def main():
             return
         rec = full_record(app, year, r, lab)
         path = app_dir(app) / year / "labels.jsonl"
-        if "--replace" in args:
-            rows = [l for l in read_jsonl(path) if l["review_id"] != r["review_id"]] + [rec]
-            with path.open("w") as out:
-                for l in rows:
-                    out.write(json.dumps(l, ensure_ascii=False) + "\n")
-        else:
-            with path.open("a") as out:
-                out.write(json.dumps(rec, ensure_ascii=False) + "\n")
-        write_progress(app, year)
+        with Lock(app_dir(app) / year):
+            if "--replace" in args:
+                rows = [l for l in read_jsonl(path) if l["review_id"] != r["review_id"]] + [rec]
+                with path.open("w") as out:
+                    for l in rows:
+                        out.write(json.dumps(l, ensure_ascii=False) + "\n")
+            else:
+                with path.open("a") as out:
+                    out.write(json.dumps(rec, ensure_ascii=False) + "\n")
+            write_progress(app, year)
+            if claim and not claim_left(app, year, claim):
+                claims = read_claims(app, year)
+                claims.pop(claim, None)
+                write_claims(app, year, claims)
         print(f"Saved {r['review_id']}.\n")
-        y, nxt = next_review(app, only_year)
+        if claim and find_claim(app, claim)[0] is None:
+            print(done_message())
+            return
+        y, nxt = next_review(app, only_year, claim)
         if nxt is None:
-            print(f"All done: every review{' in ' + only_year if only_year else ''} in {app} has a label.")
+            print(done_message())
         else:
             print_review(app, y, nxt)
 
@@ -359,13 +513,58 @@ def main():
             if l["review_id"] == r["review_id"]:
                 print(json.dumps(l, ensure_ascii=False, indent=2))
 
+    elif cmd == "page":
+        count = int(opt(args, "--count") or PAGE_COUNT)
+        max_chars = int(opt(args, "--max-chars") or PAGE_MAX_CHARS)
+        shown, year = unchecked_page(app, only_year, count, max_chars)
+        if not shown:
+            print(f"Nothing to check: every saved label{' in ' + only_year if only_year else ''} in {app} is checked.")
+            return
+        (app_dir(app) / year / "page.json").write_text(json.dumps([r["review_id"] for r, _ in shown]) + "\n")
+        left = sum(len(unchecked_ids(app, y)) for y in years(app) if not only_year or y == only_year)
+        print(f"── {app} · {year}: checking {len(shown)} labels · {left:,} unchecked in all ──\n")
+        for i, (r, l) in enumerate(shown, 1):
+            where = r["country"] if r["store"] == "appstore" else r["store_language"]
+            print(f"[{i}/{len(shown)}] {r['review_id']} · {r['store']} · {r['date'][:10]} · {r['rating']}★ · {where}")
+            if r.get("title"):
+                print(f"TITLE: {r['title']}")
+            print(f"TEXT: {r['text'] if r['text'].strip() else '(no text)'}")
+            print("LABEL: " + json.dumps({k: l[k] for k in LABEL_ORDER}, ensure_ascii=False))
+            print()
+        print("── end of page: correct any label with save --replace, then run checked ──")
+
+    elif cmd == "checked":
+        if "--all" in args:  # once, for labels made before checking began
+            n = 0
+            for y in years(app):
+                if only_year and y != only_year:
+                    continue
+                ids = sorted(unchecked_ids(app, y))
+                mark_checked(app, y, ids)
+                n += len(ids)
+            print(f"Marked {n:,} labels as checked.")
+            return
+        marked = 0
+        for y in years(app):
+            page = app_dir(app) / y / "page.json"
+            if page.exists():
+                ids = [i for i in json.loads(page.read_text()) if i in labelled_ids(app, y)]
+                mark_checked(app, y, ids)
+                marked += len(ids)
+                page.unlink()
+        print(f"Marked {marked} labels as checked." if marked else "No page to mark: run page first.")
+
     elif cmd == "status":
-        total_d = total_t = 0
+        total_d = total_t = total_c = 0
         for y, d, t in counts(app):
+            c = d - len(unchecked_ids(app, y))
             total_d += d
             total_t += t
-            print(f"{y}: {d:>6,} of {t:>6,} labelled")
-        print(f"all : {total_d:>6,} of {total_t:>6,} labelled")
+            total_c += c
+            print(f"{y}: {d:>6,} of {t:>6,} labelled · {c:>6,} checked")
+            for cid in read_claims(app, y):
+                print(f"      open claim {cid}: {len(claim_left(app, y, cid))} reviews left to label")
+        print(f"all : {total_d:>6,} of {total_t:>6,} labelled · {total_c:>6,} checked")
 
     else:
         sys.exit(__doc__)

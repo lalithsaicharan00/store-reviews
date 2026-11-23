@@ -14,10 +14,11 @@ are only the source the year files are built from.
 ```
 Review Labels/
   README.md          ← this file: the layout and every field
-  Prompt.md          ← the copy-paste prompt for the reader (pass 1)
+  Prompt.md          ← the starter and the instructions: an Opus chat orchestrates, two Sonnet agents
+                       label, an Opus agent checks, the chat commits and pushes (pass 1)
   Tools/
     build_app.py     ← builds an app's year folders from the raw store files
-    label.py         ← shows the next review, checks a label, saves it
+    label.py         ← shows the next review, checks a label, saves it; check pages for the checker
   Routinery/
     App.md           ← the app's names, IDs, collection dates, counts
     sources.json     ← which raw files it's built from
@@ -25,6 +26,11 @@ Review Labels/
       reviews.jsonl  ← that year's reviews, both stores, oldest first
       labels.jsonl   ← one label per review, written by label.py
       progress.json  ← how far the reading has got (written by label.py)
+      checked.jsonl  ← labels the checker has read (written by label.py; labels made before
+                       23 Nov 2026 were made by Opus and marked checked at once)
+      claims.json    ← blocks of reviews reserved for labellers working side by side (written by
+                       label.py; gone once every claim is labelled)
+      page.json      ← only while a check page is open (written by label.py; not committed)
     2020/ … 2026/
 ```
 
