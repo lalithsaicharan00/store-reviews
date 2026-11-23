@@ -344,6 +344,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   and loads when I open it", "notifications come while I'm doing a routine") → using.
   (23 Nov 2026) A present-tense complaint about what the app does or fails to do for them now, in any language
   ("no me notifica", "the alarm still rings") → using; not_said only when every line is past tense or general.
+  (23 Nov 2026) Still missed on non-English reviews: before choosing not_said, check every line for present tense.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
