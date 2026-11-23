@@ -355,6 +355,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   for using.
   (23 Nov 2026, Routinery 2024, missed in two checks) A present-tense line of enjoyment or help ("I love the timer",
   "it helps me a lot with my mornings") or "the free version works for me" is also using, besides liked or free.
+  (23 Nov 2026, Routinery 2024, missed again) So is a present-tense line about their own routines in the app ("my
+  routines are …"). Before saving not_said, name to yourself every present-tense line; any about their own use wins.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -367,6 +369,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, still missed in two checks) Last step before saving: reread note and drop anything a field already
   holds or should hold (an app they came from, a comparison, a fix they tried: that goes in its problem's item). If
   note calls a phrase unclear, the problem item keeps the reviewer's own words and doesn't pick a reading.
+  (23 Nov 2026, Routinery 2024, missed in two checks) In an edited review, note never restates a problem or says
+  what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
   Fixes they tried for one problem belong in that problem's item, not a new one.
