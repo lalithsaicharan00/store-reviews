@@ -324,6 +324,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
 
 - who: first-person facts only. "Great for people with ADHD" is a general claim: note, not who. Devices they say
   they use (a watch, an iPad) count as facts about themselves.
+  (23 Nov 2026, Routinery 2024, missed in two checks) A fact said in passing counts too ("before I go to school",
+  "after my shift"): student, shift worker. Check every "I"/"my" line before leaving who empty.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -362,6 +364,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, missed again) So is a present-tense line about their own routines in the app ("my
   routines are …"). Before saving not_said, name to yourself every present-tense line; any about their own use wins.
   But "I'll look for something better" or "I'm looking for another app" beats a present complaint → about_to_quit.
+  And "I used it years ago and came back" beats using → came_back.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
