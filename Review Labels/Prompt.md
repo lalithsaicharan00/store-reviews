@@ -355,6 +355,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) Still missed on non-English reviews: before choosing not_said, check every line for present tense.
   (23 Nov 2026, still missed in two checks) A complaint about what the app does now counts even after "it used to
   work" or "there are errors" → using. quit needs them to say they stopped; "I do better without it" alone isn't.
+  (23 Nov 2026, Routinery 2024, three in one check) A line saying they're leaving, won't carry on, or the app is "not
+  for me" beats a present-tense complaint or recommendation → about_to_quit, with that line as the quote ("Not going
+  to waste another hour remaking it"). A using quote is about their own use, not their phone or advice to others.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
