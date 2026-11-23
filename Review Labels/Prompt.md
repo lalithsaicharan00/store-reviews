@@ -379,6 +379,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   routines are …"). Before saving not_said, name to yourself every present-tense line; any about their own use wins.
   But "I'll look for something better" or "I'm looking for another app" beats a present complaint → about_to_quit.
   And "I used it years ago and came back" beats using → came_back.
+  (24 Nov 2026, Routinery 2026, missed in two checks) "It doesn't work for me" beats a present-tense line →
+  about_to_quit. With no such line, any present-tense line about their own use → using, never not_said.
+- why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
+  reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -395,6 +399,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   design" needs the words about the design); "free of charge" said as praise is a liked item, with paid not_said.
   (24 Nov 2026, Routinery 2026, missed again) Praise of what the free version gives them ("I love that two
   routines are free") is a liked item, and in the present tense it is the using quote too.
+  (24 Nov 2026, Routinery 2026, missed again) One word of praise ("helpful", "useful", "great") names nothing:
+  never a liked item.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
