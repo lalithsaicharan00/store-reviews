@@ -336,6 +336,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - (23 Nov 2026) "I would love to upgrade, but [the price, glitches]" → refused, what holds them back as why.
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
+    (23 Nov 2026, Routinery 2024, missed again) Praise of what's free ("great free usability", "all the essential
+    features are free") → not_said.
   - (23 Nov 2026) Saying the free version works or is enough for them ("functional for me", "enough for me") → free.
     (23 Nov 2026, missed in two checks) This includes "the free limit hasn't affected me much": free, that line as
     why, never only in note. "Worth the subscription" with no purchase stated stays not_said.
