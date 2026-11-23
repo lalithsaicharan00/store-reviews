@@ -350,6 +350,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
   only in problems. A phrase that can be read two ways is called unclear in note, never settled as one reading.
+  (23 Nov 2026, still missed in two checks) Last step before saving: reread note and drop anything a field already
+  holds or should hold (an app they came from, a comparison, a fix they tried: that goes in its problem's item). If
+  note calls a phrase unclear, the problem item keeps the reviewer's own words and doesn't pick a reading.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
   Fixes they tried for one problem belong in that problem's item, not a new one.
