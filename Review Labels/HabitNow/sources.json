@@ -1,0 +1,13 @@
+{
+  "app": "HabitNow",
+  "sources": [
+    {
+      "store": "play",
+      "path": "Research/Play Store Reviews/2. HabitNow Daily Routine Planner/reviews.jsonl",
+      "app_id": "com.habitnow",
+      "listed_as": "HabitNow Daily Routine Planner",
+      "developer": null,
+      "collected": "2026-09-08"
+    }
+  ]
+}
