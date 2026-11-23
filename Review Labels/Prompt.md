@@ -353,6 +353,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
   Fixes they tried for one problem belong in that problem's item, not a new one.
+  (23 Nov 2026) A quote starts and ends on whole words; never cut into a word.
 
 ## Stopping and starting again
 
