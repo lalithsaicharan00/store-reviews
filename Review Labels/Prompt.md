@@ -338,7 +338,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   is about_to_quit.
   (23 Nov 2026) This holds without the words "I use it": a present-tense line about what the app does for them now
   ("I feel so much more organized with this app", "elle m'aide vraiment à suivre mes routines") → using, even when
-  the rest of the review is about price or the free version.
+  the rest of the review is about price or the free version. It holds inside a bug report too ("now it just loads
+  and loads when I open it", "notifications come while I'm doing a routine") → using.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
