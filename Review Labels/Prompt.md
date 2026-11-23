@@ -362,6 +362,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
   (23 Nov 2026, missed in two checks) Never praise with nothing named ("it has really helped me"), what they wanted
   when choosing (chose_for) or how long they used it (how_long_used); two praises are two items, each its own quote.
+  (23 Nov 2026, Routinery 2024, missed in two checks) Before saving, go through the review once more for every
+  way their life got better ("got moving", "sleep earlier"): each one is its own liked item.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -371,6 +373,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   note calls a phrase unclear, the problem item keeps the reviewer's own words and doesn't pick a reading.
   (23 Nov 2026, Routinery 2024, missed in two checks) In an edited review, note never restates a problem or says
   what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
+  (23 Nov 2026, Routinery 2024, missed again) When note calls a word unclear, the problem item puts that word in
+  quotes as the reviewer wrote it ("app 'traba' on open"), never a translation or guess of it.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
   Fixes they tried for one problem belong in that problem's item, not a new one.
