@@ -336,6 +336,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - (23 Nov 2026) Saying the free version works or is enough for them ("functional for me", "enough for me") → free.
     (23 Nov 2026, missed in two checks) This includes "the free limit hasn't affected me much": free, that line as
     why, never only in note. "Worth the subscription" with no purchase stated stays not_said.
+    (23 Nov 2026, Routinery 2024, missed twice in one check) "The free limit is fine for me" → free, even when
+    the rest of the review is about features or bugs.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
   with that line as the quote. quit only when they say they stopped, deleted, cancelled or uninstalled; a general
   put-down ("pen and paper will do") isn't quit. A line like "I won't keep paying" or "I'm looking for something new"
@@ -357,13 +359,15 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "it helps me a lot with my mornings") or "the free version works for me" is also using, besides liked or free.
   (23 Nov 2026, Routinery 2024, missed again) So is a present-tense line about their own routines in the app ("my
   routines are …"). Before saving not_said, name to yourself every present-tense line; any about their own use wins.
+  But "I'll look for something better" or "I'm looking for another app" beats a present complaint → about_to_quit.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
   (23 Nov 2026, missed in two checks) Never praise with nothing named ("it has really helped me"), what they wanted
   when choosing (chose_for) or how long they used it (how_long_used); two praises are two items, each its own quote.
   (23 Nov 2026, Routinery 2024, missed in two checks) Before saving, go through the review once more for every
-  way their life got better ("got moving", "sleep earlier"): each one is its own liked item.
+  way their life got better ("got moving", "sleep earlier"): each one is its own liked item. A named quality
+  counts too ("no technical issues so far", "no ads").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
