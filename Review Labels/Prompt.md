@@ -338,6 +338,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - (23 Nov 2026) "I would love to upgrade, but [the price, glitches]" → refused, what holds them back as why.
   - (24 Nov 2026, Routinery 2026) Put off by how paying works (a trial that renews by itself, a card asked for
     up front) → refused, that as why.
+    (24 Nov 2026, Routinery 2026, missed again) Yearly billing hidden in a trial counts: refused, never not_said.
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
     (23 Nov 2026, Routinery 2024, missed again) Praise of what's free ("great free usability", "all the essential
@@ -371,6 +372,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024) Present perfect about their own use ("It has helped me improve my daily routines") → using.
   (23 Nov 2026, Routinery 2024) So is a love line in another language's past tense ("amei") and a present line about how
   their life is now ("I'm eating correctly again") → using.
+  (24 Nov 2026, Routinery 2026, two in one check) In every language a one-line love or thanks review ("gostei",
+  "人生が変わった") → using with that line as the quote, so nothing_useful is false.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
