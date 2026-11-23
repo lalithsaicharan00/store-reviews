@@ -331,6 +331,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   out to work", "when the kids are asleep") is a who item too: works outside the home, parent.
   (24 Nov 2026, Routinery 2026, missed again) A line about "a person" or "people" isn't first-person: never in
   who or why_chose; at most note, as unclear.
+  (24 Nov 2026, Routinery 2026, missed again) "On my day off", "my commute" and the like are who items too.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -392,6 +393,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
+  (24 Nov 2026, Routinery 2026, two in one check) A struggle from before the app, said in passing ("I always
+  forgot my meds"), is an item too. The title counts as much as the text, for every field.
+- came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -434,6 +438,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2026, in problems, why_chose and liked across four checks) Last step before saving: read
   each item against its quote alone. If it says more ("cannot be recovered" for "not sure how to get them back",
   "sent feedback" with no such words), cut it to the reviewer's own words or lengthen the quote.
+  (24 Nov 2026, Routinery 2026, five in one check: the most common correction) Do this for every item in every
+  field, one by one, before saving; a complaint its quote doesn't show is split into its own item with its own quote.
 - problems: (23 Nov 2026, Routinery 2024, five in one check) Before saving, check every clause for a separate
   complaint or plea, including side remarks and a closing request ("please be free the app"): each is its own item.
 
