@@ -330,6 +330,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
     or "I won't until then" it is refused, the condition as why.
   - A price complaint from someone who says they won't pay, or whom the price or paywall put off ("got pay walled
     way too quick", "I will move on without a lifetime option") → refused, and a dislike in problems.
+  - (23 Nov 2026) "I would love to upgrade, but [the price, glitches]" → refused, what holds them back as why.
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
