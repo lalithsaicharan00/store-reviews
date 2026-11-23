@@ -344,6 +344,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
+  (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
+  only in problems. A phrase that can be read two ways is called unclear in note, never settled as one reading.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
 
 ## Stopping and starting again
