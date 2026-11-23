@@ -378,6 +378,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2026, two in one check) In every language a one-line love or thanks review ("gostei",
   "人生が変わった") → using with that line as the quote, so nothing_useful is false.
   (24 Nov 2026, Routinery 2026) The using quote is the present-tense line itself, never a past-tense one.
+  (24 Nov 2026, Routinery 2026) Trying or asking how to cancel → about_to_quit, never using.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
@@ -423,6 +424,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, still missed in two checks) Last step before saving: reread note and drop anything a field already
   holds or should hold (an app they came from, a comparison, a fix they tried: that goes in its problem's item). If
   note calls a phrase unclear, the problem item keeps the reviewer's own words and doesn't pick a reading.
+  (24 Nov 2026, Routinery 2026) That includes paid and how_long_used: never say again in note what they hold.
   (23 Nov 2026, Routinery 2024, missed in two checks) In an edited review, note never restates a problem or says
   what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
   (23 Nov 2026, Routinery 2024, missed again) When note calls a word unclear, the problem item puts that word in
@@ -442,6 +444,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   field, one by one, before saving; a complaint its quote doesn't show is split into its own item with its own quote.
 - problems: (23 Nov 2026, Routinery 2024, five in one check) Before saving, check every clause for a separate
   complaint or plea, including side remarks and a closing request ("please be free the app"): each is its own item.
+  (24 Nov 2026, Routinery 2026, two in one check) A complaint in the title or in a later edit is its own item too.
 
 ## Stopping and starting again
 
