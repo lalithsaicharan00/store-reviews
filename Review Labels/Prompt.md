@@ -345,6 +345,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) A present-tense complaint about what the app does or fails to do for them now, in any language
   ("no me notifica", "the alarm still rings") → using; not_said only when every line is past tense or general.
   (23 Nov 2026) Still missed on non-English reviews: before choosing not_said, check every line for present tense.
+  (23 Nov 2026, still missed in two checks) A complaint about what the app does now counts even after "it used to
+  work" or "there are errors" → using. quit needs them to say they stopped; "I do better without it" alone isn't.
+- language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
+  a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
