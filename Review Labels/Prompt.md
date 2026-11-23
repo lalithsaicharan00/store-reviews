@@ -360,6 +360,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   for me" beats a present-tense complaint or recommendation → about_to_quit, with that line as the quote ("Not going
   to waste another hour remaking it"). A using quote is about their own use, not their phone or advice to others.
   (23 Nov 2026, Routinery 2024) A return after a long gap ("when I opened it after a long time") → came_back, never not_said.
+  (23 Nov 2026, Routinery 2024, missed in every check) A one-line review that only says they use or love it ("I really
+  like using this app") → using with that line as the quote, so nothing_useful is false.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
