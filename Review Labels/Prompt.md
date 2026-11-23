@@ -326,6 +326,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   they use (a watch, an iPad) count as facts about themselves.
   (23 Nov 2026, Routinery 2024, missed in two checks) A fact said in passing counts too ("before I go to school",
   "after my shift"): student, shift worker. Check every "I"/"my" line before leaving who empty.
+  (23 Nov 2026, Routinery 2024) How they use the app goes in why_chose, never in who ("relying on it to build routines").
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -358,6 +359,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, three in one check) A line saying they're leaving, won't carry on, or the app is "not
   for me" beats a present-tense complaint or recommendation → about_to_quit, with that line as the quote ("Not going
   to waste another hour remaking it"). A using quote is about their own use, not their phone or advice to others.
+  (23 Nov 2026, Routinery 2024) A return after a long gap ("when I opened it after a long time") → came_back, never not_said.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
