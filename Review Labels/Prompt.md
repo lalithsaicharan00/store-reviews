@@ -376,6 +376,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, missed in two checks) Before saving, go through the review once more for every
   way their life got better ("got moving", "sleep earlier"): each one is its own liked item. A named quality
   counts too ("no technical issues so far", "no ads").
+  (23 Nov 2026, Routinery 2024, three in one check) Thanks to the developer or support for help or a fix is a liked
+  item ("helpful support", "developer fixed a bug"; "Thank you so much for helping").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -387,10 +389,14 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
   (23 Nov 2026, Routinery 2024, missed again) When note calls a word unclear, the problem item puts that word in
   quotes as the reviewer wrote it ("app 'traba' on open"), never a translation or guess of it.
+  (23 Nov 2026, Routinery 2024, missed twice in one check) An edit that says the problem was fixed, or was their own
+  doing ("EDIT: Hey, so i found out that its because of my DND"), is said in note; never leave that note null.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
   Fixes they tried for one problem belong in that problem's item, not a new one.
   (23 Nov 2026) A quote starts and ends on whole words; never cut into a word.
+  (23 Nov 2026, Routinery 2024, three in one check) If an item says more than its quote shows (stuck, then "kept
+  going after restarting"), quote the longer unbroken part that shows it all, or cut the item to what the quote shows.
 
 ## Stopping and starting again
 
