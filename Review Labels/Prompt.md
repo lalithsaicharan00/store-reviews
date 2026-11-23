@@ -353,6 +353,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
   for using.
+  (23 Nov 2026, Routinery 2024, missed in two checks) A present-tense line of enjoyment or help ("I love the timer",
+  "it helps me a lot with my mornings") or "the free version works for me" is also using, besides liked or free.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
