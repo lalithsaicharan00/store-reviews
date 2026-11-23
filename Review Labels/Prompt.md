@@ -333,6 +333,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - (23 Nov 2026) "I would love to upgrade, but [the price, glitches]" → refused, what holds them back as why.
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
+  - (23 Nov 2026) Saying the free version works or is enough for them ("functional for me", "enough for me") → free.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
   with that line as the quote. quit only when they say they stopped, deleted, cancelled or uninstalled; a general
   put-down ("pen and paper will do") isn't quit. A line like "I won't keep paying" or "I'm looking for something new"
