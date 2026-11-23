@@ -364,6 +364,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024) A return after a long gap ("when I opened it after a long time") → came_back, never not_said.
   (23 Nov 2026, Routinery 2024, missed in every check) A one-line review that only says they use or love it ("I really
   like using this app") → using with that line as the quote, so nothing_useful is false.
+  (23 Nov 2026, Routinery 2024) Present perfect about their own use ("It has helped me improve my daily routines") → using.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
@@ -403,6 +404,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) A quote starts and ends on whole words; never cut into a word.
   (23 Nov 2026, Routinery 2024, three in one check) If an item says more than its quote shows (stuck, then "kept
   going after restarting"), quote the longer unbroken part that shows it all, or cut the item to what the quote shows.
+- problems: (23 Nov 2026, Routinery 2024, five in one check) Before saving, check every clause for a separate
+  complaint or plea, including side remarks and a closing request ("please be free the app"): each is its own item.
 
 ## Stopping and starting again
 
