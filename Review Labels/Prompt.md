@@ -378,6 +378,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   their life is now ("I'm eating correctly again") → using.
   (24 Nov 2026, Routinery 2026, two in one check) In every language a one-line love or thanks review ("gostei",
   "人生が変わった") → using with that line as the quote, so nothing_useful is false.
+  But the line must be about their own use ("I love it", "gostei"): "best app ever" or "great app" alone isn't,
+  and stays nothing_useful.
   (24 Nov 2026, Routinery 2026) The using quote is the present-tense line itself, never a past-tense one.
   (24 Nov 2026, Routinery 2026) Trying or asking how to cancel → about_to_quit, never using.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
@@ -426,6 +428,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   holds or should hold (an app they came from, a comparison, a fix they tried: that goes in its problem's item). If
   note calls a phrase unclear, the problem item keeps the reviewer's own words and doesn't pick a reading.
   (24 Nov 2026, Routinery 2026) That includes paid and how_long_used: never say again in note what they hold.
+  (24 Nov 2026, Routinery 2026, two in one check) But note must say what a paid rule asks for ("a good price" with
+  no purchase), and never says a problem was fixed unless the edit says so in words.
   (23 Nov 2026, Routinery 2024, missed in two checks) In an edited review, note never restates a problem or says
   what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
   (23 Nov 2026, Routinery 2024, missed again) When note calls a word unclear, the problem item puts that word in
