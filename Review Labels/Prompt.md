@@ -332,6 +332,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2026, missed again) A line about "a person" or "people" isn't first-person: never in
   who or why_chose; at most note, as unclear.
   (24 Nov 2026, Routinery 2026, missed again) "On my day off", "my commute" and the like are who items too.
+  (24 Nov 2026, Routinery 2026) Never a gender (he, she, mum) they don't say; "parent", "person" when unsure.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -442,6 +443,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "sent feedback" with no such words), cut it to the reviewer's own words or lengthen the quote.
   (24 Nov 2026, Routinery 2026, five in one check: the most common correction) Do this for every item in every
   field, one by one, before saving; a complaint its quote doesn't show is split into its own item with its own quote.
+  (24 Nov 2026, Routinery 2026, five in one check again) "Shortest" never means cutting what the item depends on:
+  keep a "doesn't" or "not", a condition ("when it isn't open"), a cause ("since changing phones"), a comparison
+  ("better than") and the word that names the thing praised or "helped" inside the quote.
 - problems: (23 Nov 2026, Routinery 2024, five in one check) Before saving, check every clause for a separate
   complaint or plea, including side remarks and a closing request ("please be free the app"): each is its own item.
   (24 Nov 2026, Routinery 2026, two in one check) A complaint in the title or in a later edit is its own item too.
