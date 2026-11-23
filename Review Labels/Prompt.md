@@ -334,6 +334,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
   - (23 Nov 2026) Saying the free version works or is enough for them ("functional for me", "enough for me") → free.
+    (23 Nov 2026, missed in two checks) This includes "the free limit hasn't affected me much": free, that line as
+    why, never only in note. "Worth the subscription" with no purchase stated stays not_said.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
   with that line as the quote. quit only when they say they stopped, deleted, cancelled or uninstalled; a general
   put-down ("pen and paper will do") isn't quit. A line like "I won't keep paying" or "I'm looking for something new"
@@ -347,9 +349,15 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) Still missed on non-English reviews: before choosing not_said, check every line for present tense.
   (23 Nov 2026, still missed in two checks) A complaint about what the app does now counts even after "it used to
   work" or "there are errors" → using. quit needs them to say they stopped; "I do better without it" alone isn't.
+  (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
+  understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
+  comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
+  for using.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
+  (23 Nov 2026, missed in two checks) Never praise with nothing named ("it has really helped me"), what they wanted
+  when choosing (chose_for) or how long they used it (how_long_used); two praises are two items, each its own quote.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
