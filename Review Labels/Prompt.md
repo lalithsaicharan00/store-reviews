@@ -457,6 +457,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
+  (24 Nov 2026, Routinery 2025, again) A length of use said in passing inside a complaint ("routines I had built over
+  months") counts too: never null.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -556,6 +558,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   ("skipping", "Dynamic Island", a section's name); a wish and a dislike about one thing are one item.
   (24 Nov 2026, Routinery 2025, four in one check) Last step for problems: every detail in the item (when, a
   place, a time of day, "others report") must be in its quote; if it isn't, lengthen the quote or drop the detail.
+  (24 Nov 2026, Routinery 2025, six in one check) A quote keeps the cause ("after an update"), the feature's own word
+  ("smallest widget") and any quality ("unstable") its item names. In a long review, a second wish in brackets or
+  the next clause and a warning about a coming charge are each their own item.
 
 ## Stopping and starting again
 
