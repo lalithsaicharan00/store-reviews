@@ -343,6 +343,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2026) Never a gender (he, she, mum) they don't say; "parent", "person" when unsure.
   (24 Nov 2026, Routinery 2025, in two checks) A personality type ("my MBTI"), a supplement, medication or health
   remark about themselves is a who item; a job or school word in a line about people in general never is.
+  (24 Nov 2026, Routinery 2025, again) So is any personal practice in their own routine ("my morning routine includes
+  praying"). A who item holds only what its first-person quote shows; a "you" or "if you" line adds nothing.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -415,6 +417,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, in two checks) The using quote is never about someone they set it up for ("my son
   uses it") or general praise ("real good features for free"); "I love how…" → using; "stopped … to delete the
   app" → quit.
+  (24 Nov 2026, Routinery 2025, again) A one-line feeling about their own find or use ("so blessed to meet this
+  amazing app") → using; the using quote is never a "would" or "if" line.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -449,6 +453,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   way life got better, then drop any item whose own quote doesn't name it ("design" needs words about design).
   (24 Nov 2026, Routinery 2025, in two checks) Praise of premium features is its own liked item (paid stays
   not_said), and every example or result an item names is inside its quote.
+  (24 Nov 2026, Routinery 2025, again) "Better off", "my life is better" and "helped my life" name nothing: never a
+  liked item.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -494,6 +500,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   update") or a result from another clause needs its own quote, or leave it out.
   (24 Nov 2026, Routinery 2025, in two checks) Every detail an item names (the trial, how often) is inside its
   quote; two complaints in one sentence are two items; a workaround ("restart usually helps") goes in its bug's item.
+  (24 Nov 2026, Routinery 2025, three in one check) But one complaint said twice, as a lack and a dislike ("can't set
+  it daily, only every 2 days"), is one item. The title's complaint gets its own item quoted from the title; never
+  merged into a text item or left in note.
 
 ## Stopping and starting again
 
