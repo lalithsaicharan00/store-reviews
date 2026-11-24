@@ -345,6 +345,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   remark about themselves is a who item; a job or school word in a line about people in general never is.
   (24 Nov 2026, Routinery 2025, again) So is any personal practice in their own routine ("my morning routine includes
   praying"). A who item holds only what its first-person quote shows; a "you" or "if you" line adds nothing.
+  (24 Nov 2026, Routinery 2025, again) A title with I/me/my that names their condition ("Protects me from time
+  blindness") is a who item; only a bare title word with no I/me/my isn't.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -419,6 +421,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   app" → quit.
   (24 Nov 2026, Routinery 2025, again) A one-line feeling about their own find or use ("so blessed to meet this
   amazing app") → using; the using quote is never a "would" or "if" line.
+  (24 Nov 2026, Routinery 2025, again) In every language, if the only present-tense line is general praise with no
+  I/me/my ("otherwise super"), still_using is not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -455,6 +459,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   not_said), and every example or result an item names is inside its quote.
   (24 Nov 2026, Routinery 2025, again) "Better off", "my life is better" and "helped my life" name nothing: never a
   liked item.
+  (24 Nov 2026, Routinery 2025, four in one check) Never pick the shortest quote first: before saving each liked
+  item, check every word of it (the thing, "helped", the result, any "not") is in its quote; if not, lengthen it.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -503,6 +509,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, three in one check) But one complaint said twice, as a lack and a dislike ("can't set
   it daily, only every 2 days"), is one item. The title's complaint gets its own item quoted from the title; never
   merged into a text item or left in note.
+  (24 Nov 2026, Routinery 2025, missed again) Even a title that restates the text's complaint gets its own item;
+  "said twice is one item" applies only within the text. Pick the quote first, then write the item from it alone.
 
 ## Stopping and starting again
 
