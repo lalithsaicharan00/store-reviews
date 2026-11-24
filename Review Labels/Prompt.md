@@ -524,6 +524,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "said twice is one item" applies only within the text. Pick the quote first, then write the item from it alone.
   (24 Nov 2026, Routinery 2025, three in one check) A plea is its own item even inside a line about people in
   general; a title naming two complaints gives two items; an item never adds a reading in brackets.
+  (24 Nov 2026, Routinery 2025, eleven in one check) A fix they tried (reinstalling, restarting, updating, clearing
+  data) is never its own problem item, even in a sentence of its own: it goes in the item of the bug it was tried on.
 
 ## Stopping and starting again
 
