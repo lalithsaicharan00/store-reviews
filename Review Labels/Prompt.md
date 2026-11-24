@@ -523,6 +523,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   ("앱 자체는 좋은데…") or is also a why_chose item ("the app I'd been looking for", "worth recommending").
   (24 Nov 2026, MyRoutine 2021, three in one check) So is one inside a thank-you or a plan to stay ("다 좋아요",
   "좋은 앱", "settling on this one after trying others"); only a bare adjective that describes nothing isn't.
+  (24 Nov 2026, MyRoutine 2021, three in one check) Praise of the developer's care or sincerity ("진심인 사람이구나") is
+  a liked item, like thanks for help or a fix.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -593,6 +595,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   from where it's said; a "does X not work?" question about their own use is a problem item, never note.
   (24 Nov 2026, MyRoutine 2021, eight in one check) In Korean and Japanese the condition or subject comes first
   ("화면이 작은 경우", "저의 폰에서만"): start the quote at the start of the sentence, not at its last clause.
+  (24 Nov 2026, MyRoutine 2021, three in one check) A paywall or free limit that blocks an action (can't save the
+  15th routine without Pro) is dislike, never broken.
 
 ## Stopping and starting again
 
