@@ -330,6 +330,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025) A sleep or daily pattern said in passing ("sometimes I fall asleep at 8,9,10,11") is a who item.
   (24 Nov 2026, Routinery 2025) So is work shown only as one of their own routine steps ("check in with team - 30
   minutes" → works with a team).
+  (24 Nov 2026, Routinery 2025, again) And a job or school named only as what a routine or feature is for ("routines
+  for studying" → studies; "timer for work tasks" → works).
   (24 Nov 2026, Routinery 2026, missed in two checks) Work, school or family named as a time or place ("before I go
   out to work", "when the kids are asleep") is a who item too: works outside the home, parent.
   (24 Nov 2026, Routinery 2026, missed again) A line about "a person" or "people" isn't first-person: never in
