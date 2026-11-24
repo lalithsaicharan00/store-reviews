@@ -328,6 +328,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "after my shift"): student, shift worker. Check every "I"/"my" line before leaving who empty.
   (23 Nov 2026, Routinery 2024) How they use the app goes in why_chose, never in who ("relying on it to build routines").
   (24 Nov 2026, Routinery 2025) A sleep or daily pattern said in passing ("sometimes I fall asleep at 8,9,10,11") is a who item.
+  (24 Nov 2026, Routinery 2025) So is work shown only as one of their own routine steps ("check in with team - 30
+  minutes" → works with a team).
   (24 Nov 2026, Routinery 2026, missed in two checks) Work, school or family named as a time or place ("before I go
   out to work", "when the kids are asleep") is a who item too: works outside the home, parent.
   (24 Nov 2026, Routinery 2026, missed again) A line about "a person" or "people" isn't first-person: never in
