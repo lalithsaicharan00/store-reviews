@@ -510,6 +510,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   it to reach the word for the feature its item names ("the timer").
   (24 Nov 2026, Routinery 2025, again) Also when it ends on "that" or "now": reach the words for the struggle ended
   or the thing that got better.
+  (24 Nov 2026, MyRoutine 2020, three in one check) An overall or comparative judgment is a liked item, the title's
+  too ("best of the habit apps I've used", "good for beginners", 최고, 입문자에게 좋은); a quote runs to the end of its
+  clause ("since starting"). In Korean, a line about 분들/사람들 is about others, never why_chose; what they use the
+  app for ("…변화시키는데 도움") is a why_chose item.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
