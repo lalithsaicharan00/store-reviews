@@ -376,6 +376,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026) Still missed on non-English reviews: before choosing not_said, check every line for present tense.
   (23 Nov 2026, still missed in two checks) A complaint about what the app does now counts even after "it used to
   work" or "there are errors" → using. quit needs them to say they stopped; "I do better without it" alone isn't.
+  (24 Nov 2026, Routinery 2026, three non-English in one check) In any language, "I like…" or "it has stopped
+  loading" ("Me gusta que…", "перестало прогружаться") → using; "I can't use it" ("못 쓰겠습니다") → about_to_quit.
   (23 Nov 2026, Routinery 2024, three in one check) A line saying they're leaving, won't carry on, or the app is "not
   for me" beats a present-tense complaint or recommendation → about_to_quit, with that line as the quote ("Not going
   to waste another hour remaking it"). A using quote is about their own use, not their phone or advice to others.
@@ -481,6 +483,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025) When paid is charged_unexpectedly, the charge is its own problem item too ("It said I
   would have 7 days trial, I bough an year plan").
   (24 Nov 2026, Routinery 2026, two in one check) A complaint in the title or in a later edit is its own item too.
+  (24 Nov 2026, Routinery 2026, three in one check) Write a problem only from its own quote: a cause ("after a recent
+  update") or a result from another clause needs its own quote, or leave it out.
 
 ## Stopping and starting again
 
