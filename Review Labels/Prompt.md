@@ -546,6 +546,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   data) is never its own problem item, even in a sentence of its own: it goes in the item of the bug it was tried on.
   (24 Nov 2026, Routinery 2025, in three checks) A problem quote holds the word for the feature its item names
   ("skipping", "Dynamic Island", a section's name); a wish and a dislike about one thing are one item.
+  (24 Nov 2026, Routinery 2025, four in one check) Last step for problems: every detail in the item (when, a
+  place, a time of day, "others report") must be in its quote; if it isn't, lengthen the quote or drop the detail.
 
 ## Stopping and starting again
 
