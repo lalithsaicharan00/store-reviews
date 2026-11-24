@@ -579,6 +579,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   the next clause and a warning about a coming charge are each their own item.
   (24 Nov 2026, Routinery 2025, again) The quote holds the complaint itself, not only its opening words ("they make
   impossible" needs "stop my subscription"), and the item keeps both halves of a contrast.
+  (24 Nov 2026, MyRoutine 2021, six in one check) A detail from the title or the next sentence ("since the update",
+  "iPhone", "often forgets to save") goes in an item only if its quote reaches it, else it gets its own item quoted
+  from where it's said; a "does X not work?" question about their own use is a problem item, never note.
 
 ## Stopping and starting again
 

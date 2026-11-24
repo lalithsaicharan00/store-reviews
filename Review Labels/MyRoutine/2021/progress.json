@@ -2,12 +2,12 @@
   "app": "MyRoutine",
   "year": 2021,
   "reviews": 387,
-  "labelled": 50,
-  "left": 337,
+  "labelled": 100,
+  "left": 287,
   "done": false,
-  "last_labelled_in_order": "7105980015",
+  "last_labelled_in_order": "793d7a6f-0cf1-4e46-9d0d-07ae4d78787b",
   "prompt_versions": [
     2
   ],
-  "updated": "2026-11-24T18:00:12Z"
+  "updated": "2026-11-24T18:05:52Z"
 }
