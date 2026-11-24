@@ -427,6 +427,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   I/me/my ("otherwise super"), still_using is not_said.
   (24 Nov 2026, Routinery 2025, three non-English in one check) A present-tense complaint about what they meet in the
   app ("そこだけ気になる", "mes yeux saignent") → using, never not_said.
+  (24 Nov 2026, Routinery 2025, four in one check) A using quote is never a "you" line ("you have to switch it off");
+  "it ruined the app for me" → about_to_quit.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -528,6 +530,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   general; a title naming two complaints gives two items; an item never adds a reading in brackets.
   (24 Nov 2026, Routinery 2025, eleven in one check) A fix they tried (reinstalling, restarting, updating, clearing
   data) is never its own problem item, even in a sentence of its own: it goes in the item of the bug it was tried on.
+  (24 Nov 2026, Routinery 2025, in three checks) A problem quote holds the word for the feature its item names
+  ("skipping", "Dynamic Island", a section's name); a wish and a dislike about one thing are one item.
 
 ## Stopping and starting again
 
