@@ -327,6 +327,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, missed in two checks) A fact said in passing counts too ("before I go to school",
   "after my shift"): student, shift worker. Check every "I"/"my" line before leaving who empty.
   (23 Nov 2026, Routinery 2024) How they use the app goes in why_chose, never in who ("relying on it to build routines").
+  (24 Nov 2026, Routinery 2025) A sleep or daily pattern said in passing ("sometimes I fall asleep at 8,9,10,11") is a who item.
   (24 Nov 2026, Routinery 2026, missed in two checks) Work, school or family named as a time or place ("before I go
   out to work", "when the kids are asleep") is a who item too: works outside the home, parent.
   (24 Nov 2026, Routinery 2026, missed again) A line about "a person" or "people" isn't first-person: never in
@@ -466,6 +467,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   the quote first, then write the item using only what that quote says. One complaint in one sentence is one item.
 - problems: (23 Nov 2026, Routinery 2024, five in one check) Before saving, check every clause for a separate
   complaint or plea, including side remarks and a closing request ("please be free the app"): each is its own item.
+  (24 Nov 2026, Routinery 2025) When paid is charged_unexpectedly, the charge is its own problem item too ("It said I
+  would have 7 days trial, I bough an year plan").
   (24 Nov 2026, Routinery 2026, two in one check) A complaint in the title or in a later edit is its own item too.
 
 ## Stopping and starting again
