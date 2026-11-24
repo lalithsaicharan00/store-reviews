@@ -441,6 +441,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, missed twice in one check) An edit that says the problem was fixed, or was their own
   doing ("EDIT: Hey, so i found out that its because of my DND"), is said in note; never leave that note null.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
+  (24 Nov 2026, Routinery 2026) But never drop a "doesn't" or "not" to avoid one: if only the part with the
+  entity holds the meaning, quote it, entity and all.
   (23 Nov 2026) Each item says only what its own quote proves, and the quote is about this app and their own use.
   Fixes they tried for one problem belong in that problem's item, not a new one.
   (23 Nov 2026) A quote starts and ends on whole words; never cut into a word.
