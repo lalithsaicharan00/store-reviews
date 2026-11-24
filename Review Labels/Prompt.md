@@ -521,6 +521,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   with a little more polish") is a liked item too, and an item is never stronger than its quote ("I like" is not "best").
   (24 Nov 2026, MyRoutine 2021, five in one check) An overall verdict is a liked item even when it opens a complaint
   ("앱 자체는 좋은데…") or is also a why_chose item ("the app I'd been looking for", "worth recommending").
+  (24 Nov 2026, MyRoutine 2021, three in one check) So is one inside a thank-you or a plan to stay ("다 좋아요",
+  "좋은 앱", "settling on this one after trying others"); only a bare adjective that describes nothing isn't.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
