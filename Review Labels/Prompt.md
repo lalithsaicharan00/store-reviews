@@ -328,6 +328,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "after my shift"): student, shift worker. Check every "I"/"my" line before leaving who empty.
   (23 Nov 2026, Routinery 2024) How they use the app goes in why_chose, never in who ("relying on it to build routines").
   (24 Nov 2026, Routinery 2025) A sleep or daily pattern said in passing ("sometimes I fall asleep at 8,9,10,11") is a who item.
+  (24 Nov 2026, Routinery 2026, three in one check) Each fact once, from their own first-person words: never a second
+  item that infers it again, never one from a bare title word ("ADHD") or one note calls unclear; a gender they state
+  ("I was the girl") counts.
   (24 Nov 2026, Routinery 2025) So is work shown only as one of their own routine steps ("check in with team - 30
   minutes" → works with a team).
   (24 Nov 2026, Routinery 2025, again) And a job or school named only as what a routine or feature is for ("routines
