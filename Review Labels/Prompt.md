@@ -343,6 +343,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   - (24 Nov 2026, Routinery 2026) Put off by how paying works (a trial that renews by itself, a card asked for
     up front) → refused, that as why.
     (24 Nov 2026, Routinery 2026, missed again) Yearly billing hidden in a trial counts: refused, never not_said.
+    (24 Nov 2026, Routinery 2026) "I thought I had to pay, but it's free for me" → free, never only in note.
   - A price complaint that doesn't say whether they pay → not_said, and a dislike in problems.
   - "I like that two routines are free" alone isn't free: free needs them to say they use the free version.
     (23 Nov 2026, Routinery 2024, missed again) Praise of what's free ("great free usability", "all the essential
@@ -384,6 +385,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   〜ている, 안 돼요) about what the app does for them now are present tense → using.
   (24 Nov 2026, Routinery 2026) The using quote is the present-tense line itself, never a past-tense one.
   (24 Nov 2026, Routinery 2026) Trying or asking how to cancel → about_to_quit, never using.
+  (24 Nov 2026, Routinery 2026) So is "it makes me not want to use it" or "I'm losing interest" → about_to_quit.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
   understand nothing", "where is my routine?", "I have to translate"), a recurring complaint ("whenever an update
   comes out it won't open"), and "has started crashing" even if support then fixed it. Recommending isn't a quote
@@ -435,6 +437,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2026, two in one check) But note must say what a paid rule asks for ("a good price" with
   no purchase), and never says a problem was fixed unless the edit says so in words.
   (24 Nov 2026, Routinery 2026) When an edit does say a problem changed (fixed, back, worse), note says so in a line.
+  (24 Nov 2026, Routinery 2026) "Same words as another review" only when the tool's NOTE says so, never for a rewrite.
   (23 Nov 2026, Routinery 2024, missed in two checks) In an edited review, note never restates a problem or says
   what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
   (23 Nov 2026, Routinery 2024, missed again) When note calls a word unclear, the problem item puts that word in
