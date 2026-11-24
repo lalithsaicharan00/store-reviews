@@ -434,6 +434,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2026) That includes paid and how_long_used: never say again in note what they hold.
   (24 Nov 2026, Routinery 2026, two in one check) But note must say what a paid rule asks for ("a good price" with
   no purchase), and never says a problem was fixed unless the edit says so in words.
+  (24 Nov 2026, Routinery 2026) When an edit does say a problem changed (fixed, back, worse), note says so in a line.
   (23 Nov 2026, Routinery 2024, missed in two checks) In an edited review, note never restates a problem or says
   what changed when; if the edit doesn't plainly say a problem was fixed, leave note null.
   (23 Nov 2026, Routinery 2024, missed again) When note calls a word unclear, the problem item puts that word in
