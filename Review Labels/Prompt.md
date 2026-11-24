@@ -349,6 +349,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   blindness") is a who item; only a bare title word with no I/me/my isn't.
   (24 Nov 2026, Routinery 2025, three in one check) A fix or test they tried ("checked on two other phones") is never
   a who item; seasonal and weekly patterns count like daily ones; a who quote reaches the I/my words, not a "you" phrase.
+  (24 Nov 2026, Routinery 2025) A gender shown by their own grammar ("me stessa", "cansada") counts as stated.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
