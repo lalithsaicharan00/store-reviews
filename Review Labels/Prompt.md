@@ -375,6 +375,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, missed in every check) A one-line review that only says they use or love it ("I really
   like using this app") → using with that line as the quote, so nothing_useful is false.
   (23 Nov 2026, Routinery 2024) Present perfect about their own use ("It has helped me improve my daily routines") → using.
+  (24 Nov 2026, Routinery 2025) A promise to come back and change the review ("I'll come back and give it 5 stars")
+  isn't about_to_quit: judge still_using from their present-tense lines about their own use.
   (23 Nov 2026, Routinery 2024) So is a love line in another language's past tense ("amei") and a present line about how
   their life is now ("I'm eating correctly again") → using.
   (24 Nov 2026, Routinery 2026, two in one check) In every language a one-line love or thanks review ("gostei",
