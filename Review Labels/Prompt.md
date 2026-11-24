@@ -432,6 +432,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "it ruined the app for me" → about_to_quit.
   (24 Nov 2026, Routinery 2025, again) "Thank you for creating this" and a past-form love line ("achei maravilhoso")
   → using, never not_said; "you're ruining your app" → about_to_quit.
+  (24 Nov 2026, Routinery 2025, in two checks) The using quote is about this app now (a present complaint counts),
+  never a general habit ("I tend to use timers") or a wish or "if" line ("I wish it supported…").
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -444,6 +446,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, in two checks) A general "you/your" phrase inside their own first-person sentence
   ("As an individual with ADHD, starting your work is hard") is still their struggle; a line about people, in any
   language ("Leute"), never is.
+  (24 Nov 2026, Routinery 2025, three in one check) A struggle the app ended ("stopped me arriving late", "no more
+  rushing") or one they admit to ("I'm bad at time management") is a why_chose item, never a who item.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
