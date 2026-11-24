@@ -410,6 +410,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   forgot my meds"), is an item too. The title counts as much as the text, for every field.
   (24 Nov 2026, Routinery 2026, two in one check again) Before saving, look for any line about their life before
   the app ("I used to…", "I was always…"): each is a why_chose item.
+  (24 Nov 2026, Routinery 2025) What a recommender said stays in the recommendation item's quote, never a reason of
+  their own (ChatGPT "told me … you should prefer this").
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
@@ -421,6 +423,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   counts too ("no technical issues so far", "no ads").
   (23 Nov 2026, Routinery 2024, three in one check) Thanks to the developer or support for help or a fix is a liked
   item ("helpful support", "developer fixed a bug"; "Thank you so much for helping").
+  (24 Nov 2026, Routinery 2025) Praise of the price is a liked item, with paid still not_said unless they bought
+  ("the paid version is very affordable at under five dollars a month").
   (23 Nov 2026, Routinery 2024, missed again) Last step for liked: drop any item that is a length of use ("a
   week in") or names nothing ("makes all the difference"). A first day or first routine goes in how_long_used.
   (24 Nov 2026, Routinery 2026, liked in two checks) Each liked quote shows the very thing its item names ("cute
