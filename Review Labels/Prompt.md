@@ -454,6 +454,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   language ("Leute"), never is.
   (24 Nov 2026, Routinery 2025, three in one check) A struggle the app ended ("stopped me arriving late", "no more
   rushing") or one they admit to ("I'm bad at time management") is a why_chose item, never a who item.
+  (24 Nov 2026, Routinery 2025, again) A struggle the app ended is a why_chose item even when it's also a liked item:
+  put it in both.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
@@ -498,6 +500,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   my mornings) is a liked item, and only a bare "helped me" names nothing.
   (24 Nov 2026, Routinery 2025, again) "The most helpful of everything I tried" and "I couldn't get through X
   without it" are liked items too.
+  (24 Nov 2026, Routinery 2025, two in one check) A liked quote that says only "it" or "that" is too short: lengthen
+  it to reach the word for the feature its item names ("the timer").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
