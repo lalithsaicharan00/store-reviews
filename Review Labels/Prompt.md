@@ -380,6 +380,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "人生が変わった") → using with that line as the quote, so nothing_useful is false.
   But the line must be about their own use ("I love it", "gostei"): "best app ever" or "great app" alone isn't,
   and stays nothing_useful.
+  (24 Nov 2026, Routinery 2026, two in one check) Japanese and Korean plain or polite present forms (〜ない, 〜ます,
+  〜ている, 안 돼요) about what the app does for them now are present tense → using.
   (24 Nov 2026, Routinery 2026) The using quote is the present-tense line itself, never a past-tense one.
   (24 Nov 2026, Routinery 2026) Trying or asking how to cancel → about_to_quit, never using.
   (23 Nov 2026, six missed in one check) Also using: a present line about their own plight with the app ("I
@@ -399,6 +401,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   Advice to others ("everyone should try it") is never their own reason.
   (24 Nov 2026, Routinery 2026, two in one check) A struggle from before the app, said in passing ("I always
   forgot my meds"), is an item too. The title counts as much as the text, for every field.
+  (24 Nov 2026, Routinery 2026, two in one check again) Before saving, look for any line about their life before
+  the app ("I used to…", "I was always…"): each is a why_chose item.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
