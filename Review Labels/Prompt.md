@@ -481,6 +481,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   gives ("good features even without premium") are liked items too.
   (24 Nov 2026, Routinery 2025, again) A better life in the title ("Increases my Productivity") or told as a before
   ("I was a mess until I got this") is a liked item too.
+  (24 Nov 2026, Routinery 2025, in two checks) Split each praise sentence at every clause (and, while, つつ): each
+  half that names something gets its own item, hedged praise ("seems very good") included; "helped me with X" (ADHD,
+  my mornings) is a liked item, and only a bare "helped me" names nothing.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
