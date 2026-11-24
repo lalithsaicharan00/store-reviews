@@ -437,6 +437,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, four in one check) Pick the still_using quote first and let it set the status: a
   present complaint ("it's stuck all the time") is using; "unusable" or "won't pay until it's fixed" is about_to_quit;
   a past-tense line ("helped me stay focused") with no present one is not_said.
+  (24 Nov 2026, Routinery 2025, again) "Useless" or "useless now" about the app reads as "unusable": about_to_quit.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -491,6 +492,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, in two checks) Split each praise sentence at every clause (and, while, つつ): each
   half that names something gets its own item, hedged praise ("seems very good") included; "helped me with X" (ADHD,
   my mornings) is a liked item, and only a bare "helped me" names nothing.
+  (24 Nov 2026, Routinery 2025, again) "The most helpful of everything I tried" and "I couldn't get through X
+  without it" are liked items too.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
