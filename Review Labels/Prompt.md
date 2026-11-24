@@ -425,6 +425,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   amazing app") → using; the using quote is never a "would" or "if" line.
   (24 Nov 2026, Routinery 2025, again) In every language, if the only present-tense line is general praise with no
   I/me/my ("otherwise super"), still_using is not_said.
+  (24 Nov 2026, Routinery 2025, three non-English in one check) A present-tense complaint about what they meet in the
+  app ("そこだけ気になる", "mes yeux saignent") → using, never not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
