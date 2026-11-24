@@ -429,6 +429,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   app ("そこだけ気になる", "mes yeux saignent") → using, never not_said.
   (24 Nov 2026, Routinery 2025, four in one check) A using quote is never a "you" line ("you have to switch it off");
   "it ruined the app for me" → about_to_quit.
+  (24 Nov 2026, Routinery 2025, again) "Thank you for creating this" and a past-form love line ("achei maravilhoso")
+  → using, never not_said; "you're ruining your app" → about_to_quit.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
