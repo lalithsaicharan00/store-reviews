@@ -434,6 +434,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   → using, never not_said; "you're ruining your app" → about_to_quit.
   (24 Nov 2026, Routinery 2025, in two checks) The using quote is about this app now (a present complaint counts),
   never a general habit ("I tend to use timers") or a wish or "if" line ("I wish it supported…").
+  (24 Nov 2026, Routinery 2025, four in one check) Pick the still_using quote first and let it set the status: a
+  present complaint ("it's stuck all the time") is using; "unusable" or "won't pay until it's fixed" is about_to_quit;
+  a past-tense line ("helped me stay focused") with no present one is not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
