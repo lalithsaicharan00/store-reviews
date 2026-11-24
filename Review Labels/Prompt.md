@@ -446,7 +446,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, four in one check) A thank-you line, even alone ("thanks to the developers who made
   it"), and an "I love" in the title → using, so nothing_useful is false.
   (24 Nov 2026, MyRoutine 2021, in two checks) "I keep using another app instead" (다른 어플을 계속 사용하게 되네요)
-  or asking for a refund of the unused months → about_to_quit, never using.
+  or asking for a refund of the unused months → about_to_quit, never using. Korean ~더라구요 ("it turned out…") is
+  past tense: never the using quote.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -586,6 +587,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, MyRoutine 2021, six in one check) A detail from the title or the next sentence ("since the update",
   "iPhone", "often forgets to save") goes in an item only if its quote reaches it, else it gets its own item quoted
   from where it's said; a "does X not work?" question about their own use is a problem item, never note.
+  (24 Nov 2026, MyRoutine 2021, eight in one check) In Korean and Japanese the condition or subject comes first
+  ("화면이 작은 경우", "저의 폰에서만"): start the quote at the start of the sentence, not at its last clause.
 
 ## Stopping and starting again
 
