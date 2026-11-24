@@ -347,6 +347,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   praying"). A who item holds only what its first-person quote shows; a "you" or "if you" line adds nothing.
   (24 Nov 2026, Routinery 2025, again) A title with I/me/my that names their condition ("Protects me from time
   blindness") is a who item; only a bare title word with no I/me/my isn't.
+  (24 Nov 2026, Routinery 2025, three in one check) A fix or test they tried ("checked on two other phones") is never
+  a who item; seasonal and weekly patterns count like daily ones; a who quote reaches the I/my words, not a "you" phrase.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -432,7 +434,12 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   the app ("I used to…", "I was always…"): each is a why_chose item.
   (24 Nov 2026, Routinery 2025) What a recommender said stays in the recommendation item's quote, never a reason of
   their own (ChatGPT "told me … you should prefer this").
+  (24 Nov 2026, Routinery 2025, in two checks) A general "you/your" phrase inside their own first-person sentence
+  ("As an individual with ADHD, starting your work is hard") is still their struggle; a line about people, in any
+  language ("Leute"), never is.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
+- how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
+  ("my routine starts tomorrow"), is how_long_used, never null.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -461,6 +468,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   liked item.
   (24 Nov 2026, Routinery 2025, four in one check) Never pick the shortest quote first: before saving each liked
   item, check every word of it (the thing, "helped", the result, any "not") is in its quote; if not, lengthen it.
+  (24 Nov 2026, Routinery 2025) A better life said in the past tense or with typos ("this app mae my habit so good")
+  is still a liked item; for still_using, read the tense through typos and quote a present line.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -479,6 +488,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   quotes as the reviewer wrote it ("app 'traba' on open"), never a translation or guess of it.
   (23 Nov 2026, Routinery 2024, missed twice in one check) An edit that says the problem was fixed, or was their own
   doing ("EDIT: Hey, so i found out that its because of my DND"), is said in note; never leave that note null.
+  (24 Nov 2026, Routinery 2025, in two checks) If note calls a word unclear, it says only that, never "read as";
+  a fix they tried goes in its problem's item, never in note.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (24 Nov 2026, Routinery 2026) But never drop a "doesn't" or "not" to avoid one: if only the part with the
   entity holds the meaning, quote it, entity and all.
@@ -511,6 +522,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   merged into a text item or left in note.
   (24 Nov 2026, Routinery 2025, missed again) Even a title that restates the text's complaint gets its own item;
   "said twice is one item" applies only within the text. Pick the quote first, then write the item from it alone.
+  (24 Nov 2026, Routinery 2025, three in one check) A plea is its own item even inside a line about people in
+  general; a title naming two complaints gives two items; an item never adds a reading in brackets.
 
 ## Stopping and starting again
 

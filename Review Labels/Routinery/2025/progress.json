@@ -2,12 +2,12 @@
   "app": "Routinery",
   "year": 2025,
   "reviews": 1620,
-  "labelled": 625,
-  "left": 995,
+  "labelled": 675,
+  "left": 945,
   "done": false,
-  "last_labelled_in_order": "b65b7484-9323-4078-838f-8e879716d8ef",
+  "last_labelled_in_order": "12820008423",
   "prompt_versions": [
     2
   ],
-  "updated": "2026-11-24T05:34:11Z"
+  "updated": "2026-11-24T05:42:07Z"
 }
