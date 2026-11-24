@@ -1,0 +1,41 @@
+{
+  "app": "MyRoutine",
+  "sources": [
+    {
+      "store": "appstore",
+      "path": "Research/Temp/myroutine-2026-11-24/appstore/1. MyRoutine- Organize your day - Built around your real life/reviews.jsonl",
+      "app_id": "1518956326",
+      "listed_as": "MyRoutine: Organize your day",
+      "developer": "Minding. co., Ltd.",
+      "collected": "2026-11-24",
+      "note": "Fresh pull (gitignored scratch). Listed first so a review's newest wording wins."
+    },
+    {
+      "store": "appstore",
+      "path": "Research/App Store Reviews/18. MyRoutine - Organize your day - Built around your real life/reviews.jsonl",
+      "app_id": "1518956326",
+      "listed_as": "MyRoutine: Organize your day",
+      "developer": "Minding. co., Ltd.",
+      "collected": "2026-09-08",
+      "note": "Earlier pull, committed. Adds only reviews the fresh pull no longer finds."
+    },
+    {
+      "store": "play",
+      "path": "Research/Temp/myroutine-2026-11-24/play/1. MyRoutine- Routine Habit Goal/reviews.jsonl",
+      "app_id": "com.minding.myroutine",
+      "listed_as": "MyRoutine: Routine Habit Goal",
+      "developer": "Minding. co., Ltd.",
+      "collected": "2026-11-24",
+      "note": "Fresh pull (gitignored scratch). Listed first so a review's newest wording wins."
+    },
+    {
+      "store": "play",
+      "path": "Research/Play Store Reviews/20. MyRoutine - Routine Habit Goal/reviews.jsonl",
+      "app_id": "com.minding.myroutine",
+      "listed_as": "MyRoutine: Routine Habit Goal",
+      "developer": "Minding. co., Ltd.",
+      "collected": "2026-09-08",
+      "note": "Earlier pull, committed. Adds only reviews the fresh pull no longer finds."
+    }
+  ]
+}
