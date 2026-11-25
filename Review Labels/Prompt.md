@@ -635,6 +635,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (25 Nov 2026, MyRoutine 2022, four in one check) A remark right after a complaint (often in brackets) is about that
   feature, so a workaround ("I only use it as a list") goes in its problem item, never why_chose; a proposal that
   starts "so…"/"그래서…" and spells out the wish before it is part of that wish.
+  (25 Nov 2026, MyRoutine 2022, twelve in one check) A warning or cynical remark at the developer ("you'll regret this
+  update") is its own dislike item, never dropped as tone; a device named only in a bug goes in that bug's item and quote.
 
 ## Stopping and starting again
 
