@@ -543,6 +543,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   ("looks good"); an item never adds a noun its quote lacks ("clean", not "clean design").
   (25 Nov 2026, MyRoutine 2022, six in one check) So is a plain closing recommendation naming no group ("no regrets,
   download it") and a change in their life ("my life feels different since I started").
+  (25 Nov 2026, MyRoutine 2022, four in one check) The title's verdict is a liked item too ("괜찮은데", "너무 좋아요!").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
