@@ -448,6 +448,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, MyRoutine 2021, in two checks) "I keep using another app instead" (다른 어플을 계속 사용하게 되네요)
   or asking for a refund of the unused months → about_to_quit, never using. Korean ~더라구요 ("it turned out…") is
   past tense: never the using quote.
+  (24 Nov 2026, MyRoutine 2020, in two checks) Korean list endings about the app (-음, -됨, -긺: "삭제가 안 됨") are
+  present tense, so using; pick a present complaint over general praise ("참 좋죠") as the quote.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -470,6 +472,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, again) A length of use said in passing inside a complaint ("routines I had built over
   months") counts too: never null.
   (24 Nov 2026, Routinery 2025, again) So does "in the last few months the app has…" or "tried it over several days".
+  (24 Nov 2026, MyRoutine 2020, three in one check) Just downloaded or installed, in any language ("다운받고",
+  "깔고"), is how_long_used ("just installed"), never null.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -525,6 +529,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "좋은 앱", "settling on this one after trying others"); only a bare adjective that describes nothing isn't.
   (24 Nov 2026, MyRoutine 2021, three in one check) Praise of the developer's care or sincerity ("진심인 사람이구나") is
   a liked item, like thanks for help or a fix.
+  (24 Nov 2026, MyRoutine 2020, again) So is who it's for, in the title or about 분들 ("an app for X", "best for
+  people who…", "좋은 의도"): a liked item, never why_chose.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -597,6 +603,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   ("화면이 작은 경우", "저의 폰에서만"): start the quote at the start of the sentence, not at its last clause.
   (24 Nov 2026, MyRoutine 2021, three in one check) A paywall or free limit that blocks an action (can't save the
   15th routine without Pro) is dislike, never broken.
+  (24 Nov 2026, MyRoutine 2020, five in one check) A plea or question ("어떻게 없애나요") is its own item, apart from
+  the dislike beside it.
 
 ## Stopping and starting again
 
