@@ -329,6 +329,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024) How they use the app goes in why_chose, never in who ("relying on it to build routines").
   (25 Nov 2026, MyRoutine 2022, in two checks) A who item holds the fact alone ("studies", "uses a Galaxy phone"),
   never with how they found or use the app tacked on ("looked for a study planner", "as a widget").
+  (25 Nov 2026, MyRoutine 2022, three in one check) A "for example, if you want to…" line about a feature is no who
+  fact; an age said in passing ("lived 2n years without this app") is one: in their twenties.
   (24 Nov 2026, Routinery 2025) A sleep or daily pattern said in passing ("sometimes I fall asleep at 8,9,10,11") is a who item.
   (24 Nov 2026, Routinery 2026, three in one check) Each fact once, from their own first-person words: never a second
   item that infers it again, never one from a bare title word ("ADHD") or one note calls unclear; a gender they state
@@ -544,6 +546,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (25 Nov 2026, MyRoutine 2022, six in one check) So is a plain closing recommendation naming no group ("no regrets,
   download it") and a change in their life ("my life feels different since I started").
   (25 Nov 2026, MyRoutine 2022, four in one check) The title's verdict is a liked item too ("괜찮은데", "너무 좋아요!").
+  (25 Nov 2026, MyRoutine 2022, six in one check) An item never reads two ways: 기획자 is the person who planned the
+  app, never a "planner" feature.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
