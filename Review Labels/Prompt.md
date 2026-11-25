@@ -624,7 +624,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   complaint, and a detail said only in the title (a device, a place): never merged into the bug beside it or dropped.
   (25 Nov 2026, MyRoutine 2022, five in one check) But a wish and a dislike about one thing stay one item even across
   two sentences, and a "so that I can…" clause belongs to the wish it explains, never a second item. A closing plea
-  or "I'll wait for an update" is still its own item, even about the same thing as the complaint before it.
+  or "I'll wait for an update" is still its own item, even about the same thing as the complaint before it. A
+  question and the plea after it are two items ("is it a bug or on purpose?", "if it's a bug, fix it fast").
 
 ## Stopping and starting again
 
