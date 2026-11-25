@@ -622,7 +622,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (25 Nov 2026, MyRoutine 2022, in two checks) So is a closing "please fix/improve it", a question beside a
   complaint, and a detail said only in the title (a device, a place): never merged into the bug beside it or dropped.
   (25 Nov 2026, MyRoutine 2022, five in one check) But a wish and a dislike about one thing stay one item even across
-  two sentences, and a "so that I can…" clause belongs to the wish it explains, never a second item.
+  two sentences, and a "so that I can…" clause belongs to the wish it explains, never a second item. A closing plea
+  or "I'll wait for an update" is still its own item, even about the same thing as the complaint before it.
 
 ## Stopping and starting again
 
