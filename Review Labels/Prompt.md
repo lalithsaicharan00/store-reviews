@@ -484,6 +484,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, again) So does "in the last few months the app has…" or "tried it over several days".
   (24 Nov 2026, MyRoutine 2020, three in one check) Just downloaded or installed, in any language ("다운받고",
   "깔고"), is how_long_used ("just installed"), never null.
+  (25 Nov 2026, MyRoutine 2022, in two checks) So is contacting the developer or using a feature a while ago
+  ("emailed you months ago" → at least a few months); its quote reaches every detail the value gives ("before buying").
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
