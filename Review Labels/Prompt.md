@@ -327,6 +327,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (23 Nov 2026, Routinery 2024, missed in two checks) A fact said in passing counts too ("before I go to school",
   "after my shift"): student, shift worker. Check every "I"/"my" line before leaving who empty.
   (23 Nov 2026, Routinery 2024) How they use the app goes in why_chose, never in who ("relying on it to build routines").
+  (25 Nov 2026, MyRoutine 2022, in two checks) A who item holds the fact alone ("studies", "uses a Galaxy phone"),
+  never with how they found or use the app tacked on ("looked for a study planner", "as a widget").
   (24 Nov 2026, Routinery 2025) A sleep or daily pattern said in passing ("sometimes I fall asleep at 8,9,10,11") is a who item.
   (24 Nov 2026, Routinery 2026, three in one check) Each fact once, from their own first-person words: never a second
   item that infers it again, never one from a bare title word ("ADHD") or one note calls unclear; a gender they state
