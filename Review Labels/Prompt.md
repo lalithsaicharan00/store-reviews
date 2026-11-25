@@ -626,6 +626,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   two sentences, and a "so that I can…" clause belongs to the wish it explains, never a second item. A closing plea
   or "I'll wait for an update" is still its own item, even about the same thing as the complaint before it. A
   question and the plea after it are two items ("is it a bug or on purpose?", "if it's a bug, fix it fast").
+  (25 Nov 2026, MyRoutine 2022, four in one check) A remark right after a complaint (often in brackets) is about that
+  feature, so a workaround ("I only use it as a list") goes in its problem item, never why_chose; a proposal that
+  starts "so…"/"그래서…" and spells out the wish before it is part of that wish.
 
 ## Stopping and starting again
 
