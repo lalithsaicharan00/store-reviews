@@ -468,6 +468,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   put it in both.
   (24 Nov 2026, MyRoutine 2021, in two checks) Why they gave up an old app ("다른 앱은 귀찮아서 몇일만에 지웠는데") is a
   why_chose item as well as a came_from item: put it in both.
+  (25 Nov 2026, MyRoutine 2022, in two checks) "The app I'd been looking for" is a why_chose item as well as liked; a
+  goal they expect the app to help with ("I think I can build good habits this year") is one too, written as the goal.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
@@ -555,6 +557,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   doing ("EDIT: Hey, so i found out that its because of my DND"), is said in note; never leave that note null.
   (24 Nov 2026, Routinery 2025, in two checks) If note calls a word unclear, it says only that, never "read as";
   a fix they tried goes in its problem's item, never in note.
+  (25 Nov 2026, MyRoutine 2022) In every field, not only problems, an unclear or misspelled word stays in quotes in
+  the reviewer's spelling, and note says only that it's unclear.
 - Quotes: avoid parts containing HTML entities (`&#39;`, `&amp;`); pick another part of the same sentence.
   (24 Nov 2026, Routinery 2026) But never drop a "doesn't" or "not" to avoid one: if only the part with the
   entity holds the meaning, quote it, entity and all.
