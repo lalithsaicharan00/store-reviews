@@ -452,6 +452,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   past tense: never the using quote.
   (24 Nov 2026, MyRoutine 2020, in two checks) Korean list endings about the app (-음, -됨, -긺: "삭제가 안 됨") are
   present tense, so using; pick a present complaint over general praise ("참 좋죠") as the quote.
+  (25 Nov 2026, MyRoutine 2022, in two checks) A closing thank-you is using even when the rest is past tense, and so
+  is a mild present-tense complaint ("좀 그렇네요").
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -539,6 +541,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   people who…", "좋은 의도"): a liked item, never why_chose.
   (25 Nov 2026, MyRoutine 2022, five in one check) So are "worth trying for X people" and hedged title praise
   ("looks good"); an item never adds a noun its quote lacks ("clean", not "clean design").
+  (25 Nov 2026, MyRoutine 2022, six in one check) So is a plain closing recommendation naming no group ("no regrets,
+  download it") and a change in their life ("my life feels different since I started").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -617,6 +621,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   the dislike beside it.
   (25 Nov 2026, MyRoutine 2022, in two checks) So is a closing "please fix/improve it", a question beside a
   complaint, and a detail said only in the title (a device, a place): never merged into the bug beside it or dropped.
+  (25 Nov 2026, MyRoutine 2022, five in one check) But a wish and a dislike about one thing stay one item even across
+  two sentences, and a "so that I can…" clause belongs to the wish it explains, never a second item.
 
 ## Stopping and starting again
 
