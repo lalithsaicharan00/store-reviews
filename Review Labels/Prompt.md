@@ -533,6 +533,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   a liked item, like thanks for help or a fix.
   (24 Nov 2026, MyRoutine 2020, again) So is who it's for, in the title or about 분들 ("an app for X", "best for
   people who…", "좋은 의도"): a liked item, never why_chose.
+  (25 Nov 2026, MyRoutine 2022, five in one check) So are "worth trying for X people" and hedged title praise
+  ("looks good"); an item never adds a noun its quote lacks ("clean", not "clean design").
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -607,6 +609,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   15th routine without Pro) is dislike, never broken.
   (24 Nov 2026, MyRoutine 2020, five in one check) A plea or question ("어떻게 없애나요") is its own item, apart from
   the dislike beside it.
+  (25 Nov 2026, MyRoutine 2022, in two checks) So is a closing "please fix/improve it", a question beside a
+  complaint, and a detail said only in the title (a device, a place): never merged into the bug beside it or dropped.
 
 ## Stopping and starting again
 
