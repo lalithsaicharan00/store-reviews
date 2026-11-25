@@ -550,6 +550,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (25 Nov 2026, MyRoutine 2022, four in one check) The title's verdict is a liked item too ("괜찮은데", "너무 좋아요!").
   (25 Nov 2026, MyRoutine 2022, six in one check) An item never reads two ways: 기획자 is the person who planned the
   app, never a "planner" feature.
+  (25 Nov 2026, MyRoutine 2023, three in one check) So is settling on this app after searching ("여기 정착했습니다")
+  and a plain "정말 추천드려요"; an item names only what its quote names (no "red light" unless the quote says it).
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -637,6 +639,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   starts "so…"/"그래서…" and spells out the wish before it is part of that wish.
   (25 Nov 2026, MyRoutine 2022, twelve in one check) A warning or cynical remark at the developer ("you'll regret this
   update") is its own dislike item, never dropped as tone; a device named only in a bug goes in that bug's item and quote.
+  (25 Nov 2026, MyRoutine 2023, four in one check) An opening plea ("확인부탁드립니다") is its own item like a closing
+  one; a quote starts at its sentence's start and holds the feature's word ('언제할래요?') and every detail the item
+  gives ("as an option"); an unclear word ('공복') is quoted as written, never read as something else.
 
 ## Stopping and starting again
 
