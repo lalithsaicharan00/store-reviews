@@ -466,6 +466,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   rushing") or one they admit to ("I'm bad at time management") is a why_chose item, never a who item.
   (24 Nov 2026, Routinery 2025, again) A struggle the app ended is a why_chose item even when it's also a liked item:
   put it in both.
+  (24 Nov 2026, MyRoutine 2021, in two checks) Why they gave up an old app ("다른 앱은 귀찮아서 몇일만에 지웠는데") is a
+  why_chose item as well as a came_from item: put it in both.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
