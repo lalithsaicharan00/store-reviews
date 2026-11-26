@@ -360,6 +360,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (25 Nov 2026, MyRoutine 2023, in two checks) Even "아이폰 13이에요" said with a bug goes in that bug's item and quote,
   never who; app-hopping history ("유목민 출신") goes in why_chose and came_from, never who.
   (26 Nov 2026, MyRoutine 2023, again) So does "…유저입니다" said just before or after a bug, even as its own sentence.
+  (26 Nov 2026, MyRoutine 2023, in two checks) A who item is the fact alone ("had surgery", not "…and was away from
+  the app"); a gender-marking particle (Thai ค่ะ/ครับ) is a stated gender, so nothing_useful is false.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -384,6 +386,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
     them ("in my case I didn't receive much ads") → free, that line as why, never not_said.
     (23 Nov 2026, Routinery 2024) "Glad I didn't pay" → free, never only in note. A request for a refund → paid
     (nothing_useful false), the request as quote.
+    (26 Nov 2026, MyRoutine 2023, in two checks) When the sentence that says they paid also gives why
+    ("…갖춰져 있어서 유료결제하고"), that reason is paid.why and the quote covers it, never null.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
   with that line as the quote. quit only when they say they stopped, deleted, cancelled or uninstalled; a general
   put-down ("pen and paper will do") isn't quit. A line like "I won't keep paying" or "I'm looking for something new"
@@ -471,6 +475,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (26 Nov 2026, MyRoutine 2023, three in one check) In languages with no tense marking (Indonesian) and in Korean
   -함/-음/-모름 endings, a line about their own trouble with the app now ("still new, don't know it well") is the
   using quote, always over general praise ("helps change life").
+  (26 Nov 2026, MyRoutine 2023, again) Stuck at setup told in the past tense ("the screen went blank after the
+  recommendation part") is about_to_quit too, never not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -509,6 +515,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   tutoriel") is just started ("just started, still at the tutorial"), never null.
   (26 Nov 2026, MyRoutine 2023, three in one check) How far they got, said only inside a complaint ("stopped at
   sign-in", "after making my first routine", "repeated for a long time"), is how_long_used too, never null.
+  (26 Nov 2026, MyRoutine 2023, again) So is a milestone they reached (a badge level, a streak) or deleting it at
+  the very start ("바로지움").
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -680,6 +688,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   are each their own item, never dropped; but a wish and the dislike behind it, about one feature, stay one item.
   (26 Nov 2026, MyRoutine 2023, in two checks) A workaround in a later sentence or paragraph still goes in its bug's
   item: quote the unbroken stretch from the bug to the workaround.
+  (26 Nov 2026, MyRoutine 2023, again) A title that is only a plea ("부탁드립니다", "참고해주세요") and a "please
+  improve" mid-text ("개선되었으면 좋겠습니다") are each their own item, even when the complaint beside them says the same.
 
 ## Stopping and starting again
 
