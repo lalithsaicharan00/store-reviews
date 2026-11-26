@@ -19,6 +19,9 @@ Rulebook's "Starting again" section first: it says what still holds.
 
 - `Brand/` — the current Often Enough logo guide, decision history and exported assets. Follow
   [`Brand/Logo Guide.md`](<Brand/Logo Guide.md>) for reproduction (U29); the research archive preserves rejected directions.
+- `Review Insights/` — what the labelled reviews in `Review Labels/` add up to, one folder per app (start with
+  [`Review Insights/README.md`](<Review Insights/README.md>)). Each study's README is its prompt; findings there are
+  independent of our own app.
 - `Research/` — all store-review research. Its rules are in [`Research/CLAUDE.md`](Research/CLAUDE.md);
   follow them for any research, report or design-evidence task. Paths in that file are relative to `Research/`.
 - `iOS/` — the iPhone app (SwiftUI, native components only). **Before changing any screen, read

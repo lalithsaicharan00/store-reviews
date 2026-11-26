@@ -21,7 +21,7 @@ by reading one review, in its own language, and checked by a second reader):
   plus the price and premium complaints in `problems`.
 
 Review IDs are shortened to their first 8 characters; the appendix maps every group member to its full place in the
-labels file. The map is saved as `Research/Temp/routinery-2020-groups.py`.
+labels file. The map is saved as [`Tools/groups_2020.py`](<Tools/groups_2020.py>); [README.md](<README.md>) explains the method.
 
 ---
 

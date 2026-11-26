@@ -6,6 +6,8 @@ Store reviews, read one at a time by an AI and labelled with **who the person is
 features, whether they paid and why, and what problems they have**. Labelled once, so any later research can search
 the labels instead of reading the reviews again.
 
+What the labels add up to (user groups, reasons, paying) is written up in [`Review Insights/`](<../Review Insights/README.md>).
+
 This folder is new and stands on its own. The older review folders under `Research/` stay as they are (read-only) and
 are only the source the year files are built from.
 
