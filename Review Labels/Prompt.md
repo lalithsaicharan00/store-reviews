@@ -458,6 +458,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   present tense, so using; pick a present complaint over general praise ("참 좋죠") as the quote.
   (25 Nov 2026, MyRoutine 2022, in two checks) A closing thank-you is using even when the rest is past tense, and so
   is a mild present-tense complaint ("좀 그렇네요").
+  (26 Nov 2026, MyRoutine 2023, in two checks) Not being able to sign up or register at all ("Unable to sign up with
+  my email address") is "I can't use it": about_to_quit, never using.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
