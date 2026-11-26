@@ -42,7 +42,7 @@ For each year of Routinery's store reviews:
 ## The groups so far
 
 Codes used in `Tools/groups_<YEAR>.py`. Keep them, so years compare; **add a new group only when the year's own words
-show one** (OVERWHELM appeared in 2021), and say so in that year's report.
+show one** (OVERWHELM appeared in 2021; 2023 needed none), and say so in that year's report.
 
 | Code | Group | Typical words |
 |---|---|---|
@@ -100,6 +100,13 @@ Run from the repository root. `T="Review Insights/Routinery/User Groups — Who,
   2020–2022 differ slightly from what `stats` prints now.
 - The App Store app ID `1450486923` isn't a review ID (`check` ignores it).
 - Korean reviewers have paid at 3–4× the English rate every year: report paying by language.
+- More `who` traps found in 2023: `executive` matches "an executive with a busy day", `stud` matches a teacher who
+  "has students", `subscri` matches "a loyal long-time subscriber", `mental` matches "mentally queueing tasks",
+  "several devices" matches "tried many apps", and `child`/`son` match parents of children.
+- From 2023 many payers mention paying only to report a bug or a subscription the app stopped recognising. Sort them as
+  their own reason ("no reason; writes about a bug"), and report payers' average rating beside the count.
+- The 2023 labels put many goal-only reasons in `why_chose` (76 goal-only people against 8 in 2022): compare pain
+  groups across years, not goal-only counts.
 
 ## Files
 
