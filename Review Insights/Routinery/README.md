@@ -11,7 +11,7 @@ new product. Routinery Corp.'s routine timer app ("Routine Planner, Habit Tracke
 
 | Folder | Question | Status |
 |---|---|---|
-| [User Groups — Who, Why, Paying](<User Groups — Who, Why, Paying/README.md>) | Who are the target users (groups by pain point), why each uses the app, which free features each likes, who pays and for what | 2019–2023 done; 2024–2026 labelled and ready |
+| [User Groups — Who, Why, Paying](<User Groups — Who, Why, Paying/README.md>) | Who are the target users (groups by pain point), why each uses the app, which free features each likes, who pays and for what | 2019–2024 done; 2025–2026 labelled and ready |
 
 ## User Groups — the years so far
 
@@ -22,24 +22,24 @@ new product. Routinery Corp.'s routine timer app ("Routine Planner, Habit Tracke
 | 2021 | 1,626 | 200 | Can't start (56), tried everything else (55), ADHD and similar (48) | 64 (3.9%) | [2021](<User Groups — Who, Why, Paying/Routinery 2021 — User Groups, Why They Use It, and What They Pay For.md>) |
 | 2022 | 1,534 | 205 | **ADHD and similar (92, 45%)**, can't start (58), lose time (40) | 75 (4.9%) | [2022](<User Groups — Who, Why, Paying/Routinery 2022 — User Groups, Why They Use It, and What They Pay For.md>) |
 | 2023 | 1,763 | 177 | ADHD and similar (53, 30%), can't start (49), lose time (41), mornings (34) | 71 (4.0%); 20 charged unexpectedly | [2023](<User Groups — Who, Why, Paying/Routinery 2023 — User Groups, Why They Use It, and What They Pay For.md>) |
-| 2024 | 1,010 | — | — | — | to do |
+| 2024 | 1,010 | 132 | **ADHD and similar (56, 42%)**, lose time (43), mornings (28) | 46 (4.6%); 22 charged unexpectedly | [2024](<User Groups — Who, Why, Paying/Routinery 2024 — User Groups, Why They Use It, and What They Pay For.md>) |
 | 2025 | 1,620 | — | — | — | to do |
 | 2026 (to 8 Sep) | 958 | — | — | — | to do |
 
 ### The trend so far (share of the people who name a pain point)
 
-| Group | 2020 | 2021 | 2022 | 2023 |
-|---|---|---|---|---|
-| ADHD, autism, OCD, depression, anxiety | 15% | 24% | **45%** | 30% |
-| Can't start or keep going | 27% | 28% | 28% | 28% |
-| Lose time | 24% | 21% | 20% | 23% |
-| Mornings go badly | **31%** | 19% | 10% | 19% |
-| Tried everything else | 16% | 28% | 10% | 9% |
-| Forget steps | 8% | 6% | 6% | 10% |
-| Parents and carers | 3% | 3% | 6% | 7% |
-| Lost their structure (COVID and other) | 11% | 3% | 2% | 3% |
-| Overwhelmed | — | 4% | 4% | 6% |
-| Follow a method | 6% | 2% | 0.5% | 1% |
+| Group | 2020 | 2021 | 2022 | 2023 | 2024 |
+|---|---|---|---|---|---|
+| ADHD, autism, OCD, depression, anxiety | 15% | 24% | **45%** | 30% | 42% |
+| Can't start or keep going | 27% | 28% | 28% | 28% | 17% |
+| Lose time | 24% | 21% | 20% | 23% | **33%** |
+| Mornings go badly | **31%** | 19% | 10% | 19% | 21% |
+| Tried everything else | 16% | 28% | 10% | 9% | 7% |
+| Forget steps | 8% | 6% | 6% | 10% | 11% |
+| Parents and carers | 3% | 3% | 6% | 7% | 3% |
+| Lost their structure (COVID and other) | 11% | 3% | 2% | 3% | 3% |
+| Overwhelmed | — | 4% | 4% | 6% | 8% |
+| Follow a method | 6% | 2% | 0.5% | 1% | 0% |
 
 **What holds every year:** people use it because it **walks them through a routine one step at a time with a timer**,
 so they don't have to decide, remember or find willpower. **Payers mostly pay for the whole app**, not a feature;
@@ -50,3 +50,8 @@ one-time price**, and price. **Korean reviewers pay at 3–4× the English rate.
 people with ADHD (30%, from 45%), and **payers who mostly write because the paid app broke**: their average rating fell
 to 2.97★ (3.91★ in 2022), 54 of 71 report a bug, and unexpected charges rose to 20 (6 in 2022). Ads and, in a few
 reviews, a one-routine free plan appear for the first time.
+
+**2024 in one line:** people with ADHD (42%) and people who lose time to their phone (33%, the most ever) are most of
+the users; students fell away (10, from 31). **Payers rate it 2.72★**, only 10 of 46 give a reason to pay and none
+pays for more routines; 9 of 21 Korean payers want a refund and 22 people were charged unexpectedly. **Bugs are now the
+top reason to refuse** (30% of reviews report one), and an AI chatbot and forced logins are new dislikes.

@@ -26,7 +26,7 @@ Review Insights/
 
 | App | Studies | Status |
 |---|---|---|
-| [Routinery](<Routinery/README.md>) | [User Groups — Who, Why, Paying](<Routinery/User Groups — Who, Why, Paying/README.md>) | 2019–2023 done; 2024–2026 ready |
+| [Routinery](<Routinery/README.md>) | [User Groups — Who, Why, Paying](<Routinery/User Groups — Who, Why, Paying/README.md>) | 2019–2024 done; 2025–2026 ready |
 
 ## Rules for every study here
 

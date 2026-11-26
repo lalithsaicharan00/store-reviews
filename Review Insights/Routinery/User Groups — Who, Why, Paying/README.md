@@ -42,7 +42,7 @@ For each year of Routinery's store reviews:
 ## The groups so far
 
 Codes used in `Tools/groups_<YEAR>.py`. Keep them, so years compare; **add a new group only when the year's own words
-show one** (OVERWHELM appeared in 2021; 2023 needed none), and say so in that year's report.
+show one** (OVERWHELM appeared in 2021; 2023 and 2024 needed none), and say so in that year's report.
 
 | Code | Group | Typical words |
 |---|---|---|
@@ -107,6 +107,11 @@ Run from the repository root. `T="Review Insights/Routinery/User Groups — Who,
   their own reason ("no reason; writes about a bug"), and report payers' average rating beside the count.
 - The 2023 labels put many goal-only reasons in `why_chose` (76 goal-only people against 8 in 2022): compare pain
   groups across years, not goal-only counts.
+- More `who` traps found in 2024: `class` matches "Galaxy Watch 4 Classic", `school` matches a parent's "preschool",
+  `work` matches "working hard to be top of the class", `ADHD` matches "not ADHD", `child` matches "a child with
+  anxiety" (a minor, not a parent).
+- From 2024 many Korean "payers" write only to ask for a refund (9 of 21). Report them beside the unexpected charges:
+  the line between `paid` and `charged_unexpectedly` is the reviewer's own wording.
 
 ## Files
 
