@@ -558,6 +558,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   and a plain "정말 추천드려요"; an item names only what its quote names (no "red light" unless the quote says it).
   (25 Nov 2026, MyRoutine 2023, in two checks) But "잘 쓰고 있어요" names nothing: it's the still_using quote, never a
   liked item; an item never says whom it means (developers, users) unless its quote does.
+  (26 Nov 2026, MyRoutine 2023, in two checks) A satisfaction word inside a using line ("만족스럽게 이용중인",
+  "만족하며 잘 쓰고") is a liked item, unlike a bare "잘 쓰고 있어요"; so is "기능도 맘에들고".
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
