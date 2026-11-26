@@ -42,7 +42,7 @@ For each year of Routinery's store reviews:
 ## The groups so far
 
 Codes used in `Tools/groups_<YEAR>.py`. Keep them, so years compare; **add a new group only when the year's own words
-show one** (OVERWHELM appeared in 2021; 2023–2025 needed none), and say so in that year's report.
+show one** (OVERWHELM appeared in 2021; 2023–2026 needed none), and say so in that year's report.
 
 | Code | Group | Typical words |
 |---|---|---|
@@ -116,6 +116,10 @@ Run from the repository root. `T="Review Insights/Routinery/User Groups — Who,
   who "recommends it to patients with ADHD" and a parent of an ADHD son; `mental health` matches "has no mental health
   disorders"; `parent` matches a 12-year-old whose "parents don't let them" take the phone; `years old` matches "32 years
   old".
+- More `who` traps found in 2026: `parent` matches "not allowed by their parents", "parents are divorced" and "got their
+  dad using the app"; `student` matches a mother who "used the app as a college student"; `years old` matches "60
+  years old". Look for the same person posting twice on one day (2026 lines 793 and 794) and count them once.
+- 2026 is a part year (to 7 September, when the reviews were collected): compare shares, not counts.
 - From 2025 many `why_chose` reasons are outcomes ("now I'm never late"): count them under the pain they imply, and say
   so in Limits.
 
