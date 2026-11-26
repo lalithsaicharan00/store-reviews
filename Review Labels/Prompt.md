@@ -357,6 +357,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, in two checks) A device or a family member is a who item only when they say it's
   theirs (I/my): never from a device named in a complaint ("no Split View on iPad"), and never with a gender unsaid.
   (24 Nov 2026, Routinery 2025, missed again) That includes a device or OS version in a bug report ("Android version 16").
+  (25 Nov 2026, MyRoutine 2023, in two checks) Even "아이폰 13이에요" said with a bug goes in that bug's item and quote,
+  never who; app-hopping history ("유목민 출신") goes in why_chose and came_from, never who.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -476,6 +478,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   why_chose item as well as a came_from item: put it in both.
   (25 Nov 2026, MyRoutine 2022, in two checks) "The app I'd been looking for" is a why_chose item as well as liked; a
   goal they expect the app to help with ("I think I can build good habits this year") is one too, written as the goal.
+  (25 Nov 2026, MyRoutine 2023, in two checks) Every detail a why_chose item names (whose video, "the app's CEO") is
+  inside its quote: start the quote where that detail is said.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
@@ -552,6 +556,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   app, never a "planner" feature.
   (25 Nov 2026, MyRoutine 2023, three in one check) So is settling on this app after searching ("여기 정착했습니다")
   and a plain "정말 추천드려요"; an item names only what its quote names (no "red light" unless the quote says it).
+  (25 Nov 2026, MyRoutine 2023, in two checks) But "잘 쓰고 있어요" names nothing: it's the still_using quote, never a
+  liked item; an item never says whom it means (developers, users) unless its quote does.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
@@ -642,6 +648,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (25 Nov 2026, MyRoutine 2023, four in one check) An opening plea ("확인부탁드립니다") is its own item like a closing
   one; a quote starts at its sentence's start and holds the feature's word ('언제할래요?') and every detail the item
   gives ("as an option"); an unclear word ('공복') is quoted as written, never read as something else.
+  (25 Nov 2026, MyRoutine 2023, in two checks) A cynical aside ("조만간 수정해주긴하겠지") is its own dislike item; a
+  dislike-and-wish item's quote reaches the dislike sentence as well as the wish; '中午' stays quoted as written.
 
 ## Stopping and starting again
 
