@@ -462,6 +462,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   is a mild present-tense complaint ("좀 그렇네요").
   (26 Nov 2026, MyRoutine 2023, in two checks) Not being able to sign up or register at all ("Unable to sign up with
   my email address") is "I can't use it": about_to_quit, never using.
+  (26 Nov 2026, MyRoutine 2023, four in one check) So is being stuck at the first setup or welcome screen, even said
+  in the present tense: about_to_quit. Otherwise the using quote is a present-tense I/me/my line about their own use,
+  never general praise, and with such a line still_using is never not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -661,6 +664,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (26 Nov 2026, MyRoutine 2023, four in one check: quotes cut too short) Read each problem quote alone before saving:
   if its item names anything the quote lacks (a worry about paying, a condition at the sentence's start, the
   feature's word, the dislike half of a wish), quote the whole sentence or sentences instead.
+  (26 Nov 2026, MyRoutine 2023, three in one check) A plea in the title and a rhetorical question beside a complaint
+  are each their own item, never dropped; but a wish and the dislike behind it, about one feature, stay one item.
 
 ## Stopping and starting again
 
