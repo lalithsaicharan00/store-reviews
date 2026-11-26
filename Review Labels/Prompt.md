@@ -359,6 +359,7 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (24 Nov 2026, Routinery 2025, missed again) That includes a device or OS version in a bug report ("Android version 16").
   (25 Nov 2026, MyRoutine 2023, in two checks) Even "아이폰 13이에요" said with a bug goes in that bug's item and quote,
   never who; app-hopping history ("유목민 출신") goes in why_chose and came_from, never who.
+  (26 Nov 2026, MyRoutine 2023, again) So does "…유저입니다" said just before or after a bug, even as its own sentence.
 - paid:
   - "Worth it" or "a good price" with no purchase stated → not_said, and say so in note.
   - "Would pay if it improves" → not_said, with the condition in note; it isn't refused. With a plain "but not now"
@@ -467,6 +468,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   never general praise, and with such a line still_using is never not_said.
   (26 Nov 2026, MyRoutine 2023, in two checks) Turning down sign-in or asking for a refund → about_to_quit; a
   present-tense line about what the app does for them now ("励まして…またやろう") → using, never not_said.
+  (26 Nov 2026, MyRoutine 2023, three in one check) In languages with no tense marking (Indonesian) and in Korean
+  -함/-음/-모름 endings, a line about their own trouble with the app now ("still new, don't know it well") is the
+  using quote, always over general praise ("helps change life").
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -489,6 +493,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   goal they expect the app to help with ("I think I can build good habits this year") is one too, written as the goal.
   (25 Nov 2026, MyRoutine 2023, in two checks) Every detail a why_chose item names (whose video, "the app's CEO") is
   inside its quote: start the quote where that detail is said.
+  (26 Nov 2026, MyRoutine 2023, again) A why_chose quote starts where the need's subject is named ("제가 … 업무에"),
+  never at the last verb clause.
 - came_from (24 Nov 2026, Routinery 2026): a comparison with their old way ("better than my paper list") is an item.
 - how_long_used (24 Nov 2026, Routinery 2025, in two checks): just started, or about to start the first routine
   ("my routine starts tomorrow"), is how_long_used, never null.
@@ -573,6 +579,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   liked item; an item never says whom it means (developers, users) unless its quote does.
   (26 Nov 2026, MyRoutine 2023, in two checks) A satisfaction word inside a using line ("만족스럽게 이용중인",
   "만족하며 잘 쓰고") is a liked item, unlike a bare "잘 쓰고 있어요"; so is "기능도 맘에들고".
+  (26 Nov 2026, MyRoutine 2023, in two checks) A liked item names only the praise in its quote; a "but not yet" half
+  goes in problems with its own quote, or is left out.
 - note: only what the review says or how it reads. Never a claim from outside the review (what a version number
   means, what other apps do), and never names or phone numbers.
   (23 Nov 2026) Never put a finding in note or repeat one: what they use the app for goes in why_chose, problems
