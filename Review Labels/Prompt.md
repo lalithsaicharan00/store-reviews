@@ -690,6 +690,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   item: quote the unbroken stretch from the bug to the workaround.
   (26 Nov 2026, MyRoutine 2023, again) A title that is only a plea ("부탁드립니다", "참고해주세요") and a "please
   improve" mid-text ("개선되었으면 좋겠습니다") are each their own item, even when the complaint beside them says the same.
+  (26 Nov 2026, MyRoutine 2023, in two checks) how_long_used is never null when length shows indirectly: a problem
+  that comes back over a period ("every few months") means at least that long; cancelling right after the first
+  charge means "just started".
 
 ## Stopping and starting again
 
