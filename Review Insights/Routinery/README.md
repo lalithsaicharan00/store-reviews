@@ -11,7 +11,15 @@ new product. Routinery Corp.'s routine timer app ("Routine Planner, Habit Tracke
 
 | Folder | Question | Status |
 |---|---|---|
-| [User Groups — Who, Why, Paying](<User Groups — Who, Why, Paying/README.md>) | Who are the target users (groups by pain point), why each uses the app, which free features each likes, who pays and for what | 2019–2026 done (2026 to 7 September) |
+| [User Groups — Who, Why, Paying](<User Groups — Who, Why, Paying/README.md>) | Who are the target users (groups by pain point), why each uses the app, which free features each likes, who pays and for what | 2019–2026 done (2026 to 7 September); **[final report, all eight years](<User Groups — Who, Why, Paying/Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md>)** |
+
+## User Groups — the final report
+
+**[Routinery 2019–2026, Final Report](<User Groups — Who, Why, Paying/Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md>)** combines all eight years: 1,276 people
+naming a pain point fall into ten groups, and four make up the target user (ADHD and similar 34%, lose time 25%, can't
+start 25%, mornings 19%). They use it for one job, a step-by-step routine with a timer on every step; payers pay for
+the whole app working, and when they name a feature it's more routines; the free plan's two-routine limit is the
+paywall in every year.
 
 ## User Groups — the years so far
 

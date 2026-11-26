@@ -128,5 +128,6 @@ Run from the repository root. `T="Review Insights/Routinery/User Groups — Who,
 | File | What it is |
 |---|---|
 | `Routinery <YEAR> — User Groups, Why They Use It, and What They Pay For.md` | One report per year |
+| [`Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md`](<Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md>) | All eight years combined (26 Nov 2026): the target users, why, free features, paying. If a later year is added, update it from the yearly reports and the `groups_<YEAR>.py` maps |
 | `Tools/insights.py` | Every step above; `python3 -I insights.py` alone prints its help |
 | `Tools/groups_<YEAR>.py` | The hand-made map of people to groups for that year |

@@ -26,7 +26,7 @@ Review Insights/
 
 | App | Studies | Status |
 |---|---|---|
-| [Routinery](<Routinery/README.md>) | [User Groups — Who, Why, Paying](<Routinery/User Groups — Who, Why, Paying/README.md>) | 2019–2026 done |
+| [Routinery](<Routinery/README.md>) | [User Groups — Who, Why, Paying](<Routinery/User Groups — Who, Why, Paying/README.md>) | 2019–2026 done; [final report](<Routinery/User Groups — Who, Why, Paying/Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md>) |
 
 ## Rules for every study here
 
