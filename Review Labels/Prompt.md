@@ -379,6 +379,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
     why, never only in note. "Worth the subscription" with no purchase stated stays not_said.
     (23 Nov 2026, Routinery 2024, missed twice in one check) "The free limit is fine for me" → free, even when
     the rest of the review is about features or bugs.
+    (26 Nov 2026, MyRoutine 2023, in two checks) So is a remark that the free version's ads or limits barely affect
+    them ("in my case I didn't receive much ads") → free, that line as why, never not_said.
     (23 Nov 2026, Routinery 2024) "Glad I didn't pay" → free, never only in note. A request for a refund → paid
     (nothing_useful false), the request as quote.
 - still_using: a present-tense line about their own use ("it helps me so much", "I use it every morning") → using,
@@ -492,6 +494,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "깔고", "インストールした"), is how_long_used ("just installed"), never null.
   (25 Nov 2026, MyRoutine 2022, in two checks) So is contacting the developer or using a feature a while ago
   ("emailed you months ago" → at least a few months); its quote reaches every detail the value gives ("before buying").
+  (26 Nov 2026, MyRoutine 2023, in two checks) Stuck in the tutorial or onboarding ("impossible de dépasser l'étape du
+  tutoriel") is just started ("just started, still at the tutorial"), never null.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
