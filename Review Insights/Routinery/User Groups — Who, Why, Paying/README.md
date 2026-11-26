@@ -42,7 +42,7 @@ For each year of Routinery's store reviews:
 ## The groups so far
 
 Codes used in `Tools/groups_<YEAR>.py`. Keep them, so years compare; **add a new group only when the year's own words
-show one** (OVERWHELM appeared in 2021; 2023 and 2024 needed none), and say so in that year's report.
+show one** (OVERWHELM appeared in 2021; 2023–2025 needed none), and say so in that year's report.
 
 | Code | Group | Typical words |
 |---|---|---|
@@ -112,6 +112,12 @@ Run from the repository root. `T="Review Insights/Routinery/User Groups — Who,
   anxiety" (a minor, not a parent).
 - From 2024 many Korean "payers" write only to ask for a refund (9 of 21). Report them beside the unexpected charges:
   the line between `paid` and `charged_unexpectedly` is the reviewer's own wording.
+- More `who` traps found in 2025: `ADHD` misses "AuDHD" and Spanish "TDA" (add them by hand), and matches a therapist
+  who "recommends it to patients with ADHD" and a parent of an ADHD son; `mental health` matches "has no mental health
+  disorders"; `parent` matches a 12-year-old whose "parents don't let them" take the phone; `years old` matches "32 years
+  old".
+- From 2025 many `why_chose` reasons are outcomes ("now I'm never late"): count them under the pain they imply, and say
+  so in Limits.
 
 ## Files
 
