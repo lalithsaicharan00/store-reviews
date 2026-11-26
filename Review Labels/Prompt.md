@@ -658,6 +658,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   gives ("as an option"); an unclear word ('공복') is quoted as written, never read as something else.
   (25 Nov 2026, MyRoutine 2023, in two checks) A cynical aside ("조만간 수정해주긴하겠지") is its own dislike item; a
   dislike-and-wish item's quote reaches the dislike sentence as well as the wish; '中午' stays quoted as written.
+  (26 Nov 2026, MyRoutine 2023, four in one check: quotes cut too short) Read each problem quote alone before saving:
+  if its item names anything the quote lacks (a worry about paying, a condition at the sentence's start, the
+  feature's word, the dislike half of a wish), quote the whole sentence or sentences instead.
 
 ## Stopping and starting again
 
