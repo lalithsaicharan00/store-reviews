@@ -465,6 +465,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (26 Nov 2026, MyRoutine 2023, four in one check) So is being stuck at the first setup or welcome screen, even said
   in the present tense: about_to_quit. Otherwise the using quote is a present-tense I/me/my line about their own use,
   never general praise, and with such a line still_using is never not_said.
+  (26 Nov 2026, MyRoutine 2023, in two checks) Turning down sign-in or asking for a refund → about_to_quit; a
+  present-tense line about what the app does for them now ("励まして…またやろう") → using, never not_said.
 - why_chose (24 Nov 2026, Routinery 2026, missed in two checks): how they found the app ("downloaded it after
   reading the reviews", "saw it on TikTok") is an item. Each item says only what its quote shows, never a hope.
   Advice to others ("everyone should try it") is never their own reason.
@@ -499,6 +501,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   ("emailed you months ago" → at least a few months); its quote reaches every detail the value gives ("before buying").
   (26 Nov 2026, MyRoutine 2023, in two checks) Stuck in the tutorial or onboarding ("impossible de dépasser l'étape du
   tutoriel") is just started ("just started, still at the tutorial"), never null.
+  (26 Nov 2026, MyRoutine 2023, three in one check) How far they got, said only inside a complaint ("stopped at
+  sign-in", "after making my first routine", "repeated for a long time"), is how_long_used too, never null.
 - language (23 Nov 2026, missed in two checks): und only for text with no words at all (emoji, symbols). One word,
   a stretched word ("coooool"), gibberish beside real words or a place name → the language of the words it has.
 - liked: one item per thing they praise or per way life got better ("room is tidy", "eats breakfast before work").
@@ -666,6 +670,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   feature's word, the dislike half of a wish), quote the whole sentence or sentences instead.
   (26 Nov 2026, MyRoutine 2023, three in one check) A plea in the title and a rhetorical question beside a complaint
   are each their own item, never dropped; but a wish and the dislike behind it, about one feature, stay one item.
+  (26 Nov 2026, MyRoutine 2023, in two checks) A workaround in a later sentence or paragraph still goes in its bug's
+  item: quote the unbroken stretch from the bug to the workaround.
 
 ## Stopping and starting again
 
