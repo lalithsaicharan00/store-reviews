@@ -695,6 +695,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   charge means "just started".
   (26 Nov 2026, MyRoutine 2023, in two checks) A problem item says only what its own quote shows: no noun, feature
   or feeling ("really dislikes it") from another sentence. Either lengthen the quote to reach it or give it its own item.
+  (26 Nov 2026, MyRoutine 2023, in two checks) A present-tense wish or trouble of their own ("I want to keep at it",
+  "I don't get why it's paid") is still_using using; "still unfamiliar with it" is how_long_used "just started".
+  (26 Nov 2026, MyRoutine 2023, in two checks) What they record or track in the app (a daily weight note) is
+  why_chose, never who: who is only a fact about the person themselves.
 
 ## Stopping and starting again
 
