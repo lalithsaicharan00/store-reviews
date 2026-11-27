@@ -744,6 +744,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in four checks) A workaround (delete and reinstall) goes inside its bug's item, never
   its own. A short verdict that describes the app ("helpful for people who want X") is liked, not nothing_useful.
   "It helps me build X" is why_chose. A Korean present ending (-함, -해요) about their own use is still_using using.
+  (27 Nov 2026, MyRoutine 2024, in three checks) A sentence judging the app, or a rhetorical question ("premium, yet is
+  this all?"), beside a complaint gets its own dislike item, never folded into the bug. Every thing an item names
+  (the widget, the discount) is in its quote; extend the quote rather than the item.
 
 ## Stopping and starting again
 
