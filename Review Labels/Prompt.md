@@ -762,6 +762,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   as well, even when it also sits in came_from or liked.
   (27 Nov 2026, MyRoutine 2024, three in one check) A short praise with no feature word ("very helpful", "supports
   my daily life"), in the title or the text, is a liked item even when the same line is also the still_using quote.
+  (27 Nov 2026, MyRoutine 2024, three in one check) A problems quote starts at its sentence's start so it holds every
+  detail its item names ("after paying"); in a refund review each complaint or question is its own item. Life
+  before the app, and what they track named inside a wish, are why_chose items too. A first-person line about their
+  own daily practice ("I don't do routines") is who.
   (26 Nov 2026, MyRoutine 2023, three in one check) A wish's quote runs on to the words that finish it: the "for
   example" sentence after it, or a shared "please make…" ending; two wishes joined by "and"/"이랑" ("다크버전이랑 …
   만들어주세요") are two items that both quote the whole sentence.
