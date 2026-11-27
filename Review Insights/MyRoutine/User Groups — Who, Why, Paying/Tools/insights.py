@@ -32,21 +32,25 @@ APP = "MyRoutine"
 # copying them, following "routiners"), reflections, and web, PC and phone versions. Check new years' words and add.
 # KNOWN TRAPS (2020): "look" matched "looking for" and "design" matched "layout designed"; "fun" matched the social
 # "fun to peek at others"; "easy" matched "easy to copy others' routines". Each was narrowed; check again by hand.
+# More in 2021: "look back/after" (a reflection), "not like a social network", "together" in "to-dos neatly together",
+# "best routine app", "more effective than alarms", "stayed on the phone" (not about devices). Narrowed too.
 FEATURES = {
-    "See, copy and follow other people's routines": r"other (people|users|routiners)|others|copy|friend|routiner|best routine|sharing|share|acquaintance|peek|social|together|cheer",
+    "See, copy and follow other people's routines": r"other (people|users|routiners|routine users)|others|copy|friend|routiner|best routine page|sharing|share|acquaintance|peek|(?<!not like a )social|together with|cheering each other",
     "Check off the day; see it at a glance": r"check(?! each day)|at a glance|weekly view|emoji|green light|green streak|overview",
     "Encouraging, motivating, sense of achievement": r"motivat|achievement|rewarding|feel(s)? good|green light|badge|well-spent|gift|vitality|keeps me going|fun of|is fun",
     "Simple, clean, easy to use": r"simple|clean|(?<!made starting )easy(?! to copy)|intuitive|neat|comfortable|convenient|usability|layout|interface|ui\b|only the necessary|easy on the eyes",
-    "Looks good: design, cute": r"cute|\blooks?\b|pretty|style of app",
+    "Looks good: design, cute": r"cute|\blooks?\b(?! (back|after))|pretty|style of app",
     "Reflection, diary, memo": r"reflection|retrospective|diary|memo|journal|feelings|emotions|sort out thoughts|recall the day",
-    "Reminders and push alarms": r"remind|alarm|push|notification",
+    "Reminders and push alarms": r"remind|(?<!than )alarm|push|notification",
     "Private routines": r"private",
-    "Web, PC and phone, synced": r"web|desktop|laptop|pc\b|computer|mobile app|mobile version|both|phone|syncs",
+    "Web, PC and phone, synced": r"web|desktop|laptop|pc\b|computer|mobile app|mobile version|both web|both iphone|and ipad|tablet|syncs|sync so|comfortably on the phone",
     "Builds habits, keeps routines going": r"build(ing)? (good )?habits|keep(s|ing)? (good )?(daily )?habits|habits have taken hold|maintain|steadily|consistently|kept habits|keeping routines|routines going|morning routine",
     "Partial credit: some done still counts": r"percent",
     "Repeat on chosen weekdays": r"weekday",
     "Responsive developer, frequent updates": r"developer|update|fixes",
     "Long free trial": r"free trial",
+    "Home-screen widget (from 2021)": r"widget",
+    "Free plan is enough (from 2021)": r"free of charge|for free|even though it is free|free features|free up to|routines are free|무료",
 }
 
 MONEY = r"premium|pay|subscri|price|cost|free|trial|paywall|membership|lifetime|one-time|purchase|expensive|afford|\$|money|buy|plus|pro\b"

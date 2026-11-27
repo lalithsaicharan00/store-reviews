@@ -56,7 +56,7 @@ version. The feature kinds in `insights.py` were made from these labels.
 
 ## The groups so far
 
-Made from MyRoutine's 2020 labels (27 Nov 2026). Codes used in `Tools/groups_<YEAR>.py`. Keep a code for the same pain
+Made from MyRoutine's 2020 labels and extended from 2021's (27 Nov 2026). Codes used in `Tools/groups_<YEAR>.py`. Keep a code for the same pain
 in later years so years compare; **add a new group, or split one, when the year's own words show it**, and say so in
 that year's report. Never take a group from another app.
 
@@ -66,8 +66,16 @@ that year's report. Never take a group from another app.
 | `DROPOFF` | Start, then give up within days | three-day resolve (작심삼일), stopped apps after a few days (며칠 사용하다 중단), installed and hardly used, failed many times |
 | `TRACKING` | Their way of keeping track didn't fit | a paper diary forgotten or hard to tick, a reminder on every to-do item, one-habit apps where missing once felt like failing, apps too much to learn |
 | `FORGET` | Forget things | tasks at set times, medicine |
-| `BLANK` | Don't know what routine to make | at a loss making a first list (막막해서) |
-| `GOAL` | Only a goal, no pain | build good habits, the days I want to live; reported separately, not a pain group |
+| `BLANK` | Don't know what routine to make | at a loss making a first list (막막해서); no one in 2021 |
+| `TIME` | Time slips away *(from 2021)* | too much to do for the hours (시간이 촉박한), planning itself takes time, routines that had no set time, a new field to learn |
+| `UNSETTLED` | Their days have no steady shape *(from 2021)* | shift work (교대근무), life not regular lately (규칙적이지 않기도), after surgery, a new job |
+| `SEEN` | Keep going when others can see them *(from 2021)* | a push from other people's eyes (다른 사람의 시선을 의식하며) |
+| `SELF` | Feel they've been neglecting themselves *(from 2021)* | neglected myself (제 자신에게 너무 소홀했던) |
+| `GOAL` | Only a goal, no pain | build good habits, the days I want to live, manage my time; reported separately, not a pain group |
+
+2021's words for the older groups: `NOACT` is mostly "lazy" (게으른), a procrastinator (미루는 습관), the "extreme P" who
+crams before deadlines; `TRACKING` is the app nomad (어플 유목민), apps deleted within days, apps too complex or too
+plain, old apps where a failure made starting again impossible.
 
 Identity alone (a student, an iPhone or Galaxy user, a web-version user) isn't a pain point: count it under "Who they
 say they are", not as a group, unless their words also name a pain. **How they found the app** (an editors' pick, an
@@ -89,7 +97,9 @@ Run from the repository root. `T="Review Insights/MyRoutine/User Groups — Who,
    start, not an answer:** list each kind's matches and fix the traps by hand (see `insights.py`'s FEATURES and WHO
    notes). Add a feature kind when a year's words show a new one.
 5. **`python3 -I "$T" limit <YEAR>`**: anything about a free-plan limit, sorted by hand. **2020 had no paywall in the
-   reviews** (one asks whether routines stop at nine); watch for one appearing.
+   reviews** (one asks whether routines stop at nine). **2021 has one:** a Premium membership (monthly or yearly), a
+   three-week trial, and a free plan capped at 10 routines by August and 15 from October. `limit` finds only two of
+   the 15-routine reviews: also search `problems` and `liked` for "15", "10 routines", "membership", "Pro", "trial".
 6. **`python3 -I "$T" payers <YEAR>`**: sort every payer into one reason (whole app works or liked it, a named
    feature, worth the price, paying as a commitment, free trial first, support the developer, regret/cancel/refund,
    no reason…) and check that the reasons add up to the number of payers. List unexpected charges separately, and
@@ -127,6 +137,14 @@ Run from the repository root. `T="Review Insights/MyRoutine/User Groups — Who,
 - Conditional paying ("I'd buy it if it had colours", "I'll pay once it's stable") sits in `note` with `paid`
   `not_said`. Report it as its own line, never as paid or refused.
 - The App Store app ID `1518956326` isn't a review ID (`check` ignores it).
+- **2021 traps:** `look` matched "look back on the day" and "looks after"; `social` matched "not like a social
+  network" and "to-dos neatly together"; `remind` matched "more effective than alarms"; `web` matched "stayed on the
+  phone"; "other routine users" was missed until added. All fixed in `insights.py`. A widget "like" can be a wish
+  ("perfect if it had a widget"). The `stats` group lines print GOAL's share "of pain": ignore it, goal-only isn't a
+  pain group. `appendix` prints the table without its heading: add `## Appendix: every group member` above it.
+- **The widget is platform-split in 2021:** Android had one from about April (and many report it broken), the iPhone
+  only from about 26 December. Read a widget wish by store before counting it.
+- **Problems need themes by hand:** in 2021 a `date` pattern matched "update"; check each theme's matches.
 
 ## Files
 
