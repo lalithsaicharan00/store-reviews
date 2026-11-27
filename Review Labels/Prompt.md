@@ -757,6 +757,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in two checks) A present-tense complaint with "can't" or "won't go on" (a paywall
   before trying, won't sign up, won't switch) is about_to_quit, not using; "I cancelled" is quit. Praise with no
   feature word, including how life got better from long use, is still its own liked item (see the 27 Nov rule above).
+  (27 Nov 2026, MyRoutine 2024, in one check) A paywall in the way is a dislike, not broken. "Would like to pay, but
+  not now" is paid refused, with that line as why, never not_said. A reason for choosing or coming back is why_chose
+  as well, even when it also sits in came_from or liked.
 
 ## Stopping and starting again
 
