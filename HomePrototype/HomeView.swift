@@ -205,36 +205,41 @@ struct ProgressHero: View {
         return "\(needed) more \(needed == 1 ? "habit" : "habits") to your \(which == "first" ? "first" : "next") star"
     }
 
+    // Three levels: a small label, the big number, then a quieter line that says what's next.
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack(alignment: .center, spacing: 12) {
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+        VStack(alignment: .leading, spacing: 26) {
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .top, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(isToday ? "Today’s progress" : "Progress")
+                            .appFont(15, .bold, relativeTo: .subheadline)
+                            .foregroundStyle(Theme.inkSoft)
                         Text(progress, format: .percent.precision(.fractionLength(0)))
-                            .appFont(46, .black, relativeTo: .largeTitle)
+                            .appFont(56, .black, relativeTo: .largeTitle)
                             .contentTransition(.numericText(value: progress))
                             .monospacedDigit()
-                        Text(isToday ? "done today" : "done")
-                            .appFont(17, .bold)
-                            .foregroundStyle(Theme.inkSoft)
                     }
-                    Text(message)
-                        .appFont(16, .bold)
-                        .lineLimit(2)
-                        .contentTransition(.opacity)
+                    Spacer(minLength: 8)
+                    StickerEmoji(emoji: mood, size: 56)
+                        .rotationEffect(.degrees(-10))
+                        .padding(.top, 10)
+                        .padding(.trailing, 2)
+                        .id(mood)
+                        .transition(.scale(scale: 0.4).combined(with: .opacity))
                 }
-                Spacer(minLength: 4)
-                StickerEmoji(emoji: mood, size: 48)
-                    .rotationEffect(.degrees(-10))
-                    .id(mood)
-                    .transition(.scale(scale: 0.4).combined(with: .opacity))
+                // Full width under the number and sticker, so it stays on one line.
+                Text(message)
+                    .appFont(17, .semibold)
+                    .foregroundStyle(Theme.ink.opacity(0.78))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .contentTransition(.opacity)
             }
             StarProgressBar(progress: progress, stars: stars)
         }
-        .padding(.horizontal, 20)
-        .padding(.top, 18)
-        .padding(.bottom, 14)
-        .background(Theme.progressCard, in: .rect(cornerRadius: 28, style: .continuous))
+        .padding(.horizontal, 24)
+        .padding(.top, 24)
+        .padding(.bottom, 20)
+        .background(Theme.progressCard, in: .rect(cornerRadius: 30, style: .continuous))
         .animation(.spring(response: 0.45, dampingFraction: 0.7), value: done)
     }
 }
@@ -242,19 +247,19 @@ struct ProgressHero: View {
 struct StarProgressBar: View {
     let progress: Double
     let stars: [Double]
-    private let badge: CGFloat = 34
+    private let badge: CGFloat = 36
 
     var body: some View {
-        VStack(spacing: 4) {
+        VStack(spacing: 8) {
             GeometryReader { geo in
                 // The bar ends under the last star's centre, so 100 % sits on the end.
                 let width = geo.size.width - badge / 2
                 ZStack(alignment: .leading) {
                     Capsule().fill(.white)
-                        .frame(width: width, height: 16)
+                        .frame(width: width, height: 18)
                     Capsule()
                         .fill(LinearGradient(colors: [Theme.barStart, Theme.barEnd], startPoint: .leading, endPoint: .trailing))
-                        .frame(width: max(10, (width - 6) * progress), height: 10)
+                        .frame(width: max(12, (width - 6) * progress), height: 12)
                         .padding(.leading, 3)
                     ForEach(stars, id: \.self) { mark in
                         StarBadge(reached: progress >= mark - 0.0001, size: badge)
