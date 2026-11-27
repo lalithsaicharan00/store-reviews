@@ -711,6 +711,11 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in two checks) A sentence of its own judging the app or the developers' choice ("other
   free apps are better", "not such a smart approach") is its own dislike item, even right after a price or limit
   complaint.
+  (27 Nov 2026, MyRoutine 2024, in three checks) A return that only finds a charge and asks for a refund ("오랜만에
+  알람 떠서 들어갔는데 … 환불조치 받고 싶습니다") is still_using about_to_quit, with the refund line as the quote,
+  never came_back.
+  (27 Nov 2026, MyRoutine 2024, in three checks) How they think a surprise charge happened, said in its own sentence
+  ("얼굴 인식하라길래 그냥 했던 … 그때 결제가 된거 같아요"), is its own problem item, apart from the charge itself.
 
 ## Stopping and starting again
 
