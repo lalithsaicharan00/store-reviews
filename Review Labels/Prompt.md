@@ -764,6 +764,12 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   my daily life"), in the title or the text, is a liked item even when the same line is also the still_using quote.
   (27 Nov 2026, MyRoutine 2025, in two checks) In every language: an English title or line ("Great app!", "SOOO
   GOOD", "Love this app", "it helps me a lot") is a liked item as surely as a Korean one.
+  (27 Nov 2026, MyRoutine 2025, five in one check) A problems or liked item uses only its quote's words: never add a
+  noun ("setup", "look") or a detail from another sentence; lengthen the quote or make it its own item. A question is
+  always its own problems item.
+  (27 Nov 2026, MyRoutine 2025, in three checks) still_using: try each kind of quote in order before choosing
+  not_said. A how-to question or a plan to keep at it ("애용하게 될것같아요") is using; a charge or refund line is
+  about_to_quit; a past result ("-게 되었다") never counts as using.
   (27 Nov 2026, MyRoutine 2024, three in one check) A problems quote starts at its sentence's start so it holds every
   detail its item names ("after paying"); in a refund review each complaint or question is its own item. Life
   before the app, and what they track named inside a wish, are why_chose items too. A first-person line about their
