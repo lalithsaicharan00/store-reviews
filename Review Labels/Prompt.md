@@ -760,6 +760,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in one check) A paywall in the way is a dislike, not broken. "Would like to pay, but
   not now" is paid refused, with that line as why, never not_said. A reason for choosing or coming back is why_chose
   as well, even when it also sits in came_from or liked.
+  (27 Nov 2026, MyRoutine 2024, three in one check) A short praise with no feature word ("very helpful", "supports
+  my daily life"), in the title or the text, is a liked item even when the same line is also the still_using quote.
   (26 Nov 2026, MyRoutine 2023, three in one check) A wish's quote runs on to the words that finish it: the "for
   example" sentence after it, or a shared "please make…" ending; two wishes joined by "and"/"이랑" ("다크버전이랑 …
   만들어주세요") are two items that both quote the whole sentence.
