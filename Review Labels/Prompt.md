@@ -728,6 +728,13 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   gives how_long_used "used it for a while before the update".
   (27 Nov 2026, MyRoutine 2024, in two checks) A complaint about a premium feature that doesn't say they pay
   ("프리미엄에서 웹 기능이…") is paid not_said. Never infer paid from naming premium; give the complaint its problem item.
+  (27 Nov 2026, MyRoutine 2024, again) A plea to keep the app as it is ("복잡한 기능/디자인들은 앞으로도 쭉 넣지
+  않아주셨으면") is its own problem item, even in an all-praise review.
+  (27 Nov 2026, MyRoutine 2024, again) Praise naming a group ("ADHD friendly!!!") is a liked item, with note null;
+  only who leaves it out as a general claim.
+  (27 Nov 2026, MyRoutine 2024, again) Using it "off and on", or deleted once and using it again, is still_using
+  came_back, never using. Thinking about switching to other apps ("투두 앱 따로 루틴앱 따로 써야되나 고민중이에요") is
+  about_to_quit, even after present-tense complaints.
 
 ## Stopping and starting again
 
