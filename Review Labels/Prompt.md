@@ -716,6 +716,13 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   never came_back.
   (27 Nov 2026, MyRoutine 2024, in three checks) How they think a surprise charge happened, said in its own sentence
   ("얼굴 인식하라길래 그냥 했던 … 그때 결제가 된거 같아요"), is its own problem item, apart from the charge itself.
+  (27 Nov 2026, MyRoutine 2024, in two checks) A one-word verdict in the title ("좋아요", "조우아") is a liked item
+  when the review has text as well; only a review that is one word and nothing else is nothing_useful.
+  (27 Nov 2026, MyRoutine 2024, in three checks) Not wanting to learn it ("No siento deseo de familiarizarme con
+  ello") is losing interest: still_using about_to_quit, never using.
+  (27 Nov 2026, MyRoutine 2024, in three checks) Having used it before a change ("원래 잘 사용하던 어플이었는데
+  유료화되고") gives how_long_used "used it for a while before it went paid"; cancelling or being charged during the
+  free trial ("무료기간중에") gives "within the free trial". Never null.
 
 ## Stopping and starting again
 
