@@ -7,25 +7,39 @@ struct Routine: Identifiable {
     var time: String
     var done: Int
     var total: Int
+    /// Minutes after midnight; nil for Anytime and All day.
+    var start: Int? = nil
     var isComplete: Bool { done >= total }
 }
 
 @Observable
 final class HomeModel {
     var routines: [Routine] = [
-        Routine(emoji: "☀️", name: "Morning", time: "7:00 AM", done: 4, total: 5),
-        Routine(emoji: "🏃", name: "Running", time: "7:30 AM", done: 2, total: 3),
+        Routine(emoji: "☀️", name: "Morning", time: "7:00 AM", done: 4, total: 5, start: 420),
+        Routine(emoji: "🏃", name: "Running", time: "7:30 AM", done: 2, total: 3, start: 450),
         Routine(emoji: "🥑", name: "Nutrition", time: "Anytime", done: 3, total: 4),
         Routine(emoji: "💧", name: "Hydration", time: "All day", done: 6, total: 8),
-        Routine(emoji: "🐶", name: "Dog Walk", time: "5:30 PM", done: 2, total: 2),
-        Routine(emoji: "🧘", name: "Mindfulness", time: "6:00 PM", done: 1, total: 2),
-        Routine(emoji: "📚", name: "Reading", time: "9:00 PM", done: 1, total: 2),
-        Routine(emoji: "🌙", name: "Wind Down", time: "10:00 PM", done: 0, total: 3),
+        Routine(emoji: "🐶", name: "Dog Walk", time: "5:30 PM", done: 2, total: 2, start: 1050),
+        Routine(emoji: "🧘", name: "Mindfulness", time: "6:00 PM", done: 1, total: 2, start: 1080),
+        Routine(emoji: "📚", name: "Reading", time: "9:00 PM", done: 1, total: 2, start: 1260),
+        Routine(emoji: "🌙", name: "Wind Down", time: "10:00 PM", done: 0, total: 3, start: 1320),
     ]
 
     var done: Int { routines.reduce(0) { $0 + $1.done } }
     var total: Int { routines.reduce(0) { $0 + $1.total } }
     var progress: Double { total == 0 ? 0 : Double(done) / Double(total) }
+
+    /// The one routine whose play button leads: the latest one that has started and
+    /// isn't finished; before the first starts, the next one coming; then anything left.
+    var upNextID: Routine.ID? {
+        let parts = Calendar.current.dateComponents([.hour, .minute], from: .now)
+        let now = (parts.hour ?? 0) * 60 + (parts.minute ?? 0)
+        let open = routines.filter { !$0.isComplete }
+        let timed = open.filter { $0.start != nil }
+        if let current = timed.filter({ $0.start! <= now }).max(by: { $0.start! < $1.start! }) { return current.id }
+        if let next = timed.min(by: { $0.start! < $1.start! }) { return next.id }
+        return open.first?.id
+    }
 }
 
 struct HomeView: View {
@@ -51,8 +65,9 @@ struct HomeView: View {
                     }
 
                     VStack(spacing: 12) {
+                        let upNext = model.upNextID
                         ForEach(model.routines) { routine in
-                            RoutineRow(routine: routine, onTick: { tick(routine.id) })
+                            RoutineRow(routine: routine, isUpNext: routine.id == upNext, onTick: { tick(routine.id) })
                                 .contextMenu {
                                     Button("Change Emoji") { editing = routine.id }
                                 }
@@ -279,6 +294,7 @@ struct StarBadge: View {
 
 struct RoutineRow: View {
     let routine: Routine
+    var isUpNext = false
     let onTick: () -> Void
 
     var body: some View {
@@ -292,9 +308,12 @@ struct RoutineRow: View {
                 Text(routine.name)
                     .appFont(21, .heavy, relativeTo: .title3)
                     .lineLimit(1)
-                Text("\(routine.time)  ·  \(routine.done) of \(routine.total)")
+                ((isUpNext
+                    ? Text("Up next  ·  ").foregroundStyle(Theme.ink).fontWeight(.heavy)
+                    : Text(""))
+                + Text(routine.time)
+                    .foregroundStyle(Theme.inkSoft))
                     .appFont(15, .semibold, relativeTo: .subheadline)
-                    .foregroundStyle(Theme.inkSoft)
                     .contentTransition(.numericText())
                     .lineLimit(1)
                 HabitPips(done: routine.done, total: routine.total, color: deep)
@@ -302,7 +321,7 @@ struct RoutineRow: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            PlayButton(isComplete: routine.isComplete)
+            PlayButton(isComplete: routine.isComplete, isPrimary: isUpNext)
         }
         .padding(.leading, 14)
         .padding(.trailing, 16)
@@ -329,36 +348,41 @@ struct HabitPips: View {
             }
         }
         .animation(.snappy, value: done)
-        .accessibilityHidden(true)
+        .accessibilityElement()
+        .accessibilityLabel("\(done) of \(total) habits done")
     }
 }
 
+/// Every routine can be played from its row. Only the one up next is the main
+/// action (dark and raised); the rest are quiet white buttons in the same place.
 struct PlayButton: View {
     let isComplete: Bool
-    private let color = Theme.ink
+    let isPrimary: Bool
 
     var body: some View {
         Button {
             // The routine player comes later; for now the button only shows where it goes.
         } label: {
             ZStack {
-                Circle().fill(isComplete ? .white : color)
+                Circle().fill(isPrimary ? Theme.ink : Color.white.opacity(0.75))
                 if isComplete {
                     CheckMark()
-                        .stroke(color, style: StrokeStyle(lineWidth: 3.4, lineCap: .round, lineJoin: .round))
-                        .frame(width: 20, height: 15)
+                        .stroke(Theme.inkSoft, style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
+                        .frame(width: 17, height: 13)
                 } else {
                     PlayTriangle()
-                        .softFill(.white, corner: 4)
-                        .frame(width: 17, height: 19)
+                        .softFill(isPrimary ? .white : Theme.ink.opacity(0.85), corner: isPrimary ? 4 : 3)
+                        .frame(width: isPrimary ? 17 : 14, height: isPrimary ? 19 : 16)
                         .offset(x: 1.5)
                 }
             }
-            .frame(width: 54, height: 54)
-            .shadow(color: color.opacity(isComplete ? 0.08 : 0.25), radius: 6, y: 3)
+            .frame(width: isPrimary ? 56 : 46, height: isPrimary ? 56 : 46)
+            .shadow(color: Theme.ink.opacity(isPrimary ? 0.28 : 0), radius: 7, y: 4)
+            .frame(width: 56, height: 56) // same slot either way, so rows line up
             .contentShape(.circle)
         }
         .buttonStyle(SquishStyle())
+        .animation(.spring(response: 0.4, dampingFraction: 0.7), value: isPrimary)
         .accessibilityLabel(isComplete ? "Routine done, play again" : "Play routine")
     }
 }
