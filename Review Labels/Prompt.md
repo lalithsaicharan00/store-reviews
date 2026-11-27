@@ -705,6 +705,12 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in two checks) A promised free trial and the charge that broke it, said in one
   sentence, are one problem item; "I'll reinstall if it goes back" is its own item; a paywall or ad that blocks input
   is dislike, never broken.
+  (27 Nov 2026, MyRoutine 2024, in two checks) still_using's quote is, in this order: a present complaint or how-to
+  question about their own use, then a plan to keep at it ("노력하겠습니다"), and only then praise. A present-tense
+  complaint with no subject stated (Korean) still counts, so the status is never not_said.
+  (27 Nov 2026, MyRoutine 2024, in two checks) A sentence of its own judging the app or the developers' choice ("other
+  free apps are better", "not such a smart approach") is its own dislike item, even right after a price or limit
+  complaint.
 
 ## Stopping and starting again
 
