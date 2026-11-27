@@ -766,6 +766,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   detail its item names ("after paying"); in a refund review each complaint or question is its own item. Life
   before the app, and what they track named inside a wish, are why_chose items too. A first-person line about their
   own daily practice ("I don't do routines") is who.
+  (27 Nov 2026, MyRoutine 2024, three in one check) For still_using, find the quote first: a present-tense line about
+  their own use or a present complaint (Korean -됨, "돈주고 해야됨"); a wish or plea never counts, and with no such line
+  it is not_said. Routines they already had before an update are how_long_used "a while, before the update", never null.
   (26 Nov 2026, MyRoutine 2023, three in one check) A wish's quote runs on to the words that finish it: the "for
   example" sentence after it, or a shared "please make…" ending; two wishes joined by "and"/"이랑" ("다크버전이랑 …
   만들어주세요") are two items that both quote the whole sentence.
