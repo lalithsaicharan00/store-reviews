@@ -699,6 +699,12 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   "I don't get why it's paid") is still_using using; "still unfamiliar with it" is how_long_used "just started".
   (26 Nov 2026, MyRoutine 2023, in two checks) What they record or track in the app (a daily weight note) is
   why_chose, never who: who is only a fact about the person themselves.
+  (27 Nov 2026, MyRoutine 2024, in two checks) Put off by paywall prompts or a short free trial ("too inconvenient,
+  can't use it") is paid refused, with that as why; a reason for paying given in another sentence is still paid.why,
+  never null.
+  (27 Nov 2026, MyRoutine 2024, in two checks) A promised free trial and the charge that broke it, said in one
+  sentence, are one problem item; "I'll reinstall if it goes back" is its own item; a paywall or ad that blocks input
+  is dislike, never broken.
 
 ## Stopping and starting again
 
