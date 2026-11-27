@@ -750,6 +750,10 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in five checks) Praise with no feature word is still liked: a closing recommendation
   to others, conditional or "almost" praise ("nearly my life app"), a slang verdict in the title. A student fact given
   in passing (school vacations, "since middle school") is who.
+  (27 Nov 2026, MyRoutine 2024, in one check) Earlier use shown only indirectly (wanting a removed feature back, a bug
+  still there after updates) is how_long_used "a while, before the change", never null; time spent writing the review
+  is not use. "Hardly open it any more" is about_to_quit; resubscribing "to stick with it this time" is came_back. The
+  still_using quote is the present complaint when there is one, not praise. How they plan is why_chose, not who.
 
 ## Stopping and starting again
 
