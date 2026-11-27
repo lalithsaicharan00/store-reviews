@@ -747,6 +747,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in three checks) A sentence judging the app, or a rhetorical question ("premium, yet is
   this all?"), beside a complaint gets its own dislike item, never folded into the bug. Every thing an item names
   (the widget, the discount) is in its quote; extend the quote rather than the item.
+  (27 Nov 2026, MyRoutine 2024, in five checks) Praise with no feature word is still liked: a closing recommendation
+  to others, conditional or "almost" praise ("nearly my life app"), a slang verdict in the title. A student fact given
+  in passing (school vacations, "since middle school") is who.
 
 ## Stopping and starting again
 
