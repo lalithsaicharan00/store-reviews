@@ -17,7 +17,7 @@ Everything that was configured, every answer given to Google, and what is still 
 **Building a signed release** (the user's own PowerShell, so the password never leaves it): `Android/README.md` has the
 Gradle commands; `build.gradle.kts` signs with `ANDROID_UPLOAD_KEYSTORE` / `ANDROID_UPLOAD_KEYSTORE_PASSWORD` when set.
 Windows PowerShell 5.1 has no `PtrToStringAuth`: read the hidden password through `PSCredential` instead. Every upload
-needs a higher `versionCode` (1 was the first internal upload, 2 the first closed test; 5 built 31 Oct 2026; 6 for the internal test of 2 Nov 2026).
+needs a higher `versionCode` (1 was the first internal upload, 2 the first closed test; 5 built 31 Oct 2026; 6 for the internal test of 2 Nov 2026; 7 for the first production release, built on the MacBook 21 Nov 2026 with the password read from the Keychain).
 
 **On the MacBook** (31 Oct 2026): the password can sit in the login Keychain as the item `often-enough-upload-key`, and
 the build reads it with `security find-generic-password -w`; use Android Studio's own Java (`JAVA_HOME` = its `jbr`), as

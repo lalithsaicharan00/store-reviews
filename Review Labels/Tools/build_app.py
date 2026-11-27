@@ -66,8 +66,13 @@ def normalise(raw, store):
 
 
 def dup_key(r):
+    # Older Play reviews hide the author behind Google's placeholder ("A Google user",
+    # "Un usuario de Google", …): those are many different people, never one.
+    author = (r["author"] or "").strip()
+    if not author or (r["store"] == "play" and "google" in author.lower()):
+        return None
     text = re.sub(r"\s+", " ", ((r["title"] or "") + " " + r["text"])).strip().lower()
-    return (r["author"] or "", text) if text else None
+    return (author, text) if text else None
 
 
 def main():
@@ -96,14 +101,17 @@ def main():
     reviews = sorted(merged.values(), key=lambda r: (r["date"], r["store"], r["review_id"]))
 
     # The same author posting the same words twice: the later copy points at the first.
+    # Worked out afresh on every run, so a better rule corrects older marks too.
     first_seen = {}
     for r in reviews:
+        r["duplicate_of"] = None
         k = dup_key(r)
         if k is None:
             continue
-        if k in first_seen and r["duplicate_of"] is None:
+        if k in first_seen:
             r["duplicate_of"] = first_seen[k]
-        first_seen.setdefault(k, r["review_id"])
+        else:
+            first_seen[k] = r["review_id"]
 
     by_year = defaultdict(list)
     for r in reviews:
