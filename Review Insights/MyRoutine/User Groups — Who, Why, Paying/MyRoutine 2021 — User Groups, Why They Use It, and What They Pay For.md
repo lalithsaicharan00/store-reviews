@@ -63,6 +63,10 @@ characters; the appendix maps every group member to its line in the labels file.
   People short of time or with shifting days want the app to **hold the time for them** (set times, a whole day's
   routine to switch by shift) and are the most critical: two of the five short of time rate it 3★, for slowness and
   fiddly time entry. Other people's routines, the social side 2020's groups named most, is named by 5 of the 25.
+- **How it helps them:** 30 people say what changed: **days fuller and more regular (9), acting instead of putting
+  off (5), habits taking hold (5), a missed day hurting less (4)**. They credit a pull and a cushion together: small
+  wins they can see, the green light and badges that can be lost, and a bar that forgives (rest, holidays, a gentler
+  challenge routine). For people whose tracking didn't fit, the help is simply that they stayed.
 - **Paying: 20 of 387 say they paid (5.2%); 20 of the 41 who say anything about it.** **2021 is the year a paywall
   appears in the reviews:** a Premium membership (monthly or yearly) with a **three-week free trial** from January, a
   **free plan capped at 10 routines** by August and **15** from October. Payers pay for **the whole app**: 8 of the 20
@@ -292,7 +296,100 @@ subscription (`0c78e619`).
 
 ---
 
-## 3. Paying
+## 3. How the app helps them
+
+What people say the app **does for them**, as opposed to which feature they like: from the same `liked` and
+`chose_for` labels, read one by one and kept only where the words describe a change in their days or in themselves.
+**30 of the 198 people who name a like say how it changed something**; all 30 rate it 5★, and only four say how long
+they've used it (over a year `223585e2`, almost three weeks `78712083`, ten days `3d54f4f8`, a week `4aa8ddad`).
+
+### What changes for them
+
+| What changes (one review can say several) | Reviews | IDs |
+|---|---|---|
+| **Their days feel fuller and more regular** | 9 | `223585e2`, `951bdfb0`, `74162386`, `b5d00111`, `688f24cd`, `2ac4ddd5`, `39203e59`, `4aa8ddad`, `e573f278` |
+| **They act instead of putting things off; their willpower holds** | 5 | `8ed2ca8a`, `0785f7c3`, `1c41b5ee`, `06f273e9`, `f05bee19` |
+| **Habits take hold** | 5 | `72897581`, `1f92f668`, `61669a51`, `3af1bf06`, `fde24388` |
+| They feel better about themselves, and a missed day hurts less | 4 | `7b5c2249`, `68595910`, `48873f2f`, `3b12f8e1` |
+| They get to know and look after themselves | 4 | `72897581`, `3f991e6d`, `3d54f4f8`, `78712083` |
+| Less time wasted | 3 | `751b5f83`, `74162386`, `77551168` |
+| They don't forget (medicine, the routine) | 2 | `79431633`, `31fcac6d` |
+
+In their words:
+- *"어플로 인해 규칙적이고 알차게 사려고 노력하는 내 모습을 발견하게 되어서 너무 행복합니다"*, "I'm so happy to find
+  myself trying to live regularly and fully because of the app" (`4aa8ddad`, a week in).
+- *"앱 쓰면서 하루를 더 알차게 보내게 되네요"*, "using the app, I spend my days more fully", and *"하루하루
+  뿌듯해집니다"*, "every day I feel proud" (`b5d00111`).
+- *"눈에 딱 보이게 할일들 보여주니깐 하게되는 느낌"*, "it shows my tasks right where I can see them, so I feel I end up
+  doing them", and *"실행력이 올라갑니다"*, "my follow-through goes up" (`8ed2ca8a`).
+- *"의지박약인 사람들에게 든든한 벗이 되어줍니다"*, "it's a reliable friend for people with weak willpower" (`1c41b5ee`).
+- *"제 생활은 마이루틴을 사용하기 전과 후로 나뉘어요"*, "my life divides into before and after MyRoutine" (`fde24388`);
+  *"이 앱으로 제 습관이 달라졌어요"*, "my habits changed with this app" (`3af1bf06`).
+- *"쉬어가는 표현으로 루틴을 달성하지 못했을때의 박탈감도 적어요"*, "because it words it as taking a rest, I feel less
+  deprived when I don't manage a routine" (`68595910`); *"저도 더 바르게 살고 싶어지고 자존감도 올라가더군요"*, "I
+  find myself wanting to live better, and my self-esteem goes up" (`7b5c2249`, from its kind wording).
+- *"나를 알수있게되요"*, "I come to know myself" (`3f991e6d`); *"하루를 잘 돌아볼 수 있는 계기가 됬어요"*, "it gave me a
+  reason to look back on my day properly" (`3d54f4f8`).
+- *"앱 설치한 이후 약도 시간내로 잘 먹고 있습니다"*, "since installing the app I take my medicine on time" (`79431633`).
+
+### How it does it, in their words
+
+| What does it | Reviews | IDs |
+|---|---|---|
+| **Small wins they can see:** ticking off one by one, the light turning green, feeling proud each time | 9 | `4b06ec73`, `63d8b9c6`, `2be35dfd`, `b5d00111`, `966bc28b`, `422df19f`, `b59c1d37`, `35c00500`, `6150eed0` |
+| **Seeing the plan:** routines in view, the week at a glance, the widget, the results kept and what's lacking | 9 | `981b6aba`, `74162386`, `8ed2ca8a`, `31fcac6d`, `66324847`, `b1e6fbb3`, `8923d64b`, `f504e438`, `e6d380fd` |
+| **A bar that forgives:** rest and holidays, a challenge routine apart from the basic ones, no obsession, a steady pace rewarded over many routines | 8 | `68595910`, `48873f2f`, `0c24bc52`, `78355712`, `78842383`, `952f894f`, `3b12f8e1`, `f504e438` |
+| **A reflection at the end of the day** | 8 | `72192782`, `72897581`, `3f991e6d`, `3d54f4f8`, `78712083`, `781e76ae`, `fde24388`, `e573f278` |
+| **Rewards that can be lost:** badges, levels | 6 | `966bc28b`, `2ac4ddd5`, `81104653`, `81748005`, `e573f278`, `7f54ffe3` |
+| **Kind words:** praise and encouragement messages | 6 | `7b5c2249`, `6c39418e`, `78355712`, `14497274`, `80483937`, `639284c7` |
+| Reminders at the right time | 5 | `422df19f`, `79431633`, `80058972`, `688f24cd`, `80394456` |
+| Other people doing it too | 5 | `68844349`, `78355712`, `80483937`, `6150eed0`, `81748005` |
+| A ready-made start: recommended routines | 3 | `68325940`, `79acdd3c`, `81322773` |
+
+Three quotes show the mechanism best:
+- *"설정한 습관들을 하니씩 체크하며 작은 성공을 쌓아가는게 기분이 좋아요"*, "checking off the habits I set one by
+  one and piling up small successes feels good" (`4b06ec73`).
+- *"초록불 꾸준히 달성하고 회고 꾸준히 쓰면 뱃지 주는 게 진짜 신의 한수"*, "giving a badge for steadily hitting green
+  and writing reflections is a stroke of genius"; *"며칠 못 하면 뺏어가는게 신의 두수"*, "taking it away if you miss a few
+  days is a second stroke"; *"그 덕에 해야 돼!- 라는 마음이 생겨"*, "thanks to that I get the feeling 'I have to do it!'"
+  (`e573f278`).
+- *"리워드 정책도 무조건 루틴이 많으면 장땡식이 아니고 합리적으로 내 페이스에 맞게 꾸준히 하는걸 유도하는게
+  좋아요"*, "the reward policy isn't 'the more routines the better'; it sensibly nudges you to keep at it steadily at your
+  own pace" (`78842383`).
+
+**So the help comes from two sides at once:** a pull (small wins, a green light, badges that can be lost, praise) and a
+cushion (rest is fine, a gentler bar, a fresh start any time). People don't describe one without the other.
+
+### By group
+
+| Group | How it helps them | Say a change |
+|---|---|---|
+| 1. Don't act | **Seeing what they did and a gentler bar**: the results kept and what's lacking, so they revise the plan (`74162386`); a challenge routine that cuts self-blame (`48873f2f`); *"게으른 절 바르게 해주는것같아요"*, "it seems to straighten out lazy me" (`0785f7c3`); days spent fully after a year of use (`223585e2`) | 4 of 6 |
+| 2. Tracking didn't fit | **They stayed.** Their pain was leaving apps, and the help is staying: *"이 앱만큼 지속적으로 사용한 앱은 없는것같아요"*, "I don't think I've used any app as consistently as this one", because a rest button and holidays let them try again any time (`3b12f8e1`); "finally an app to settle on" (`69531729`); being told it's okay to rest (`78355712`); a game-like pull back (`81748005`) | 1 of 6 says a change; all 6 say why they stay |
+| 3. Time slips away | **Time back:** *"소소하게 버리는 시간이 거의 줄었습니다"*, "the bits of time I used to throw away have almost gone" (`77551168`); the challenge routine that cuts self-blame (`48873f2f`, also group 1). Two others say the app costs them time instead (slow, fiddly time entry: `5805cb99`, `c5a30769`) | 2 of 5 |
+| 4. Days with no steady shape | **Little so far:** one says it's good when they work at it (`41b41d83`); the shift nurse says a routine set once doesn't follow their shifts (`c607d2b5`) | 1 of 4 (`77551168`) |
+| 5. Give up within days | **It keeps the resolve from fading:** *"의지가 약해지는걸 막아줍니다"*, "it stops my willpower weakening", and works *"알람보다 더 효과가 좋다"*, "better than alarms" (`06f273e9`); praise as a carrot and other people's routines (`80483937`); a lazy perfectionist still at it after a year (`223585e2`) | 2 of 3 |
+| 6. Forget things | **The alarm and the list in view:** medicine on time (`79431633`); *"루틴이 눈에 보이니까 잊어버리지 않고"*, "because I can see my routines, I don't forget" (`31fcac6d`) | 2 of 2 |
+| 7. Keep going when seen | No change said; what they ask for (a feed where routiners post their plans) is what would help (`d00edbac`) | 0 of 1 |
+| 8. Neglected themselves | **The reflection:** *"회고로 절 챙기게 되었습니다"*, "through the reflection I've come to look after myself" (`78712083`) | 1 of 1 |
+| Goal only | Badges that are taken away make them do it, a full, fun life (`e573f278`); pride at each routine done (`6150eed0`); habits without obsession (`0c24bc52`); a review menu to check the day (`781e76ae`) | 1 of 11 |
+
+### Where it doesn't help
+
+- *"한번정도는 깔아서 3일정도는 실천하게 만드는 앱"*, "an app that, if you install it once, makes you practise for
+  about three days" (`20023fb1`, 3★).
+- *"앱이 의욕을 팍팍 꺾어버림"*, "the app crushes my motivation", because loading is slow and adding or moving a routine
+  takes patience (`e5c60e68`, 1★).
+- **Bugs undo the help:** one wrong tap wiped all one person's plans (`cb9365ae`, 1★); routines and records vanished
+  after an October update (`79522232`, `79578191`). 149 reviews report something broken (section 7).
+
+**Limits of this section:** the 30 who say how it helped are all 5★ reviewers and mostly early in their use, so this
+is what helps the people it works for, not how often it works. No review says the help faded over time, but almost no
+one writes again later to say.
+
+---
+
+## 4. Paying
 
 ### How many pay
 
@@ -363,7 +460,7 @@ say it had subscriptions (`11785dc9`); after a month a membership must be bought
 
 ---
 
-## 4. Free features people like
+## 5. Free features people like
 
 Across all 387 reviews, 198 name something they like. Sorted into kinds (one review can name several):
 
@@ -394,7 +491,7 @@ and PC versions from 12 to 2. The widget is the new kind: *"위젯기능이 있�
 
 ---
 
-## 5. Who they say they are, and how they found it
+## 6. Who they say they are, and how they found it
 
 From `who` (40 people say something). Still mostly a device:
 
@@ -421,7 +518,7 @@ the groups above (lazy, the "P type", short of time, motivated by others' eyes).
 
 ---
 
-## 6. What's broken and what's wished for
+## 7. What's broken and what's wished for
 
 ### Broken (149 reviews, 38%)
 
@@ -477,14 +574,14 @@ Once or twice each: set when the day ends (`48873f2f`, `81743675`), routines ins
 (`baa13743`), talk or set goals with others (`3d54f4f8`, `78842383`), more praise and badges (`6c39418e`,
 `df2a20ff`), a confirmation before deleting (`cb9365ae`).
 
-**Disliked:** the price and the subscription (15, in section 3); slow or unstable (12); complex or not intuitive (18,
+**Disliked:** the price and the subscription (15, in section 4); slow or unstable (12); complex or not intuitive (18,
 e.g. *"앱 인터페이스랑 플로우가 너무 복잡해요"*, "the app's interface and flow are too complex", `12691faf`); other people's
 routines shown first on the home screen (`b9423ae3`, `81855786`). The reflection's public and private options confuse
 one person into writing private things publicly (`81295592`).
 
 ---
 
-## 7. What changed
+## 8. What changed
 
 | | 2020 (from 5 July) | 2021 |
 |---|---|---|
@@ -516,7 +613,7 @@ the commonest reason to refuse.
 
 ---
 
-## 8. Limits
+## 9. Limits
 
 - **Small:** 25 people name a pain point out of 387, and groups 7 and 8 are one person each. The shares describe the
   25, not every user. A smaller share of reviews names a pain than in 2020 (6.5% against 14%).

@@ -108,11 +108,13 @@ Run from the repository root. `T="Review Insights/MyRoutine/User Groups — Who,
    41% of 2020's reviews, so report them beside paying.
 8. **`python3 -I "$T" quotes <YEAR>`**: pick quotes for each group.
 9. **Write the report** as `MyRoutine <YEAR> — User Groups, Why They Use It, and What They Pay For.md`, with the same
-   sections as 2020: the short answer (with the group table), 1 the year in numbers, 2 the groups (who they are, why
-   with quotes, free features they like, paying), 3 paying (how many, by group, by language, why payers paid with IDs,
-   what premium holds, why others won't pay), 4 free features liked, 5 who they say they are and how they found it,
-   6 what's broken and what's wished for, 7 what changed (a table across MyRoutine's years so far), 8 limits,
-   appendix.
+   sections as 2021: the short answer (with the group table), 1 the year in numbers, 2 the groups (who they are, why
+   with quotes, free features they like, paying), **3 how the app helps them** (from `liked` and `chose_for`, read one
+   by one, kept only where the words say a change in their days or in themselves: what changes, what does it, by
+   group, where it doesn't help; added at the user's request, 27 Nov 2026), 4 paying (how many, by group, by language,
+   why payers paid with IDs, what premium holds, why others won't pay), 5 free features liked, 6 who they say they are
+   and how they found it, 7 what's broken and what's wished for, 8 what changed (a table across MyRoutine's years so
+   far), 9 limits, appendix. (2020's report has no section 3; its groups' "What they say changed" lines hold the same.)
 10. **`python3 -I "$T" appendix <YEAR> >> "<report>"`**, then **`python3 -I "$T" check <YEAR>`** (must say nothing
     missing or ambiguous).
 11. **Update `../README.md`** (the MyRoutine page: the year's row and the trend table) and the apps table in
