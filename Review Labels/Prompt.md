@@ -754,6 +754,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   still there after updates) is how_long_used "a while, before the change", never null; time spent writing the review
   is not use. "Hardly open it any more" is about_to_quit; resubscribing "to stick with it this time" is came_back. The
   still_using quote is the present complaint when there is one, not praise. How they plan is why_chose, not who.
+  (27 Nov 2026, MyRoutine 2024, in two checks) A present-tense complaint with "can't" or "won't go on" (a paywall
+  before trying, won't sign up, won't switch) is about_to_quit, not using; "I cancelled" is quit. Praise with no
+  feature word, including how life got better from long use, is still its own liked item (see the 27 Nov rule above).
 
 ## Stopping and starting again
 
