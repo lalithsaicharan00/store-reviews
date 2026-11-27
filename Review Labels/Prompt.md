@@ -762,6 +762,8 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   as well, even when it also sits in came_from or liked.
   (27 Nov 2026, MyRoutine 2024, three in one check) A short praise with no feature word ("very helpful", "supports
   my daily life"), in the title or the text, is a liked item even when the same line is also the still_using quote.
+  (27 Nov 2026, MyRoutine 2025, in two checks) In every language: an English title or line ("Great app!", "SOOO
+  GOOD", "Love this app", "it helps me a lot") is a liked item as surely as a Korean one.
   (27 Nov 2026, MyRoutine 2024, three in one check) A problems quote starts at its sentence's start so it holds every
   detail its item names ("after paying"); in a refund review each complaint or question is its own item. Life
   before the app, and what they track named inside a wish, are why_chose items too. A first-person line about their
