@@ -773,6 +773,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2025, in two checks) A day count of their own use ("이틀차인데") or a present love line in
   the title is a using quote; holding back from going on for fear it happens again is about_to_quit. Every came_from
   item and every "I usually…" line about how they plan also gets a why_chose item, never a who item.
+  (27 Nov 2026, MyRoutine 2025, five in one check) Before saving, reread every liked, problems and who item: any that
+  shows a struggle ended, life before the app or something they track gets its own why_chose item too, quoting only
+  that line and never adding a cause it doesn't state.
   (27 Nov 2026, MyRoutine 2024, three in one check) A problems quote starts at its sentence's start so it holds every
   detail its item names ("after paying"); in a refund review each complaint or question is its own item. Life
   before the app, and what they track named inside a wish, are why_chose items too. A first-person line about their
