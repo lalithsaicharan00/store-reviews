@@ -741,6 +741,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in three checks) No item says more than its quote: an unclear word stays in the quote
   as written and note calls it unclear, never a guessed meaning. A fact goes in every field it fills: life before the
   app ("tried many similar apps", "used to forget") is why_chose, a first-person health remark is who, not only liked.
+  (27 Nov 2026, MyRoutine 2024, in four checks) A workaround (delete and reinstall) goes inside its bug's item, never
+  its own. A short verdict that describes the app ("helpful for people who want X") is liked, not nothing_useful.
+  "It helps me build X" is why_chose. A Korean present ending (-함, -해요) about their own use is still_using using.
 
 ## Stopping and starting again
 
