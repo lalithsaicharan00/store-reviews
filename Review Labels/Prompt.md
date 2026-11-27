@@ -738,6 +738,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in two checks) The title counts as much as the text: a complaint or praise only in the
   title gets its own problem or liked item. A liked item names only what its quote says and praises; a feature
   request that only describes the feature is a wish, never liked.
+  (27 Nov 2026, MyRoutine 2024, in three checks) No item says more than its quote: an unclear word stays in the quote
+  as written and note calls it unclear, never a guessed meaning. A fact goes in every field it fills: life before the
+  app ("tried many similar apps", "used to forget") is why_chose, a first-person health remark is who, not only liked.
 
 ## Stopping and starting again
 
