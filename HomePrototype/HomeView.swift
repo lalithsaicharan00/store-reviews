@@ -7,6 +7,7 @@ struct Routine: Identifiable {
     var time: String
     var done: Int
     var total: Int
+    var isComplete: Bool { done >= total }
 }
 
 @Observable
@@ -15,19 +16,16 @@ final class HomeModel {
         Routine(emoji: "☀️", name: "Morning", time: "7:00 AM", done: 4, total: 5),
         Routine(emoji: "🏃", name: "Running", time: "7:30 AM", done: 2, total: 3),
         Routine(emoji: "🥑", name: "Nutrition", time: "Anytime", done: 3, total: 4),
-        Routine(emoji: "📚", name: "Reading", time: "9:00 PM", done: 1, total: 2),
         Routine(emoji: "💧", name: "Hydration", time: "All day", done: 6, total: 8),
-        Routine(emoji: "🧘", name: "Mindfulness", time: "6:00 PM", done: 1, total: 2),
-        Routine(emoji: "🌙", name: "Wind Down", time: "10:00 PM", done: 0, total: 3),
         Routine(emoji: "🐶", name: "Dog Walk", time: "5:30 PM", done: 2, total: 2),
+        Routine(emoji: "🧘", name: "Mindfulness", time: "6:00 PM", done: 1, total: 2),
+        Routine(emoji: "📚", name: "Reading", time: "9:00 PM", done: 1, total: 2),
+        Routine(emoji: "🌙", name: "Wind Down", time: "10:00 PM", done: 0, total: 3),
     ]
 
-    var progress: Double {
-        let total = routines.reduce(0) { $0 + $1.total }
-        return total == 0 ? 0 : Double(routines.reduce(0) { $0 + $1.done }) / Double(total)
-    }
-    var doneCount: Int { routines.reduce(0) { $0 + $1.done } }
-    var totalCount: Int { routines.reduce(0) { $0 + $1.total } }
+    var done: Int { routines.reduce(0) { $0 + $1.done } }
+    var total: Int { routines.reduce(0) { $0 + $1.total } }
+    var progress: Double { total == 0 ? 0 : Double(done) / Double(total) }
 }
 
 struct HomeView: View {
@@ -36,62 +34,61 @@ struct HomeView: View {
     @State private var editing: Routine.ID?
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 28) {
-                    TodayProgressCard(progress: model.progress, done: model.doneCount, total: model.totalCount)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 32) {
+                ProgressHero(done: model.done, total: model.total)
 
-                    VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 14) {
+                    HStack(alignment: .firstTextBaseline, spacing: 10) {
                         Text("Your Routines")
-                            .font(.title2.weight(.bold))
-                        RoutineGrid(routines: model.routines,
-                                    onTap: tick,
-                                    onChangeEmoji: { editing = $0 })
+                            .appFont(28, .black, relativeTo: .title)
+                        Text("\(model.routines.count)")
+                            .appFont(15, .heavy)
+                            .foregroundStyle(Theme.inkSoft)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 3)
+                            .background(Theme.ink.opacity(0.07), in: .capsule)
                     }
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 32)
-            }
-            .background(Color(.systemBackground))
-            .navigationTitle("Today")
-            .navigationSubtitle(day.formatted(.dateTime.weekday(.wide).day().month(.wide)))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarTitleMenu {
-                ForEach(-3...3, id: \.self) { offset in
-                    let date = Calendar.current.date(byAdding: .day, value: offset, to: .now)!
-                    Button {
-                        day = date
-                    } label: {
-                        Text(offset == 0 ? "Today" : date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))
-                        if Calendar.current.isDate(date, inSameDayAs: day) { Image(systemName: "checkmark") }
+
+                    VStack(spacing: 12) {
+                        ForEach(model.routines) { routine in
+                            RoutineRow(routine: routine, onTick: { tick(routine.id) })
+                                .contextMenu {
+                                    Button("Change Emoji") { editing = routine.id }
+                                }
+                        }
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Menu {
-                        Button("Edit Routines", systemImage: "pencil") {}
-                        Button("Change Order", systemImage: "arrow.up.arrow.down") {}
-                        Button("Hide Completed", systemImage: "eye.slash") {}
-                    } label: {
-                        Image(systemName: "ellipsis")
+            .foregroundStyle(Theme.ink)
+            .padding(.horizontal, 20)
+            .padding(.top, 8)
+            .padding(.bottom, 40)
+        }
+        .scrollIndicators(.hidden)
+        .background(Theme.background)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            Header(day: $day)
+                .background(alignment: .top) {
+                    // Cream behind the header, fading out so rows slide softly under it.
+                    VStack(spacing: 0) {
+                        Theme.background.ignoresSafeArea(edges: .top)
+                        LinearGradient(colors: [Theme.background, Theme.background.opacity(0)],
+                                       startPoint: .top, endPoint: .bottom)
+                            .frame(height: 24)
                     }
-                    .accessibilityLabel("More")
+                    .padding(.bottom, -24)
+                    .allowsHitTesting(false)
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {} label: { Image(systemName: "gearshape") }
-                        .accessibilityLabel("Settings")
-                }
-            }
-            .sheet(item: Binding(
-                get: { editing.flatMap { id in model.routines.first { $0.id == id } } },
-                set: { editing = $0?.id }
-            )) { routine in
-                EmojiPickerSheet(routine: routine) { newEmoji in
-                    if let i = model.routines.firstIndex(where: { $0.id == routine.id }) {
-                        model.routines[i].emoji = newEmoji
-                    }
+        }
+        .preferredColorScheme(.light)
+        .sheet(item: Binding(
+            get: { editing.flatMap { id in model.routines.first { $0.id == id } } },
+            set: { editing = $0?.id }
+        )) { routine in
+            EmojiPickerSheet(routine: routine) { newEmoji in
+                if let i = model.routines.firstIndex(where: { $0.id == routine.id }) {
+                    model.routines[i].emoji = newEmoji
                 }
             }
         }
@@ -101,76 +98,156 @@ struct HomeView: View {
         guard let i = model.routines.firstIndex(where: { $0.id == id }) else { return }
         withAnimation(.snappy) {
             let r = model.routines[i]
-            model.routines[i].done = r.done >= r.total ? 0 : r.done + 1
+            model.routines[i].done = r.isComplete ? 0 : r.done + 1
         }
     }
 }
 
-// MARK: - Today's progress, with stars at 60, 80 and 100 %
+// MARK: - Header: menu · Today and the date · settings
 
-struct TodayProgressCard: View {
-    let progress: Double
-    let done: Int
-    let total: Int
+struct Header: View {
+    @Binding var day: Date
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            HStack(alignment: .firstTextBaseline) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Today’s Progress")
-                        .font(.headline)
-                    Text("\(done) of \(total) habits done")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+        HStack {
+            Menu {
+                Button("Edit Routines") {}
+                Button("Change Order") {}
+                Button("Hide Completed") {}
+            } label: {
+                StickerButtonLabel {
+                    MenuIcon().stroke(Theme.ink, style: StrokeStyle(lineWidth: 2.8, lineCap: .round))
                 }
-                Spacer()
-                Text(progress, format: .percent.precision(.fractionLength(0)))
-                    .font(.system(.title, design: .rounded).weight(.bold))
-                    .contentTransition(.numericText())
-                    .monospacedDigit()
             }
-            StarProgressBar(progress: progress)
+            .accessibilityLabel("Menu")
+
+            Spacer()
+
+            Menu {
+                ForEach(-3...3, id: \.self) { offset in
+                    let date = Calendar.current.date(byAdding: .day, value: offset, to: .now)!
+                    Button(offset == 0 ? "Today" : date.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))) {
+                        day = date
+                    }
+                }
+            } label: {
+                VStack(spacing: 1) {
+                    Text(Calendar.current.isDateInToday(day) ? "Today" : day.formatted(.dateTime.weekday(.wide)))
+                        .appFont(24, .black, relativeTo: .title2)
+                    HStack(spacing: 5) {
+                        Text(day.formatted(.dateTime.weekday(.wide).day().month(.wide)))
+                            .appFont(15, .semibold, relativeTo: .subheadline)
+                        ChevronDown()
+                            .stroke(style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
+                            .frame(width: 10, height: 7)
+                    }
+                    .foregroundStyle(Theme.inkSoft)
+                }
+                .foregroundStyle(Theme.ink)
+                .contentShape(.rect)
+            }
+            .accessibilityLabel("Choose a day")
+
+            Spacer()
+
+            Button {} label: {
+                StickerButtonLabel { SettingsIcon() }
+            }
+            .buttonStyle(SquishStyle())
+            .accessibilityLabel("Settings")
         }
-        .padding(20)
-        .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 26, style: .continuous))
+        .padding(.horizontal, 20)
+        .padding(.top, 4)
+        .padding(.bottom, 10)
+    }
+}
+
+// MARK: - Today's progress: big number, a sticker that cheers, three stars
+
+struct ProgressHero: View {
+    let done: Int
+    let total: Int
+    private let stars: [Double] = [0.6, 0.8, 1.0]
+
+    private var progress: Double { total == 0 ? 0 : Double(done) / Double(total) }
+    private var starsReached: Int { stars.filter { progress >= $0 - 0.0001 }.count }
+
+    private var mood: String { ["🌱", "⭐️", "🔥", "🏆"][starsReached] }
+
+    private var message: String {
+        guard let next = stars.first(where: { progress < $0 - 0.0001 }) else { return "Three stars. What a day!" }
+        let needed = Int((next * Double(total)).rounded(.up)) - done
+        let which = ["first", "second", "third"][stars.firstIndex(of: next)!]
+        return "\(needed) more \(needed == 1 ? "habit" : "habits") to your \(which) star"
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 20) {
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("Today’s progress")
+                        .appFont(17, .bold)
+                        .foregroundStyle(Theme.inkSoft)
+                    Text(progress, format: .percent.precision(.fractionLength(0)))
+                        .appFont(64, .black, relativeTo: .largeTitle)
+                        .contentTransition(.numericText(value: progress))
+                        .monospacedDigit()
+                    Text(message)
+                        .appFont(17, .bold)
+                        .contentTransition(.opacity)
+                }
+                Spacer(minLength: 8)
+                StickerEmoji(emoji: mood, size: 62)
+                    .rotationEffect(.degrees(-10))
+                    .padding(.top, 8)
+                    .id(mood)
+                    .transition(.scale(scale: 0.4).combined(with: .opacity))
+            }
+            StarProgressBar(progress: progress, stars: stars)
+        }
+        .padding(22)
+        .background(Theme.progressCard, in: .rect(cornerRadius: 32, style: .continuous))
+        .animation(.spring(response: 0.45, dampingFraction: 0.7), value: done)
     }
 }
 
 struct StarProgressBar: View {
     let progress: Double
-    private let stars: [Double] = [0.6, 0.8, 1.0]
-    private let starSize: CGFloat = 30
+    let stars: [Double]
+    private let badge: CGFloat = 40
 
     var body: some View {
         VStack(spacing: 6) {
             GeometryReader { geo in
-                // The bar ends at the last star's centre, so the 100 % star sits on the end.
-                let width = geo.size.width - starSize / 2
+                // The bar ends under the last star's centre, so 100 % sits on the end.
+                let width = geo.size.width - badge / 2
                 ZStack(alignment: .leading) {
-                    Capsule().fill(Color(.systemFill))
-                        .frame(width: width, height: 10)
-                    Capsule().fill(Color.primary)
-                        .frame(width: max(10, width * progress), height: 10)
+                    Capsule().fill(.white)
+                        .frame(width: width, height: 20)
+                    Capsule()
+                        .fill(LinearGradient(colors: [Theme.barStart, Theme.barEnd], startPoint: .leading, endPoint: .trailing))
+                        .frame(width: max(14, (width - 6) * progress), height: 14)
+                        .padding(.leading, 3)
                     ForEach(stars, id: \.self) { mark in
-                        StarMark(reached: progress >= mark - 0.0001, size: starSize)
-                            .position(x: width * mark, y: starSize / 2)
+                        StarBadge(reached: progress >= mark - 0.0001, size: badge)
+                            .position(x: width * mark, y: badge / 2)
                     }
                 }
-                .frame(height: starSize)
+                .frame(height: badge)
             }
-            .frame(height: starSize)
+            .frame(height: badge)
 
             GeometryReader { geo in
-                let width = geo.size.width - starSize / 2
+                let width = geo.size.width - badge / 2
                 ForEach(stars, id: \.self) { mark in
                     Text(mark, format: .percent.precision(.fractionLength(0)))
-                        .font(.caption2.weight(.medium))
-                        .foregroundStyle(.secondary)
+                        .appFont(13, .heavy, relativeTo: .caption)
+                        .foregroundStyle(Theme.inkSoft)
                         .fixedSize()
-                        .position(x: width * mark, y: 7)
+                        .position(x: width * mark, y: 8)
                 }
             }
-            .frame(height: 14)
+            .frame(height: 16)
         }
         .accessibilityElement()
         .accessibilityLabel("Today’s progress")
@@ -178,97 +255,115 @@ struct StarProgressBar: View {
     }
 }
 
-struct StarMark: View {
+struct StarBadge: View {
     let reached: Bool
     let size: CGFloat
 
     var body: some View {
         ZStack {
-            Circle()
-                .fill(reached ? Color.yellow : Color(.secondarySystemBackground))
-            Circle()
-                .strokeBorder(reached ? Color.white : Color(.systemGray4), lineWidth: 2.5)
-            Image(systemName: "star.fill")
-                .font(.system(size: size * 0.45, weight: .bold))
-                .foregroundStyle(reached ? Color.white : Color(.systemGray3))
+            Circle().fill(reached ? Theme.star : .white)
+            Circle().strokeBorder(.white, lineWidth: 3.5)
+            StarShape()
+                .softFill(reached ? .white : Theme.ink.opacity(0.16), corner: 3)
+                .frame(width: size * 0.42, height: size * 0.42)
         }
         .frame(width: size, height: size)
-        .shadow(color: .black.opacity(reached ? 0.18 : 0), radius: 3, y: 1.5)
-        .scaleEffect(reached ? 1.08 : 1)
-        .animation(.spring(response: 0.35, dampingFraction: 0.55), value: reached)
+        .shadow(color: Theme.ink.opacity(reached ? 0.22 : 0.08), radius: reached ? 5 : 3, y: 2)
+        .scaleEffect(reached ? 1.1 : 1)
+        .rotationEffect(.degrees(reached ? -12 : 0))
+        .animation(.spring(response: 0.4, dampingFraction: 0.5), value: reached)
     }
 }
 
-// MARK: - Routine cards, two columns of different heights
+// MARK: - A routine: one row, one look, always the same spacing
 
-struct RoutineGrid: View {
-    let routines: [Routine]
-    let onTap: (Routine.ID) -> Void
-    let onChangeEmoji: (Routine.ID) -> Void
+struct RoutineRow: View {
+    let routine: Routine
+    let onTick: () -> Void
 
     var body: some View {
-        let left = routines.enumerated().filter { $0.offset % 2 == 0 }.map(\.element)
-        let right = routines.enumerated().filter { $0.offset % 2 == 1 }.map(\.element)
-        HStack(alignment: .top, spacing: 14) {
-            column(left, tallFirst: true)
-            column(right, tallFirst: false)
-        }
-    }
+        let deep = PaleColor.deep(for: routine.emoji)
 
-    private func column(_ items: [Routine], tallFirst: Bool) -> some View {
-        VStack(spacing: 14) {
-            ForEach(Array(items.enumerated()), id: \.element.id) { index, routine in
-                let tall = (index % 2 == 0) == tallFirst
-                RoutineCard(routine: routine, height: tall ? 196 : 156)
-                    .onTapGesture { onTap(routine.id) }
-                    .contextMenu {
-                        Button("Change Emoji", systemImage: "face.smiling") { onChangeEmoji(routine.id) }
-                    }
+        HStack(spacing: 14) {
+            StickerEmoji(emoji: routine.emoji, size: 42)
+                .frame(width: 56, height: 56)
+
+            VStack(alignment: .leading, spacing: 5) {
+                Text(routine.name)
+                    .appFont(21, .heavy, relativeTo: .title3)
+                    .lineLimit(1)
+                Text("\(routine.time)  ·  \(routine.done) of \(routine.total)")
+                    .appFont(15, .semibold, relativeTo: .subheadline)
+                    .foregroundStyle(Theme.inkSoft)
+                    .contentTransition(.numericText())
+                    .lineLimit(1)
+                HabitPips(done: routine.done, total: routine.total, color: deep)
+                    .padding(.top, 3)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+
+            PlayButton(isComplete: routine.isComplete)
+        }
+        .padding(.leading, 14)
+        .padding(.trailing, 16)
+        .padding(.vertical, 16)
+        .background(PaleColor.fill(for: routine.emoji), in: .rect(cornerRadius: 28, style: .continuous))
+        .contentShape(.rect(cornerRadius: 28, style: .continuous))
+        .onTapGesture(perform: onTick)
+        .animation(.easeInOut(duration: 0.35), value: routine.emoji)
+    }
+}
+
+/// One pip per habit in the routine, filled as each is done.
+struct HabitPips: View {
+    let done: Int
+    let total: Int
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 4) {
+            ForEach(0..<total, id: \.self) { i in
+                Capsule()
+                    .fill(i < done ? color : color.opacity(0.18))
+                    .frame(width: total > 6 ? 12 : 18, height: 6)
             }
         }
-        .frame(maxWidth: .infinity)
+        .animation(.snappy, value: done)
+        .accessibilityHidden(true)
     }
 }
 
-struct RoutineCard: View {
-    let routine: Routine
-    let height: CGFloat
+struct PlayButton: View {
+    let isComplete: Bool
+    private let color = Theme.ink
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top) {
-                StickerEmoji(emoji: routine.emoji, size: 40)
-                    .padding(.top, 2)
-                Spacer()
-                if routine.done >= routine.total {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.title3)
-                        .foregroundStyle(.primary.opacity(0.75))
-                        .transition(.scale.combined(with: .opacity))
+        Button {
+            // The routine player comes later; for now the button only shows where it goes.
+        } label: {
+            ZStack {
+                Circle().fill(isComplete ? .white : color)
+                if isComplete {
+                    CheckMark()
+                        .stroke(color, style: StrokeStyle(lineWidth: 3.4, lineCap: .round, lineJoin: .round))
+                        .frame(width: 20, height: 15)
+                } else {
+                    PlayTriangle()
+                        .softFill(.white, corner: 4)
+                        .frame(width: 17, height: 19)
+                        .offset(x: 1.5)
                 }
             }
-            Spacer(minLength: 8)
-            Text(routine.name)
-                .font(.headline)
-                .lineLimit(1)
-            Text("\(routine.done) of \(routine.total) · \(routine.time)")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .contentTransition(.numericText())
-                .lineLimit(1)
-                .padding(.top, 2)
+            .frame(width: 54, height: 54)
+            .shadow(color: color.opacity(isComplete ? 0.08 : 0.25), radius: 6, y: 3)
+            .contentShape(.circle)
         }
-        .padding(16)
-        .frame(maxWidth: .infinity, minHeight: height, alignment: .leading)
-        .background(PaleColor.fill(for: routine.emoji), in: .rect(cornerRadius: 26, style: .continuous))
-        .contentShape(.rect(cornerRadius: 26, style: .continuous))
-        .animation(.easeInOut(duration: 0.35), value: routine.emoji)
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(.isButton)
+        .buttonStyle(SquishStyle())
+        .accessibilityLabel(isComplete ? "Routine done, play again" : "Play routine")
     }
 }
 
-// MARK: - Try any emoji and watch the card colour follow it
+// MARK: - Try any emoji and watch the card follow it
 
 struct EmojiPickerSheet: View {
     let routine: Routine
@@ -285,60 +380,58 @@ struct EmojiPickerSheet: View {
     private let emojis = Array("☀️🌅🏃🚴🏊🧘🏋️🤸⚽️🎾🥑🍎🍓🍋🥦🥕🍉🫐☕️🍵💧🧃📚✍️🎨🎸🎹🧠💊🦷🛏️🌙⭐️🔥❤️💜💙💚🧡🖤🤍🐶🐱🌿🌸🌻🍀🌊⛰️🧹🧺💰📈🎯⏰📵🙏").map(String.init)
 
     var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: 20) {
-                    RoutineCard(routine: Routine(emoji: choice, name: routine.name, time: routine.time,
-                                                 done: routine.done, total: routine.total),
-                                height: 150)
-                        .frame(width: 190)
-
-                    if let hue = EmojiHue.hue(of: choice) {
-                        HStack(spacing: 8) {
-                            Circle().fill(PaleColor.source(for: choice)).frame(width: 14, height: 14)
-                            Image(systemName: "arrow.right").font(.caption2)
-                            Circle().fill(PaleColor.fill(for: choice)).frame(width: 14, height: 14)
-                                .overlay(Circle().strokeBorder(Color(.separator)))
-                            Text("Hue \(Int(hue.rounded()))° · OKLCH L 0.935, C 0.030")
-                        }
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                    } else {
-                        Text("No main colour found · neutral card")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
+        ScrollView {
+            VStack(alignment: .leading, spacing: 20) {
+                HStack {
+                    Text("Pick an emoji").appFont(26, .black, relativeTo: .title)
+                    Spacer()
+                    Button { onPick(choice); dismiss() } label: {
+                        Text("Done")
+                            .appFont(17, .heavy)
+                            .foregroundStyle(.white)
+                            .padding(.horizontal, 20)
+                            .frame(height: 44)
+                            .background(Theme.ink, in: .capsule)
                     }
+                    .buttonStyle(SquishStyle())
+                }
 
-                    LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 6), spacing: 8) {
-                        ForEach(emojis, id: \.self) { e in
-                            Button {
-                                withAnimation(.easeInOut(duration: 0.3)) { choice = e }
-                            } label: {
-                                Text(e)
-                                    .font(.system(size: 30))
-                                    .frame(maxWidth: .infinity, minHeight: 50)
-                                    .background(PaleColor.fill(for: e), in: .circle)
-                                    .overlay(Circle().strokeBorder(Color.primary.opacity(choice == e ? 0.6 : 0), lineWidth: 2))
-                            }
-                            .buttonStyle(.plain)
+                RoutineRow(routine: Routine(emoji: choice, name: routine.name, time: routine.time,
+                                            done: routine.done, total: routine.total), onTick: {})
+                    .allowsHitTesting(false)
+
+                if let hue = EmojiHue.hue(of: choice) {
+                    Text("Hue \(Int(hue.rounded()))°  ·  every card OKLCH L 0.935, C 0.030")
+                        .appFont(14, .semibold)
+                        .foregroundStyle(Theme.inkSoft)
+                } else {
+                    Text("No main colour found, so a neutral card")
+                        .appFont(14, .semibold)
+                        .foregroundStyle(Theme.inkSoft)
+                }
+
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 8), count: 6), spacing: 8) {
+                    ForEach(emojis, id: \.self) { e in
+                        Button {
+                            withAnimation(.easeInOut(duration: 0.3)) { choice = e }
+                        } label: {
+                            Text(e)
+                                .font(.system(size: 30))
+                                .frame(maxWidth: .infinity, minHeight: 52)
+                                .background(PaleColor.fill(for: e), in: .circle)
+                                .overlay(Circle().strokeBorder(Theme.ink.opacity(choice == e ? 0.7 : 0), lineWidth: 2.5))
                         }
+                        .buttonStyle(SquishStyle())
                     }
-                }
-                .padding(20)
-            }
-            .navigationTitle("Emoji")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) {
-                    Button(role: .close) { dismiss() }
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { onPick(choice); dismiss() }
-                        .fontWeight(.semibold)
                 }
             }
+            .foregroundStyle(Theme.ink)
+            .padding(20)
+            .padding(.top, 8)
         }
+        .background(Theme.background)
         .presentationDetents([.large])
+        .presentationCornerRadius(32)
     }
 }
 

@@ -23,6 +23,13 @@ enum PaleColor {
         })
     }
 
+    /// A deeper tone of the same hue, for the habit pips. Like the
+    /// fill, every hue gets the same lightness and chroma, so no card shouts louder.
+    static func deep(for emoji: String) -> Color {
+        guard let hue = EmojiHue.hue(of: emoji) else { return Color(red: 0.42, green: 0.41, blue: 0.40) }
+        return Color(uiColor: OKLCH(L: 0.68, C: 0.14, h: hue).uiColor)
+    }
+
     /// The emoji's own main colour, before it's made pale (for the debug preview).
     static func source(for emoji: String) -> Color {
         guard let hue = EmojiHue.hue(of: emoji) else { return Color(.systemGray3) }
