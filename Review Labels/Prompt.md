@@ -769,6 +769,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, three in one check) For still_using, find the quote first: a present-tense line about
   their own use or a present complaint (Korean -됨, "돈주고 해야됨"); a wish or plea never counts, and with no such line
   it is not_said. Routines they already had before an update are how_long_used "a while, before the update", never null.
+  (27 Nov 2026, MyRoutine 2024, five in one check, rules above missed) still_using's quote, in this order: a present
+  complaint (a subjectless Korean -음 too), then their own use, then praise; a refund or charge line is about_to_quit. A
+  free trial that ran out into a charge is how_long_used "through the free trial"; a paywall at the start is "just started".
   (26 Nov 2026, MyRoutine 2023, three in one check) A wish's quote runs on to the words that finish it: the "for
   example" sentence after it, or a shared "please make…" ending; two wishes joined by "and"/"이랑" ("다크버전이랑 …
   만들어주세요") are two items that both quote the whole sentence.
