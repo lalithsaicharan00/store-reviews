@@ -735,6 +735,9 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, again) Using it "off and on", or deleted once and using it again, is still_using
   came_back, never using. Thinking about switching to other apps ("투두 앱 따로 루틴앱 따로 써야되나 고민중이에요") is
   about_to_quit, even after present-tense complaints.
+  (27 Nov 2026, MyRoutine 2024, in two checks) The title counts as much as the text: a complaint or praise only in the
+  title gets its own problem or liked item. A liked item names only what its quote says and praises; a feature
+  request that only describes the feature is a wish, never liked.
 
 ## Stopping and starting again
 
