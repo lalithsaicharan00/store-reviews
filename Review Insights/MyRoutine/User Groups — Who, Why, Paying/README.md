@@ -1,8 +1,13 @@
 # User Groups — Who, Why, Paying (MyRoutine)
 
 Written by Claude (Claude Code), 27 November 2026, at the user's request. **This file is the prompt.** An agent picking
-up this work reads it whole, then follows the steps. One report per year. It is the same study as
-[Routinery's](<../../Routinery/User Groups — Who, Why, Paying/README.md>), set up for MyRoutine.
+up this work reads it whole, then follows the steps. One report per year.
+
+**This is MyRoutine's own analysis.** It follows the same *process* as the Routinery study (labels, read every `who`
+and `why_chose`, group by hand, report), and nothing else is taken from it: not its groups, its feature kinds or its
+findings. The user, 27 November 2026: *"It is a separate app and separate analysis … It should be unique to its.
+That's the whole point of the reviews."* (The first 2020 report put people into Routinery's groups and was redone the
+same day.)
 
 ## What we're trying to find out
 
@@ -29,6 +34,8 @@ For each year of MyRoutine's store reviews:
   quote). Read a review in full (`reviews.jsonl`) only to settle a doubt about one label.
 - **Read every `who` and `why_chose` yourself** (the `list` command) and put each person in groups by hand. No keyword
   grouping of people. One person can be in several groups.
+- **The groups come from MyRoutine's own words.** Never start from another app's list of groups and fit people into
+  it. Read the year's labels, put together the people who say the same pain, and name the group in their words.
 - **"Not said" is never "no".** Most reviews don't say who they are or whether they paid; say so, and give every share
   with its denominator (of all reviews, of those naming a pain point, of those saying anything about paying).
 - **Every number resolves to reviews.** Quote people exactly, in their language, with a translation; cite short
@@ -45,26 +52,22 @@ Minding. co., Ltd.'s routine app from Korea (App Store `1518956326`, Google Play
 list of routines** with a **social side** (see other people's routines, copy them with a long press, follow
 "routiners", a Best Routine page), a **reflection** (daily diary) section, a **green light** for a day done, reminders,
 and versions for the **web, PC and phone**. The phone apps came out in July 2020 for people already on the web
-version. It is **not a timer app** like Routinery, so the feature kinds in `insights.py` are MyRoutine's own.
+version. The feature kinds in `insights.py` were made from these labels.
 
 ## The groups so far
 
-Codes used in `Tools/groups_<YEAR>.py`. They are **Routinery's codes**, so the two apps compare; use the same code
-for the same pain, and **add a new group only when the year's own words show one**, and say so in that year's report.
+Made from MyRoutine's 2020 labels (27 Nov 2026). Codes used in `Tools/groups_<YEAR>.py`. Keep a code for the same pain
+in later years so years compare; **add a new group, or split one, when the year's own words show it**, and say so in
+that year's report. Never take a group from another app.
 
-| Code | Group | Typical words |
+| Code | Group | Their words (2020) |
 |---|---|---|
-| `START` | Can't start or keep going | plan but don't act (생각만 하고), no willpower (의지박약), quit after 3 days (작심삼일), tedious to start |
-| `NOTHING` | Tried other apps, planners or paper; nothing stuck | other routine or habit apps given up within days; a paper or analog diary too much work; "nothing suitable" |
-| `OVERWHELM` | Overwhelmed | other apps too much to learn; a first blank list feels daunting (막막해서) |
-| `FORGET` | Forget small habits | medicine, tasks at set times |
-| `DISTRACT` | Lose time | hectic, frantic days (정신없이), distracted, can't manage time |
-| `MORNING` | Mornings go badly | oversleep, rush, late (none in 2020) |
-| `ND` | Have ADHD/ADD, autism, OCD, executive dysfunction, depression, anxiety | only when they say it about themselves (none in 2020) |
-| `LOST` | Lost their structure | COVID, working or studying from home, a life change (none in 2020) |
-| `CARER` | Parents and carers | home and family load (none in 2020) |
-| `METHOD` | Follow a method | Miracle Morning, Atomic Habits, a 5 AM wake-up challenge only when it's named as a method (none in 2020) |
-| `GOAL` | Only a goal, no pain | "build good habits", "the days I want to live"; reported separately, not a pain group |
+| `NOACT` | Know what to do but don't do it | plan in my head but my body can't follow (머리로 계획만), I think but don't move (생각만 하고), keep saying I must (해야지해야지), a bother to start (귀찮고), no willpower (의지 박약) |
+| `DROPOFF` | Start, then give up within days | three-day resolve (작심삼일), stopped apps after a few days (며칠 사용하다 중단), installed and hardly used, failed many times |
+| `TRACKING` | Their way of keeping track didn't fit | a paper diary forgotten or hard to tick, a reminder on every to-do item, one-habit apps where missing once felt like failing, apps too much to learn |
+| `FORGET` | Forget things | tasks at set times, medicine |
+| `BLANK` | Don't know what routine to make | at a loss making a first list (막막해서) |
+| `GOAL` | Only a goal, no pain | build good habits, the days I want to live; reported separately, not a pain group |
 
 Identity alone (a student, an iPhone or Galaxy user, a web-version user) isn't a pain point: count it under "Who they
 say they are", not as a group, unless their words also name a pain. **How they found the app** (an editors' pick, an
@@ -78,7 +81,8 @@ Run from the repository root. `T="Review Insights/MyRoutine/User Groups — Who,
 2. **`python3 -I "$T" basics <YEAR>`**: the year in numbers.
 3. **`python3 -I "$T" list <YEAR>`**: every review with a `who` or `why_chose`, by line number. Read all of them and
    write `Tools/groups_<YEAR>.py` in the shape of `groups_2020.py` (`GROUPS` with the codes you use, `MAP` from line
-   number to codes, and a comment listing the lines left out). Reviews with only an identity, a device or how they
+   number to codes, and a comment listing the lines left out). Group by what the words say; check the year for pains
+   the codes above don't hold. Reviews with only an identity, a device or how they
    found the app are left out.
 4. **`python3 -I "$T" stats <YEAR>`**: per group size, share, rating, paying, liked-feature kinds; the year's liked
    features, paying by language, premium contents, objections, who-they-are counts. **The keyword counts are a
@@ -97,7 +101,8 @@ Run from the repository root. `T="Review Insights/MyRoutine/User Groups — Who,
    sections as 2020: the short answer (with the group table), 1 the year in numbers, 2 the groups (who they are, why
    with quotes, free features they like, paying), 3 paying (how many, by group, by language, why payers paid with IDs,
    what premium holds, why others won't pay), 4 free features liked, 5 who they say they are and how they found it,
-   6 what's broken and what's wished for, 7 what changed (a table across every year so far), 8 limits, appendix.
+   6 what's broken and what's wished for, 7 what changed (a table across MyRoutine's years so far), 8 limits,
+   appendix.
 10. **`python3 -I "$T" appendix <YEAR> >> "<report>"`**, then **`python3 -I "$T" check <YEAR>`** (must say nothing
     missing or ambiguous).
 11. **Update `../README.md`** (the MyRoutine page: the year's row and the trend table) and the apps table in
@@ -128,5 +133,5 @@ Run from the repository root. `T="Review Insights/MyRoutine/User Groups — Who,
 | File | What it is |
 |---|---|
 | `MyRoutine <YEAR> — User Groups, Why They Use It, and What They Pay For.md` | One report per year |
-| `Tools/insights.py` | Every step above; `python3 -I insights.py` alone prints its help. A copy of Routinery's with MyRoutine's app name, app ID, feature kinds and a `problems` command |
+| `Tools/insights.py` | Every step above; `python3 -I insights.py` alone prints its help. Its feature kinds were made from MyRoutine's own 2020 labels |
 | `Tools/groups_<YEAR>.py` | The hand-made map of people to groups for that year |

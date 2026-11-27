@@ -33,6 +33,9 @@ Review Insights/
 
 - **From the labels, not from memory or our app.** Every number comes from `Review Labels/<App>/<YEAR>/labels.jsonl`
   and resolves to exact reviews (an appendix in each report).
+- **Every app is its own analysis** (the user, 27 November 2026: *"It is a separate app and separate analysis … It
+  should be unique to its"*). Its groups, feature kinds and findings come from its own labels only; one study's
+  process can be reused, never another app's groups.
 - **"Not said" is never "no",** and every share carries its denominator.
 - **People's own words**, quoted exactly with a translation.
 - **One study's README is its prompt:** a new agent reads it and can carry on without this conversation.
