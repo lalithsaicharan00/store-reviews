@@ -50,7 +50,7 @@ struct HomeView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 32) {
-                ProgressHero(done: model.done, total: model.total)
+                ProgressHero(done: model.done, total: model.total, isToday: Calendar.current.isDateInToday(day))
 
                 VStack(alignment: .leading, spacing: 14) {
                     HStack(alignment: .firstTextBaseline, spacing: 10) {
@@ -146,20 +146,28 @@ struct Header: View {
                     }
                 }
             } label: {
-                VStack(spacing: 1) {
-                    Text(Calendar.current.isDateInToday(day) ? "Today" : day.formatted(.dateTime.weekday(.wide)))
-                        .appFont(24, .black, relativeTo: .title2)
-                    HStack(spacing: 5) {
-                        Text(day.formatted(.dateTime.weekday(.wide).day().month(.wide)))
-                            .appFont(15, .semibold, relativeTo: .subheadline)
-                        ChevronDown()
-                            .stroke(style: StrokeStyle(lineWidth: 2.2, lineCap: .round, lineJoin: .round))
-                            .frame(width: 10, height: 7)
+                // One short line: "Today  Fri 27 Nov ⌄"; any other day just "Thu 26 Nov ⌄".
+                HStack(spacing: 7) {
+                    if Calendar.current.isDateInToday(day) {
+                        Text("Today")
+                            .appFont(18, .black, relativeTo: .headline)
+                            .foregroundStyle(Theme.ink)
                     }
-                    .foregroundStyle(Theme.inkSoft)
+                    Text(day.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))
+                        .appFont(18, Calendar.current.isDateInToday(day) ? .bold : .black, relativeTo: .headline)
+                        .foregroundStyle(Calendar.current.isDateInToday(day) ? Theme.inkSoft : Theme.ink)
+                    ChevronDown()
+                        .stroke(Theme.ink, style: StrokeStyle(lineWidth: 2.4, lineCap: .round, lineJoin: .round))
+                        .frame(width: 11, height: 8)
+                        .padding(.leading, 1)
                 }
-                .foregroundStyle(Theme.ink)
-                .contentShape(.rect)
+                .lineLimit(1)
+                .padding(.horizontal, 18)
+                .frame(height: 50)
+                .background(.white, in: .capsule)
+                .overlay(Capsule().strokeBorder(Theme.ink.opacity(0.07), lineWidth: 1))
+                .shadow(color: Theme.ink.opacity(0.08), radius: 10, y: 4)
+                .contentShape(.capsule)
             }
             .accessibilityLabel("Choose a day")
 
@@ -182,6 +190,7 @@ struct Header: View {
 struct ProgressHero: View {
     let done: Int
     let total: Int
+    var isToday = true
     private let stars: [Double] = [0.6, 0.8, 1.0]
 
     private var progress: Double { total == 0 ? 0 : Double(done) / Double(total) }
@@ -193,35 +202,39 @@ struct ProgressHero: View {
         guard let next = stars.first(where: { progress < $0 - 0.0001 }) else { return "Three stars. What a day!" }
         let needed = Int((next * Double(total)).rounded(.up)) - done
         let which = ["first", "second", "third"][stars.firstIndex(of: next)!]
-        return "\(needed) more \(needed == 1 ? "habit" : "habits") to your \(which) star"
+        return "\(needed) more \(needed == 1 ? "habit" : "habits") to your \(which == "first" ? "first" : "next") star"
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            HStack(alignment: .top) {
+        VStack(alignment: .leading, spacing: 16) {
+            HStack(alignment: .center, spacing: 12) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Today’s progress")
-                        .appFont(17, .bold)
-                        .foregroundStyle(Theme.inkSoft)
-                    Text(progress, format: .percent.precision(.fractionLength(0)))
-                        .appFont(64, .black, relativeTo: .largeTitle)
-                        .contentTransition(.numericText(value: progress))
-                        .monospacedDigit()
+                    HStack(alignment: .firstTextBaseline, spacing: 6) {
+                        Text(progress, format: .percent.precision(.fractionLength(0)))
+                            .appFont(46, .black, relativeTo: .largeTitle)
+                            .contentTransition(.numericText(value: progress))
+                            .monospacedDigit()
+                        Text(isToday ? "done today" : "done")
+                            .appFont(17, .bold)
+                            .foregroundStyle(Theme.inkSoft)
+                    }
                     Text(message)
-                        .appFont(17, .bold)
+                        .appFont(16, .bold)
+                        .lineLimit(2)
                         .contentTransition(.opacity)
                 }
-                Spacer(minLength: 8)
-                StickerEmoji(emoji: mood, size: 62)
+                Spacer(minLength: 4)
+                StickerEmoji(emoji: mood, size: 48)
                     .rotationEffect(.degrees(-10))
-                    .padding(.top, 8)
                     .id(mood)
                     .transition(.scale(scale: 0.4).combined(with: .opacity))
             }
             StarProgressBar(progress: progress, stars: stars)
         }
-        .padding(22)
-        .background(Theme.progressCard, in: .rect(cornerRadius: 32, style: .continuous))
+        .padding(.horizontal, 20)
+        .padding(.top, 18)
+        .padding(.bottom, 14)
+        .background(Theme.progressCard, in: .rect(cornerRadius: 28, style: .continuous))
         .animation(.spring(response: 0.45, dampingFraction: 0.7), value: done)
     }
 }
@@ -229,19 +242,19 @@ struct ProgressHero: View {
 struct StarProgressBar: View {
     let progress: Double
     let stars: [Double]
-    private let badge: CGFloat = 40
+    private let badge: CGFloat = 34
 
     var body: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 4) {
             GeometryReader { geo in
                 // The bar ends under the last star's centre, so 100 % sits on the end.
                 let width = geo.size.width - badge / 2
                 ZStack(alignment: .leading) {
                     Capsule().fill(.white)
-                        .frame(width: width, height: 20)
+                        .frame(width: width, height: 16)
                     Capsule()
                         .fill(LinearGradient(colors: [Theme.barStart, Theme.barEnd], startPoint: .leading, endPoint: .trailing))
-                        .frame(width: max(14, (width - 6) * progress), height: 14)
+                        .frame(width: max(10, (width - 6) * progress), height: 10)
                         .padding(.leading, 3)
                     ForEach(stars, id: \.self) { mark in
                         StarBadge(reached: progress >= mark - 0.0001, size: badge)
@@ -256,7 +269,7 @@ struct StarProgressBar: View {
                 let width = geo.size.width - badge / 2
                 ForEach(stars, id: \.self) { mark in
                     Text(mark, format: .percent.precision(.fractionLength(0)))
-                        .appFont(13, .heavy, relativeTo: .caption)
+                        .appFont(12, .heavy, relativeTo: .caption)
                         .foregroundStyle(Theme.inkSoft)
                         .fixedSize()
                         .position(x: width * mark, y: 8)
@@ -277,7 +290,7 @@ struct StarBadge: View {
     var body: some View {
         ZStack {
             Circle().fill(reached ? Theme.star : .white)
-            Circle().strokeBorder(.white, lineWidth: 3.5)
+            Circle().strokeBorder(.white, lineWidth: 3)
             StarShape()
                 .softFill(reached ? .white : Theme.ink.opacity(0.16), corner: 3)
                 .frame(width: size * 0.42, height: size * 0.42)
