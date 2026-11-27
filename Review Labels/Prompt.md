@@ -723,6 +723,11 @@ Learned on Routinery, from a side-by-side check of 50 hard reviews. Follow them 
   (27 Nov 2026, MyRoutine 2024, in three checks) Having used it before a change ("원래 잘 사용하던 어플이었는데
   유료화되고") gives how_long_used "used it for a while before it went paid"; cancelling or being charged during the
   free trial ("무료기간중에") gives "within the free trial". Never null.
+  (27 Nov 2026, MyRoutine 2024, again) Going paid isn't the only change that counts: used it before an update, a
+  feature that vanished or crashes starting ("アプデ前は…", "위젯 넘 잘 쓰고 있었는데", "잘 쓰고 있었는데 튕겨서")
+  gives how_long_used "used it for a while before the update".
+  (27 Nov 2026, MyRoutine 2024, in two checks) A complaint about a premium feature that doesn't say they pay
+  ("프리미엄에서 웹 기능이…") is paid not_said. Never infer paid from naming premium; give the complaint its problem item.
 
 ## Stopping and starting again
 
