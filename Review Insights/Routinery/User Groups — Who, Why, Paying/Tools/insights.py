@@ -1,8 +1,8 @@
-"""MyRoutine user-group reports: every step of the method in one tool.
+"""Routinery user-group reports: every step of the method in one tool.
 
 Written by Claude (Claude Code), 26 November 2026. Run from the repository root:
 
-    python3 -I "Review Insights/MyRoutine/User Groups — Who, Why, Paying/Tools/insights.py" <command> <YEAR>
+    python3 -I "Review Insights/Routinery/User Groups — Who, Why, Paying/Tools/insights.py" <command> <YEAR>
 
 Commands, in the order you use them (README.md beside the reports explains each step):
     status    how far the year's labels are (must be fully labelled and checked)
@@ -13,7 +13,6 @@ Commands, in the order you use them (README.md beside the reports explains each 
     quotes    the first who/why quote of each group member (for the report's quotes)
     limit     every review that seems to mention the free routine limit, to sort by hand
     payers    every paid / charged-unexpectedly review with its reason and liked features, to sort by hand
-    problems  problem kinds (broken, missing, dislike) and every wish and dislike, to sort by hand
     appendix  the report's appendix table (append it to the report)
     check     every review ID cited in the report exists in that year's reviews.jsonl, and none is ambiguous
 """
@@ -25,32 +24,25 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
-APP = "MyRoutine"
+APP = "Routinery"
 
-# Kinds of liked feature, matched on the labels' `liked` and `chose_for` feature text (lower case). Made for MyRoutine
-# from its 2020 labels (27 Nov 2026): a daily check-off routine app with a social side (other people's routines,
-# copying them, following "routiners"), reflections, and web, PC and phone versions. Check new years' words and add.
-# KNOWN TRAPS (2020): "look" matched "looking for" and "design" matched "layout designed"; "fun" matched the social
-# "fun to peek at others"; "easy" matched "easy to copy others' routines". Each was narrowed; check again by hand.
-# More in 2021: "look back/after" (a reflection), "not like a social network", "together" in "to-dos neatly together",
-# "best routine app", "more effective than alarms", "stayed on the phone" (not about devices). Narrowed too.
+# Kinds of liked feature, matched on the labels' `liked` and `chose_for` feature text (lower case).
 FEATURES = {
-    "See, copy and follow other people's routines": r"other (people|users|routiners|routine users)|others|copy|friend|routiner|best routine page|sharing|share|acquaintance|peek|(?<!not like a )social|together with|cheering each other",
-    "Check off the day; see it at a glance": r"check(?! each day)|at a glance|weekly view|emoji|green light|green streak|overview",
-    "Encouraging, motivating, sense of achievement": r"motivat|achievement|rewarding|feel(s)? good|green light|badge|well-spent|gift|vitality|keeps me going|fun of|is fun",
-    "Simple, clean, easy to use": r"simple|clean|(?<!made starting )easy(?! to copy)|intuitive|neat|comfortable|convenient|usability|layout|interface|ui\b|only the necessary|easy on the eyes",
-    "Looks good: design, cute": r"cute|\blooks?\b(?! (back|after))|pretty|style of app",
-    "Reflection, diary, memo": r"reflection|retrospective|diary|memo|journal|feelings|emotions|sort out thoughts|recall the day",
-    "Reminders and push alarms": r"remind|(?<!than )alarm|push|notification",
-    "Private routines": r"private",
-    "Web, PC and phone, synced": r"web|desktop|laptop|pc\b|computer|mobile app|mobile version|both web|both iphone|and ipad|tablet|syncs|sync so|comfortably on the phone",
-    "Builds habits, keeps routines going": r"build(ing)? (good )?habits|keep(s|ing)? (good )?(daily )?habits|habits have taken hold|maintain|steadily|consistently|kept habits|keeping routines|routines going|morning routine",
-    "Partial credit: some done still counts": r"percent",
-    "Repeat on chosen weekdays": r"weekday",
-    "Responsive developer, frequent updates": r"developer|update|fixes",
-    "Long free trial": r"free trial",
-    "Home-screen widget (from 2021)": r"widget",
-    "Free plan is enough (from 2021)": r"free of charge|for free|even though it is free|free features|free up to|routines are free|무료",
+    "Timer on every step (countdown, set time per task, alert when time is up)":
+        r"timer|countdown|timed|target time|set (amount of )?time|time block|alarm|on time|stopwatch|time is up|beating the set time|over time|taking too long|elapsed",
+    "Walks you through one step at a time (no deciding what is next)":
+        r"one (step|action) at a time|in order|order of|next habit|without thinking|no need to (think|memori)|decisions|preset|assistant|accompan|checklist for you|chain|step-by-step|moves them through|moves on|sequence|don.t have to think|what.s next|prompts them|just do the allocated",
+    "Shows when the routine will finish": r"finish time|end time|will end|completion time|what time each routine|finish$|expected finish|when you.ll be done",
+    "Simple, clean, easy": r"simple|clean|minimal|easy|intuitive|no fluff|straightforward|not overwhelming|no noise|light app|quick setup|no unnecessary",
+    "Looks good: design, cute icons": r"pretty|cute|icon|ui\b|interface|design|graphic|aesthetic|layout|beautiful|adorable|font|look",
+    "No ads": r"no (annoying |pop-up )?ads|few ads|no distracting extras",
+    "Free version is enough": r"free (version|option|experience|content)|without (premium|the subscription|paying)|isn.t restrictive|generous",
+    "Encouraging words and motivation": r"motivat|encourag|message|prompts like|well done|inspir|confidence|courage|rewarding|boost|voice",
+    "Pause, skip or add time": r"pause|skip|add time|snooze",
+    "See how long things take, stats, feedback": r"time spent|how long|stats|evaluate|feedback after|assess|history",
+    "Reminders and alerts": r"remind|alert|notification|nudge",
+    "More than one routine (morning, night, others)": r"several routines|more than one routine|morning and (night|evening)|routines for everything|separate routines|bedtime|after-work|night routines|weekday and weekend",
+    "Responsive developer": r"developer|support|feedback.*update|fast developer",
 }
 
 MONEY = r"premium|pay|subscri|price|cost|free|trial|paywall|membership|lifetime|one-time|purchase|expensive|afford|\$|money|buy|plus|pro\b"
@@ -74,9 +66,7 @@ WHO = {
     "depression, anxiety, mental health": r"depress|anxi|mental|lupus|health issue",
     "student": r"student|school|exam|homework|class|stud", "works": r"\bwork(s|er|ing)?\b|job|shift|company|office|designer|developer|therapist",
     "parent": r"parent|mom|dad|kids|\bson\b|daughter|child", "smartwatch user": r"watch|galaxy fit|wear os|fitbit",
-    "iPad or tablet": r"ipad|tablet|\bpad\b",
-    "names their phone (iPhone, Galaxy, Android)": r"iphone|galaxy|android",
-    "uses the web version or a computer": r"web|laptop|\bpc\b|computer|desktop", "habit books or methods": r"fogg|tiny habits|miracle|atomic|bullet journal|self-management books",
+    "iPad or tablet": r"ipad|tablet", "habit books or methods": r"fogg|tiny habits|miracle|atomic|bullet journal|self-management books",
     "tried many apps": r"tried|tested|several|dozens|hops between|thousands",
     "procrastinator, lazy, low willpower": r"procrastinat|lazy|willpower|lethargy|three days|3 days|day 2|discipline|weak-willed|follow-through|follow through",
     "minor or child": r"minor|\d+-year-old|years old|teen|child|elementary",
@@ -205,19 +195,6 @@ def cmd_payers(y):
             print(i, short(r), r["language"], r["paid"]["status"], "|", r["paid"]["why"], "|", [x["feature"] for x in r["liked"]][:3], "|", M.get(i, ""))
 
 
-def cmd_problems(y):
-    L = labels(y)
-    print("problem kinds (items):", dict(collections.Counter(p["kind"] for r in L for p in r["problems"])))
-    print("reviews with at least one:", {k: sum(any(p["kind"] == k for p in r["problems"]) for r in L)
-                                        for k in sorted({p["kind"] for r in L for p in r["problems"]})})
-    for k in ("missing", "dislike"):
-        print(f"\n{k.upper()} (one line per item, to sort by hand):")
-        for i, r in enumerate(L, 1):
-            for p in r["problems"]:
-                if p["kind"] == k:
-                    print(f"  {i} {short(r)} {r['rating']}★ {p['problem']}")
-
-
 def cmd_appendix(y):
     L = labels(y)
     G, M = groups(y)
@@ -238,7 +215,7 @@ def cmd_check(y):
     found = [f for f in os.listdir(os.path.dirname(HERE)) if f.startswith(f"{APP} {y} ") and f.endswith(".md")]
     assert len(found) == 1, f"expected one report for {y}, found {found}"
     text = open(os.path.join(os.path.dirname(HERE), found[0]), encoding="utf-8").read()
-    cited = set(re.findall(r"`([0-9a-f]{8}(?:-[0-9a-f-]{27})?|\d{8,10})`", text)) - {"1518956326"}  # the App Store app ID
+    cited = set(re.findall(r"`([0-9a-f]{8}(?:-[0-9a-f-]{27})?|\d{8,10})`", text)) - {"1450486923"}  # the App Store app ID
     bad = sorted(c for c in cited if not any(i.startswith(c) for i in ids))
     amb = sorted(c for c in cited if sum(i.startswith(c) for i in ids) > 1)
     print(f"{found[0]}: {len(cited)} cited IDs; not found: {bad}; ambiguous: {amb}")

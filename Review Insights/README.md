@@ -26,8 +26,7 @@ Review Insights/
 
 | App | Studies | Status |
 |---|---|---|
-| [Routinery](<Routinery/README.md>) | [User Groups — Who, Why, Paying](<Routinery/User Groups — Who, Why, Paying/README.md>) | 2019–2026 done; [final report](<Routinery/User Groups — Who, Why, Paying/Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md>) |
-| [MyRoutine](<MyRoutine/README.md>) | [User Groups — Who, Why, Paying](<MyRoutine/User Groups — Who, Why, Paying/README.md>) | 2020–2021 done |
+| [Routinery](<Routinery/README.md>) | [User Groups — Who, Why, Paying](<Routinery/User Groups — Who, Why, Paying/README.md>) <br>[Routine Player — Helps and Dislikes](<Routinery/Routine Player — Helps and Dislikes/README.md>) | User groups 2019–2026 done; [final report](<Routinery/User Groups — Who, Why, Paying/Routinery 2019–2026 — Final Report — User Groups, Why They Use It, and What They Pay For.md>); routine player [report](<Routinery/Routine Player — Helps and Dislikes/Routinery — Routine Player — What Helps and What Users Dislike.md>) done 28 Nov 2026 |
 
 ## Rules for every study here
 
